@@ -32,6 +32,10 @@ public class BoidManager : MonoBehaviour
     }
 }
 
+//actually implement fully into game
+
+//determine if we will manage by invisible checkpoints that enemy or follow able enemies drop and also check my main pc for the extra info like about theramone pathing.  Having a time limit for how long it lasts and which one is more important to detect
+
 //Erics Stolen Stuff Below
 /*
 using System.Collections;

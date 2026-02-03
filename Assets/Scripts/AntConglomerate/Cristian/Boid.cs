@@ -13,7 +13,7 @@ public class Boid : MonoBehaviour
 
     void Start()
     {
-        manager = FindObjectOfType<BoidManager>();
+        manager = FindObjectOfType<BoidManager>(); //apparently this is obsolete but doesny request to directly change
         velocity = transform.forward * speed;
     }
 
