@@ -7,7 +7,7 @@ public class SpawnFoodBites : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        biteSpawn = new Vector3(0f, 0f, 0.5f);
+        biteSpawn = new Vector3(0f, 0.3f, 0f);
     }
 
     // Update is called once per frame
@@ -17,9 +17,11 @@ public class SpawnFoodBites : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Something has entered the trigger");
         if(other.CompareTag("Player"))
         {
-            Instantiate(foodBitePrefab, transform.position + biteSpawn, transform.rotation);
+            Instantiate(foodBitePrefab, other.transform.position + biteSpawn, transform.rotation);
+            
             Debug.Log("bite iis spawned");
         }
     }
