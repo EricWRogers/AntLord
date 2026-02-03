@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 //requires a camera to use
@@ -7,7 +8,7 @@ public class FlyCam : MonoBehaviour
 
     private bool active = true; //set the camera to active
     private bool allowRotation = true; //let the camera rotate
-    private float mouseSenseitivity = 1f; //how sisitive the mouse is for cam rotation
+    public float mouseSenseitivity = 1.4f; //how sisitive the mouse is for cam rotation
     private bool scrollWheel = true; //let the camera zoom in/out with scroll wheel
     private float zoomSpeed = 50f; //how fast camera zooms
     private bool allowMovement = true; //let player move
@@ -99,6 +100,18 @@ public class FlyCam : MonoBehaviour
             
             CalculateAcceleration(deltaPosition != Vector3.zero); //caculate acceleration
             transform.position += deltaPosition * currentSpeed * increase;
+        }
+
+        if (allowRotation)
+        {
+            transform.rotation *= Quaternion.AngleAxis(-Input.GetAxis("Mouse Y") * mouseSenseitivity, Vector3.right);
+            transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y + Input.GetAxis("Mouse X") * mouseSenseitivity,transform.eulerAngles.z);
+        }
+
+        if (Input.GetKeyDown(ResetPosition))
+        {
+            transform.position = initPosition;
+            transform.eulerAngles = initRotation;
         }
     }
 }
