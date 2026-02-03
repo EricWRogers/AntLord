@@ -18,7 +18,7 @@ public class AntBrain : MonoBehaviour
     public void Attack(AntBrain target)
     {
         // Use the damage stat from the ScriptableObject
-        target.TakeDamage(antType.damage);
+        //target.TakeDamage(antType.damage);
         //This is from Cristian, just reference erics health script to make this quicker
     }
 }
