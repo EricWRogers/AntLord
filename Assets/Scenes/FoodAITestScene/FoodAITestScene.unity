@@ -119,6 +119,38 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &113101813 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3966664181625356753, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
+  m_PrefabInstance: {fileID: 791602625}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &113101818
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113101813}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &368426582
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,6 +253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 609564850}
   - component: {fileID: 609564849}
+  - component: {fileID: 609564851}
   m_Layer: 0
   m_Name: Food
   m_TagString: Untagged
@@ -267,6 +300,19 @@ Transform:
   - {fileID: 1889051783}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &609564851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609564848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bb714da4164ba4081fcde59e285b22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnFoodBites
+  foodBitePrefab: {fileID: 4809084369255736288, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
 --- !u!1 &683694009
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +437,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ant
       objectReference: {fileID: 0}
+    - target: {fileID: 3966664181625356753, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 4408458978185158335, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.7719864
@@ -401,7 +451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4408458978185158335, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.118
+      value: -5.315
       objectReference: {fileID: 0}
     - target: {fileID: 4408458978185158335, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
       propertyPath: m_LocalRotation.w
@@ -434,7 +484,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3966664181625356753, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 113101818}
   m_SourcePrefab: {fileID: 100100000, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
 --- !u!1 &1099059007
 GameObject:
@@ -869,63 +922,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889051782}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &4623708637712261655
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.765
-      objectReference: {fileID: 0}
-    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.956
-      objectReference: {fileID: 0}
-    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.074
-      objectReference: {fileID: 0}
-    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4809084369255736288, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-      propertyPath: m_Name
-      value: FoodBite
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -935,4 +931,3 @@ SceneRoots:
   - {fileID: 1099059011}
   - {fileID: 791602625}
   - {fileID: 609564850}
-  - {fileID: 4623708637712261655}
