@@ -1,15 +1,22 @@
 using UnityEngine;
+using System.Collections;
+using System.Threading.Tasks;
 
 public class AppleSpawn : MonoBehaviour
 {
     //how often to spawn
     private float spawnTimer;
-    public float spawnInterval = 4f;
+    // public float spawnInterval = 4f;
 
     //what and where to spawn
     public GameObject apple;
     public float sphereRadius = 4f;
 
+    //size & growth during/after spawn 
+    public float growDuration = 1.5f;
+
+    //gravity please
+    private Rigidbody rb;
 
 
     void Update()
@@ -17,21 +24,54 @@ public class AppleSpawn : MonoBehaviour
         if (Time.time >= spawnTimer)
         {
             SpawnApple();
-            spawnTimer = Time.time + spawnInterval;
+            spawnTimer = Time.time + growDuration + 5; //spawnInterval;
         }
     }
-    public void SpawnApple()
+    public async Task SpawnApple()
     {
-        // int spawnPointX = Random.Range (-3,3);
-        // int spawnPointY = Random.Range (4,6);
-        // int spawnPointZ = Random.Range (-3,3);
-
-        // Vector3 spawnPosition = new Vector3(spawnPointX, spawnPointY, spawnPointZ);
-
         Vector3 randomPoint = Random.insideUnitSphere * sphereRadius;
         Vector3 spawnPosition = transform.position + randomPoint;
 
-        Instantiate(apple, spawnPosition, Quaternion.identity);
+        GameObject anApple = Instantiate(apple, spawnPosition, Quaternion.identity);
+
+        Rigidbody rb = anApple.GetComponent<Rigidbody>();
+
+        anApple.transform.localScale = new Vector3 (0.5f, 0.5f, 0.5f);
+
+        StartCoroutine(WatchAppleGrow(anApple.transform));
+
+        await Awaitable.WaitForSecondsAsync(growDuration);
+
+        if (rb != null)
+        {
+            rb.useGravity = true;
+            Debug.Log ("rb");
+        }
+        else
+        {
+            Debug.Log ("No rigidbody");
+        }
+        
+    }
+
+    IEnumerator WatchAppleGrow(Transform objTransform)
+    {
+        float elapsed = 0f;
+        Vector3 startScale = new Vector3 (0.5f, 0.5f, 0.5f);
+        Vector3 endScale = Vector3.one;
+
+        while (elapsed < growDuration)
+        {
+            elapsed += Time.deltaTime;
+            objTransform.localScale = Vector3.Lerp(startScale, endScale, elapsed / growDuration);
+            yield return null;
+        }
+        objTransform.localScale = endScale;
+    }
+
+    public void ComeBackGravity()
+    {
+        
     }
     
 

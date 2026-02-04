@@ -357,8 +357,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AppleSpawn
   spawnInterval: 4
-  apple: {fileID: 7319353106578254916, guid: ddc2f9e4428734f6c9cbc5b411d9ba78, type: 3}
+  apple: {fileID: 7567196244142815781, guid: f8f45f9b4bc204257b1bbddcf74c08d9, type: 3}
   sphereRadius: 4
+  growDuration: 1.5
 --- !u!135 &942866518
 SphereCollider:
   m_ObjectHideFlags: 0
