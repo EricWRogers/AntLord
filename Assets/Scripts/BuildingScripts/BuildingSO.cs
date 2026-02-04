@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BuildingSO", menuName = "Scriptable Objects/BuildingSO")]
+[CreateAssetMenu(fileName = "BuildingSO", menuName = "AntLord/BuildingSO")]
 public class BuildingSO : ScriptableObject
 {
     // this is where all building will refer to their names, desc, cost, health, 
