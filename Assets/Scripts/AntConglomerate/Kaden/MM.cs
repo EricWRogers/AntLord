@@ -36,8 +36,25 @@ public class MM : MonoBehaviour
 
     public void Quit()
     {
-        Debug.Log("Bye, Bye!");
-        Application.Quit();
+        Time.timeScale = 1;
+
+        Debug.Log("Bye, Bye! (Exited Game)");
+
+        if (Application.isEditor)
+        {
+            UnityEditor.EditorApplication.isPlaying = false;
+        }
+        else
+        {
+            Application.Quit();
+        }
+    }
+
+    public void Home(string level)
+    {
+        SceneManager.LoadScene(level);
+        Time.timeScale = 1;
+        Debug.Log("Returned to Home.");
     }
 
     public void Restart(string level)
