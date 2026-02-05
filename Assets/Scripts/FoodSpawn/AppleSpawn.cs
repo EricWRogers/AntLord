@@ -14,6 +14,7 @@ public class AppleSpawn : MonoBehaviour
 
     //size & growth during/after spawn 
     public float growDuration = 1.5f;
+    public float startingSize = 0.1f;
 
     //gravity please
     private Rigidbody rb;
@@ -36,7 +37,7 @@ public class AppleSpawn : MonoBehaviour
 
         Rigidbody rb = anApple.GetComponent<Rigidbody>();
 
-        anApple.transform.localScale = new Vector3 (0.5f, 0.5f, 0.5f);
+        anApple.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
 
         StartCoroutine(WatchAppleGrow(anApple.transform));
 
@@ -57,7 +58,7 @@ public class AppleSpawn : MonoBehaviour
     IEnumerator WatchAppleGrow(Transform objTransform)
     {
         float elapsed = 0f;
-        Vector3 startScale = new Vector3 (0.5f, 0.5f, 0.5f);
+        Vector3 startScale = new Vector3 (startingSize, startingSize, startingSize);
         Vector3 endScale = Vector3.one;
 
         while (elapsed < growDuration)
