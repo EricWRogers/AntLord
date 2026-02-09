@@ -16,7 +16,7 @@ public class AppleSpawn : MonoBehaviour
     public float growDuration = 1.5f;
     public float startingSize = 0.1f;
 
-    //gravity please
+    //gravity
     private Rigidbody rb;
 
 
@@ -25,7 +25,7 @@ public class AppleSpawn : MonoBehaviour
         if (Time.time >= spawnTimer)
         {
             SpawnApple();
-            spawnTimer = Time.time + growDuration + 5; //spawnInterval;
+            spawnTimer = Time.time + growDuration + 5; 
         }
     }
     public async Task SpawnApple()
@@ -33,7 +33,9 @@ public class AppleSpawn : MonoBehaviour
         Vector3 randomPoint = Random.insideUnitSphere * sphereRadius;
         Vector3 spawnPosition = transform.position + randomPoint;
 
-        GameObject anApple = Instantiate(apple, spawnPosition, Quaternion.identity);
+        Quaternion randomYRotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
+
+        GameObject anApple = Instantiate(apple, spawnPosition, randomYRotation);
 
         Rigidbody rb = anApple.GetComponent<Rigidbody>();
 
@@ -68,11 +70,6 @@ public class AppleSpawn : MonoBehaviour
             yield return null;
         }
         objTransform.localScale = endScale;
-    }
-
-    public void ComeBackGravity()
-    {
-        
     }
     
 
