@@ -1,0 +1,83 @@
+using UnityEngine;
+using System.Collections;
+using System.Threading.Tasks;
+
+public class AppleSpawn : MonoBehaviour
+{
+    //how often to spawn
+    private float spawnTimer;
+    // public float spawnInterval = 4f;
+
+    //what and where to spawn
+    public GameObject apple;
+    public float sphereRadius = 4f;
+
+    //size & growth during/after spawn 
+    public float growDuration = 1.5f;
+    public float startingSize = 0.1f;
+
+    //gravity
+    private Rigidbody rb;
+
+
+    void Update()
+    {
+        if (Time.time >= spawnTimer)
+        {
+            SpawnApple();
+            spawnTimer = Time.time + growDuration + 5; 
+        }
+    }
+    public async Task SpawnApple()
+    {
+        Vector3 randomPoint = Random.insideUnitSphere * sphereRadius;
+        Vector3 spawnPosition = transform.position + randomPoint;
+
+        Quaternion randomYRotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
+
+        GameObject anApple = Instantiate(apple, spawnPosition, randomYRotation);
+
+        Rigidbody rb = anApple.GetComponent<Rigidbody>();
+
+        anApple.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
+
+        StartCoroutine(WatchAppleGrow(anApple.transform));
+
+        await Awaitable.WaitForSecondsAsync(growDuration);
+
+        if (rb != null)
+        {
+            rb.useGravity = true;
+            Debug.Log ("rb");
+        }
+        else
+        {
+            Debug.Log ("No rigidbody");
+        }
+        
+    }
+
+    IEnumerator WatchAppleGrow(Transform objTransform)
+    {
+        float elapsed = 0f;
+        Vector3 startScale = new Vector3 (startingSize, startingSize, startingSize);
+        Vector3 endScale = Vector3.one;
+
+        while (elapsed < growDuration)
+        {
+            elapsed += Time.deltaTime;
+            objTransform.localScale = Vector3.Lerp(startScale, endScale, elapsed / growDuration);
+            yield return null;
+        }
+        objTransform.localScale = endScale;
+    }
+    
+
+
+    // void Start()
+    // {
+        
+    // }
+
+
+}

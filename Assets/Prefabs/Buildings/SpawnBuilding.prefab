@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3489033244722046759}
   - component: {fileID: 1266555292509386472}
   - component: {fileID: 1595401735429855760}
-  - component: {fileID: 9143310156166772710}
+  - component: {fileID: 3026306675670589178}
   m_Layer: 0
   m_Name: SpawnBuilding
   m_TagString: Untagged
@@ -114,7 +114,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9143310156166772710
+--- !u!114 &3026306675670589178
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,14 +123,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1521120396676709679}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09d4442a3f2fcde45b77fdcd7ed48778, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ffdb76f05f52544192c5de93bc86e4d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TestBuilding
-  testSO: {fileID: 11400000, guid: fa211efc9027c0e49a7151f5c0abda7b, type: 2}
-  spawnPoint: {fileID: 8388733878004940841}
-  spawnPadding: 2
-  spawnCooldown: 1
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnerBuilding
   currentHealth: 0
+  spawnerSO: {fileID: 11400000, guid: a170635a27b8d694dac8aaac276d4395, type: 2}
+  spawnPoint: {fileID: 8388733878004940841}
+  spawnPadding: 5
+  spawnCooldown: 1
+  maxAnts: 10
 --- !u!1 &4814241168764555927
 GameObject:
   m_ObjectHideFlags: 0
