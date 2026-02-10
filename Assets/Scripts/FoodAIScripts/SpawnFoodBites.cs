@@ -4,6 +4,8 @@ public class SpawnFoodBites : MonoBehaviour
 {
     public GameObject foodBitePrefab;
     private Vector3 biteSpawn;
+
+    private FoodBites foodBite;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,6 +23,11 @@ public class SpawnFoodBites : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             Instantiate(foodBitePrefab, other.transform.position + biteSpawn, transform.rotation);
+
+            foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
+
+            GameObject ant = other.gameObject;
+            foodBite.SetAnt(ant);
             
             Debug.Log("bite iis spawned");
         }
