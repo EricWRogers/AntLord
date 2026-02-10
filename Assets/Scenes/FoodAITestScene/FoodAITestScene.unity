@@ -282,6 +282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpawnFoodBites
   foodBitePrefab: {fileID: 4809084369255736288, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
   radius: 1
+  foodbit: {fileID: 0}
 --- !u!1 &683694009
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4408458978185158335, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20.37
+      value: -7.71
       objectReference: {fileID: 0}
     - target: {fileID: 4408458978185158335, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
       propertyPath: m_LocalRotation.w

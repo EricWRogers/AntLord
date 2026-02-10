@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class SpawnFoodBites : MonoBehaviour
@@ -9,6 +10,8 @@ public class SpawnFoodBites : MonoBehaviour
     Collider[] hitColliders;
     GameObject[] ants;
     public float radius = 1f;
+
+    public Transform foodbit;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,14 +26,17 @@ public class SpawnFoodBites : MonoBehaviour
         {
             if(hitColliders.CompareTag("Player"))
             {
-                Instantiate(foodBitePrefab, hitColliders.transform.position + biteSpawn, transform.rotation);
+                
+                if(hitColliders.transform.childCount < 14){
+                    Instantiate(foodBitePrefab, hitColliders.transform.position + biteSpawn, transform.rotation);
 
-                foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
+                    foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
 
-                GameObject ant = hitColliders.gameObject;
-                foodBite.SetAnt(ant);
+                    GameObject ant = hitColliders.gameObject;
+                    foodBite.SetAnt(ant);
             
-                Debug.Log("bite iis spawned");
+                    Debug.Log("bite iis spawned");
+                }
             }
         }
     }
