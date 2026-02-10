@@ -434,6 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de9e3b02862d52f42ae1d2b7219c4c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlyCam
+  mouseSenseitivity: 1.4
 --- !u!114 &1329439234
 MonoBehaviour:
   m_ObjectHideFlags: 0
