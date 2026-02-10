@@ -28,6 +28,8 @@ public class TerrainSculptTool : MonoBehaviour
         else if (Input.GetMouseButton(1)) dir = -1;
         else return;
 
+        //right click to lower
+
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 500f, terrainMask))
         {
