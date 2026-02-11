@@ -20,6 +20,9 @@ public class TerrainSculptTool : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            return;
+
         if (!hm) return;
 
         if (Input.GetKeyDown(KeyCode.R))
