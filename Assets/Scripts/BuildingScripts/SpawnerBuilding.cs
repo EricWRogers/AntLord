@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class SpawnerBuilding : Buildings
@@ -16,7 +17,8 @@ public class SpawnerBuilding : Buildings
     void Start()
     {
         this.currentHealth = spawnerSO.buildHealth;
-        Debug.Log(spawnerSO.buildName);
+        slider.maxValue = currentHealth;
+        slider.value = currentHealth;
     }
     void FixedUpdate()
     {
