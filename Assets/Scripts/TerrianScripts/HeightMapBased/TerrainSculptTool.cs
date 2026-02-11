@@ -22,6 +22,9 @@ public class TerrainSculptTool : MonoBehaviour
     {
         if (!hm) return;
 
+        if (Input.GetKeyDown(KeyCode.R))
+            hm.ResetFlat(0.5f);
+
         // Left mouse = raise, Right mouse = lower
         int dir = 0;
         if (Input.GetMouseButton(0)) dir = +1;
