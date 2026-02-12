@@ -17,6 +17,10 @@ public class FollowNav : MonoBehaviour
     void Start()
     {
         myAgent = GetComponent<NavMeshAgent>();
+
+        // temp add self to leader group
+        leader.followers.Add(myAgent);
+
         myAgent.isStopped = false;
     }
 
@@ -47,7 +51,9 @@ public class FollowNav : MonoBehaviour
         }
         else if(leader.arrived)
         {
-            myAgent.isStopped = true;
+            //myAgent.isStopped = true;
+
+            myAgent.destination = leader.recentObjective.position;
         }
     }
 
