@@ -105,4 +105,17 @@ public class HeightmapTerrain : MonoBehaviour
         data.SetHeightsDelayLOD(x0, z0, patch);
         terrain.Flush(); //update the visuals
     }
+
+
+    public void ResetFlat(float flatNormalized = 0.5f)
+    {
+        flatNormalized = Mathf.Clamp(flatNormalized, minNormalized, maxNormalized);
+
+        for (int z = 0; z < res; z++)
+            for (int x = 0; x < res; x++)
+                heights[z, x] = flatNormalized;
+
+        data.SetHeightsDelayLOD(0, 0, heights);
+        terrain.Flush();
+    }
 }

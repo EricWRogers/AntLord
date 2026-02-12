@@ -20,13 +20,21 @@ public class TerrainSculptTool : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            return;
+
         if (!hm) return;
+
+        if (Input.GetKeyDown(KeyCode.R))
+            hm.ResetFlat(0.5f);
 
         // Left mouse = raise, Right mouse = lower
         int dir = 0;
         if (Input.GetMouseButton(0)) dir = +1;
         else if (Input.GetMouseButton(1)) dir = -1;
         else return;
+
+        //right click to lower
 
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 500f, terrainMask))
