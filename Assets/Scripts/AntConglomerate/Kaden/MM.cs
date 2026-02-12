@@ -42,7 +42,9 @@ public class MM : MonoBehaviour
 
         if (Application.isEditor)
         {
+            #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
+            #endif
         }
         else
         {
