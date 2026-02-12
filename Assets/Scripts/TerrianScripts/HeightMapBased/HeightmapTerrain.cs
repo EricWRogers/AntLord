@@ -17,6 +17,13 @@ public class HeightmapTerrain : MonoBehaviour
     int res; // heightmap resolution
     float[,] heights; 
 
+
+    [Header("Sand Behavior")]
+    public bool sandMode = true;
+    public float angleOfReposeDeg = 33f;
+    public int slumpIterations = 3;
+    public float slumpStrength = 0.5f;
+
     void Awake()
     {
         terrain = GetComponent<Terrain>();
@@ -55,6 +62,65 @@ public class HeightmapTerrain : MonoBehaviour
     public bool IsWaterAtWorld(Vector3 world)
     {
         return GetHeightNormalizedAtWorld(world) <= waterLevelNormalized;
+    }
+
+
+    void ApplySandSlump(int x0, int z0, int width, int height)
+    {
+        if (!sandMode) return;
+
+        float dxWorld = data.size.x / (res - 1);
+        float dzWorld = data.size.z / (res - 1);
+
+        
+        float maxDhX = Mathf.Tan(angleOfReposeDeg * Mathf.Deg2Rad) * dxWorld;
+        float maxDhZ = Mathf.Tan(angleOfReposeDeg * Mathf.Deg2Rad) * dzWorld;
+
+        
+        int pad = 2;
+        int ax0 = Mathf.Clamp(x0 - pad, 0, res - 1);
+        int az0 = Mathf.Clamp(z0 - pad, 0, res - 1);
+        int ax1 = Mathf.Clamp(x0 + width - 1 + pad, 0, res - 1);
+        int az1 = Mathf.Clamp(z0 + height - 1 + pad, 0, res - 1);
+
+        for (int iter = 0; iter < slumpIterations; iter++)
+        {
+            for (int z = az0; z <= az1; z++)
+            {
+                for (int x = ax0; x <= ax1; x++)
+                {
+                    float h = heights[z, x];
+
+                    
+                    RelaxPair(x, z, x + 1, z, maxDhX);
+                    RelaxPair(x, z, x - 1, z, maxDhX);
+                    RelaxPair(x, z, x, z + 1, maxDhZ);
+                    RelaxPair(x, z, x, z - 1, maxDhZ);
+                }
+            }
+        }
+    }
+
+    void RelaxPair(int xA, int zA, int xB, int zB, float maxDhWorld)
+    {
+        if (xB < 0 || xB >= res || zB < 0 || zB >= res) return;
+
+        float hA = heights[zA, xA] * data.size.y;
+        float hB = heights[zB, xB] * data.size.y;
+
+        float dh = hA - hB;
+
+        if (dh > maxDhWorld)
+        {
+            float excess = dh - maxDhWorld;
+            float move = excess * slumpStrength * 0.5f;
+
+            hA -= move;
+            hB += move;
+
+            heights[zA, xA] = Mathf.Clamp01(hA / data.size.y);
+            heights[zB, xB] = Mathf.Clamp01(hB / data.size.y);
+        }
     }
 
     
@@ -102,6 +168,7 @@ public class HeightmapTerrain : MonoBehaviour
             for (int x = 0; x < width; x++)
                 patch[z, x] = heights[z0 + z, x0 + x];
 
+        ApplySandSlump(x0, z0, width, height);
         data.SetHeightsDelayLOD(x0, z0, patch);
         terrain.Flush(); //update the visuals
     }
