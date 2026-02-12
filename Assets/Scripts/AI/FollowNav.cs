@@ -6,26 +6,76 @@ public class FollowNav : MonoBehaviour
 {
     private NavMeshAgent myAgent;
     public LeadNav leader;
+    public Transform recentCollision = null;
+    public float closeEnough = 1f;
+    public float leaderTail = 0.3f;
     private int crumbTrack = 0;
+    public float separationRadius = 2f;
+    public float separationForce = 5f;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         myAgent = GetComponent<NavMeshAgent>();
+        myAgent.isStopped = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Using distance calculation constantly is bad for performance, need alternate method
-        if(!leader.GetComponent<NavMeshAgent>().isStopped && leader.crumbs.Count != 0 && Vector3.Distance(transform.position, leader.transform.position) > 0.5f)
+        // Supercede normal pathfinding if ants recently bumped
+        if(recentCollision != null)
+        {
+            if(Vector3.Distance(transform.position, recentCollision.position) > transform.localScale.x)
+            {
+                recentCollision = null;
+            }
+        }
+
+        // Follow crumbs left by leader
+        if(!leader.arrived && leader.crumbs.Count != 0 && Vector3.Distance(transform.position, leader.transform.position) > leaderTail)
         {
             myAgent.destination = leader.crumbs[crumbTrack];
 
-            if(crumbTrack < leader.crumbs.Count - 1 && Vector3.Distance(transform.position, leader.crumbs[crumbTrack]) < 0.1f)
+            if(crumbTrack < leader.crumbs.Count - 1 && myAgent.remainingDistance < closeEnough)
             {
                 crumbTrack++;
             }
+
+            // Check for nearby agents and apply separation
+            HandleAgentCollisions();
+        }
+        else if(leader.arrived)
+        {
+            myAgent.isStopped = true;
         }
     }
+
+    void HandleAgentCollisions()
+    {
+        // Find all nearby agents within separationRadius
+        Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, separationRadius);
+        Vector3 separationVector = Vector3.zero;
+
+        foreach (Collider collider in nearbyColliders)
+        {
+            NavMeshAgent otherAgent = collider.GetComponent<NavMeshAgent>();
+            
+            // If it's another agent (not self), apply separation
+            if (otherAgent != null && otherAgent != myAgent)
+            {
+                Vector3 awayFromAgent = (transform.position - otherAgent.transform.position).normalized;
+                separationVector += awayFromAgent;
+            }
+        }
+
+        // Apply separation by slightly offsetting the destination
+        if (separationVector.magnitude > 0)
+        {
+            Vector3 separatedDestination = myAgent.destination + separationVector.normalized * separationForce;
+            myAgent.destination = separatedDestination;
+        }
+    }
+
+
 }

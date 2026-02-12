@@ -83,3 +83,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
   leader: {fileID: 0}
+  recentCollision: {fileID: 0}
