@@ -12,17 +12,21 @@ public class LeadNav : MonoBehaviour
     public float crumbDropDelay = 1f;
     private float crumbDropTimer = 0f;
     public Transform target;
+    public bool arrived = false;
+    public float separationRadius = 2f;
+    public float separationForce = 5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         myAgent = GetComponent<NavMeshAgent>();
+        myAgent.isStopped = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!myAgent.isStopped){
+        if(!arrived){
             crumbDropTimer += Time.deltaTime;
 
             if(crumbDropTimer >= crumbDropDelay)
@@ -30,37 +34,66 @@ public class LeadNav : MonoBehaviour
                 crumbDropTimer = 0f;
                 
                 //Debug crumb
-                crumbs.Add(Instantiate(crumbPrefab, transform.position, Quaternion.identity).transform.position);
+                //crumbs.Add(Instantiate(crumbPrefab, transform.position, Quaternion.identity).transform.position);
                 
                 //invisible crumb
-                //crumbs.Add(transform.position);
+                crumbs.Add(transform.position);
             }
 
-            myAgent.transform.LookAt(target.position);
-
+            // Set destination normallly
             myAgent.destination = target.position;
+
+            // Check for nearby agents and apply separation
+            HandleAgentCollisions();
+        }
+    }
+
+    void HandleAgentCollisions()
+    {
+        // Find all nearby agents within separationRadius
+        Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, separationRadius);
+        Vector3 separationVector = Vector3.zero;
+
+        foreach (Collider collider in nearbyColliders)
+        {
+            NavMeshAgent otherAgent = collider.GetComponent<NavMeshAgent>();
+            
+            // If it's another agent (not self), apply separation
+            if (otherAgent != null && otherAgent != myAgent)
+            {
+                Vector3 awayFromAgent = (transform.position - otherAgent.transform.position).normalized;
+                separationVector += awayFromAgent;
+            }
+        }
+
+        // Apply separation by slightly offsetting the destination
+        if (separationVector.magnitude > 0)
+        {
+            Vector3 separatedDestination = myAgent.destination + separationVector.normalized * separationForce;
+            myAgent.destination = separatedDestination;
         }
     }
 
     void FixedUpdate()
     {
-        // Using distance calculation constantly is bad for performance, need alternate method
-        if(!myAgent.isStopped && Vector3.Distance(transform.position, target.position) < 0.5f)
+        // Check if NavMeshAgent has reached the destination
+        if(!arrived && !myAgent.pathPending && myAgent.hasPath && myAgent.remainingDistance < 0.5f)
         {
             Debug.Log("Hit target");
-            myAgent.isStopped = true;
+            arrived = true;
             crumbDropTimer = 0f;
+            myAgent.isStopped = true;
         }
     }
 
-    // never got called?
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Finish")
-        {
-            Debug.Log("Hit target");
-            myAgent.isStopped = true;
-            crumbDropTimer = 0f;
-        }
-    }
+    // // never got called?
+    // void OnTriggerEnter(Collider other)
+    // {
+    //     if(other.tag == "Finish")
+    //     {
+    //         Debug.Log("Hit target");
+    //         myAgent.isStopped = true;
+    //         crumbDropTimer = 0f;
+    //     }
+    // }
 }
