@@ -409,7 +409,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3966664181625356753, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Ant
       objectReference: {fileID: 0}
     - target: {fileID: 4408458978185158335, guid: 8cf756eec7d9400448feba9145df5355, type: 3}
       propertyPath: m_LocalPosition.x
