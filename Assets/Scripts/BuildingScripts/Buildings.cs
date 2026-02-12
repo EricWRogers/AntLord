@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Buildings : MonoBehaviour
@@ -6,10 +7,13 @@ public class Buildings : MonoBehaviour
     public int currentHealth;
     float fallLevel = 10.0f;
     float wiggleAmount = 0.5f;
+    public Slider slider;
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        slider.value = currentHealth;
+        //im not touching the UI rotating with the camera... for now
         if (currentHealth <= 0)
         {
             StartCoroutine(Demolish());

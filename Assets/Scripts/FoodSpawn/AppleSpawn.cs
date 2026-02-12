@@ -15,6 +15,8 @@ public class AppleSpawn : MonoBehaviour
     //size & growth during/after spawn 
     public float growDuration = 1.5f;
     public float startingSize = 0.1f;
+    Coroutine growingApple;
+    private bool isGrowing = false;
 
     //gravity
     private Rigidbody rb;
@@ -41,7 +43,26 @@ public class AppleSpawn : MonoBehaviour
 
         anApple.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
 
-        StartCoroutine(WatchAppleGrow(anApple.transform));
+        growingApple = StartCoroutine(WatchAppleGrow(anApple.transform));
+
+        CollisionDetectorForPrefabs forwarder = anApple.GetComponent<CollisionDetectorForPrefabs>();
+        forwarder.OnHit = (collision) =>
+        {
+            Debug.Log("The apple hit: " + collision.gameObject.name);
+            
+            if (isGrowing == true)
+            {
+                StopCoroutine(growingApple);    
+                Debug.Log ("stopped coroutine grow");
+            }
+            
+
+            if (rb != null && rb.useGravity != true)
+            {
+                rb.useGravity = true;
+                Debug.Log ("started gravity early");
+            }
+        };
 
         await Awaitable.WaitForSecondsAsync(growDuration);
 
@@ -59,6 +80,7 @@ public class AppleSpawn : MonoBehaviour
 
     IEnumerator WatchAppleGrow(Transform objTransform)
     {
+        isGrowing = true;
         float elapsed = 0f;
         Vector3 startScale = new Vector3 (startingSize, startingSize, startingSize);
         Vector3 endScale = Vector3.one;
@@ -70,7 +92,9 @@ public class AppleSpawn : MonoBehaviour
             yield return null;
         }
         objTransform.localScale = endScale;
+        isGrowing = false;
     }
+    
     
 
 
