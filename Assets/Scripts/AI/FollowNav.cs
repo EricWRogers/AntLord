@@ -12,17 +12,23 @@ public class FollowNav : MonoBehaviour
     private int crumbTrack = 0;
     public float separationRadius = 2f;
     public float separationForce = 5f;
+    public bool amCarryingFood = false;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         myAgent = GetComponent<NavMeshAgent>();
+
+        // temp add self to leader group
+        leader.followers.Add(myAgent);
+
         myAgent.isStopped = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        transform.LookAt(myAgent.steeringTarget);
         // Supercede normal pathfinding if ants recently bumped
         if(recentCollision != null)
         {
@@ -47,7 +53,9 @@ public class FollowNav : MonoBehaviour
         }
         else if(leader.arrived)
         {
-            myAgent.isStopped = true;
+            //myAgent.isStopped = true;
+
+            myAgent.destination = leader.recentObjective.position;
         }
     }
 
