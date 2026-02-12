@@ -522,8 +522,8 @@ Transform:
   m_GameObject: {fileID: 1005763678}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.68186, y: -0.5, z: 2.1524599}
-  m_LocalScale: {x: 43.180267, y: 1, z: 36.796204}
+  m_LocalPosition: {x: 8.6819, y: -0.5, z: 2.1525}
+  m_LocalScale: {x: 91.118996, y: 1, z: 77.23155}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 392293317}
@@ -540,6 +540,7 @@ GameObject:
   - component: {fileID: 1136795039}
   - component: {fileID: 1136795038}
   - component: {fileID: 1136795037}
+  - component: {fileID: 1136795041}
   m_Layer: 0
   m_Name: Target
   m_TagString: Finish
@@ -636,12 +637,32 @@ Transform:
   m_GameObject: {fileID: 1136795036}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.3651502, y: 0.91999996, z: 9.03006}
+  m_LocalPosition: {x: -31.26, y: 0.91999996, z: 32.82}
   m_LocalScale: {x: 1, y: 0.78069, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 392293317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1136795041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136795036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &1143544205
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -694,9 +715,17 @@ PrefabInstance:
       propertyPath: leader
       value: 
       objectReference: {fileID: 1259745031}
+    - target: {fileID: 581631134567900024, guid: 12781a3f7d5fc2c2e903becb659ad2c5, type: 3}
+      propertyPath: closeEnough
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6750640790392187117, guid: 12781a3f7d5fc2c2e903becb659ad2c5, type: 3}
       propertyPath: m_Name
       value: FollowAnt (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750640790392187117, guid: 12781a3f7d5fc2c2e903becb659ad2c5, type: 3}
+      propertyPath: m_TagString
+      value: Ant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -863,9 +892,17 @@ PrefabInstance:
       propertyPath: leader
       value: 
       objectReference: {fileID: 1259745031}
+    - target: {fileID: 581631134567900024, guid: 12781a3f7d5fc2c2e903becb659ad2c5, type: 3}
+      propertyPath: closeEnough
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6750640790392187117, guid: 12781a3f7d5fc2c2e903becb659ad2c5, type: 3}
       propertyPath: m_Name
       value: FollowAnt (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750640790392187117, guid: 12781a3f7d5fc2c2e903becb659ad2c5, type: 3}
+      propertyPath: m_TagString
+      value: Ant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -924,6 +961,10 @@ PrefabInstance:
       propertyPath: leader
       value: 
       objectReference: {fileID: 1259745031}
+    - target: {fileID: 581631134567900024, guid: 12781a3f7d5fc2c2e903becb659ad2c5, type: 3}
+      propertyPath: closeEnough
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6750640790392187117, guid: 12781a3f7d5fc2c2e903becb659ad2c5, type: 3}
       propertyPath: m_Name
       value: FollowAnt (1)
@@ -1050,6 +1091,10 @@ PrefabInstance:
       propertyPath: leader
       value: 
       objectReference: {fileID: 1259745031}
+    - target: {fileID: 581631134567900024, guid: 12781a3f7d5fc2c2e903becb659ad2c5, type: 3}
+      propertyPath: closeEnough
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6750640790392187117, guid: 12781a3f7d5fc2c2e903becb659ad2c5, type: 3}
       propertyPath: m_Name
       value: FollowAnt

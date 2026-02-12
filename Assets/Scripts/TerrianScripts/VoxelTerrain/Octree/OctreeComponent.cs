@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class OctreeComponent : MonoBehaviour
 {
-    public float size;
-    public int depth;
+    public float size = 5;
+    public int depth = 2;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -36,8 +36,9 @@ public class OctreeComponent : MonoBehaviour
             Gizmos.color = Color.blue;
             foreach (var subnode in node.Nodes)
             {
-                
+                DrawNode(subnode);
             }
         }
+        Gizmos.DrawWireCube(node.Position, Vector3.one * node.Size);
     }
 }
