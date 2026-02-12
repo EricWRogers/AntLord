@@ -12,6 +12,7 @@ public class FollowNav : MonoBehaviour
     private int crumbTrack = 0;
     public float separationRadius = 2f;
     public float separationForce = 5f;
+    public bool amCarryingFood = false;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -27,6 +28,7 @@ public class FollowNav : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.LookAt(myAgent.steeringTarget);
         // Supercede normal pathfinding if ants recently bumped
         if(recentCollision != null)
         {

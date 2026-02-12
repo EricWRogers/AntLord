@@ -46,7 +46,7 @@ public class Chunk : MonoBehaviour
         voxels = new Voxel[size, size, size];
         InitializeVoxels();
         // Assign a random color for this chunk's gizmos
-        gizmoColor = new Color(Random.value, Random.value, Random.value, 0.4f); // Semi-transparent
+        gizmoColor = new Color(0.82f, 0.71f, 0.55f, 1.0f); // Solid tan
     }
     private Color gizmoColor; 
 }
