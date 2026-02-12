@@ -17,6 +17,8 @@ public class LeadNav : MonoBehaviour
     public bool arrived = false;
     public float separationRadius = 2f;
     public float separationForce = 5f;
+    public int foodBits = 0;
+    public bool amCarryingFood = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,6 +30,8 @@ public class LeadNav : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.LookAt(myAgent.steeringTarget);
+
         if(!arrived){
             crumbDropTimer += Time.deltaTime;
 
@@ -51,31 +55,33 @@ public class LeadNav : MonoBehaviour
 
         else if (arrived)
         {
-            int foodBits = 0;
-            bool failed = false;
-            for(int i = 0; i < followers.Count; i++)
-            {
-                for(int j = 0; i < followers[i].transform.childCount; j++)
-                {
-                    if(followers[i].transform.GetChild(j).tag == "FoodBit")
-                    {
-                        foodBits++;
-                        break;
-                    }
-                    else if(j == followers[i].transform.childCount - 1)
-                        failed = true;
-                }
-                if (failed)
-                {
-                    break;
-                }
-            }
+            foodBits = 0;
+            // bool failed = false;
+            // for(int i = 0; i < followers.Count; i++)
+            // {
+            //     for(int j = 0; i < followers[i].transform.childCount; j++)
+            //     {
+            //         if(followers[i].transform.GetChild(j).tag == "FoodBit")
+            //         {
+            //             foodBits++;
+            //             break;
+            //         }
+            //         else if(j == followers[i].transform.childCount - 1)
+            //             failed = true;
+            //     }
+            //     if (failed)
+            //     {
+            //         break;
+            //     }
+            // }
 
-            if(foodBits == followers.Count)
-            {
-                arrived = false;
-                target = home;
-            }
+
+        }
+
+        if(foodBits >= followers.Count + 1)
+        {
+            arrived = false;
+            target = home;
         }
     }
 
