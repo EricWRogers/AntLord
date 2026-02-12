@@ -20,7 +20,13 @@ public class TerrainSculptTool : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            return;
+
         if (!hm) return;
+
+        if (Input.GetKeyDown(KeyCode.R))
+            hm.ResetFlat(0.5f);
 
         // Left mouse = raise, Right mouse = lower
         int dir = 0;

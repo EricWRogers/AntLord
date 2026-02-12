@@ -300,6 +300,61 @@ MonoBehaviour:
   terrainMask:
     serializedVersion: 2
     m_Bits: 8
+--- !u!1 &407497282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 407497284}
+  - component: {fileID: 407497283}
+  m_Layer: 0
+  m_Name: PlacementManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &407497283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407497282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ef92cbb31bbbd4c9dec646fe3a9b6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectPlacer
+  cam: {fileID: 315267725}
+  placementMask:
+    serializedVersion: 2
+    m_Bits: 8
+  hm: {fileID: 715638327}
+  prefab: {fileID: 798575386899987628, guid: 89418d0998d61064691dd316c77e47bb, type: 3}
+  maxDistance: 300
+  alignToTerrainNormal: 1
+  dropWithPhysics: 1
+  settleTime: 0.25
+  freezeAfterSettle: 1
+--- !u!4 &407497284
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407497282}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 81.61575, y: 64.63726, z: -26.47367}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &486316092
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,3 +600,4 @@ SceneRoots:
   - {fileID: 315267726}
   - {fileID: 486316094}
   - {fileID: 715638330}
+  - {fileID: 407497284}
