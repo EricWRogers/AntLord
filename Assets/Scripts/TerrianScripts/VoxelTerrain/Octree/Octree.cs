@@ -20,6 +20,7 @@ public class Octree<TType>{
     public Octree(Vector3 position, float size, int depth)
     {
         node = new OctreeNode<TType>(position, size);
+        node.Subdivide(depth);
     }
 
 
@@ -42,7 +43,17 @@ public class Octree<TType>{
             get { return subNodes; }
         }
 
-        public void Subdivide()
+        public float Size
+        {
+            get { return size; }
+        }
+
+        public Vector3 Position
+        {
+            get { return position; }
+        }
+
+        public void Subdivide(int depth = 0)
         {
             subNodes = new OctreeNode<TType>[8];
             for(int i = 0; i < subNodes.Length; ++i)
@@ -75,6 +86,10 @@ public class Octree<TType>{
                     newPos.z -= size * 0.25f;
                 }
                 subNodes[i] = new OctreeNode<TType>(newPos, size * 0.5f);
+                if (depth > 0)
+                {
+                    subNodes[i].Subdivide(depth - 1);
+                }
             }
         }
 
