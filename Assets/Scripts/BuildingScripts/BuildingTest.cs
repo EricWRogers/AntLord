@@ -9,7 +9,7 @@ public class BuildingTest : MonoBehaviour
     //I mean this is pretty close to what we need.
     [SerializeField] private Camera sceneCamera;
     public List<BuildingSO> allBuildings;
-    [SerializeField] private GameObject mouseIndicator, cellIndicator;
+    [SerializeField] private GameObject mouseIndicator, cellIndicator, cellIndicatorObj;
     public int selectedObjectIndex = -1;
     bool buildMode = false;
     Vector3 lastPosition;
@@ -36,7 +36,7 @@ public class BuildingTest : MonoBehaviour
         Vector3 mousePosition = GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
         mouseIndicator.transform.position = mousePosition;
-        cellIndicator.transform.position = grid.CellToWorld(gridPosition);
+        cellIndicator.transform.position = grid.CellToWorld(grid.WorldToCell(mousePosition));
     }
     public void StartPlacement(int ID)
     {
@@ -47,6 +47,8 @@ public class BuildingTest : MonoBehaviour
             UnityEngine.Debug.Log($"NO ID FOUND: {ID}");
             return;
         }
+        cellIndicatorObj.transform.localScale = allBuildings[selectedObjectIndex].size;
+        cellIndicatorObj.transform.position += (new Vector3(0.5f,0.0f,0.5f) * cellIndicatorObj.transform.localScale.x);
         cellIndicator.SetActive(true);
         //assigning methods to the events
         OnClicked += PlaceStruct;
@@ -57,6 +59,7 @@ public class BuildingTest : MonoBehaviour
     {
         selectedObjectIndex = -1;
         cellIndicator.SetActive(false);
+        cellIndicatorObj.transform.localPosition = new Vector3(0.0f,0.5f,0.0f);
         //removes previous invocation of event
         OnClicked -= PlaceStruct;
         OnExit -= StopPlacement;
@@ -72,7 +75,7 @@ public class BuildingTest : MonoBehaviour
 
         //places the building at the selectedIndex at these grid coords
         GameObject building = Instantiate(allBuildings[selectedObjectIndex].preFab);
-        building.transform.localScale = new Vector3(allBuildings[selectedObjectIndex].size.x, building.transform.localScale.y, allBuildings[selectedObjectIndex].size.y);
+        building.transform.localScale = allBuildings[selectedObjectIndex].size;
         building.transform.position = grid.CellToWorld(gridPosition);
 
     }
