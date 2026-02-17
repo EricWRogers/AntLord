@@ -41,15 +41,21 @@ public class CommandAnt : MonoBehaviour
                             {
                                 if(ant.GetComponent<LeadNav>() != null)
                                 {
-                                    Destroy(ant.GetComponent<LeadNav>());
-                                    ant.AddComponent<FollowNav>();
+                                    //Destroy(ant.GetComponent<LeadNav>());
+                                    ant.GetComponent<LeadNav>().enabled = false;
+                                    //ant.AddComponent<FollowNav>();
+                                    ant.GetComponent<FollowNav>().enabled = true;
                                 }
                             }
 
-                            Destroy(selectedAnts[0].GetComponent<FollowNav>());
-                            selectedLeader = selectedAnts[0].AddComponent<LeadNav>();
-                            selectedLeader.crumbs = new List<Vector3>();
-                            selectedLeader.followers = new List<NavMeshAgent>();
+                            //Destroy(selectedAnts[0].GetComponent<FollowNav>());
+                            selectedAnts[0].GetComponent<FollowNav>().enabled = false;
+                            //selectedLeader = selectedAnts[0].AddComponent<LeadNav>();
+                            selectedLeader = selectedAnts[0].GetComponent<LeadNav>();
+                            selectedAnts[0].GetComponent<LeadNav>().enabled = true;
+
+                            // selectedLeader.crumbs = new List<Vector3>();
+                            // selectedLeader.followers = new List<NavMeshAgent>();
                             selectedLeader.home = GameObject.Find("Home").transform; // TEMP
 
                             for(int i = 1; i < selectedAnts.Count; i++)
@@ -60,10 +66,11 @@ public class CommandAnt : MonoBehaviour
                         }
 
                         selectedLeader.target = hit.transform;
+                        selectedLeader.myAgent = selectedLeader.GetComponent<NavMeshAgent>();
                         selectedLeader.myAgent.isStopped = false;
 
-                        foreach(NavMeshAgent navAnt in selectedLeader.followers)
-                            navAnt.isStopped = false;
+                        for (int i = 0; i < selectedLeader.followers.Count; i++)
+                            selectedLeader.followers[i].isStopped = false;
 
                     }
                 }
