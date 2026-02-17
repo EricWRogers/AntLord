@@ -206,6 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ab087c14722578bbe065692fbe81b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
+  myAgent: {fileID: 0}
   leader: {fileID: 791602629}
   recentCollision: {fileID: 0}
   closeEnough: 1
@@ -463,6 +464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnFoodBites
   foodBitePrefab: {fileID: 4809084369255736288, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+  foodHealth: 4
   radius: 3
   foodbit: {fileID: 0}
 --- !u!114 &609564852
@@ -695,6 +697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ab087c14722578bbe065692fbe81b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
+  myAgent: {fileID: 0}
   leader: {fileID: 791602629}
   recentCollision: {fileID: 0}
   closeEnough: 1
@@ -945,6 +948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ab087c14722578bbe065692fbe81b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
+  myAgent: {fileID: 0}
   leader: {fileID: 791602629}
   recentCollision: {fileID: 0}
   closeEnough: 1
@@ -1151,7 +1155,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.07666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: a889d08636f39a4faba2c65fbfef4a83, type: 2}
   m_BuildHeightMesh: 0
