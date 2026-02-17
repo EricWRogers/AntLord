@@ -7,7 +7,7 @@ public class FoodBites : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        foodBite.transform.position = new Vector3(foodBite.transform.position.x, 1f, foodBite.transform.localPosition.z);
     }
 
     // Update is called once per frame
