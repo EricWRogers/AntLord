@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dac8cff101acc044826436d3daf8b2d, type: 3}
   m_Name: BuildingSO
   m_EditorClassIdentifier: Assembly-CSharp::BuildingSO
-  buildName: Spawner
-  buildDesc: Spawns ants after a certain amount of time
-  buildCost: 100
-  buildHealth: 10
-  ant: {fileID: 7319353106578254916, guid: ddc2f9e4428734f6c9cbc5b411d9ba78, type: 3}
+  <buildName>k__BackingField: Test
+  <buildDesc>k__BackingField: Test test 1 2
+  <ID>k__BackingField: 0
+  <buildCost>k__BackingField: 100
+  <buildHealth>k__BackingField: 10
+  <ant>k__BackingField: {fileID: 7319353106578254916, guid: ddc2f9e4428734f6c9cbc5b411d9ba78, type: 3}
+  <size>k__BackingField: {x: 1, y: 1, z: 1}
+  <preFab>k__BackingField: {fileID: 3855913851484395035, guid: 6d1cb50dfb1861b4881f8d8d4347ec02, type: 3}

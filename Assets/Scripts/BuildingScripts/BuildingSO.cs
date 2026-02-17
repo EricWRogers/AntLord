@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "BuildingSO", menuName = "AntLord/BuildingSO")]
 public class BuildingSO : ScriptableObject
@@ -9,9 +10,12 @@ public class BuildingSO : ScriptableObject
     //NOTE**when getting buildHealth for a new building type
     //**you MUST make some kind of currentHealth var
     //**else all buildings will share damage
-    public string buildName;
-    public string buildDesc;
-    public int buildCost;
-    public int buildHealth;
-    public GameObject ant;
+    [field: SerializeField] public string buildName { get; set; }
+    [field: SerializeField] public string buildDesc { get; set; }
+    [field: SerializeField] public int ID { get; set; }
+    [field: SerializeField] public int buildCost { get; set; }
+    [field: SerializeField] public int buildHealth { get; set; }
+    [field: SerializeField] public GameObject ant { get; set; }
+    [field: SerializeField] public Vector3Int size { get; set; } = Vector3Int.one;
+    [field: SerializeField] public GameObject preFab { get; set; }
 }
