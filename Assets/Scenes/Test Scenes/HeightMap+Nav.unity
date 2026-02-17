@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food
       objectReference: {fileID: 0}
+    - target: {fileID: 96670100808516071, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
+      propertyPath: m_TagString
+      value: Food
+      objectReference: {fileID: 0}
     - target: {fileID: 818444703181039341, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 38.364
@@ -176,22 +180,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
---- !u!4 &131591892 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 818444703181039341, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
-  m_PrefabInstance: {fileID: 131591891}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &184798078 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
-  m_PrefabInstance: {fileID: 297264503}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fdee9924f6698ce59f95ad38cfe4f88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LeadNav
 --- !u!1001 &297264503
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -251,7 +239,7 @@ PrefabInstance:
     - target: {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 131591892}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -336,7 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
   myAgent: {fileID: 0}
-  leader: {fileID: 184798078}
+  leader: {fileID: 0}
   recentCollision: {fileID: 0}
   closeEnough: 1
   leaderTail: 0.3
@@ -356,6 +344,7 @@ GameObject:
   - component: {fileID: 315267724}
   - component: {fileID: 315267728}
   - component: {fileID: 315267727}
+  - component: {fileID: 315267729}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -524,6 +513,21 @@ MonoBehaviour:
   terrainMask:
     serializedVersion: 2
     m_Bits: 8
+--- !u!114 &315267729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315267723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 011bc95b9633a77e5867f9f7039872cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CommandAnt
+  cam: {fileID: 0}
+  selectedAnts: []
+  selectedLeader: {fileID: 0}
 --- !u!1 &407497282
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,7 +1072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
   myAgent: {fileID: 0}
-  leader: {fileID: 184798078}
+  leader: {fileID: 0}
   recentCollision: {fileID: 0}
   closeEnough: 1
   leaderTail: 0.3
@@ -1154,7 +1158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
   myAgent: {fileID: 0}
-  leader: {fileID: 184798078}
+  leader: {fileID: 0}
   recentCollision: {fileID: 0}
   closeEnough: 1
   leaderTail: 0.3

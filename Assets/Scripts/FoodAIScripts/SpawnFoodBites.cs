@@ -1,11 +1,10 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class SpawnFoodBites : MonoBehaviour
 {
     public GameObject foodBitePrefab;
     private Vector3 biteSpawn;
-    private FoodBites foodBite;
+    //private FoodBites foodBite;
 
     public int foodHealth = 4;
 
@@ -29,16 +28,15 @@ public class SpawnFoodBites : MonoBehaviour
                 if(hitColliders.GetComponent<FollowNav>() != null && !hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {
                     
-                    Instantiate(foodBitePrefab, biteSpawn, transform.rotation);
-
                     hitColliders.GetComponent<FollowNav>().amCarryingFood = true;
 
-                    foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
+                    //foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
 
                     GameObject ant = hitColliders.gameObject;
-                    foodBite.SetAnt(ant);
+                    Instantiate(foodBitePrefab, biteSpawn, transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
+                    //foodBite.SetAnt(ant);
             
-                    Debug.Log("bite iis spawned");
+                    Debug.Log("bite is spawned");
                     FindFirstObjectByType<LeadNav>().foodBits++;
                     foodHealth -= 1;
                 }
@@ -48,12 +46,13 @@ public class SpawnFoodBites : MonoBehaviour
 
                     hitColliders.GetComponent<LeadNav>().amCarryingFood = true;
 
-                    foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
+                    //foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
 
                     GameObject ant = hitColliders.gameObject;
-                    foodBite.SetAnt(ant);
+                    Instantiate(foodBitePrefab, biteSpawn, transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
+                    //foodBite.SetAnt(ant);
             
-                    Debug.Log("bite iis spawned");
+                    Debug.Log("bite is spawned");
                     FindFirstObjectByType<LeadNav>().foodBits++;
                     foodHealth -= 1;
                 }

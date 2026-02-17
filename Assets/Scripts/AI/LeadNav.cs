@@ -30,58 +30,60 @@ public class LeadNav : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(myAgent.steeringTarget);
+        if(target != null){
+            transform.LookAt(myAgent.steeringTarget);
 
-        if(!arrived){
-            crumbDropTimer += Time.deltaTime;
+            if(!arrived){
+                crumbDropTimer += Time.deltaTime;
 
-            if(crumbDropTimer >= crumbDropDelay)
-            {
-                crumbDropTimer = 0f;
-                
-                //Debug crumb
-                //crumbs.Add(Instantiate(crumbPrefab, transform.position, Quaternion.identity).transform.position);
-                
-                //invisible crumb
-                crumbs.Add(transform.position);
+                if(crumbDropTimer >= crumbDropDelay)
+                {
+                    crumbDropTimer = 0f;
+                    
+                    //Debug crumb
+                    //crumbs.Add(Instantiate(crumbPrefab, transform.position, Quaternion.identity).transform.position);
+                    
+                    //invisible crumb
+                    crumbs.Add(transform.position);
+                }
+
+                // Set destination normallly
+                myAgent.destination = target.position;
+
+                // Check for nearby agents and apply separation
+                HandleAgentCollisions();
             }
 
-            // Set destination normallly
-            myAgent.destination = target.position;
-
-            // Check for nearby agents and apply separation
-            HandleAgentCollisions();
-        }
-
-        else if (arrived)
-        {
-            foodBits = 0;
-            // bool failed = false;
-            // for(int i = 0; i < followers.Count; i++)
-            // {
-            //     for(int j = 0; i < followers[i].transform.childCount; j++)
-            //     {
-            //         if(followers[i].transform.GetChild(j).tag == "FoodBit")
-            //         {
-            //             foodBits++;
-            //             break;
-            //         }
-            //         else if(j == followers[i].transform.childCount - 1)
-            //             failed = true;
-            //     }
-            //     if (failed)
-            //     {
-            //         break;
-            //     }
-            // }
+            else if (arrived)
+            {
+                foodBits = 0;
+                // bool failed = false;
+                // for(int i = 0; i < followers.Count; i++)
+                // {
+                //     for(int j = 0; i < followers[i].transform.childCount; j++)
+                //     {
+                //         if(followers[i].transform.GetChild(j).tag == "FoodBit")
+                //         {
+                //             foodBits++;
+                //             break;
+                //         }
+                //         else if(j == followers[i].transform.childCount - 1)
+                //             failed = true;
+                //     }
+                //     if (failed)
+                //     {
+                //         break;
+                //     }
+                // }
 
 
-        }
+            }
 
-        if(foodBits >= followers.Count + 1)
-        {
-            arrived = false;
-            target = home;
+            if(foodBits >= followers.Count + 1)
+            {
+                arrived = false;
+                target = home;
+            }
         }
     }
 
@@ -116,6 +118,7 @@ public class LeadNav : MonoBehaviour
         if(!arrived)
         {
             Debug.Log("Hit target");
+            recentObjective = target;
             arrived = true;
             crumbDropTimer = 0f;
             myAgent.isStopped = true;
