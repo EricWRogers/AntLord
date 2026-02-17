@@ -52,7 +52,10 @@ public class RemoveFood : MonoBehaviour
                     hitColliders.GetComponent<LeadNav>().foodBits--;
                     
                     if(hitColliders.GetComponent<LeadNav>().foodBits == 0)
+                    {
                         hitColliders.GetComponent<LeadNav>().myAgent.isStopped = true;
+                        hitColliders.GetComponent<LeadNav>().target = null;
+                    }
                 }
 
             }

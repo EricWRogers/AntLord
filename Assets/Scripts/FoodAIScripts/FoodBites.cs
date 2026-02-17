@@ -11,13 +11,14 @@ public class FoodBites : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        //foodBite.transform.parent = ant.transform;
-        foodBite.transform.SetParent(ant.transform);
-    }
+    // void Update()
+    // {
+    //     //foodBite.transform.parent = ant.transform;
+    //     foodBite.transform.SetParent(ant.transform);
+    // }
     public void SetAnt(GameObject item)
     {
         ant = item;
+        foodBite.transform.SetParent(ant.transform);
     }
 }
