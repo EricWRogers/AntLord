@@ -11,6 +11,8 @@ public class SpawnerBuilding : Buildings
     float timer = 0.0f;
     public float spawnCooldown = 1.0f;
     public int maxAnts = 10;
+    int foodAmount = 100; //placeholder for Im guessing will probably be stored in a GameManager
+    int minFoodPerAnt = 10;
     List<GameObject> ants = new List<GameObject>();
 
 
@@ -22,7 +24,7 @@ public class SpawnerBuilding : Buildings
     }
     void FixedUpdate()
     {
-        if (ants.Count < maxAnts && this.currentHealth > 0)
+        if (ants.Count < maxAnts && foodAmount >= minFoodPerAnt && this.currentHealth > 0) //GameManager.instance.GetFood() > minFoodPerAnt
         {
             timer += Time.deltaTime;
             if (timer >= spawnCooldown)
@@ -35,7 +37,12 @@ public class SpawnerBuilding : Buildings
 
     void SpawnAnt()
     {
-        this.TakeDamage(3);
+        foodAmount -= 10; //GameManager.instance.EatFood(10);
         Instantiate(spawnerSO.ant, spawnPoint.position, Quaternion.identity); //idk what to do about rotation at the moment so...
+    }
+
+    public void GiveFood(int _food) //or floats idk what yall are cooking
+    {
+        foodAmount += _food;
     }
 }
