@@ -5,16 +5,20 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class LeadNav : MonoBehaviour
 {
-    private NavMeshAgent myAgent;
+    public NavMeshAgent myAgent;
     public List<NavMeshAgent> followers;
     public GameObject crumbPrefab;
     public List<Vector3> crumbs;
     public float crumbDropDelay = 1f;
     private float crumbDropTimer = 0f;
     public Transform target;
+    public Transform recentObjective;
+    public Transform home;
     public bool arrived = false;
     public float separationRadius = 2f;
     public float separationForce = 5f;
+    public int foodBits = 0;
+    public bool amCarryingFood = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,25 +30,60 @@ public class LeadNav : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!arrived){
-            crumbDropTimer += Time.deltaTime;
+        if(target != null){
+            transform.LookAt(myAgent.steeringTarget);
 
-            if(crumbDropTimer >= crumbDropDelay)
-            {
-                crumbDropTimer = 0f;
-                
-                //Debug crumb
-                //crumbs.Add(Instantiate(crumbPrefab, transform.position, Quaternion.identity).transform.position);
-                
-                //invisible crumb
-                crumbs.Add(transform.position);
+            if(!arrived){
+                crumbDropTimer += Time.deltaTime;
+
+                if(crumbDropTimer >= crumbDropDelay)
+                {
+                    crumbDropTimer = 0f;
+                    
+                    //Debug crumb
+                    //crumbs.Add(Instantiate(crumbPrefab, transform.position, Quaternion.identity).transform.position);
+                    
+                    //invisible crumb
+                    crumbs.Add(transform.position);
+                }
+
+                // Set destination normallly
+                myAgent.destination = target.position;
+
+                // Check for nearby agents and apply separation
+                HandleAgentCollisions();
             }
 
-            // Set destination normallly
-            myAgent.destination = target.position;
+            else if (arrived)
+            {
+                foodBits = 0;
+                // bool failed = false;
+                // for(int i = 0; i < followers.Count; i++)
+                // {
+                //     for(int j = 0; i < followers[i].transform.childCount; j++)
+                //     {
+                //         if(followers[i].transform.GetChild(j).tag == "FoodBit")
+                //         {
+                //             foodBits++;
+                //             break;
+                //         }
+                //         else if(j == followers[i].transform.childCount - 1)
+                //             failed = true;
+                //     }
+                //     if (failed)
+                //     {
+                //         break;
+                //     }
+                // }
 
-            // Check for nearby agents and apply separation
-            HandleAgentCollisions();
+
+            }
+
+            if(foodBits >= followers.Count + 1)
+            {
+                arrived = false;
+                target = home;
+            }
         }
     }
 
@@ -74,16 +113,28 @@ public class LeadNav : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    public void ReachedObjective()
     {
-        // Check if NavMeshAgent has reached the destination
-        if(!arrived && !myAgent.pathPending && myAgent.hasPath && myAgent.remainingDistance < 0.5f)
+        if(!arrived)
         {
             Debug.Log("Hit target");
+            recentObjective = target;
             arrived = true;
             crumbDropTimer = 0f;
             myAgent.isStopped = true;
         }
+    }
+
+    void FixedUpdate()
+    {
+        // Check if NavMeshAgent has reached the destination
+        // if(!arrived && !myAgent.pathPending && myAgent.hasPath && myAgent.remainingDistance < 0.5f)
+        // {
+        //     Debug.Log("Hit target");
+        //     arrived = true;
+        //     crumbDropTimer = 0f;
+        //     myAgent.isStopped = true;
+        // }
     }
 
     // // never got called?

@@ -4,7 +4,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class FollowNav : MonoBehaviour
 {
-    private NavMeshAgent myAgent;
+    public NavMeshAgent myAgent;
     public LeadNav leader;
     public Transform recentCollision = null;
     public float closeEnough = 1f;
@@ -12,42 +12,54 @@ public class FollowNav : MonoBehaviour
     private int crumbTrack = 0;
     public float separationRadius = 2f;
     public float separationForce = 5f;
+    public bool amCarryingFood = false;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         myAgent = GetComponent<NavMeshAgent>();
+
+        // temp add self to leader group
+        if(leader != null)
+            leader.followers.Add(myAgent);
+
         myAgent.isStopped = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Supercede normal pathfinding if ants recently bumped
-        if(recentCollision != null)
-        {
-            if(Vector3.Distance(transform.position, recentCollision.position) > transform.localScale.x)
-            {
-                recentCollision = null;
-            }
-        }
+        if(leader != null){
 
-        // Follow crumbs left by leader
-        if(!leader.arrived && leader.crumbs.Count != 0 && Vector3.Distance(transform.position, leader.transform.position) > leaderTail)
-        {
-            myAgent.destination = leader.crumbs[crumbTrack];
-
-            if(crumbTrack < leader.crumbs.Count - 1 && myAgent.remainingDistance < closeEnough)
+            transform.LookAt(myAgent.steeringTarget);
+            // Supercede normal pathfinding if ants recently bumped
+            if(recentCollision != null)
             {
-                crumbTrack++;
+                if(Vector3.Distance(transform.position, recentCollision.position) > transform.localScale.x)
+                {
+                    recentCollision = null;
+                }
             }
 
-            // Check for nearby agents and apply separation
-            HandleAgentCollisions();
-        }
-        else if(leader.arrived)
-        {
-            myAgent.isStopped = true;
+            // Follow crumbs left by leader
+            if(!leader.arrived && leader.crumbs.Count != 0 && Vector3.Distance(transform.position, leader.transform.position) > leaderTail)
+            {
+                myAgent.destination = leader.crumbs[crumbTrack];
+
+                if(crumbTrack < leader.crumbs.Count - 1 && myAgent.remainingDistance < closeEnough)
+                {
+                    crumbTrack++;
+                }
+
+                // Check for nearby agents and apply separation
+                HandleAgentCollisions();
+            }
+            else if(leader.arrived)
+            {
+                //myAgent.isStopped = true;
+
+                myAgent.destination = leader.recentObjective.position;
+            }
         }
     }
 
