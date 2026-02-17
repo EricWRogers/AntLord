@@ -297,40 +297,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 298654426}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
---- !u!1 &298654425 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
-  m_PrefabInstance: {fileID: 298654424}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &298654426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 298654425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65ab087c14722578bbe065692fbe81b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FollowNav
-  myAgent: {fileID: 0}
-  leader: {fileID: 0}
-  recentCollision: {fileID: 0}
-  closeEnough: 1
-  leaderTail: 0.3
-  separationRadius: 2
-  separationForce: 5
-  amCarryingFood: 0
 --- !u!1 &315267723
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +391,7 @@ Transform:
   m_GameObject: {fileID: 315267723}
   serializedVersion: 2
   m_LocalRotation: {x: 0.31406987, y: -0, z: -0, w: 0.9493999}
-  m_LocalPosition: {x: 23.8, y: 16.4, z: 0.2}
+  m_LocalPosition: {x: 23.8, y: 12.51, z: 5.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1045,40 +1016,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1684048545}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
---- !u!1 &1684048544 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
-  m_PrefabInstance: {fileID: 1684048543}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1684048545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1684048544}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65ab087c14722578bbe065692fbe81b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FollowNav
-  myAgent: {fileID: 0}
-  leader: {fileID: 0}
-  recentCollision: {fileID: 0}
-  closeEnough: 1
-  leaderTail: 0.3
-  separationRadius: 2
-  separationForce: 5
-  amCarryingFood: 0
 --- !u!1001 &1702656808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1131,40 +1073,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1702656810}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
---- !u!1 &1702656809 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
-  m_PrefabInstance: {fileID: 1702656808}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1702656810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1702656809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65ab087c14722578bbe065692fbe81b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FollowNav
-  myAgent: {fileID: 0}
-  leader: {fileID: 0}
-  recentCollision: {fileID: 0}
-  closeEnough: 1
-  leaderTail: 0.3
-  separationRadius: 2
-  separationForce: 5
-  amCarryingFood: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

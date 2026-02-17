@@ -234,6 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2303937482787535869}
   - component: {fileID: 2311856089799220107}
+  - component: {fileID: 9126265470297457125}
   - component: {fileID: 4194604626868466631}
   - component: {fileID: 3444462172619519081}
   - component: {fileID: 5266563285919827775}
@@ -280,11 +281,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965442970529633344}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9fdee9924f6698ce59f95ad38cfe4f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LeadNav
+  myAgent: {fileID: 0}
   followers: []
   crumbPrefab: {fileID: 0}
   crumbs: []
@@ -296,6 +298,26 @@ MonoBehaviour:
   separationRadius: 2
   separationForce: 5
   foodBits: 0
+  amCarryingFood: 0
+--- !u!114 &9126265470297457125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965442970529633344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65ab087c14722578bbe065692fbe81b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FollowNav
+  myAgent: {fileID: 0}
+  leader: {fileID: 0}
+  recentCollision: {fileID: 0}
+  closeEnough: 1
+  leaderTail: 0.3
+  separationRadius: 2
+  separationForce: 5
   amCarryingFood: 0
 --- !u!114 &4194604626868466631
 MonoBehaviour:
