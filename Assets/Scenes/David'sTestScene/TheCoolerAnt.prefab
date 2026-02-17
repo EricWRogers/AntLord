@@ -236,6 +236,7 @@ GameObject:
   - component: {fileID: 2311856089799220107}
   - component: {fileID: 4194604626868466631}
   - component: {fileID: 3444462172619519081}
+  - component: {fileID: 5266563285919827775}
   m_Layer: 0
   m_Name: TheCoolerAnt
   m_TagString: Ant
@@ -338,6 +339,27 @@ NavMeshAgent:
   m_BaseOffset: -1.43
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!135 &5266563285919827775
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965442970529633344}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.39
+  m_Center: {x: 0, y: 2.02, z: 0}
 --- !u!1 &1986027795914584705
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,7 +388,7 @@ Transform:
   m_GameObject: {fileID: 1986027795914584705}
   serializedVersion: 2
   m_LocalRotation: {x: 0.008753745, y: -0.0000041704143, z: 0.00047626338, w: 0.99996156}
-  m_LocalPosition: {x: 0.011000013, y: 2.40128, z: 1.2008102}
+  m_LocalPosition: {x: 0.011000013, y: 2.40128, z: 1.2576339}
   m_LocalScale: {x: 0.23051743, y: 0.04477301, z: 0.096436225}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -478,7 +500,7 @@ Transform:
   m_GameObject: {fileID: 3191191166354834415}
   serializedVersion: 2
   m_LocalRotation: {x: 0.008753931, y: 0.000043226533, z: -0.004937861, w: 0.9999495}
-  m_LocalPosition: {x: -0.14709987, y: 2.4705374, z: 1.1581808}
+  m_LocalPosition: {x: -0.14709987, y: 2.4705374, z: 1.2150046}
   m_LocalScale: {x: 0.12215116, y: 0.048206944, z: 0.096436225}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1152,7 +1174,7 @@ Transform:
   m_GameObject: {fileID: 4859836116956295468}
   serializedVersion: 2
   m_LocalRotation: {x: 0.008753821, y: -0, z: -0, w: 0.9999617}
-  m_LocalPosition: {x: 0.17560013, y: 2.4705374, z: 1.1581808}
+  m_LocalPosition: {x: 0.17560013, y: 2.4705374, z: 1.215}
   m_LocalScale: {x: 0.12215116, y: 0.048206944, z: 0.096436225}
   m_ConstrainProportionsScale: 0
   m_Children: []

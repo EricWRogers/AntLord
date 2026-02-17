@@ -4,7 +4,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class FollowNav : MonoBehaviour
 {
-    private NavMeshAgent myAgent;
+    public NavMeshAgent myAgent;
     public LeadNav leader;
     public Transform recentCollision = null;
     public float closeEnough = 1f;

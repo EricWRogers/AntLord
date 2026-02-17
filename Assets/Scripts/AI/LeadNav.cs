@@ -5,7 +5,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class LeadNav : MonoBehaviour
 {
-    private NavMeshAgent myAgent;
+    public NavMeshAgent myAgent;
     public List<NavMeshAgent> followers;
     public GameObject crumbPrefab;
     public List<Vector3> crumbs;
