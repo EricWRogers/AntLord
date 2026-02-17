@@ -58,7 +58,13 @@ public class CommandAnt : MonoBehaviour
                                 selectedLeader.followers.Add(selectedAnts[i].GetComponent<FollowNav>().myAgent);
                             }
                         }
+
                         selectedLeader.target = hit.transform;
+                        selectedLeader.myAgent.isStopped = false;
+
+                        foreach(NavMeshAgent navAnt in selectedLeader.followers)
+                            navAnt.isStopped = false;
+
                     }
                 }
             }
