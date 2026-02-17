@@ -495,6 +495,7 @@ GameObject:
   - component: {fileID: 715638328}
   - component: {fileID: 715638327}
   - component: {fileID: 715638331}
+  - component: {fileID: 715638332}
   m_Layer: 3
   m_Name: Terrain
   m_TagString: Untagged
@@ -619,6 +620,29 @@ MonoBehaviour:
   octaves: 4
   lacunarity: 2
   persistence: 0.5
+--- !u!114 &715638332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715638326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc602ea5322e994c9815a0f252f4ad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SandTerrainDeformer
+  terrain: {fileID: 0}
+  data: {fileID: 0}
+  imprinterMask:
+    serializedVersion: 2
+    m_Bits: 512
+  scanRadius: 40
+  focus: {fileID: 0}
+  sandSlump: 1
+  angleOfReposeDeg: 33
+  slumpIterations: 2
+  slumpStrength: 0.4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

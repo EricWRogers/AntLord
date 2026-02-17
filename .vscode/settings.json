@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "AntLord.slnx"
+    "dotnet.defaultSolution": "antlord.slnx"
 }
