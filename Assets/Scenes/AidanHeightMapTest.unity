@@ -494,6 +494,7 @@ GameObject:
   - component: {fileID: 715638329}
   - component: {fileID: 715638328}
   - component: {fileID: 715638327}
+  - component: {fileID: 715638331}
   m_Layer: 3
   m_Name: Terrain
   m_TagString: Untagged
@@ -518,6 +519,10 @@ MonoBehaviour:
   minNormalized: 0
   maxNormalized: 1
   waterLevelNormalized: 0.25
+  sandMode: 1
+  angleOfReposeDeg: 33
+  slumpIterations: 3
+  slumpStrength: 0.5
 --- !u!154 &715638328
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -593,6 +598,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &715638331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715638326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d6071c198a3b194f99c448172f77373, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PerlinTerrainGenerator
+  terrain: {fileID: 715638329}
+  data: {fileID: 0}
+  heightmapResolutionOverride: 513
+  seed: 0
+  noiseScale: 6
+  heightAmplitude: 0.25
+  octaves: 4
+  lacunarity: 2
+  persistence: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
