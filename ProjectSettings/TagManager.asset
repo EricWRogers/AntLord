@@ -9,6 +9,7 @@ TagManager:
   - Ant
   - FoodBit
   - Food
+  - Sand
   layers:
   - Default
   - TransparentFX
