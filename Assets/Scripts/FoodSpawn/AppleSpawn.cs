@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 public class AppleSpawn : MonoBehaviour
@@ -11,6 +12,7 @@ public class AppleSpawn : MonoBehaviour
     //what and where to spawn
     public GameObject apple;
     public float sphereRadius = 4f;
+    public List<GameObject> spawnPoints = new List<GameObject>();
 
     //size & growth during/after spawn 
     public float growDuration = 1.5f;
@@ -32,6 +34,7 @@ public class AppleSpawn : MonoBehaviour
     }
     public async Task SpawnApple()
     {
+
         Vector3 randomPoint = Random.insideUnitSphere * sphereRadius;
         Vector3 spawnPosition = transform.position + randomPoint;
 
@@ -53,6 +56,7 @@ public class AppleSpawn : MonoBehaviour
             if (isGrowing == true)
             {
                 StopCoroutine(growingApple);    
+                isGrowing = false;
                 Debug.Log ("stopped coroutine grow");
             }
             
