@@ -3,15 +3,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
-public class BuildingTest : MonoBehaviour
+public class BuildingPlacementSystem : MonoBehaviour
 {
-    //I mean this is pretty close to what we need.
+//I mean this is pretty close to what we need.
     [SerializeField] private Camera sceneCamera;
     public List<BuildingSO> allBuildings;
     [SerializeField] private GameObject mouseIndicator, cellIndicator, cellIndicatorObj;
     public int selectedObjectIndex = -1;
-    bool buildMode = false;
     Vector3 lastPosition;
     [SerializeField] private LayerMask placementLayermask;
     [SerializeField] private Grid grid;
@@ -96,6 +94,5 @@ public class BuildingTest : MonoBehaviour
         }
         return lastPosition;
     }
-
 
 }
