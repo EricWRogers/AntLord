@@ -3,7 +3,6 @@ using UnityEngine;
 public class FoodBites : MonoBehaviour
 {
     public GameObject foodBite;
-    public GameObject ant;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,7 +17,6 @@ public class FoodBites : MonoBehaviour
     // }
     public void SetAnt(GameObject item)
     {
-        ant = item;
-        foodBite.transform.SetParent(ant.transform);
+        foodBite.transform.SetParent(item.transform);
     }
 }
