@@ -137,11 +137,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 818444703181039341, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 38.364
+      value: 35.515
       objectReference: {fileID: 0}
     - target: {fileID: 818444703181039341, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.415
+      value: 7.304
       objectReference: {fileID: 0}
     - target: {fileID: 818444703181039341, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -695,11 +695,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 931901711776110378, guid: 69209941e1b51e754b90d5abc61745c3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.94
+      value: 8.5
       objectReference: {fileID: 0}
     - target: {fileID: 931901711776110378, guid: 69209941e1b51e754b90d5abc61745c3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 37.382175
+      value: 37.06
       objectReference: {fileID: 0}
     - target: {fileID: 931901711776110378, guid: 69209941e1b51e754b90d5abc61745c3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -823,6 +823,7 @@ GameObject:
   - component: {fileID: 715638328}
   - component: {fileID: 715638327}
   - component: {fileID: 715638332}
+  - component: {fileID: 715638333}
   m_Layer: 3
   m_Name: Terrain
   m_TagString: Untagged
@@ -946,6 +947,27 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!114 &715638333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715638326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d6071c198a3b194f99c448172f77373, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PerlinTerrainGenerator
+  terrain: {fileID: 0}
+  data: {fileID: 0}
+  heightmapResolutionOverride: 513
+  seed: 0
+  noiseScale: 6
+  heightAmplitude: 0.25
+  octaves: 4
+  lacunarity: 2
+  persistence: 0.5
 --- !u!1 &1588834328 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4641232693711808754, guid: 69209941e1b51e754b90d5abc61745c3, type: 3}
