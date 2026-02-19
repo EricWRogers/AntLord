@@ -62,7 +62,7 @@ public class FlyCam : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(!active) //if camera not active, do nothing
             return;
@@ -72,7 +72,7 @@ public class FlyCam : MonoBehaviour
         //     return;
 
         if(scrollWheel){    //if scroll zoom is acive
-            transform.Translate(Vector3.forward * Input.mouseScrollDelta.y * Time.deltaTime * zoomSpeed);
+            transform.Translate(Vector3.forward * Input.mouseScrollDelta.y * Time.fixedDeltaTime * zoomSpeed);
         }
         
         //movement
