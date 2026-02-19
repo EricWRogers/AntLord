@@ -281,27 +281,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.1
+      value: -1.52
       objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.97669536
       objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.21463029
       objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 24.788
       objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -778,13 +778,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Shift + Click to select and direct ants
-
-    QEWASD to move camera
-
-
-
-'
+  m_text: "Shift + Click to select and direct ants\n\tWASD to move camera\n\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2058,9 +2052,9 @@ SceneRoots:
   - {fileID: 715638330}
   - {fileID: 407497284}
   - {fileID: 576554452}
-  - {fileID: 297264503}
   - {fileID: 533928366}
   - {fileID: 131591891}
+  - {fileID: 297264503}
   - {fileID: 1684048543}
   - {fileID: 298654424}
   - {fileID: 1702656808}

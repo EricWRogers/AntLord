@@ -7,7 +7,7 @@ public class FlyCam : MonoBehaviour
 {
 
     private bool active = true; //set the camera to active
-    private bool allowRotation = true; //let the camera rotate
+    public bool allowRotation = false; //let the camera rotate
     public float mouseSenseitivity = 1.4f; //how sisitive the mouse is for cam rotation
     private bool scrollWheel = false; //let the camera zoom in/out with scroll wheel
     private float zoomSpeed = 50f; //how fast camera zooms
@@ -75,22 +75,25 @@ public class FlyCam : MonoBehaviour
             transform.Translate(Vector3.forward * Input.mouseScrollDelta.y * Time.fixedDeltaTime * zoomSpeed);
         }
         
-        //movement
+        //movement ----SCOTT CHANGES
         if(allowMovement){
             Vector3 deltaPosition = Vector3.zero;
             float currentSpeed = movementSpeed;
 
             if(Input.GetKey(KeyCode.W)) //go forward
-                deltaPosition += transform.forward;
+                deltaPosition += Vector3.forward;
+                //deltaPosition += transform.forward;
             
             if(Input.GetKey(KeyCode.S)) //go back
-                deltaPosition -=transform.forward;
+                deltaPosition -= Vector3.forward;
+                //deltaPosition -=transform.forward;
             
             if(Input.GetKey(KeyCode.D)) //go right
-                deltaPosition += transform.right;
+                deltaPosition += Vector3.right;
+                //deltaPosition += transform.right;
             
             if(Input.GetKey(KeyCode.A)) //go left
-                deltaPosition -= transform.right;
+                deltaPosition -= Vector3.right;
             
             // if(Input.GetKey(KeyCode.Q)) //go up
             //     deltaPosition += transform.up;
