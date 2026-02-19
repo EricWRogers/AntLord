@@ -37,7 +37,7 @@ public class SpawnFoodBites : MonoBehaviour
                     //foodBite.SetAnt(ant);
             
                     Debug.Log("bite is spawned " + hitColliders.name);
-                    FindFirstObjectByType<CommandAnt>().selectedLeader.foodBits++;
+                    hitColliders.GetComponent<FollowNav>().leader.foodBits++;
                     foodHealth -= 1;
                 }
                 else if(hitColliders.GetComponent<LeadNav>().enabled && !hitColliders.GetComponent<LeadNav>().amCarryingFood)
@@ -53,7 +53,7 @@ public class SpawnFoodBites : MonoBehaviour
                     //foodBite.SetAnt(ant);
             
                     Debug.Log("bite is spawned " + hitColliders.name);
-                    FindFirstObjectByType<CommandAnt>().selectedLeader.foodBits++;
+                    hitColliders.GetComponent<LeadNav>().foodBits++;
                     foodHealth -= 1;
                 }
 

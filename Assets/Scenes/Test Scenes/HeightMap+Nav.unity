@@ -271,6 +271,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameFreeFlyCam
       objectReference: {fileID: 0}
+    - target: {fileID: 604305573163227434, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
+      propertyPath: scrollWheel
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalPosition.x
       value: 24
@@ -311,14 +315,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5889802519027449559, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
+      propertyPath: sphereCastRadius
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 7861736998264628005, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 339745033775634639, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1773589027}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
 --- !u!1001 &297264503
 PrefabInstance:
@@ -1636,31 +1640,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
---- !u!1 &1773589022 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 339745033775634639, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
-  m_PrefabInstance: {fileID: 234565347}
-  m_PrefabAsset: {fileID: 0}
 --- !u!20 &1773589025 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 4556105333747752609, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
   m_PrefabInstance: {fileID: 234565347}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1773589027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773589022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 011bc95b9633a77e5867f9f7039872cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CommandAnt
-  cam: {fileID: 1773589025}
-  selectedAnts: []
-  selectedLeader: {fileID: 0}
 --- !u!1 &1782304929
 GameObject:
   m_ObjectHideFlags: 0
@@ -1993,7 +1977,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2110717911}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
