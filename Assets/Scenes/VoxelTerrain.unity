@@ -189,55 +189,6 @@ MonoBehaviour:
   heightTresshold: 0.5
   visualizeNoise: 0
   use3DNoise: 0
---- !u!1 &1368130907
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1368130909}
-  - component: {fileID: 1368130910}
-  m_Layer: 0
-  m_Name: VoxelTerrainGen
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1368130909
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1368130907}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1368130910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1368130907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d96e97b76d7af884c966d42e564b89b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GenerateGrid
-  cubeObj: {fileID: 2103010395}
-  xWorldSize: 10
-  yWorldSize: 5
-  zWorldSize: 10
-  noiseHeight: 5
 --- !u!1 &1729245848
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,7 +326,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 843721128962493452, guid: d2ad6ffd5ddf6b645b9d5cfc846e69fc, type: 3}
       propertyPath: m_Name
-      value: Chunk 1
+      value: VoxelTerrainGen
       objectReference: {fileID: 0}
     - target: {fileID: 5466113427933134159, guid: d2ad6ffd5ddf6b645b9d5cfc846e69fc, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -566,56 +517,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!1 &2103010395 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2126235011641069756, guid: c3128d4b7e765564087fb0e65fcf0f72, type: 3}
-  m_PrefabInstance: {fileID: 38286811276587367}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2137773914
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2137773916}
-  - component: {fileID: 2137773915}
-  m_Layer: 0
-  m_Name: ChunkedVoxelTerrain
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &2137773915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137773914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7934e28c75d59748b8a1d2edb154625, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::World
-  worldSize: 5
---- !u!4 &2137773916
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137773914}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.8087, y: 0, z: -7.63406}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &38286811276587367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -679,8 +580,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 2102848432}
   - {fileID: 1729245850}
-  - {fileID: 1368130909}
   - {fileID: 38286811276587367}
   - {fileID: 115076553}
-  - {fileID: 2137773916}
   - {fileID: 1939775701}
