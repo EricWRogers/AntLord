@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpawnerBuilding))]
 public class RemoveFood : MonoBehaviour
 {
     Collider[] hitColliders;
@@ -32,6 +33,7 @@ public class RemoveFood : MonoBehaviour
                     Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject);
                     hitColliders.GetComponent<FollowNav>().leader.foodBits--;
                     hitColliders.GetComponent<FollowNav>().myAgent.isStopped = true;
+                    GetComponent<SpawnerBuilding>().GiveFood(1);
                 }
                 else if(hitColliders.GetComponent<LeadNav>() != null && hitColliders.GetComponent<LeadNav>().amCarryingFood)
                 {
@@ -56,6 +58,8 @@ public class RemoveFood : MonoBehaviour
                         hitColliders.GetComponent<LeadNav>().myAgent.isStopped = true;
                         hitColliders.GetComponent<LeadNav>().target = null;
                     }
+                    
+                    GetComponent<SpawnerBuilding>().GiveFood(1);
                 }
 
             }
