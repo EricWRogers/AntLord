@@ -7,10 +7,10 @@ public class FlyCam : MonoBehaviour
 {
 
     private bool active = true; //set the camera to active
-    private bool allowRotation = true; //let the camera rotate
+    public bool allowRotation = false; //let the camera rotate
     public float mouseSenseitivity = 1.4f; //how sisitive the mouse is for cam rotation
-    private bool scrollWheel = false; //let the camera zoom in/out with scroll wheel
-    private float zoomSpeed = 50f; //how fast camera zooms
+    public bool scrollWheel = false; //let the camera zoom in/out with scroll wheel
+    public float zoomSpeed = 50f; //how fast camera zooms
     private bool allowMovement = true; //let player move
     private float movementSpeed = 10f; //camera movement speed (W,A,S,D,Q,E)
     private bool acceleration = true; //to make camera movement feel better
@@ -20,6 +20,8 @@ public class FlyCam : MonoBehaviour
     private CursorLockMode wantedMode;
     private float increase = 1;
     private float increaseMem = 0;
+    private float mouseScrolly;
+    public float maxIncrease = 5;
 
     private Vector3 initPosition;
     private Vector3 initRotation;
@@ -33,10 +35,10 @@ public class FlyCam : MonoBehaviour
     }
 
 // lock and unlock cursor for camera movement
-    private void OnEnable(){
-        if(active)
-            wantedMode = CursorLockMode.Locked; //lock the cursor if active
-    }
+    // private void OnEnable(){
+    //     if(active)
+    //         wantedMode = CursorLockMode.Locked; //lock the cursor if active
+    // }
 
     private void SetCursorState(){  //lock and make curser dissapear
         if(Input.GetKeyDown(KeyCode.Escape)){
@@ -59,10 +61,13 @@ public class FlyCam : MonoBehaviour
 
         increaseMem += Time.deltaTime * (accelRate - 1);
         increase = Time.deltaTime + Mathf.Pow(increaseMem, 3) * Time.deltaTime;
+
+        if(increase > maxIncrease)
+            increase = maxIncrease;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(!active) //if camera not active, do nothing
             return;
@@ -71,26 +76,38 @@ public class FlyCam : MonoBehaviour
         // if(Cursor.visible)
         //     return;
 
+        // ----SCOTT CHANGES
         if(scrollWheel){    //if scroll zoom is acive
-            transform.Translate(Vector3.forward * Input.mouseScrollDelta.y * Time.deltaTime * zoomSpeed);
+            mouseScrolly = Input.mouseScrollDelta.y;
+            transform.Translate(transform.forward * mouseScrolly * Time.fixedDeltaTime * zoomSpeed);
+            maxIncrease -= mouseScrolly / (zoomSpeed / 2); //* zoomSpeed;
+            
+            if(maxIncrease < 0.1f)
+                maxIncrease = 0.1f;
+            else if(maxIncrease > 0.6f)
+                maxIncrease = 0.6f;
+            
         }
         
-        //movement
+        //movement ----SCOTT CHANGES
         if(allowMovement){
             Vector3 deltaPosition = Vector3.zero;
             float currentSpeed = movementSpeed;
 
             if(Input.GetKey(KeyCode.W)) //go forward
-                deltaPosition += transform.forward;
+                deltaPosition += Vector3.forward;
+                //deltaPosition += transform.forward;
             
             if(Input.GetKey(KeyCode.S)) //go back
-                deltaPosition -=transform.forward;
+                deltaPosition -= Vector3.forward;
+                //deltaPosition -=transform.forward;
             
             if(Input.GetKey(KeyCode.D)) //go right
-                deltaPosition += transform.right;
+                deltaPosition += Vector3.right;
+                //deltaPosition += transform.right;
             
             if(Input.GetKey(KeyCode.A)) //go left
-                deltaPosition -= transform.right;
+                deltaPosition -= Vector3.right;
             
             // if(Input.GetKey(KeyCode.Q)) //go up
             //     deltaPosition += transform.up;
@@ -98,8 +115,11 @@ public class FlyCam : MonoBehaviour
             // if(Input.GetKey(KeyCode.E)) //go down
             //     deltaPosition -= transform.up;
             
-            CalculateAcceleration(deltaPosition != Vector3.zero); //caculate acceleration
-            transform.position += deltaPosition * currentSpeed * increase;
+            //CalculateAcceleration(deltaPosition != Vector3.zero); //caculate acceleration
+            
+
+            //transform.position += deltaPosition.normalized * currentSpeed * increase;
+            transform.position += deltaPosition.normalized * maxIncrease;
         }
 
         if (allowRotation)
@@ -117,7 +137,7 @@ public class FlyCam : MonoBehaviour
             //transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y + Input.GetAxis("Mouse X") * mouseSenseitivity,transform.eulerAngles.z);
         }
 
-        if (Input.GetKeyDown(ResetPosition))    //R
+        if (!Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(ResetPosition))    //R
         {
             transform.position = initPosition;
             transform.eulerAngles = initRotation;

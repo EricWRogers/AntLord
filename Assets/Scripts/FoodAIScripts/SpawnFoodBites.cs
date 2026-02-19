@@ -11,6 +11,7 @@ public class SpawnFoodBites : MonoBehaviour
     Collider[] hitColliders;
     public float radius = 1f;
     public Transform foodbit;
+    public LeadNav mostRecentLead;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,7 +26,7 @@ public class SpawnFoodBites : MonoBehaviour
         {
             if(hitColliders.CompareTag("Ant"))
             {
-                if(hitColliders.GetComponent<FollowNav>() != null && !hitColliders.GetComponent<FollowNav>().amCarryingFood)
+                if(hitColliders.GetComponent<FollowNav>().enabled && !hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {
                     
                     hitColliders.GetComponent<FollowNav>().amCarryingFood = true;
@@ -33,14 +34,15 @@ public class SpawnFoodBites : MonoBehaviour
                     //foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
 
                     GameObject ant = hitColliders.gameObject;
-                    Instantiate(foodBitePrefab, biteSpawn, transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
+                    Instantiate(foodBitePrefab, hitColliders.transform.position + biteSpawn, transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
                     //foodBite.SetAnt(ant);
             
-                    Debug.Log("bite is spawned");
-                    FindFirstObjectByType<LeadNav>().foodBits++;
+                    Debug.Log("bite is spawned " + hitColliders.name);
+                    mostRecentLead = hitColliders.GetComponent<FollowNav>().leader;
+                    hitColliders.GetComponent<FollowNav>().leader.foodBits++;
                     foodHealth -= 1;
                 }
-                else if(hitColliders.GetComponent<LeadNav>() != null && !hitColliders.GetComponent<LeadNav>().amCarryingFood)
+                else if(hitColliders.GetComponent<LeadNav>().enabled && !hitColliders.GetComponent<LeadNav>().amCarryingFood)
                 {
                     Instantiate(foodBitePrefab, biteSpawn, transform.rotation);
 
@@ -49,11 +51,12 @@ public class SpawnFoodBites : MonoBehaviour
                     //foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
 
                     GameObject ant = hitColliders.gameObject;
-                    Instantiate(foodBitePrefab, biteSpawn, transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
+                    Instantiate(foodBitePrefab, hitColliders.transform.position + biteSpawn, transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
                     //foodBite.SetAnt(ant);
             
-                    Debug.Log("bite is spawned");
-                    FindFirstObjectByType<LeadNav>().foodBits++;
+                    Debug.Log("bite is spawned " + hitColliders.name);
+                    mostRecentLead = hitColliders.GetComponent<LeadNav>();
+                    hitColliders.GetComponent<LeadNav>().foodBits++;
                     foodHealth -= 1;
                 }
 
@@ -61,6 +64,7 @@ public class SpawnFoodBites : MonoBehaviour
         }
         if (foodHealth == 0 )
         {
+            mostRecentLead.DoneWithFood();
             Destroy(gameObject);
         }
     }

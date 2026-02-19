@@ -132,7 +132,7 @@ MonoBehaviour:
   spawnerSO: {fileID: 11400000, guid: a170635a27b8d694dac8aaac276d4395, type: 2}
   spawnPoint: {fileID: 8388733878004940841}
   spawnPadding: 5
-  spawnCooldown: 1
+  spawnCooldown: 5
   maxAnts: 10
 --- !u!1 &1783261435255673181
 GameObject:
@@ -386,7 +386,7 @@ Transform:
   m_GameObject: {fileID: 4814241168764555927}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
