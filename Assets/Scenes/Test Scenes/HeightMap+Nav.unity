@@ -269,12 +269,44 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 652549514561656646, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213682259012919275, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5610698101972285918, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
       propertyPath: m_Name
       value: PM
       objectReference: {fileID: 0}
+    - target: {fileID: 5779622442566631436, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.34145576
+      objectReference: {fileID: 0}
+    - target: {fileID: 5779622442566631436, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.16886047
+      objectReference: {fileID: 0}
+    - target: {fileID: 5779622442566631436, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.32215843
+      objectReference: {fileID: 0}
+    - target: {fileID: 5779622442566631436, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 54.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5779622442566631436, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5779622442566631436, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -3.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5912037784260894300, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1773589025}
     - target: {fileID: 6346497605542958612, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
       propertyPath: m_LocalScale.x
       value: 29.164633
