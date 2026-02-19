@@ -12,7 +12,7 @@ public class AppleSpawn : MonoBehaviour
     //what and where to spawn
     public GameObject apple;
     public float sphereRadius = 4f;
-    public List<GameObject> spawnPoints = new List<GameObject>();
+    // public List<GameObject> spawnPoints = new List<GameObject>();
 
     //size & growth during/after spawn 
     public float growDuration = 1.5f;
