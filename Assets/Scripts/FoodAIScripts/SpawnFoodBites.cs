@@ -11,6 +11,7 @@ public class SpawnFoodBites : MonoBehaviour
     Collider[] hitColliders;
     public float radius = 1f;
     public Transform foodbit;
+    public LeadNav mostRecentLead;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,6 +38,7 @@ public class SpawnFoodBites : MonoBehaviour
                     //foodBite.SetAnt(ant);
             
                     Debug.Log("bite is spawned " + hitColliders.name);
+                    mostRecentLead = hitColliders.GetComponent<FollowNav>().leader;
                     hitColliders.GetComponent<FollowNav>().leader.foodBits++;
                     foodHealth -= 1;
                 }
@@ -53,6 +55,7 @@ public class SpawnFoodBites : MonoBehaviour
                     //foodBite.SetAnt(ant);
             
                     Debug.Log("bite is spawned " + hitColliders.name);
+                    mostRecentLead = hitColliders.GetComponent<LeadNav>();
                     hitColliders.GetComponent<LeadNav>().foodBits++;
                     foodHealth -= 1;
                 }
@@ -61,6 +64,7 @@ public class SpawnFoodBites : MonoBehaviour
         }
         if (foodHealth == 0 )
         {
+            mostRecentLead.DoneWithFood();
             Destroy(gameObject);
         }
     }

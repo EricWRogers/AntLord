@@ -81,10 +81,15 @@ public class LeadNav : MonoBehaviour
 
             if(foodBits >= followers.Count + 1)
             {
-                arrived = false;
-                target = home;
+                DoneWithFood();
             }
         }
+    }
+
+    public void DoneWithFood()
+    {
+        arrived = false;
+        target = home;
     }
 
     void HandleAgentCollisions()
