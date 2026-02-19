@@ -35,10 +35,10 @@ public class FlyCam : MonoBehaviour
     }
 
 // lock and unlock cursor for camera movement
-    private void onEnable(){
-        if(active)
-            wantedMode = CursorLockMode.Locked; //lock the cursor if active
-    }
+    // private void OnEnable(){
+    //     if(active)
+    //         wantedMode = CursorLockMode.Locked; //lock the cursor if active
+    // }
 
     private void SetCursorState(){  //lock and make curser dissapear
         if(Input.GetKeyDown(KeyCode.Escape)){

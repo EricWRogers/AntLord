@@ -59,6 +59,8 @@ public class FollowNav : MonoBehaviour
                 //myAgent.isStopped = true;
 
                 myAgent.destination = leader.recentObjective.position;
+                leader.crumbs.Clear();
+                crumbTrack = 0;
             }
         }
     }

@@ -50,7 +50,7 @@ public class CommandAnt : MonoBehaviour
         }
         
         // -- Set a waypoint
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetMouseButtonDown(1) && (selectedLeader == null || !selectedLeader.amCarryingFood))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -68,7 +68,7 @@ public class CommandAnt : MonoBehaviour
                 selectedLeader = selectedAnts[0].GetComponent<LeadNav>();
                 selectedAnts[0].GetComponent<LeadNav>().enabled = true;
 
-                selectedLeader.home = GameObject.Find("Home").transform; // TEMP
+                selectedLeader.home = FindFirstObjectByType<SpawnerBuilding>().transform; // TEMP
 
                 for(int i = 1; i < selectedAnts.Count; i++)
                 {
