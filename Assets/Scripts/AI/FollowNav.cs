@@ -9,7 +9,7 @@ public class FollowNav : MonoBehaviour
     public Transform recentCollision = null;
     public float closeEnough = 1f;
     public float leaderTail = 0.3f;
-    private int crumbTrack = 0;
+    public int crumbTrack = 0;
     public float separationRadius = 2f;
     public float separationForce = 5f;
     public bool amCarryingFood = false;
@@ -59,6 +59,8 @@ public class FollowNav : MonoBehaviour
                 //myAgent.isStopped = true;
 
                 myAgent.destination = leader.recentObjective.position;
+                leader.crumbs.Clear();
+                crumbTrack = 0;
             }
         }
     }

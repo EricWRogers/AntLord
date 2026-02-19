@@ -13,7 +13,7 @@ public class ObjectGrab : MonoBehaviour
         objectRigidbody.useGravity = false;
     
     }
-    private void Drop(){
+    public void Drop(){
         objectGrabPointTransform = null;
         objectRigidbody.useGravity = true;
     }
