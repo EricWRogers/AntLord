@@ -15,7 +15,7 @@ public class SpawnFoodBites : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        biteSpawn = new Vector3(0f, 0.9657074f, 0f);
+        biteSpawn = new Vector3(0f, 0.3f, 0f);
     }
 
     // Update is called once per frame
@@ -36,7 +36,6 @@ public class SpawnFoodBites : MonoBehaviour
                     GameObject ant = hitColliders.gameObject;
                     Instantiate(foodBitePrefab, hitColliders.transform.position + biteSpawn, transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
                     //foodBite.SetAnt(ant);
-            
                     Debug.Log("bite is spawned " + hitColliders.name);
                     mostRecentLead = hitColliders.GetComponent<FollowNav>().leader;
                     hitColliders.GetComponent<FollowNav>().leader.foodBits++;
