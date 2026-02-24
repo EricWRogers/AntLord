@@ -313,12 +313,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4b7bce4c051b84dbdaa899f6a8707a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhysicsGrabber
-  cam: {fileID: 0}
+  cam: {fileID: 315267725}
   grabbableMask:
     serializedVersion: 2
     m_Bits: 512
-  maxGrabDistance: 50
-  spring: 5000
+  maxGrabDistance: 500
+  spring: 100
   damper: 80
   maxDistance: 0.05
   grabDepth: 10
@@ -338,7 +338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &407497283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,6 +546,10 @@ MonoBehaviour:
   angleOfReposeDeg: 33
   slumpIterations: 3
   slumpStrength: 0.5
+  pushMask:
+    serializedVersion: 2
+    m_Bits: 0
+  pushPadding: 0.02
 --- !u!154 &715638328
 TerrainCollider:
   m_ObjectHideFlags: 0
@@ -654,13 +658,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efc602ea5322e994c9815a0f252f4ad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SandTerrainDeformer
-  terrain: {fileID: 0}
-  data: {fileID: 0}
+  hm: {fileID: 0}
   imprinterMask:
     serializedVersion: 2
     m_Bits: 512
-  scanRadius: 40
+  scanRadius: 500
   focus: {fileID: 0}
+  useHmSandSettings: 1
   sandSlump: 1
   angleOfReposeDeg: 33
   slumpIterations: 2
