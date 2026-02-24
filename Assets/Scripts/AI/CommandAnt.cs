@@ -7,6 +7,9 @@ public class CommandAnt : MonoBehaviour
     public Camera cam;
     public List<GameObject> selectedAnts;
     public LeadNav selectedLeader;
+    public float sphereCastRadius = 2;
+    public GameObject wayPointPrefab;
+    private bool antSelect = false;
 
     void Awake()
     {
@@ -15,70 +18,86 @@ public class CommandAnt : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        // if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        // {
+
+        if (Input.GetMouseButtonDown(0))
         {
-
-            if (Input.GetMouseButtonDown(0))
+            antSelect = false;
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            
+            if ((selectedLeader == null || selectedLeader.target != selectedLeader.home) && Physics.Raycast(ray, out RaycastHit hit, 500f))
             {
-                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                if ((selectedLeader == null || selectedLeader.target != selectedLeader.home) && Physics.Raycast(ray, out RaycastHit hit, 500f))
+                Collider[] hits = Physics.OverlapSphere(hit.point, sphereCastRadius);
+                // Add ants
+                if(hit.transform.CompareTag("Ant") && !selectedAnts.Contains(hit.transform.gameObject))
                 {
-                    // Add ants
-                    if(hit.transform.tag == "Ant" && !selectedAnts.Contains(hit.transform.gameObject))
-                    {
-                        selectedAnts.Add(hit.transform.gameObject);
-                    }
+                    selectedAnts.Add(hit.transform.gameObject);
+                }
 
-                    // Target food
-                    else if(hit.transform.tag == "Food")
+                else
+                {
+                    foreach(var col in hits)
                     {
-                        // handle leader selection
-                        if(selectedLeader == null)
+                        if(col.CompareTag("Ant") && !selectedAnts.Contains(col.transform.gameObject))
                         {
-                            Debug.Log("Selecting new leader!");
-                            
-                            foreach(GameObject ant in selectedAnts)
-                            {
-                                if(ant.GetComponent<LeadNav>() != null)
-                                {
-                                    Destroy(ant.GetComponent<LeadNav>());
-                                    ant.AddComponent<FollowNav>();
-                                }
-                            }
-
-                            Destroy(selectedAnts[0].GetComponent<FollowNav>());
-                            selectedLeader = selectedAnts[0].AddComponent<LeadNav>();
-                            selectedLeader.crumbs = new List<Vector3>();
-                            selectedLeader.followers = new List<NavMeshAgent>();
-                            selectedLeader.home = GameObject.Find("Home").transform; // TEMP
-
-                            for(int i = 1; i < selectedAnts.Count; i++)
-                            {
-                                selectedAnts[i].GetComponent<FollowNav>().leader = selectedLeader;
-                                selectedLeader.followers.Add(selectedAnts[i].GetComponent<FollowNav>().myAgent);
-                            }
+                            selectedAnts.Add(col.transform.gameObject);
+                            antSelect = true;
                         }
-
-                        selectedLeader.target = hit.transform;
-                        selectedLeader.myAgent.isStopped = false;
-
-                        foreach(NavMeshAgent navAnt in selectedLeader.followers)
-                            navAnt.isStopped = false;
-
                     }
                 }
             }
-            // else if (Input.GetMouseButtonDown(1))
-            // {
-
-            // }
-
-            else if (Input.GetKeyDown(KeyCode.R))
-            {
-                selectedAnts.Clear();
-                selectedLeader = null;
-            }
-
         }
+        
+        // -- Set a waypoint
+        if(Input.GetMouseButtonDown(1) && (selectedLeader == null || !selectedLeader.amCarryingFood))
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+            if(!antSelect && selectedAnts.Count != 0 && Physics.Raycast(ray, out RaycastHit hit, 500f))
+            {
+                Debug.Log("Selecting new leader!");
+                
+                foreach(GameObject ant in selectedAnts)
+                {
+                    ant.GetComponent<LeadNav>().enabled = false;
+                    ant.GetComponent<FollowNav>().enabled = true;
+                }
+
+                selectedAnts[0].GetComponent<FollowNav>().enabled = false;
+                selectedLeader = selectedAnts[0].GetComponent<LeadNav>();
+                selectedAnts[0].GetComponent<LeadNav>().enabled = true;
+
+                selectedLeader.home = FindFirstObjectByType<SpawnerBuilding>().transform; // TEMP
+
+                for(int i = 1; i < selectedAnts.Count; i++)
+                {
+                    selectedAnts[i].GetComponent<FollowNav>().leader = selectedLeader;
+                    selectedAnts[i].GetComponent<FollowNav>().crumbTrack = 0;
+                    selectedLeader.followers.Add(selectedAnts[i].GetComponent<FollowNav>().myAgent);
+                }
+
+                selectedLeader.crumbs.Clear();
+                
+                if(hit.transform.CompareTag("Food"))
+                    selectedLeader.target = hit.transform;
+                else
+                    selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
+
+                selectedLeader.myAgent = selectedLeader.GetComponent<NavMeshAgent>();
+                selectedLeader.myAgent.isStopped = false;
+
+                for (int i = 0; i < selectedLeader.followers.Count; i++)
+                    selectedLeader.followers[i].isStopped = false;
+        }
+        }
+
+        else if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R))
+        {
+            selectedAnts.Clear();
+            selectedLeader = null;
+        }
+
+        //  }
     }
 }
