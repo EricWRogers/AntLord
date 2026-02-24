@@ -14,5 +14,10 @@ namespace Unity.VRTemplate
         {
             transform.Rotate(m_Velocity * Time.deltaTime);
         }
+
+        public void StartRotation()
+        {
+            m_Velocity = new Vector3(10, 10, 10);
+        }
     }
 }
