@@ -1,27 +1,47 @@
 using UnityEngine;
 
-public class Pickup : MonoBehaviour{
+public class Pickup : MonoBehaviour
+{
+    private ObjectGrab currentObject;
+    private float objectDistance;
+    private Camera cam;
 
-    [SerializeField] private Transform playerCameraTransform;
-    [SerializeField] private Transform objectGrabPointTransform;
-    [SerializeField] private LayerMask pickupLayerMask;
+    private void Start()
+    {
+        cam = Camera.main;
+    }
 
-    private ObjectGrab objectGrab;
+    private void Update()
+    {
+        // CLICK to grab
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-    private void Update(){
-        if(Input.GetKeyDown(KeyCode.E)){
-            if(objectGrab == null){
-                float pickUpDistance = 2f;
-                if(Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycastHit, pickUpDistance, pickupLayerMask)){
-                    if(raycastHit.collider.TryGetComponent(out objectGrab)){
-                        objectGrab.Grab(objectGrabPointTransform);
-                    }
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.collider.TryGetComponent(out ObjectGrab grab))
+                {
+                    currentObject = grab;
+                    objectDistance = hit.distance;
+                    currentObject.StartDrag();
                 }
-            } else{
-                objectGrab.Drop();
-                objectGrab = null;
             }
-            
+        }
+
+        // HOLD to drag
+        if (Input.GetMouseButton(0) && currentObject != null)
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Vector3 targetPosition = ray.GetPoint(objectDistance);
+            currentObject.DragTo(targetPosition);
+        }
+
+        // RELEASE to drop
+        if (Input.GetMouseButtonUp(0) && currentObject != null)
+        {
+            currentObject.EndDrag();
+            currentObject = null;
         }
     }
 }

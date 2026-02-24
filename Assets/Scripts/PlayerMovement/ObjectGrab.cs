@@ -1,27 +1,33 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class ObjectGrab : MonoBehaviour
 {
-    private Rigidbody objectRigidbody;
-    private Transform objectGrabPointTransform;
-    private void Awake(){
-        objectRigidbody = GetComponent<Rigidbody>();
+    private Rigidbody rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
     }
 
-    public void Grab(Transform objectGrabPointTransform){
-        this.objectGrabPointTransform = objectGrabPointTransform;
-        objectRigidbody.useGravity = false;
-    
+    public void StartDrag()
+    {
+        rb.useGravity = false;
+        rb.linearDamping = 10f;
+        rb.angularDamping = 10f;
+        rb.freezeRotation = true;
     }
-    public void Drop(){
-        objectGrabPointTransform = null;
-        objectRigidbody.useGravity = true;
+
+    public void DragTo(Vector3 position)
+    {
+        rb.MovePosition(position);
     }
-    private void FixedUpdate(){
-        if(objectGrabPointTransform != null){
-            float lerpSpeed = 10f;
-            Vector3 newPosition = Vector3.Lerp(transform.position, objectGrabPointTransform.position, lerpSpeed * Time.deltaTime);
-            objectRigidbody.MovePosition(newPosition);
-        }
+
+    public void EndDrag()
+    {
+        rb.useGravity = true;
+        rb.linearDamping = 0f;
+        rb.angularDamping = 0.05f;
+        rb.freezeRotation = false;
     }
 }
