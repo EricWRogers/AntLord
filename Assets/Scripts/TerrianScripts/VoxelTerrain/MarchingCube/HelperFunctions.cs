@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//helper functions for marching cubes and voxel terrain generation
+//to be used in scripts
+
 [System.Serializable]
 public struct NoiseData
 {
