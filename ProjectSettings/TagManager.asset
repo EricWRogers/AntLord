@@ -20,6 +20,8 @@ TagManager:
   - EnemyAnt
   - PlayerAnt
   - Placeables
+  - Imprinters
+  - player
   - 
   - 
   - 
@@ -39,9 +41,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - XR Simulation
   - 
   m_SortingLayers:
   - name: Default
