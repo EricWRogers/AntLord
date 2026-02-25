@@ -17,10 +17,10 @@ public class RayOMayhem : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             return;
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            voxelTerrain.ResetFlat(10); //reset terrain to flat with height of 10
-        }
+        // if (Input.GetKeyDown(KeyCode.R))
+        // {
+        //     voxelTerrain.ResetFlat(10); //reset terrain to flat with height of 10
+        // }
 
         //right click to break voxel block
         if (Input.GetMouseButton(0))
