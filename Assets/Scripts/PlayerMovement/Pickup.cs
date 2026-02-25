@@ -13,7 +13,7 @@ public class Pickup : MonoBehaviour
 
     private void Update()
     {
-        // CLICK to grab
+        //click to hold
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -29,7 +29,7 @@ public class Pickup : MonoBehaviour
             }
         }
 
-        // HOLD to drag
+        //drag object
         if (Input.GetMouseButton(0) && currentObject != null)
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -37,7 +37,7 @@ public class Pickup : MonoBehaviour
             currentObject.DragTo(targetPosition);
         }
 
-        // RELEASE to drop
+        //throw
         if (Input.GetMouseButtonUp(0) && currentObject != null)
         {
             currentObject.EndDrag();
