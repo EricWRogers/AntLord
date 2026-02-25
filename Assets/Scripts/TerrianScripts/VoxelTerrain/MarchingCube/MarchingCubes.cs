@@ -1,6 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.AI.Navigation;
+
+#if UNITY_EDITOR
+
+using UnityEditor;
+
+[CustomEditor(typeof(MarchingCubes))]
+public class CubeEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        MarchingCubes mc = (MarchingCubes)target;
+
+        if (GUILayout.Button("MarchCubes"))
+        {
+            mc.Initialize();
+            mc.MarchCubes();
+        }
+    }
+}
+
+#endif
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class MarchingCubes : MonoBehaviour
@@ -27,7 +51,21 @@ public class MarchingCubes : MonoBehaviour
 
     public LayerMask layerMask;
 
-    void Start()
+    public void Start()
+    {
+        //if (GetComponent<MeshCollider>() == null || GameObject.Find("NavMesh Surface") == null)
+        Initialize();
+    }
+
+    void UpdateVisuals()
+    {
+        MarchCubes();
+        SetMesh();
+        GameObject.Find("NavMesh Surface")?.GetComponent<NavMeshSurface>()?.BuildNavMesh();
+    }
+
+
+    public void Initialize()
     {
         meshFilter = GetComponent<MeshFilter>();
         mesh = new Mesh();
@@ -36,14 +74,6 @@ public class MarchingCubes : MonoBehaviour
         SetHeights();
         UpdateVisuals();
     }
-
-    void UpdateVisuals()
-    {
-        MarchCubes();
-        SetMesh();
-    }
-
-
     private IEnumerator TestAll()
     {
         while (true)
@@ -94,7 +124,7 @@ public class MarchingCubes : MonoBehaviour
         }
     }
 
-    public void ResetFlat(int height)
+    /*public void ResetFlat(int height)
     {
         for (int x = 0; x < width + 1; x++)
         {
@@ -106,7 +136,7 @@ public class MarchingCubes : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
 
     private float PerlinNoise3D (float x, float y, float z)
     {
@@ -136,7 +166,7 @@ public class MarchingCubes : MonoBehaviour
         return configIndex;
     }
 
-    private void MarchCubes()
+    public void MarchCubes()
     {
         vertices.Clear();
         triangles.Clear();
@@ -169,6 +199,8 @@ public class MarchingCubes : MonoBehaviour
         {
             return;
         }
+
+        
 
         int edgeIndex = 0;
         for (int t = 0; t < 5; t++)

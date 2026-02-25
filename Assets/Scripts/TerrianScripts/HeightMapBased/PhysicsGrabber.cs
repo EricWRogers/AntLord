@@ -24,15 +24,14 @@ public class PhysicsGrabber : MonoBehaviour
 
     void Update()
     {
-        // Left click to grab
-        if (Input.GetMouseButtonDown(0))
+        bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+        if (shift && Input.GetMouseButtonDown(0))
             TryGrab();
 
-        // Release
         if (Input.GetMouseButtonUp(0))
             Release();
 
- 
         if (grabbedRb != null)
             MoveGrabPoint();
     }
@@ -40,9 +39,14 @@ public class PhysicsGrabber : MonoBehaviour
     void TryGrab()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * maxGrabDistance, Color.cyan, 1f);
         if (!Physics.Raycast(ray, out RaycastHit hit, maxGrabDistance, grabbableMask))
+        {
             return;
+            Debug.Log("Grab raycast hit NOTHING");
+        }
 
+        Debug.Log($"Hit: {hit.collider.name} | HasRigidbody: { (hit.rigidbody != null) } | Layer: {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
         Rigidbody rb = hit.rigidbody;
         if (rb == null) return;
 
@@ -63,6 +67,7 @@ public class PhysicsGrabber : MonoBehaviour
         //stop the spinning
         grabbedRb.angularDamping = 4f;
         grabbedRb.linearDamping = 0.5f;
+        grabDepth = Vector3.Distance(cam.transform.position, hit.point);
     }
 
     void MoveGrabPoint()
