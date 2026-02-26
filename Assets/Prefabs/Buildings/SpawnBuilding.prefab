@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1595401735429855760}
   - component: {fileID: 3026306675670589178}
   - component: {fileID: 8622619615116508004}
-  - component: {fileID: 5877612613006975368}
   m_Layer: 0
   m_Name: SpawnBuilding
   m_TagString: Untagged
@@ -135,9 +134,9 @@ MonoBehaviour:
   spawnPoint: {fileID: 8388733878004940841}
   spawnPadding: 5
   spawnCooldown: 5
-  maxAnts: 15
-  foodAmount: 4
-  minFoodPerAnt: 2
+  maxAnts: 10
+  foodAmount: 100
+  minFoodPerAnt: 10
   tempWinCon: 0
 --- !u!114 &8622619615116508004
 MonoBehaviour:
@@ -152,26 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RemoveFood
   radius: 1
---- !u!114 &5877612613006975368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1521120396676709679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
-  m_SerializedVersion: 0
-  m_OverrideArea: 0
-  m_Area: 0
-  m_OverrideGenerateLinks: 0
-  m_GenerateLinks: 0
-  m_IgnoreFromBuild: 1
-  m_ApplyToChildren: 1
-  m_AffectedAgents: ffffffff
 --- !u!1 &1783261435255673181
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +330,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 4145514178127378624}
   m_HandleRect: {fileID: 0}
