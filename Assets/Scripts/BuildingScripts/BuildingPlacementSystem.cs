@@ -14,6 +14,8 @@ public class BuildingPlacementSystem : MonoBehaviour
     [SerializeField] private LayerMask placementLayermask;
     [SerializeField] private Grid grid;
     public event Action OnClicked, OnExit;
+    public bool inBuildMode = false;
+    public float rotation = 0.0f;
 
     void Start()
     {
@@ -26,9 +28,21 @@ public class BuildingPlacementSystem : MonoBehaviour
         {
             OnClicked?.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             OnExit?.Invoke();
+        }
+        if (inBuildMode && Input.GetKeyDown(KeyCode.Q))
+        {
+            cellIndicatorObj.transform.Rotate(0.0f, 90.0f, 0.0f);
+            rotation = (rotation + 90.0f >= 360)? 0 : rotation + 90.0f;
+            Debug.Log(rotation);
+        }
+        else if(inBuildMode && Input.GetKeyDown(KeyCode.E))
+        {
+            cellIndicatorObj.transform.Rotate(0.0f, -90.0f, 0.0f);
+            rotation = (rotation - 90.0f <= -360)? 0 : rotation - 90.0f;
+            Debug.Log(rotation);
         }
         //tracks the mouse by grid
         Vector3 mousePosition = GetSelectedMapPosition();
@@ -38,6 +52,8 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     public void StartPlacement(int ID)
     {
+        StopPlacement();
+        inBuildMode = true;
         //checks to see if the index is in the list of buildings
         selectedObjectIndex = allBuildings.FindIndex(data => data.ID == ID);
         if (selectedObjectIndex < 0)
@@ -51,10 +67,9 @@ public class BuildingPlacementSystem : MonoBehaviour
         //assigning methods to the events
         OnClicked += PlaceStruct;
         OnExit += StopPlacement;
-        PlaceStruct();
     }
     void StopPlacement()
-    {
+    {   inBuildMode = false;
         selectedObjectIndex = -1;
         cellIndicator.SetActive(false);
         cellIndicatorObj.transform.localPosition = new Vector3(0.0f,0.5f,0.0f);
@@ -72,9 +87,13 @@ public class BuildingPlacementSystem : MonoBehaviour
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
         //places the building at the selectedIndex at these grid coords
-        GameObject building = Instantiate(allBuildings[selectedObjectIndex].preFab);
-        building.transform.localScale = allBuildings[selectedObjectIndex].size;
-        building.transform.position = grid.CellToWorld(gridPosition);
+        GameObject buildingParent = Instantiate(allBuildings[selectedObjectIndex].preFab);
+        buildingParent.transform.localScale = allBuildings[selectedObjectIndex].size;
+        Debug.Log(rotation);
+        GameObject building = buildingParent.transform.GetChild(0).gameObject;
+        building.transform.Rotate(0.0f, rotation, 0.0f);
+        //buildingParent.transform.localRotation = (0.0f, rotation, 0.0f);
+        buildingParent.transform.position = grid.CellToWorld(gridPosition);
 
     }
     //look sometimes Lambda functions just do this

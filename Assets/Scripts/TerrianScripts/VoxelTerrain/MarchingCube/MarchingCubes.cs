@@ -1,6 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.AI.Navigation;
+
+#if UNITY_EDITOR
+
+using UnityEditor;
+
+[CustomEditor(typeof(MarchingCubes))]
+public class CubeEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        MarchingCubes mc = (MarchingCubes)target;
+
+        if (GUILayout.Button("MarchCubes"))
+        {
+            mc.Initialize();
+            mc.MarchCubes();
+        }
+    }
+}
+
+#endif
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class MarchingCubes : MonoBehaviour
@@ -13,6 +37,8 @@ public class MarchingCubes : MonoBehaviour
 
     [SerializeField] private float heightTresshold = 0.5f;
 
+    [SerializeField] private float noiseAmplitude = 5f;
+
     [SerializeField] bool visualizeNoise;
     [SerializeField] bool use3DNoise;
 
@@ -21,38 +47,54 @@ public class MarchingCubes : MonoBehaviour
     private float[,,] heights;
 
     private MeshFilter meshFilter;
+    private Mesh mesh;
 
-    void Start()
+    public LayerMask layerMask;
+
+    public void Start()
+    {
+        //if (GetComponent<MeshCollider>() == null || GameObject.Find("NavMesh Surface") == null)
+        Initialize();
+    }
+
+    void UpdateVisuals()
+    {
+        MarchCubes();
+        SetMesh();
+        GameObject.Find("NavMesh Surface")?.GetComponent<NavMeshSurface>()?.BuildNavMesh();
+    }
+
+
+    public void Initialize()
     {
         meshFilter = GetComponent<MeshFilter>();
-        StartCoroutine(TestAll());
+        mesh = new Mesh();
+        meshFilter.mesh = mesh;
+
+        SetHeights();
+        UpdateVisuals();
     }
-
-    void Update()
-    {
-
-    }
-
     private IEnumerator TestAll()
     {
         while (true)
         {
-            SetHeights();
-            MarchCubes();
-            SetMesh();
+            UpdateVisuals();
             yield return new WaitForSeconds(1f);
         }
     }
 
     private void SetMesh()
     {
-        Mesh mesh = new Mesh();
-
+        mesh.Clear();
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
 
-        meshFilter.mesh = mesh;
+        if (TryGetComponent<MeshCollider>(out MeshCollider meshCollider))
+        {
+            meshCollider.sharedMesh = null;
+            meshCollider.sharedMesh = mesh;
+        }
     }
 
     private void SetHeights()
@@ -73,24 +115,28 @@ public class MarchingCubes : MonoBehaviour
                     }
                     else
                     {
-                        float currentHeight = height * Mathf.PerlinNoise(x * noiseScale, z * noiseScale);
-                        float distToSufrace;
-
-                        if (y <= currentHeight - 0.5f)
-                            distToSufrace = 0f;
-                        else if (y > currentHeight + 0.5f)
-                            distToSufrace = 1f;
-                        else if (y > currentHeight)
-                            distToSufrace = y - currentHeight;
-                        else
-                            distToSufrace = currentHeight - y;
-
-                        heights[x, y, z] = distToSufrace;
+                        float groundLevel = Mathf.PerlinNoise(x * noiseScale, z * noiseScale) * noiseAmplitude;
+                        float value = y - groundLevel;
+                        heights[x, y, z] = Mathf.Clamp01(value + 0.5f);
                     }
                 }
             }
         }
     }
+
+    /*public void ResetFlat(int height)
+    {
+        for (int x = 0; x < width + 1; x++)
+        {
+            for (int y = 0; y < height + 1; y++)
+            {
+                for (int z = 0; z < width + 1; z++)
+                {
+                    heights[x, y, z] = height;
+                }
+            }
+        }
+    }*/
 
     private float PerlinNoise3D (float x, float y, float z)
     {
@@ -120,10 +166,12 @@ public class MarchingCubes : MonoBehaviour
         return configIndex;
     }
 
-    private void MarchCubes()
+    public void MarchCubes()
     {
         vertices.Clear();
         triangles.Clear();
+
+        float[] cubeCorners = new float[8];
 
         for (int x = 0; x < width; x++)
         {
@@ -131,15 +179,13 @@ public class MarchingCubes : MonoBehaviour
             {
                 for (int z = 0; z < width; z++)
                 {
-                    float[] cubeCorners = new float[8];
-
                     for (int i = 0; i < 8; i++)
                     {
                         Vector3Int corner = new Vector3Int(x, y, z) + MarchingTable.Corners[i];
                         cubeCorners[i] = heights[corner.x, corner.y, corner.z];
                     }
 
-                    MarchCube(new Vector3(x, y, z), cubeCorners);
+                    MarchCube(new Vector3(x, y, z) * resolution, cubeCorners);
                 }
             }
         }
@@ -153,6 +199,8 @@ public class MarchingCubes : MonoBehaviour
         {
             return;
         }
+
+        
 
         int edgeIndex = 0;
         for (int t = 0; t < 5; t++)
@@ -176,6 +224,82 @@ public class MarchingCubes : MonoBehaviour
 
                 edgeIndex++;
             }
+        }
+    }
+
+    public void BreakVoxel(Vector3 worldPosition, float radius = 1.5f)
+    {
+        Vector3 localPos = transform.InverseTransformPoint(worldPosition);
+        //calculating the range of voxels to check based on the radius
+        int startX = Mathf.FloorToInt((localPos.x - radius) / resolution);
+        int endX = Mathf.CeilToInt((localPos.x + radius) / resolution);
+        int startY = Mathf.FloorToInt((localPos.y - radius) / resolution);
+        int endY = Mathf.CeilToInt((localPos.y + radius) / resolution);
+        int startZ = Mathf.FloorToInt((localPos.z - radius) / resolution);
+        int endZ = Mathf.CeilToInt((localPos.z + radius) / resolution);
+
+        bool changed = false;
+        //loop through the voxels in the affected area and set them to air voxels if they are within the radius
+        for (int x = startX; x <= endX; x++)
+        {
+            for (int y = startY; y <= endY; y++)
+            {
+                for (int z = startZ; z <= endZ; z++)
+                {
+                    if (x < 0 || x > width || y < 0 || y > height || z < 0 || z > width) continue;
+
+                    float dist = Vector3.Distance(localPos, new Vector3(x, y, z) * resolution);
+
+                    if (dist <= radius)
+                    {
+                        heights[x, y, z] = 1f; //set voxels to empty or "air"
+                        changed = true;
+                    }
+                }
+            }
+        }
+        //only update the visuals if something is touched
+        if (changed)
+        {
+            UpdateVisuals();
+        }
+    }
+
+    public void PlaceVoxel(Vector3 worldPosition, float radius = 1.5f)
+    {
+        Vector3 localPos = transform.InverseTransformPoint(worldPosition);
+        //calculating the range of voxels to check based on the radius
+        int startX = Mathf.FloorToInt((localPos.x - radius) / resolution);
+        int endX = Mathf.CeilToInt((localPos.x + radius) / resolution);
+        int startY = Mathf.FloorToInt((localPos.y - radius) / resolution);
+        int endY = Mathf.CeilToInt((localPos.y + radius) / resolution);
+        int startZ = Mathf.FloorToInt((localPos.z - radius) / resolution);
+        int endZ = Mathf.CeilToInt((localPos.z + radius) / resolution);
+
+        bool changed = false;
+        //loop through the voxels in the affected area and set them to solid voxels if they are within the radius
+        for (int x = startX; x <= endX; x++)
+        {
+            for (int y = startY; y <= endY; y++)
+            {
+                for (int z = startZ; z <= endZ; z++)
+                {
+                    if (x < 0 || x > width || y < 0 || y > height || z < 0 || z > width) continue;
+
+                    float dist = Vector3.Distance(localPos, new Vector3(x, y, z) * resolution);
+
+                    if (dist <= radius)
+                    {
+                        heights[x, y, z] = 0f; //set voxels to solid
+                        changed = true;
+                    }
+                }
+            }
+        }
+        //only update the visuals if something is touched
+        if (changed)
+        {
+            UpdateVisuals();
         }
     }
 

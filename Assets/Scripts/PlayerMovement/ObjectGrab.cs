@@ -1,27 +1,53 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class ObjectGrab : MonoBehaviour
 {
-    private Rigidbody objectRigidbody;
-    private Transform objectGrabPointTransform;
-    private void Awake(){
-        objectRigidbody = GetComponent<Rigidbody>();
+    private Rigidbody rb;
+
+    private Vector3 lastPosition;
+    private Vector3 velocity;
+
+    [SerializeField] private float throwMultiplier = 1.5f;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
     }
 
-    public void Grab(Transform objectGrabPointTransform){
-        this.objectGrabPointTransform = objectGrabPointTransform;
-        objectRigidbody.useGravity = false;
-    
-    }
-    public void Drop(){
-        objectGrabPointTransform = null;
-        objectRigidbody.useGravity = true;
-    }
-    private void FixedUpdate(){
-        if(objectGrabPointTransform != null){
-            float lerpSpeed = 10f;
-            Vector3 newPosition = Vector3.Lerp(transform.position, objectGrabPointTransform.position, lerpSpeed * Time.deltaTime);
-            objectRigidbody.MovePosition(newPosition);
+    private void FixedUpdate()
+    {
+        // track velocity 
+        if (!rb.useGravity)
+        {
+            velocity = (transform.position - lastPosition) / Time.fixedDeltaTime;
+            lastPosition = transform.position;
         }
+    }
+
+    public void StartDrag()
+    {
+        rb.useGravity = false;
+        rb.linearDamping = 10f;
+        rb.angularDamping = 10f;
+        rb.freezeRotation = true;
+
+        lastPosition = transform.position;
+        velocity = Vector3.zero;
+    }
+
+    public void DragTo(Vector3 position)
+    {
+        rb.MovePosition(position);
+    }
+
+    public void EndDrag()
+    {
+        rb.useGravity = true;
+        rb.freezeRotation = false;
+        rb.linearDamping = 0f;
+        rb.angularDamping = 0.05f;
+
+        rb.linearVelocity = velocity * throwMultiplier;
     }
 }

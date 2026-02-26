@@ -13,7 +13,9 @@ public class FollowNav : MonoBehaviour
     public float separationRadius = 2f;
     public float separationForce = 5f;
     public bool amCarryingFood = false;
-    
+    public int antTier = 1;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
