@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3444462172619519081}
   - component: {fileID: 5266563285919827775}
   - component: {fileID: 4655373358248133607}
+  - component: {fileID: 2333056623413198969}
   m_Layer: 0
   m_Name: TheCoolerAnt
   m_TagString: Ant
@@ -63,6 +64,7 @@ MonoBehaviour:
   separationForce: 5
   foodBits: 0
   amCarryingFood: 0
+  antTeir: 1
 --- !u!114 &9126265470297457125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,6 +86,7 @@ MonoBehaviour:
   separationRadius: 2
   separationForce: 5
   amCarryingFood: 0
+  antTier: 1
 --- !u!114 &4194604626868466631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,6 +164,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AntSelectGlow
   glowColor: {r: 0, g: 1, b: 0, a: 1}
   glowIntensity: 2.5
+--- !u!114 &2333056623413198969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965442970529633344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d6aa6ebc1a652343a07147dc9b1408a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AntBrain
+  antType: {fileID: 11400000, guid: 98a0f28ed23847440ba0d54066a80f7a, type: 2}
+  currentState: 1
+  detectionRange: 5
+  attackRange: 1.5
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1001 &2998858436810029751
 PrefabInstance:
   m_ObjectHideFlags: 0
