@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 
 public class MM : MonoBehaviour
 {
     private GameObject pm;
+    private bool vrButtonPressed = false;
     
     void Awake()
     {
@@ -16,11 +18,27 @@ public class MM : MonoBehaviour
 
     void Update()
     {
+        // PC Pause (Escape key)
         if (Input.GetKeyDown(KeyCode.Escape) && pm != null)
         {
             Pause();
         }
+
+        // VR Pause (Right Hand Menu button)
+        InputDevice righthand = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+
+        if (righthand.isValid && righthand.TryGetFeatureValue(CommonUsages.menuButton, out bool pressed))
+        {
+            // Only trigger once when button is first pressed
+            if (!vrButtonPressed)
+            {
+                Pause();
+            }
+
+            vrButtonPressed = pressed;
+        }
     }
+
 
     public void Play(string level)
     {
