@@ -2891,7 +2891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AppleSpawn
   apple: {fileID: 96670100808516071, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
   sphereRadius: 10
-  growDuration: 600
+  growDuration: 60
   startingSize: 0.1
 --- !u!4 &2078761363
 Transform:
