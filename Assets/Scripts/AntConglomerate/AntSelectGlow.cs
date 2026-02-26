@@ -5,6 +5,7 @@ public class AntSelectGlow : MonoBehaviour
     [Header("Glow Settings")]
     public Color glowColor = Color.green;
     public float glowIntensity = 2.5f;
+    public GameObject marker;
 
     Renderer[] renderers;
     MaterialPropertyBlock mpb;

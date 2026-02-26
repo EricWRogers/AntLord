@@ -194,12 +194,18 @@ public class CommandAnt : MonoBehaviour
     {
         var glow = ant.GetComponent<AntSelectGlow>();
         if (glow != null) glow.EnableGlow(c, intensity);
+
+        // TEMP
+        if(glow != null) glow.marker.SetActive(true);
     }
 
     void DisableGlow(GameObject ant)
     {
         var glow = ant.GetComponent<AntSelectGlow>();
         if (glow != null) glow.DisableGlow();
+
+        // TEMP
+        if(glow != null) glow.marker.SetActive(false);
     }
 
     void ClearSelectionVisualsOnly()
