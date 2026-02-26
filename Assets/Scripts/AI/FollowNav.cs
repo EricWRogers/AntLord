@@ -33,7 +33,9 @@ public class FollowNav : MonoBehaviour
     {
         if(leader != null){
 
-            transform.LookAt(myAgent.steeringTarget);
+            if(myAgent.remainingDistance >= 2)
+                transform.LookAt(myAgent.steeringTarget);
+            
             // Supercede normal pathfinding if ants recently bumped
             if(recentCollision != null)
             {
