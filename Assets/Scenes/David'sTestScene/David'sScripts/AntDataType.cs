@@ -16,4 +16,5 @@ public class AntDataType : ScriptableObject
 
     [Header("Visuals")]
     public GameObject modelPrefab; // The 3D model for this specific ant
+    public int teamID;
 }

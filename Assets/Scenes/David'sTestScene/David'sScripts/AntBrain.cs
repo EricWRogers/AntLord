@@ -56,14 +56,16 @@ public class AntBrain : MonoBehaviour
 
     private void CheckForEnemies()
     {
-        Collider[] enemies = Physics.OverlapSphere(transform.position, detectionRange, enemyLayer);
-        if (enemies.Length > 0)
+        Collider[] potentialTargets = Physics.OverlapSphere(transform.position, detectionRange, enemyLayer);
+        foreach (var col in potentialTargets)
         {
-            currentTarget = enemies[0].GetComponent<AntBrain>();
-            if (currentTarget != null)
+            AntBrain enemyAnt = col.GetComponent<AntBrain>();
+            if (enemyAnt != null && enemyAnt.antType.teamID != antType.teamID)
             {
+                currentTarget = enemyAnt;
                 currentState = AntState.Chasing;
                 followNav.enabled = false; // Stop following leader crumbs
+                return;
             }
         }
     }
