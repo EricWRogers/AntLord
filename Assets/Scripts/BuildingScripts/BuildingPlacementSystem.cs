@@ -28,7 +28,7 @@ public class BuildingPlacementSystem : MonoBehaviour
         {
             OnClicked?.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             OnExit?.Invoke();
         }
