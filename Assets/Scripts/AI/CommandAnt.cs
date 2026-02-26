@@ -11,6 +11,10 @@ public class CommandAnt : MonoBehaviour
     public GameObject wayPointPrefab;
     private bool antSelect = false;
 
+    // for shift-drag selection
+    private Vector3 shiftDragStart;
+    private bool shiftDragging = false;
+
     [Header("Selection Glow")]
     public Color selectedColor = Color.green;
     public float selectedIntensity = 2.5f;
@@ -24,7 +28,50 @@ public class CommandAnt : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        // --- shift + drag selection ---
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            // start drag
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit, 500f))
+                {
+                    shiftDragStart = hit.point;
+                    shiftDragging = true;
+                }
+            }
+
+            // release drag
+            if (shiftDragging && Input.GetMouseButtonUp(0))
+            {
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit, 500f))
+                {
+                    float radius = Vector3.Distance(shiftDragStart, hit.point);
+
+                    // clear existing selection
+                    ClearSelectionVisualsOnly();
+                    selectedAnts.Clear();
+                    selectedLeader = null;
+
+                    Collider[] hits = Physics.OverlapSphere(shiftDragStart, radius);
+                    foreach (var col in hits)
+                    {
+                        if (col.CompareTag("Ant"))
+                        {
+                            selectedAnts.Add(col.gameObject);
+                            SetGlow(col.gameObject, selectedColor, selectedIntensity);
+                        }
+                    }
+                }
+
+                shiftDragging = false;
+            }
+        }
+
+        // normal click selection
+        else if (Input.GetMouseButtonDown(0))
         {
             antSelect = false;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -108,11 +155,13 @@ public class CommandAnt : MonoBehaviour
                 SetGlow(selectedAnts[0], leaderColor, leaderIntensity);
 
                 // Going into action removes highlight
-                ClearSelectionVisualsOnly();
-                selectedAnts.Clear();
+                // ClearSelectionVisualsOnly();
+                // selectedAnts.Clear();
                 selectedLeader = null;
             }
         }
+
+
         else if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R))
         {
             ClearSelectionVisualsOnly();
