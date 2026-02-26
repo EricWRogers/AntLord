@@ -24,10 +24,10 @@ public class MM : MonoBehaviour
             Pause();
         }
 
-        // VR Pause (Right Hand Menu button)
-        InputDevice righthand = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+        // VR Pause (Left Hand Menu button)
+        InputDevice lefthand = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
 
-        if (righthand.isValid && righthand.TryGetFeatureValue(CommonUsages.menuButton, out bool pressed))
+        if (lefthand.isValid && lefthand.TryGetFeatureValue(CommonUsages.menuButton, out bool pressed))
         {
             // Only trigger once when button is first pressed
             if (!vrButtonPressed)
