@@ -14,7 +14,7 @@ public class RemoveFood : MonoBehaviour
         {
             if(hitColliders.CompareTag("Ant"))
             {
-                if(hitColliders.GetComponent<FollowNav>() != null && hitColliders.GetComponent<FollowNav>().amCarryingFood)
+                if(hitColliders.GetComponent<FollowNav>().enabled && hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {
                     
                     // Instantiate(foodBitePrefab, hitColliders.transform.localPosition + biteSpawn, transform.rotation);
@@ -35,7 +35,7 @@ public class RemoveFood : MonoBehaviour
                     hitColliders.GetComponent<FollowNav>().myAgent.isStopped = true;
                     GetComponent<SpawnerBuilding>().GiveFood(1);
                 }
-                else if(hitColliders.GetComponent<LeadNav>() != null && hitColliders.GetComponent<LeadNav>().amCarryingFood)
+                else if(hitColliders.GetComponent<LeadNav>().enabled && hitColliders.GetComponent<LeadNav>().amCarryingFood)
                 {
                     // Instantiate(foodBitePrefab, hitColliders.transform.localPosition + biteSpawn, transform.rotation);
 
