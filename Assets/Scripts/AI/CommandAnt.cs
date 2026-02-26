@@ -172,6 +172,8 @@ public class CommandAnt : MonoBehaviour
             selectedLeader.followers.Add(follow.myAgent);
         }
 
+        selectedLeader.GetComponent<FollowNav>().enabled = false;
+
         selectedLeader.crumbs.Clear();
     }
 
