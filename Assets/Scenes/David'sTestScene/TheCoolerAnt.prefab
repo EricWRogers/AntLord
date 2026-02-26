@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4194604626868466631}
   - component: {fileID: 3444462172619519081}
   - component: {fileID: 5266563285919827775}
+  - component: {fileID: 4655373358248133607}
   m_Layer: 0
   m_Name: TheCoolerAnt
   m_TagString: Ant
@@ -146,6 +147,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.39
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4655373358248133607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965442970529633344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 824d5b90737eeed4d86c14ece204d1e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AntSelectGlow
+  glowColor: {r: 0, g: 1, b: 0, a: 1}
+  glowIntensity: 2.5
 --- !u!1001 &2998858436810029751
 PrefabInstance:
   m_ObjectHideFlags: 0
