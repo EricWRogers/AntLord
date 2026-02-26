@@ -135,8 +135,8 @@ MonoBehaviour:
   spawnPadding: 5
   spawnCooldown: 5
   maxAnts: 10
-  foodAmount: 100
-  minFoodPerAnt: 10
+  foodAmount: 4
+  minFoodPerAnt: 2
   tempWinCon: 0
 --- !u!114 &8622619615116508004
 MonoBehaviour:
