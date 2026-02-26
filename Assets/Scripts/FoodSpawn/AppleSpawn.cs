@@ -43,6 +43,11 @@ public class AppleSpawn : MonoBehaviour
         GameObject anApple = Instantiate(apple, spawnPosition, randomYRotation);
 
         Rigidbody rb = anApple.GetComponent<Rigidbody>();
+        if (rb != null && rb.useGravity == true)
+            {
+                rb.useGravity = false;
+                Debug.Log ("Turned off to grow");
+            }
 
         anApple.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
 

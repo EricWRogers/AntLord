@@ -58,7 +58,7 @@ public class CommandAnt : MonoBehaviour
                     Collider[] hits = Physics.OverlapSphere(shiftDragStart, radius);
                     foreach (var col in hits)
                     {
-                        if (col.CompareTag("Ant"))
+                        if (col.CompareTag("Ant") && col.transform.GetComponent<AntBrain>().antType.teamID == 0)
                         {
                             selectedAnts.Add(col.gameObject);
                             SetGlow(col.gameObject, selectedColor, selectedIntensity);
@@ -82,7 +82,7 @@ public class CommandAnt : MonoBehaviour
                 Collider[] hits = Physics.OverlapSphere(hit.point, sphereCastRadius);
 
                 // If clicked directly on an Ant, toggle selection
-                if (hit.transform.CompareTag("Ant"))
+                if (hit.transform.CompareTag("Ant") && hit.transform.GetComponent<AntBrain>().antType.teamID == 0)
                 {
                     ToggleSelection(hit.transform.gameObject);
                 }
@@ -103,42 +103,13 @@ public class CommandAnt : MonoBehaviour
         }
 
         // -- Set a waypoint
-        if (Input.GetMouseButtonDown(1) && (selectedLeader == null || !selectedLeader.amCarryingFood))
+        if (Input.GetMouseButtonDown(1) && (selectedLeader == null || selectedLeader.target != selectedLeader.home))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
             if (!antSelect && selectedAnts.Count != 0 && Physics.Raycast(ray, out RaycastHit hit, 500f))
             {
-                Debug.Log("Selecting new leader!");
-
-                foreach (GameObject ant in selectedAnts)
-                {
-                    ant.GetComponent<LeadNav>().enabled = false;
-                    ant.GetComponent<FollowNav>().enabled = true;
-                }
-
-                selectedAnts[0].GetComponent<FollowNav>().enabled = false;
-                selectedLeader = selectedAnts[0].GetComponent<LeadNav>();
-                selectedAnts[0].GetComponent<LeadNav>().enabled = true;
-
-                selectedLeader.home = FindFirstObjectByType<SpawnerBuilding>().transform; // TEMP
-
-               
-                selectedLeader.followers.Clear();
-
-                for (int i = 1; i < selectedAnts.Count; i++)
-                {
-                    selectedAnts[i].GetComponent<FollowNav>().leader = selectedLeader;
-                    selectedAnts[i].GetComponent<FollowNav>().crumbTrack = 0;
-
-                    
-                    var follow = selectedAnts[i].GetComponent<FollowNav>();
-                    if (follow.myAgent == null) follow.myAgent = selectedAnts[i].GetComponent<NavMeshAgent>();
-
-                    selectedLeader.followers.Add(follow.myAgent);
-                }
-
-                selectedLeader.crumbs.Clear();
+                ElectLeader();
 
                 if (hit.transform.CompareTag("Food"))
                     selectedLeader.target = hit.transform;
@@ -157,7 +128,7 @@ public class CommandAnt : MonoBehaviour
                 // Going into action removes highlight
                 // ClearSelectionVisualsOnly();
                 // selectedAnts.Clear();
-                selectedLeader = null;
+                // selectedLeader = null;
             }
         }
 
@@ -168,6 +139,42 @@ public class CommandAnt : MonoBehaviour
             selectedAnts.Clear();
             selectedLeader = null;
         }
+    }
+
+    void ElectLeader()
+    {
+        Debug.Log("Selecting new leader!");
+
+        foreach (GameObject ant in selectedAnts)
+        {
+            ant.GetComponent<LeadNav>().enabled = false;
+            ant.GetComponent<FollowNav>().enabled = true;
+        }
+
+        selectedAnts[0].GetComponent<FollowNav>().enabled = false;
+        selectedLeader = selectedAnts[0].GetComponent<LeadNav>();
+        selectedAnts[0].GetComponent<LeadNav>().enabled = true;
+
+        selectedLeader.home = FindFirstObjectByType<SpawnerBuilding>().transform; // TEMP
+
+        
+        selectedLeader.followers.Clear();
+
+        for (int i = 1; i < selectedAnts.Count; i++)
+        {
+            selectedAnts[i].GetComponent<FollowNav>().leader = selectedLeader;
+            selectedAnts[i].GetComponent<FollowNav>().crumbTrack = 0;
+
+            
+            var follow = selectedAnts[i].GetComponent<FollowNav>();
+            if (follow.myAgent == null) follow.myAgent = selectedAnts[i].GetComponent<NavMeshAgent>();
+
+            selectedLeader.followers.Add(follow.myAgent);
+        }
+
+        selectedLeader.GetComponent<FollowNav>().enabled = false;
+
+        selectedLeader.crumbs.Clear();
     }
 
     //visualizzation methods

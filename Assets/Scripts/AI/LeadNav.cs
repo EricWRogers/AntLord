@@ -32,7 +32,9 @@ public class LeadNav : MonoBehaviour
     void Update()
     {
         if(target != null){
-            transform.LookAt(myAgent.steeringTarget);
+            
+            if(myAgent.remainingDistance >= 2)
+                transform.LookAt(myAgent.steeringTarget);
 
             if(!arrived){
                 crumbDropTimer += Time.deltaTime;
