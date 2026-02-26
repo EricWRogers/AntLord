@@ -58,7 +58,7 @@ public class CommandAnt : MonoBehaviour
                     Collider[] hits = Physics.OverlapSphere(shiftDragStart, radius);
                     foreach (var col in hits)
                     {
-                        if (col.CompareTag("Ant"))
+                        if (col.CompareTag("Ant") && col.transform.GetComponent<AntBrain>().antType.teamID == 0)
                         {
                             selectedAnts.Add(col.gameObject);
                             SetGlow(col.gameObject, selectedColor, selectedIntensity);
@@ -82,7 +82,7 @@ public class CommandAnt : MonoBehaviour
                 Collider[] hits = Physics.OverlapSphere(hit.point, sphereCastRadius);
 
                 // If clicked directly on an Ant, toggle selection
-                if (hit.transform.CompareTag("Ant"))
+                if (hit.transform.CompareTag("Ant") && hit.transform.GetComponent<AntBrain>().antType.teamID == 0)
                 {
                     ToggleSelection(hit.transform.gameObject);
                 }
