@@ -42,7 +42,7 @@ public class MM : MonoBehaviour
 
     public void Play(string level)
     {
-        SceneManager.LoadScene(level);
+        SceneTransitionManager.singleton.GoToSceneAsync(1);
         Debug.Log("Game Started.");
     }
 
