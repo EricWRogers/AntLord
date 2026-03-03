@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public enum AntState { Idle, Following, Chasing, Attacking, Returning }
 
@@ -19,6 +20,11 @@ public class AntBrain : MonoBehaviour
     private AntBrain currentTarget;
     private NavMeshAgent agent;
     private FollowNav followNav;
+    private Renderer antRenderer;
+    private Color originalColor;
+    private Color originalEmissionColor;
+    private bool hadEmission;
+    public float flashDuration = 0.2f;
 
     void Start()
     {
@@ -26,6 +32,28 @@ public class AntBrain : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         followNav = GetComponent<FollowNav>();
         agent.speed = antType.moveSpeed;
+        
+        // Try to get renderer from this object or child objects
+        antRenderer = GetComponent<Renderer>();
+        if (antRenderer == null)
+            antRenderer = GetComponentInChildren<Renderer>();
+        
+        if (antRenderer != null)
+        {
+            // operate on material instance so we don't tint shared asset
+            Material mat = antRenderer.material;
+            originalColor = mat.color;
+            
+            // check for emission property
+            if (mat.HasProperty("_EmissionColor"))
+            {
+                originalEmissionColor = mat.GetColor("_EmissionColor");
+                hadEmission = originalEmissionColor.maxColorComponent > 0f;
+            }
+            Debug.Log("Renderer found: " + antRenderer.name + " (emission? " + hadEmission + ")");
+        }
+        else
+            Debug.LogWarning("No Renderer found on ant!");
     }
 
     void Update()
@@ -126,8 +154,44 @@ public class AntBrain : MonoBehaviour
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
+        StartCoroutine(FlashRed());
         if (currentHealth <= 0) Die();
+        Debug.Log(antType.typeName + " takes " + amount + " damage! Remaining health: " + currentHealth);
     }
+
+    private IEnumerator FlashRed()
+    {
+        if (antRenderer != null)
+        {
+            Material mat = antRenderer.material;
+            // set base color red so we see immediate tint
+            mat.color = Color.red;
+            if (mat.HasProperty("_EmissionColor"))
+            {
+                mat.SetColor("_EmissionColor", Color.red);
+                mat.EnableKeyword("_EMISSION");
+            }
+            Debug.Log("Flashing " + gameObject.name + " red with emission");
+
+            yield return new WaitForSeconds(flashDuration);
+
+            mat.color = originalColor;
+            if (mat.HasProperty("_EmissionColor"))
+            {
+                mat.SetColor("_EmissionColor", originalEmissionColor);
+                if (!hadEmission)
+                    mat.DisableKeyword("_EMISSION");
+            }
+            Debug.Log("Color/emission restored");
+        }
+        else
+        {
+            Debug.LogWarning("Cannot flash - no renderer found!");
+            yield return null;
+        }
+    }
+
+
 
     void Die() => Destroy(gameObject);
 }

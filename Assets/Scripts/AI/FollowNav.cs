@@ -14,7 +14,8 @@ public class FollowNav : MonoBehaviour
     public float separationForce = 5f;
     public bool amCarryingFood = false;
     public int antTier = 1;
-    
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,7 +33,9 @@ public class FollowNav : MonoBehaviour
     {
         if(leader != null){
 
-            transform.LookAt(myAgent.steeringTarget);
+            if(myAgent.remainingDistance >= 2)
+                transform.LookAt(myAgent.steeringTarget);
+            
             // Supercede normal pathfinding if ants recently bumped
             if(recentCollision != null)
             {

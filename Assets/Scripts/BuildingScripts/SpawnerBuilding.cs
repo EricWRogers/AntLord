@@ -42,7 +42,7 @@ public class SpawnerBuilding : Buildings
         foodAmount -= 2; //10; //GameManager.instance.EatFood(10);
         Instantiate(spawnerSO.ant, spawnPoint.position, Quaternion.identity); //idk what to do about rotation at the moment so...
         tempWinCon++;
-        if(tempWinCon >= 8)
+        if(tempWinCon >= 300)
         {
             FindFirstObjectByType<MM>().Pause();
         }

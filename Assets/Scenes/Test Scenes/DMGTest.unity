@@ -255,10 +255,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4501962385426778585, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4281479730
-      objectReference: {fileID: 0}
     - target: {fileID: 4774548165068646522, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -454,10 +450,6 @@ PrefabInstance:
     - target: {fileID: 7527316907088875846, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8262830163298913751, guid: 5b7896a5191be5142b80565b7a18d224, type: 3}
-      propertyPath: m_fontColor32.rgba
-      value: 4281479730
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
