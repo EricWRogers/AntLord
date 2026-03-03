@@ -5,13 +5,12 @@ public class SpawnFoodBites : MonoBehaviour
     public GameObject foodBitePrefab;
     private Vector3 biteSpawn;
     //private FoodBites foodBite;
-
     public int foodHealth = 4;
-
     Collider[] hitColliders;
     public float radius = 1f;
     public Transform foodbit;
     public LeadNav mostRecentLead;
+    public int tier = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,37 +25,39 @@ public class SpawnFoodBites : MonoBehaviour
         {
             if(hitColliders.CompareTag("Ant"))
             {
-                if(hitColliders.GetComponent<FollowNav>().enabled && !hitColliders.GetComponent<FollowNav>().amCarryingFood)
+                if (hitColliders.GetComponent<FollowNav>().enabled && !hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {
-                    
+                    tier = hitColliders.GetComponent<FollowNav>().antTier;
+                    GameObject ant = hitColliders.gameObject;
+                    if (!hitColliders.GetComponent<LeadNav>().enabled)
+                    {
+                        for (int i = 1; i <= 2; i++)
+                        {
+                            Debug.Log(i);
+                            Instantiate(foodBitePrefab, hitColliders.transform.position + (biteSpawn * i), transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
+                        //foodBite.SetAnt(ant);
+                            Debug.Log("bite is spawned " + hitColliders.name);
+                            mostRecentLead = hitColliders.GetComponent<FollowNav>().leader;
+                        }
+                        foodHealth -= tier;
+                        hitColliders.GetComponent<FollowNav>().leader.foodBits += tier;
+                    }
                     hitColliders.GetComponent<FollowNav>().amCarryingFood = true;
 
-                    //foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
 
-                    GameObject ant = hitColliders.gameObject;
-                    Instantiate(foodBitePrefab, hitColliders.transform.position + biteSpawn, transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
-                    //foodBite.SetAnt(ant);
-                    Debug.Log("bite is spawned " + hitColliders.name);
-                    mostRecentLead = hitColliders.GetComponent<FollowNav>().leader;
-                    hitColliders.GetComponent<FollowNav>().leader.foodBits++;
-                    foodHealth -= 1;
                 }
-                else if(hitColliders.GetComponent<LeadNav>().enabled && !hitColliders.GetComponent<LeadNav>().amCarryingFood)
+                else if (hitColliders.GetComponent<LeadNav>().enabled && !hitColliders.GetComponent<LeadNav>().amCarryingFood)
                 {
-                    Instantiate(foodBitePrefab, biteSpawn, transform.rotation);
-
-                    hitColliders.GetComponent<LeadNav>().amCarryingFood = true;
-
-                    //foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
-
+                    tier = hitColliders.GetComponent<LeadNav>().antTeir;
                     GameObject ant = hitColliders.gameObject;
-                    Instantiate(foodBitePrefab, hitColliders.transform.position + biteSpawn, transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
-                    //foodBite.SetAnt(ant);
-            
-                    Debug.Log("bite is spawned " + hitColliders.name);
-                    mostRecentLead = hitColliders.GetComponent<LeadNav>();
-                    hitColliders.GetComponent<LeadNav>().foodBits++;
-                    foodHealth -= 1;
+                    for (int i = 1; i <= tier; i++)
+                    {
+                        Instantiate(foodBitePrefab, hitColliders.transform.position + (biteSpawn * i), transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
+                        mostRecentLead = hitColliders.GetComponent<LeadNav>();
+                    }
+                    hitColliders.GetComponent<LeadNav>().amCarryingFood = true;
+                    foodHealth -= tier;
+                    hitColliders.GetComponent<LeadNav>().foodBits += tier;
                 }
 
             }

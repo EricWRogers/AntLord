@@ -19,6 +19,7 @@ public class LeadNav : MonoBehaviour
     public float separationForce = 5f;
     public int foodBits = 0;
     public bool amCarryingFood = false;
+    public int antTeir = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,7 +32,9 @@ public class LeadNav : MonoBehaviour
     void Update()
     {
         if(target != null){
-            transform.LookAt(myAgent.steeringTarget);
+            
+            if(myAgent.remainingDistance >= 2)
+                transform.LookAt(myAgent.steeringTarget);
 
             if(!arrived){
                 crumbDropTimer += Time.deltaTime;
@@ -79,7 +82,7 @@ public class LeadNav : MonoBehaviour
 
             }
 
-            if(foodBits >= followers.Count + 1)
+            if(foodBits >= (followers.Count * antTeir) + (1 * antTeir))
             {
                 DoneWithFood();
             }
