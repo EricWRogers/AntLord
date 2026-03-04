@@ -5893,7 +5893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionRingController
   ring: {fileID: 1379508270}
-  yOffset: 1
+  yOffset: 1.3
   ringThicknessWorld: 0.35
   ringColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1001 &2018305446
