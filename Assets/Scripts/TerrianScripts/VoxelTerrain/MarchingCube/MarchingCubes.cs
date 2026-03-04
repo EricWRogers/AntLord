@@ -158,7 +158,7 @@ public class MarchingCubes : MonoBehaviour
         }
     }*/
 
-    private float PerlinNoise3D (float x, float y, float z)
+    private float PerlinNoise3D(float x, float y, float z)
     {
         float xy = Mathf.PerlinNoise(x, y);
         float xz = Mathf.PerlinNoise(x, z);
@@ -171,7 +171,7 @@ public class MarchingCubes : MonoBehaviour
         return (xy + xz + yz + yx + zx + zy) / 6;
     }
 
-    private int GetConfigIndex (float[] cubeCorners)
+    private int GetConfigIndex(float[] cubeCorners)
     {
         int configIndex = 0;
 
@@ -211,7 +211,7 @@ public class MarchingCubes : MonoBehaviour
         }
     }
 
-    private void MarchCube (Vector3 position, float[] cubeCorners)
+    private void MarchCube(Vector3 position, float[] cubeCorners)
     {
         int configIndex = GetConfigIndex(cubeCorners);
 
@@ -219,6 +219,8 @@ public class MarchingCubes : MonoBehaviour
         {
             return;
         }
+
+
 
         int edgeIndex = 0;
         for (int t = 0; t < 5; t++)
@@ -319,6 +321,50 @@ public class MarchingCubes : MonoBehaviour
         {
             UpdateVisuals();
         }
+    }
+    public void SetVoxel(Vector3 worldPosition, float radius = 1.5f)
+    {
+        Vector3 localPos = transform.InverseTransformPoint(worldPosition);
+
+        int startX = Mathf.FloorToInt((localPos.x - radius) / resolution);
+        int endX = Mathf.CeilToInt((localPos.x + radius) / resolution);
+        int startY = Mathf.FloorToInt((localPos.y - radius) / resolution);
+        int endY = Mathf.CeilToInt((localPos.y + radius) / resolution);
+        int startZ = Mathf.FloorToInt((localPos.z - radius) / resolution);
+        int endZ = Mathf.CeilToInt((localPos.z + radius) / resolution);
+
+        bool changed = false;
+
+        for (int x = startX; x <= endX; x++)
+        {
+            for (int y = startY; y <= endY; y++)
+            {
+                for (int z = startZ; z <= endZ; z++)
+                {
+                    if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= width)
+                        continue;
+
+                    Vector3 voxelPos = new Vector3(x, y, z) * resolution;
+                    float dist = Vector3.Distance(localPos, voxelPos);
+
+                    if (dist <= radius)
+                    {
+                        if (localPos.y == voxelPos.y || voxelPos.y > localPos.y)
+                        {
+                            heights[x, y, z] = 1.0f;
+                        }
+                        else
+                        {
+                            heights[x,y,z] = 0.0f;
+                        }
+                        changed = true;
+                    }
+                }
+            }
+        }
+
+        if (changed)
+            UpdateVisuals();
     }
 
     private void OnDrawGizmosSelected()

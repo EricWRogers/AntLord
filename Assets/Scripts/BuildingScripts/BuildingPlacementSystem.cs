@@ -98,19 +98,30 @@ public class BuildingPlacementSystem : MonoBehaviour
 
         GameObject building = buildingParent.transform.GetChild(0).gameObject;
         building.transform.Rotate(0.0f, rotation, 0.0f);
+
         //45 because all the voxels should be perfect right triangles (weirdly some are like 54)
         //if its a 45 incline or more just bump the building up one so we dont have to bother with a bunch of conditionals
-        buildingParent.transform.position = (angle >= 15.0f) ? grid.CellToWorld(gridPosition) + Vector3.up : grid.CellToWorld(gridPosition);
+        buildingParent.transform.position = (angle >= 1.0f) ? grid.CellToWorld(gridPosition) + Vector3.up : grid.CellToWorld(gridPosition);
+        
+        //if HEIGHTMAP chack if angle is 1.0f or more (if i cant do calculus ill settle for this)
+        //if VOXEL check if 45.0f or more
+
+
         //these are to set whatever the terrain we choose
-        if (cubesAndDudes != null)
+        if (cubesAndDudes != null && cubesAndDudes.enabled)
         {
 
-            //cubesAndDudes.SetVoxel(building.transform.position, building.transform.localScale.x * 2.5f);// yeah its just a magic number to grow the radius a bit
+            cubesAndDudes.SetVoxel(
+                building.transform.position, // le center of the brush
+                building.transform.localScale.x * 2.5f);//le radius of the brush
         }
-        else if(heightmap != null)
+        else if (heightmap != null && heightmap.enabled)
         {
-
-            //heightmap.ApplyBrush(building.transform.position, building.transform.localScale.x * 2.5f, 1.0f, -1, falloff );
+            //heightmap.ApplyFlattenBrushInstant(
+            //    building.transform.position,//le center of the brush
+            //    building.transform.localScale.x * 2.5f,//le radius of the brush (that float needs to be tweeked to idk what but its <5.0f and >2.0f)
+            //    building.transform.position.y - building.transform.localScale.y * 0.5f,//le height it gets set to (currentYPos - radiusOfYScale)
+            //    falloff);
         }
 
     }
