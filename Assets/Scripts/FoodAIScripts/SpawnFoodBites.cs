@@ -24,19 +24,16 @@ public class SpawnFoodBites : MonoBehaviour
         foreach (var hitColliders in hitColliders)
         {
             if(hitColliders.CompareTag("Ant"))
-            {
+            {   
+                tier = hitColliders.GetComponent<LeadNav>().antTeir;
+                GameObject ant = hitColliders.gameObject;
                 if (hitColliders.GetComponent<FollowNav>().enabled && !hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {
-                    tier = hitColliders.GetComponent<FollowNav>().antTier;
-                    GameObject ant = hitColliders.gameObject;
                     if (!hitColliders.GetComponent<LeadNav>().enabled)
                     {
-                        for (int i = 1; i <= 2; i++)
+                        for (int i = 1; i <= tier; i++)
                         {
-                            Debug.Log(i);
                             Instantiate(foodBitePrefab, hitColliders.transform.position + (biteSpawn * i), transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
-                        //foodBite.SetAnt(ant);
-                            Debug.Log("bite is spawned " + hitColliders.name);
                             mostRecentLead = hitColliders.GetComponent<FollowNav>().leader;
                         }
                         foodHealth -= tier;
@@ -48,8 +45,6 @@ public class SpawnFoodBites : MonoBehaviour
                 }
                 else if (hitColliders.GetComponent<LeadNav>().enabled && !hitColliders.GetComponent<LeadNav>().amCarryingFood)
                 {
-                    tier = hitColliders.GetComponent<LeadNav>().antTeir;
-                    GameObject ant = hitColliders.gameObject;
                     for (int i = 1; i <= tier; i++)
                     {
                         Instantiate(foodBitePrefab, hitColliders.transform.position + (biteSpawn * i), transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
@@ -62,7 +57,7 @@ public class SpawnFoodBites : MonoBehaviour
 
             }
         }
-        if (foodHealth == 0 )
+        if (foodHealth <= 0 )
         {
             mostRecentLead.DoneWithFood();
             Destroy(gameObject);
