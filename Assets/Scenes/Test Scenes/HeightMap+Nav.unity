@@ -2424,10 +2424,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnBuilding
       objectReference: {fileID: 0}
-    - target: {fileID: 1521120396676709679, guid: 53951a2ba6c9a9e40ae2a0d8b4bb8b50, type: 3}
-      propertyPath: m_TagString
-      value: Food
-      objectReference: {fileID: 0}
     - target: {fileID: 1595401735429855760, guid: 53951a2ba6c9a9e40ae2a0d8b4bb8b50, type: 3}
       propertyPath: m_IsTrigger
       value: 1

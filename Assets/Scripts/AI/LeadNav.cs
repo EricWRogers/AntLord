@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.PlayerLoop;
+
+public enum AntTask {Manual, Food, Fight}
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class LeadNav : MonoBehaviour
@@ -20,6 +23,7 @@ public class LeadNav : MonoBehaviour
     public int foodBits = 0;
     public bool amCarryingFood = false;
     public int antTeir = 1;
+    public AntTask task = AntTask.Manual;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -60,31 +64,33 @@ public class LeadNav : MonoBehaviour
             else if (arrived)
             {
                 foodBits = 0;
-                // bool failed = false;
-                // for(int i = 0; i < followers.Count; i++)
-                // {
-                //     for(int j = 0; i < followers[i].transform.childCount; j++)
-                //     {
-                //         if(followers[i].transform.GetChild(j).tag == "FoodBit")
-                //         {
-                //             foodBits++;
-                //             break;
-                //         }
-                //         else if(j == followers[i].transform.childCount - 1)
-                //             failed = true;
-                //     }
-                //     if (failed)
-                //     {
-                //         break;
-                //     }
-                // }
-
-
             }
 
             if(foodBits >= (followers.Count * antTeir) + (1 * antTeir))
             {
                 DoneWithFood();
+            }
+
+
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if(target == home && myAgent.remainingDistance <= 2)
+        {
+            int foodCount = 0;
+            foreach (NavMeshAgent follower in followers)
+            {
+                if(follower.GetComponent<FollowNav>().amCarryingFood)
+                    break;
+                else
+                    foodCount++;
+            }
+
+            if(foodCount >= (followers.Count * antTeir) + (1 * antTeir))
+            {
+                myAgent.destination = transform.position;
             }
         }
     }
@@ -120,39 +126,4 @@ public class LeadNav : MonoBehaviour
             myAgent.destination = separatedDestination;
         }
     }
-
-    public void ReachedObjective()
-    {
-        if(!arrived)
-        {
-            Debug.Log("Hit target");
-            recentObjective = target;
-            arrived = true;
-            crumbDropTimer = 0f;
-            myAgent.isStopped = true;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        // Check if NavMeshAgent has reached the destination
-        // if(!arrived && !myAgent.pathPending && myAgent.hasPath && myAgent.remainingDistance < 0.5f)
-        // {
-        //     Debug.Log("Hit target");
-        //     arrived = true;
-        //     crumbDropTimer = 0f;
-        //     myAgent.isStopped = true;
-        // }
-    }
-
-    // // never got called?
-    // void OnTriggerEnter(Collider other)
-    // {
-    //     if(other.tag == "Finish")
-    //     {
-    //         Debug.Log("Hit target");
-    //         myAgent.isStopped = true;
-    //         crumbDropTimer = 0f;
-    //     }
-    // }
 }
