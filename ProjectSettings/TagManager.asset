@@ -10,6 +10,7 @@ TagManager:
   - FoodBit
   - Food
   - Sand
+  - Building
   layers:
   - Default
   - TransparentFX

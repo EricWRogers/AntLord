@@ -7,11 +7,11 @@ public class CommandAnt : MonoBehaviour
     public Camera cam;
     public List<GameObject> selectedAnts = new List<GameObject>();
     public LeadNav selectedLeader;
-    public float sphereCastRadius = 2;
     public GameObject wayPointPrefab;
     private bool antSelect = false;
 
-    // for shift-drag selection
+    [Header("Drag Select")]
+    public float sphereCastRadius = 2;
     private Vector3 shiftDragStart;
     private bool shiftDragging = false;
 
@@ -20,6 +20,7 @@ public class CommandAnt : MonoBehaviour
     public float selectedIntensity = 2.5f;
     public Color leaderColor = Color.yellow;
     public float leaderIntensity = 3.0f;
+    public AntTask taskToAssign = AntTask.Manual;
 
     void Awake()
     {
@@ -89,11 +90,10 @@ public class CommandAnt : MonoBehaviour
                 else
                 {
                     
-                    foreach (var col in hits)
+                    foreach (Collider col in hits)
                     {
                         if (col.CompareTag("Ant"))
                         {
-                            
                             ToggleSelection(col.transform.gameObject);
                             antSelect = true;
                         }
@@ -102,33 +102,66 @@ public class CommandAnt : MonoBehaviour
             }
         }
 
-        // -- Set a waypoint
+        // -- Set a waypoint or set a task
         if (Input.GetMouseButtonDown(1) && (selectedLeader == null || selectedLeader.target != selectedLeader.home))
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (!antSelect && selectedAnts.Count != 0 && Physics.Raycast(ray, out RaycastHit hit, 500f))
+            if(taskToAssign == AntTask.Manual)
             {
-                ElectLeader();
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-                if (hit.transform.CompareTag("Food"))
-                    selectedLeader.target = hit.transform;
-                else
-                    selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
+                if (!antSelect && selectedAnts.Count != 0 && Physics.Raycast(ray, out RaycastHit hit, 500f))
+                {
+                    ElectLeader();
 
-                selectedLeader.myAgent = selectedLeader.GetComponent<NavMeshAgent>();
-                selectedLeader.myAgent.isStopped = false;
+                    if (hit.transform.CompareTag("Food"))
+                        selectedLeader.target = hit.transform;
+                    else
+                        selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
 
-                for (int i = 0; i < selectedLeader.followers.Count; i++)
-                    selectedLeader.followers[i].isStopped = false;
+                    
+                }
+            }
+            else if(taskToAssign == AntTask.Food && selectedAnts.Count != 0)
+            {
+                float sphereRadius = 25f;
+                Collider[] hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
+                bool targetYet = false;
+                int tries = 1;
 
-                // Make leader a different color before clearing
-                SetGlow(selectedAnts[0], leaderColor, leaderIntensity);
+                // what does antSelect mean?
+                if (!antSelect)
+                {
+                    while(!targetYet && sphereRadius <= 500)
+                    {
 
-                // Going into action removes highlight
-                // ClearSelectionVisualsOnly();
-                // selectedAnts.Clear();
-                // selectedLeader = null;
+                        foreach(Collider col in hits)
+                        {
+                            if (col.CompareTag("Food"))
+                            {
+                                Debug.Log("Found food to target!");
+                                ElectLeader();
+                                selectedLeader.target = col.transform;
+                                targetYet = true;
+
+                                break;
+                            }
+                        }
+
+                        if(!targetYet)
+                        {
+                            sphereRadius *= 2;
+
+                            if(sphereRadius <= 500) // should be relative to map size
+                            {
+                                Debug.Log($"Going for try {++tries}"); 
+                                hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
+                            }
+                            else
+                                Debug.Log("Gave up on finding food");
+                        }
+
+                    }
+                }
             }
         }
 
@@ -138,6 +171,18 @@ public class CommandAnt : MonoBehaviour
             ClearSelectionVisualsOnly();
             selectedAnts.Clear();
             selectedLeader = null;
+        }
+
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Debug.Log("Switching to Manual");
+            taskToAssign = AntTask.Manual;
+        }
+            
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Debug.Log("Switching to Food");
+            taskToAssign = AntTask.Food;
         }
     }
 
@@ -175,6 +220,16 @@ public class CommandAnt : MonoBehaviour
         selectedLeader.GetComponent<FollowNav>().enabled = false;
 
         selectedLeader.crumbs.Clear();
+
+        selectedLeader.myAgent = selectedLeader.GetComponent<NavMeshAgent>();
+        selectedLeader.myAgent.isStopped = false;
+
+        for (int i = 0; i < selectedLeader.followers.Count; i++)
+            selectedLeader.followers[i].isStopped = false;
+
+        // Make leader a different color before clearing
+        SetGlow(selectedAnts[0], leaderColor, leaderIntensity);
+
     }
 
     //visualizzation methods

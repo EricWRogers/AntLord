@@ -211,7 +211,7 @@ PrefabInstance:
       objectReference: {fileID: 609564850}
     - target: {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: antTeir
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: m_Enabled
@@ -227,7 +227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9126265470297457125, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: antTier
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnFoodBites
   foodBitePrefab: {fileID: 4809084369255736288, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
-  foodHealth: 8
+  foodHealth: 12
   radius: 3
   foodbit: {fileID: 0}
   mostRecentLead: {fileID: 0}
@@ -1122,7 +1122,7 @@ PrefabInstance:
       objectReference: {fileID: 609564850}
     - target: {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: antTeir
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: m_Enabled
@@ -1138,7 +1138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9126265470297457125, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: antTier
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1214,7 +1214,7 @@ PrefabInstance:
       objectReference: {fileID: 609564850}
     - target: {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: antTeir
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2311856089799220107, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: m_Enabled
@@ -1230,7 +1230,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9126265470297457125, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: antTier
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1360,6 +1360,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1511020174193236167, guid: b770d7056117e414d87cf46f24994622, type: 3}
+      propertyPath: antTier
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5353203383124394665, guid: b770d7056117e414d87cf46f24994622, type: 3}
+      propertyPath: antTeir
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5353203383124394665, guid: b770d7056117e414d87cf46f24994622, type: 3}
+      propertyPath: amCarryingFood
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7116833522588159338, guid: b770d7056117e414d87cf46f24994622, type: 3}
       propertyPath: marker
       value: 
