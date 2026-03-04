@@ -21,10 +21,13 @@ public class CommandAnt : MonoBehaviour
     public Color leaderColor = Color.yellow;
     public float leaderIntensity = 3.0f;
     public AntTask taskToAssign = AntTask.Manual;
+    public SelectionRingController selectionRing;
+    public LayerMask groundMask;
 
     void Awake()
     {
         if (!cam) cam = Camera.main;
+        if (!selectionRing) selectionRing = FindFirstObjectByType<SelectionRingController>();
     }
 
     void Update()
@@ -36,10 +39,24 @@ public class CommandAnt : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit, 500f))
+                if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
                 {
                     shiftDragStart = hit.point;
                     shiftDragging = true;
+
+                    // start ring (tiny)
+                    if (selectionRing) selectionRing.Show(shiftDragStart, 0.1f);
+                }
+            }
+
+            // while dragging
+            if (shiftDragging && Input.GetMouseButton(0))
+            {
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
+                {
+                    float radius = Vector3.Distance(shiftDragStart, hit.point);
+                    if (selectionRing) selectionRing.Show(shiftDragStart, radius);
                 }
             }
 
@@ -47,11 +64,14 @@ public class CommandAnt : MonoBehaviour
             if (shiftDragging && Input.GetMouseButtonUp(0))
             {
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit, 500f))
+                if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
                 {
                     float radius = Vector3.Distance(shiftDragStart, hit.point);
 
-                    // clear existing selection
+                    // hide ring once selection made
+                    if (selectionRing) selectionRing.Hide();
+
+                    
                     ClearSelectionVisualsOnly();
                     selectedAnts.Clear();
                     selectedLeader = null;
@@ -59,17 +79,27 @@ public class CommandAnt : MonoBehaviour
                     Collider[] hits = Physics.OverlapSphere(shiftDragStart, radius);
                     foreach (var col in hits)
                     {
-                        if (col.CompareTag("Ant") && col.transform.GetComponent<AntBrain>().antType.teamID == 0)
+                        if (!col.CompareTag("Ant")) continue;
+
+                        var brain = col.GetComponent<AntBrain>();
+                        if (brain == null) continue;
+
+                        if (brain.antType.teamID == 0)
                         {
                             selectedAnts.Add(col.gameObject);
                             SetGlow(col.gameObject, selectedColor, selectedIntensity);
                         }
                     }
                 }
+                else
+                {
+                    // couldn't raycast to ground on release
+                    if (selectionRing) selectionRing.Hide();
+                }
 
                 shiftDragging = false;
             }
-        }
+}
 
         // normal click selection
         else if (Input.GetMouseButtonDown(0))
