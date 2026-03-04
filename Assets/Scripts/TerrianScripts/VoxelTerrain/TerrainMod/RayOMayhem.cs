@@ -4,6 +4,11 @@ public class RayOMayhem : MonoBehaviour
 {
     public Camera cam;
     public MarchingCubes voxelTerrain;
+
+    public bool wasBuilding = false;
+
+    public bool trailEnd = false;
+
     void Awake()
     {
         if (!cam) cam = Camera.main;
@@ -17,10 +22,12 @@ public class RayOMayhem : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             return;
 
-        // if (Input.GetKeyDown(KeyCode.R))
+        // if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
         // {
-        //     voxelTerrain.ResetFlat(10); //reset terrain to flat with height of 10
+        //     voxelTerrain.TriggerNavMeshUpdate();
+        //     Debug.Log("I want navmesh update pls.");
         // }
+
 
         //right click to break voxel block
         if (Input.GetMouseButton(0))
@@ -30,12 +37,21 @@ public class RayOMayhem : MonoBehaviour
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, 500f, voxelTerrain.layerMask))
                 {
+                    Debug.Log("Y: " + hit.point.y);
+                    if (hit.point.y >= 1.4f)
+                    {
                     //apply voxel breaking logic here;
-                    voxelTerrain.BreakVoxel(hit.point);
+                    voxelTerrain.BreakVoxel(hit.point, 1.0f);
                     nextAdjustmentTime = Time.time + adjustmentRate;
+                    wasBuilding = true;
+                    }
                 }
             }
         }
+
+        
+
+
 
         //left click to add voxel block
         if (Input.GetMouseButton(1))
@@ -45,11 +61,23 @@ public class RayOMayhem : MonoBehaviour
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, 500f, voxelTerrain.layerMask))
                 {
-                    //apply voxel placing logic here;
-                    voxelTerrain.PlaceVoxel(hit.point);
+                    Debug.Log("Y: " + hit.point.y);
+                    if (hit.point.y <= 8.4f)
+                    {
+                    //apply voxel breaking logic here;
+                    voxelTerrain.PlaceVoxel(hit.point, 1.0f);
                     nextAdjustmentTime = Time.time + adjustmentRate;
+                    wasBuilding = true;
+                    }
                 }
             }
+        }
+
+        if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) ) && wasBuilding)
+        {
+            trailEnd = true;
+            wasBuilding = false;
+            Debug.Log("Trail Has ended");
         }
     }
 }

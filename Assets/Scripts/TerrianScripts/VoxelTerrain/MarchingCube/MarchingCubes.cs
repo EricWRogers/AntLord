@@ -46,6 +46,8 @@ public class MarchingCubes : MonoBehaviour
     private List<int> triangles = new List<int>();
     private float[,,] heights;
 
+    public RayOMayhem rayOMayhem;
+
     private MeshFilter meshFilter;
     private Mesh mesh;
 
@@ -57,11 +59,29 @@ public class MarchingCubes : MonoBehaviour
         Initialize();
     }
 
+    void Update()
+    {
+        if (rayOMayhem.trailEnd == true)
+        {
+            UpdateNavMesh();
+            rayOMayhem.trailEnd = false;
+        }
+    }
+
     void UpdateVisuals()
     {
         MarchCubes();
         SetMesh();
+        //GameObject.Find("NavMesh Surface")?.GetComponent<NavMeshSurface>()?.BuildNavMesh();
+        Debug.Log("Visuals updated");
+    }
+
+    void UpdateNavMesh()
+    {
+        MarchCubes();
+        SetMesh();
         GameObject.Find("NavMesh Surface")?.GetComponent<NavMeshSurface>()?.BuildNavMesh();
+        Debug.Log("NavMesh updated");
     }
 
 
@@ -130,7 +150,7 @@ public class MarchingCubes : MonoBehaviour
         {
             for (int y = 0; y < height + 1; y++)
             {
-                for (int z = 0; z < width + 1; z++)
+                for (int z = 0; z < width + 1; z++)          For some reason breaks the code....DON'T Try it
                 {
                     heights[x, y, z] = height;
                 }
@@ -199,8 +219,6 @@ public class MarchingCubes : MonoBehaviour
         {
             return;
         }
-
-        
 
         int edgeIndex = 0;
         for (int t = 0; t < 5; t++)
