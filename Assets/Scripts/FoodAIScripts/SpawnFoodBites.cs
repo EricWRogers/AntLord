@@ -59,7 +59,7 @@ public class SpawnFoodBites : MonoBehaviour
         }
         if (foodHealth <= 0 )
         {
-            mostRecentLead.DoneWithFood();
+            mostRecentLead.target = mostRecentLead.home;
             Destroy(gameObject);
         }
     }
