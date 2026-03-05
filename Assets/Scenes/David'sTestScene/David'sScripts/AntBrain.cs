@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
+using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum AntState { Idle, Following, Chasing, Attacking, Returning }
 
@@ -15,6 +18,11 @@ public class AntBrain : MonoBehaviour
     public float attackRange = 1.5f;
     public LayerMask enemyLayer;
 
+    [Header("Local UI Damage Feedback")]
+    public GameObject damageTextObject;
+    public float textDisplayTime = 0.8f;
+    public float flashDuration = 0.2f;
+
     private float currentHealth;
     private float attackTimer;
     private AntBrain currentTarget;
@@ -24,7 +32,6 @@ public class AntBrain : MonoBehaviour
     private Color originalColor;
     private Color originalEmissionColor;
     private bool hadEmission;
-    public float flashDuration = 0.2f;
 
     void Start()
     {
@@ -32,28 +39,20 @@ public class AntBrain : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         followNav = GetComponent<FollowNav>();
         agent.speed = antType.moveSpeed;
-        
-        // Try to get renderer from this object or child objects
-        antRenderer = GetComponent<Renderer>();
-        if (antRenderer == null)
-            antRenderer = GetComponentInChildren<Renderer>();
-        
+
+        antRenderer = GetComponentInChildren<Renderer>();
         if (antRenderer != null)
         {
-            // operate on material instance so we don't tint shared asset
             Material mat = antRenderer.material;
             originalColor = mat.color;
-            
-            // check for emission property
             if (mat.HasProperty("_EmissionColor"))
             {
                 originalEmissionColor = mat.GetColor("_EmissionColor");
                 hadEmission = originalEmissionColor.maxColorComponent > 0f;
             }
-            Debug.Log("Renderer found: " + antRenderer.name + " (emission? " + hadEmission + ")");
         }
-        else
-            Debug.LogWarning("No Renderer found on ant!");
+
+        if (damageTextObject != null) damageTextObject.SetActive(false);
     }
 
     void Update()
@@ -73,13 +72,61 @@ public class AntBrain : MonoBehaviour
         }
     }
 
-    // --- State Logic Methods ---
+    public void TakeDamage(float amount)
+    {
+        currentHealth -= amount;
+
+        StopCoroutine("DisplayDamageNumber");
+        StartCoroutine(DisplayDamageNumber(amount));
+
+        StartCoroutine(FlashRed());
+
+        if (currentHealth <= 0) Die();
+    }
+
+    private IEnumerator DisplayDamageNumber(float amount)
+    {
+        if (damageTextObject == null) yield break;
+
+        var txt = damageTextObject.GetComponent<TMP_Text>();
+        if (txt != null) txt.text = amount.ToString();
+        else
+        {
+            var standardTxt = damageTextObject.GetComponent<Text>();
+            if (standardTxt != null) standardTxt.text = amount.ToString();
+        }
+
+        damageTextObject.SetActive(true);
+        yield return new WaitForSeconds(textDisplayTime);
+        damageTextObject.SetActive(false);
+    }
+
+    private IEnumerator FlashRed()
+    {
+        if (antRenderer == null) yield break;
+        Material mat = antRenderer.material;
+        mat.color = Color.red;
+        if (mat.HasProperty("_EmissionColor")) {
+            mat.SetColor("_EmissionColor", Color.red);
+            mat.EnableKeyword("_EMISSION");
+        }
+        yield return new WaitForSeconds(flashDuration);
+        mat.color = originalColor;
+        if (mat.HasProperty("_EmissionColor")) {
+            mat.SetColor("_EmissionColor", originalEmissionColor);
+            if (!hadEmission) mat.DisableKeyword("_EMISSION");
+        }
+    }
 
     private void HandleFollowing()
     {
-        // FollowNav handles the movement logic automatically in its own Update
-        // We just ensure the script is enabled
-        followNav.enabled = true;
+        LeadNav lead = GetComponent<LeadNav>();
+        if (lead != null)
+        {
+            if (lead.target != null && agent.destination != lead.target.position)
+                agent.SetDestination(lead.target.position);
+        }
+        else if (followNav != null) followNav.enabled = true;
     }
 
     private void CheckForEnemies()
@@ -92,7 +139,7 @@ public class AntBrain : MonoBehaviour
             {
                 currentTarget = enemyAnt;
                 currentState = AntState.Chasing;
-                followNav.enabled = false; // Stop following leader crumbs
+                if (followNav != null) followNav.enabled = false;
                 return;
             }
         }
@@ -100,98 +147,106 @@ public class AntBrain : MonoBehaviour
 
     private void HandleChasing()
     {
-        if (currentTarget == null)
-        {
-            currentState = AntState.Following;
-            return;
-        }
-
+        if (currentTarget == null) { ReturnToTask(); return; }
         agent.SetDestination(currentTarget.transform.position);
 
         float dist = Vector3.Distance(transform.position, currentTarget.transform.position);
-        if (dist <= attackRange)
-        {
-            currentState = AntState.Attacking;
-        }
-        else if (dist > detectionRange * 1.5f) // Lose interest
-        {
-            currentTarget = null;
-            currentState = AntState.Following;
-        }
+        if (dist <= attackRange) currentState = AntState.Attacking;
+        else if (dist > detectionRange * 1.5f) ReturnToTask();
     }
 
     private void HandleAttacking()
     {
-        if (currentTarget == null)
-        {
-            currentState = AntState.Chasing;
-            return;
-        }
-
-        // Keep rotated towards enemy
+        if (currentTarget == null) { ReturnToTask(); return; }
         transform.LookAt(currentTarget.transform);
-        agent.velocity = Vector3.zero; // Stop moving while biting
+        agent.velocity = Vector3.zero;
 
         attackTimer += Time.deltaTime;
-        if (attackTimer >= 1f) // 1 attack per second
+        if (attackTimer >= 1f)
         {
             Attack(currentTarget);
             attackTimer = 0;
         }
 
         if (Vector3.Distance(transform.position, currentTarget.transform.position) > attackRange)
-        {
             currentState = AntState.Chasing;
-        }
     }
 
-    public void Attack(AntBrain target)
+    private void ReturnToTask()
     {
-        Debug.Log(antType.typeName + " deals " + antType.damage + " damage!");
-        target.TakeDamage(antType.damage);
+        currentState = AntState.Following;
+        currentTarget = null;
+        if (followNav != null) followNav.enabled = true;
     }
 
-    public void TakeDamage(float amount)
+    public void Attack(AntBrain target) { target.TakeDamage(antType.damage); }
+
+
+    void Die()
     {
-        currentHealth -= amount;
-        StartCoroutine(FlashRed());
-        if (currentHealth <= 0) Die();
-        Debug.Log(antType.typeName + " takes " + amount + " damage! Remaining health: " + currentHealth);
+        CommandAnt cmd = Object.FindFirstObjectByType<CommandAnt>();
+        if (cmd != null) cmd.selectedAnts.Remove(gameObject);
+
+        LeadNav leadNav = GetComponent<LeadNav>();
+        if (leadNav != null) PromoteNewLeader(leadNav);
+        
+        Destroy(gameObject);
     }
 
-    private IEnumerator FlashRed()
+    private void PromoteNewLeader(LeadNav oldLeader)
     {
-        if (antRenderer != null)
+        FollowNav[] allFollowers = Object.FindObjectsByType<FollowNav>(FindObjectsSortMode.None);
+        FollowNav bestCandidate = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (FollowNav follower in allFollowers)
         {
-            Material mat = antRenderer.material;
-            // set base color red so we see immediate tint
-            mat.color = Color.red;
-            if (mat.HasProperty("_EmissionColor"))
+            AntBrain fBrain = follower.GetComponent<AntBrain>();
+            if (fBrain != null && fBrain != this && fBrain.antType.teamID == antType.teamID && fBrain.currentHealth > 0)
             {
-                mat.SetColor("_EmissionColor", Color.red);
-                mat.EnableKeyword("_EMISSION");
+                float dist = Vector3.Distance(transform.position, follower.transform.position);
+                if (dist < closestDistance) { closestDistance = dist; bestCandidate = follower; }
             }
-            Debug.Log("Flashing " + gameObject.name + " red with emission");
-
-            yield return new WaitForSeconds(flashDuration);
-
-            mat.color = originalColor;
-            if (mat.HasProperty("_EmissionColor"))
-            {
-                mat.SetColor("_EmissionColor", originalEmissionColor);
-                if (!hadEmission)
-                    mat.DisableKeyword("_EMISSION");
-            }
-            Debug.Log("Color/emission restored");
         }
-        else
-        {
-            Debug.LogWarning("Cannot flash - no renderer found!");
-            yield return null;
-        }
+
+        if (bestCandidate != null) ExecutePromotion(oldLeader, bestCandidate);
     }
 
+    private void ExecutePromotion(LeadNav oldLeader, FollowNav candidate)
+    {
+        LeadNav newLeader = candidate.gameObject.AddComponent<LeadNav>();
+        newLeader.target = oldLeader.target;
+        newLeader.home = oldLeader.home;
+        newLeader.recentObjective = oldLeader.recentObjective;
+        newLeader.crumbs = new List<Vector3>(oldLeader.crumbs);
+        newLeader.antTeir = candidate.antTier;
+        newLeader.task = oldLeader.task;
+        newLeader.followers = new List<NavMeshAgent>();
 
+        Destroy(candidate);
+        ReassignFollowers(oldLeader, newLeader);
+    }
 
-    void Die() => Destroy(gameObject);
+    private void ReassignFollowers(LeadNav oldLeader, LeadNav newLeader)
+    {
+        FollowNav[] allFollowers = Object.FindObjectsByType<FollowNav>(FindObjectsSortMode.None);
+        int reassignedCount = 0;
+
+        foreach (FollowNav f in allFollowers)
+        {
+            if (f.leader == oldLeader)
+            {
+                f.leader = newLeader;
+                f.crumbTrack = 0; 
+            
+                if (f.myAgent != null)
+                {
+                    f.myAgent.SetDestination(newLeader.transform.position);
+                    newLeader.followers.Add(f.myAgent);
+                    reassignedCount++;
+                }
+            }
+        }
+        Debug.Log($"<color=cyan>SQUAD SYNC: {reassignedCount} ants successfully moved to new leader {newLeader.name}.</color>");
+    }
 }

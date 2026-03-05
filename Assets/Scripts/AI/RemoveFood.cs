@@ -5,6 +5,7 @@ public class RemoveFood : MonoBehaviour
 {
     Collider[] hitColliders;
     public float radius = 1f;
+    public int tier = 1;
 
     // Update is called once per frame
     void Update()
@@ -14,59 +15,39 @@ public class RemoveFood : MonoBehaviour
         {
             if(hitColliders.CompareTag("Ant"))
             {
-                if(hitColliders.GetComponent<FollowNav>().enabled && hitColliders.GetComponent<FollowNav>().amCarryingFood)
+                tier = hitColliders.GetComponent<LeadNav>().antTeir;
+                if (hitColliders.GetComponent<FollowNav>().enabled && hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {
                     
-                    // Instantiate(foodBitePrefab, hitColliders.transform.localPosition + biteSpawn, transform.rotation);
-
-                    // hitColliders.GetComponent<FollowNav>().amCarryingFood = true;
-
-                    // foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
-
-                    // GameObject ant = hitColliders.gameObject;
-                    // foodBite.SetAnt(ant);
-            
-                    // Debug.Log("bite iis spawned");
-                    // FindFirstObjectByType<LeadNav>().foodBits++;
-
-                    hitColliders.GetComponent<FollowNav>().amCarryingFood = false;
-                    Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject);
-
-                    if(!hitColliders.GetComponent<LeadNav>().enabled)
+                    for (int i = 1; i <= tier; i++)
                     {
-                        hitColliders.GetComponent<FollowNav>().leader.foodBits--;
-                        hitColliders.GetComponent<FollowNav>().myAgent.isStopped = true;
-                        GetComponent<SpawnerBuilding>().GiveFood(1);
-                    }
-                }
-                else if(hitColliders.GetComponent<LeadNav>().enabled && hitColliders.GetComponent<LeadNav>().amCarryingFood)
-                {
-                    // Instantiate(foodBitePrefab, hitColliders.transform.localPosition + biteSpawn, transform.rotation);
-
-                    // hitColliders.GetComponent<LeadNav>().amCarryingFood = true;
-
-                    // foodBite = foodBitePrefab.gameObject.GetComponent<FoodBites>();
-
-                    // GameObject ant = hitColliders.gameObject;
-                    // foodBite.SetAnt(ant);
-            
-                    // Debug.Log("bite iis spawned");
-                    // FindFirstObjectByType<LeadNav>().foodBits++;
-
-                    if(!hitColliders.GetComponent<FollowNav>().enabled)
-                    {
-                        hitColliders.GetComponent<LeadNav>().amCarryingFood = false;
-                        Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject);
-                        hitColliders.GetComponent<LeadNav>().foodBits--;
-                        
-                        if(hitColliders.GetComponent<LeadNav>().foodBits == 0)
+                        if (!hitColliders.GetComponent<LeadNav>().enabled)
                         {
-                            hitColliders.GetComponent<LeadNav>().myAgent.isStopped = true;
-                            hitColliders.GetComponent<LeadNav>().target = null;
+                            Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject); 
+                            //hitColliders.GetComponent<FollowNav>().myAgent.isStopped = true;
+                            GetComponent<SpawnerBuilding>().GiveFood(1);
+                            hitColliders.GetComponent<FollowNav>().leader.foodBits--;
                         }
-                        
-                        GetComponent<SpawnerBuilding>().GiveFood(1);
+                       
                     }
+                    hitColliders.GetComponent<FollowNav>().amCarryingFood = false;
+                }
+                else if (hitColliders.GetComponent<LeadNav>().enabled && hitColliders.GetComponent<LeadNav>().amCarryingFood)
+                {
+                   
+                    for (int i = 1; i <= tier; i++)
+                    {
+
+                        // if(hitColliders.GetComponent<LeadNav>().foodBits == 0)
+                        // {
+                        //     hitColliders.GetComponent<LeadNav>().myAgent.isStopped = true;
+                        //     hitColliders.GetComponent<LeadNav>().target = null;
+                        // }
+                        Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject);
+                    }
+                    hitColliders.GetComponent<LeadNav>().foodBits-=tier;
+                    GetComponent<SpawnerBuilding>().GiveFood(tier);
+                    hitColliders.GetComponent<LeadNav>().amCarryingFood = false;
                 }
 
             }
