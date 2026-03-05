@@ -49,8 +49,9 @@ public class SpawnFoodBites : MonoBehaviour
                     {
                         Instantiate(foodBitePrefab, hitColliders.transform.position + (biteSpawn * i), transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
                         mostRecentLead = hitColliders.GetComponent<LeadNav>();
+                        hitColliders.GetComponent<LeadNav>().amCarryingFood = true;
                     }
-                    hitColliders.GetComponent<LeadNav>().amCarryingFood = true;
+                    
                     foodHealth -= tier;
                     hitColliders.GetComponent<LeadNav>().foodBits += tier;
                 }
