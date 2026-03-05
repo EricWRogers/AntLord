@@ -37,10 +37,8 @@ public class RayOMayhem : MonoBehaviour
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, 500f, voxelTerrain.layerMask))
                 {
-                    Debug.Log("Y: " + hit.point.y);
                     if (hit.point.y >= 1.4f)
                     {
-                    //apply voxel breaking logic here;
                     voxelTerrain.BreakVoxel(hit.point, 1.0f);
                     nextAdjustmentTime = Time.time + adjustmentRate;
                     wasBuilding = true;
@@ -61,10 +59,8 @@ public class RayOMayhem : MonoBehaviour
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, 500f, voxelTerrain.layerMask))
                 {
-                    Debug.Log("Y: " + hit.point.y);
                     if (hit.point.y <= 8.4f)
                     {
-                    //apply voxel breaking logic here;
                     voxelTerrain.PlaceVoxel(hit.point, 1.0f);
                     nextAdjustmentTime = Time.time + adjustmentRate;
                     wasBuilding = true;
@@ -77,7 +73,6 @@ public class RayOMayhem : MonoBehaviour
         {
             trailEnd = true;
             wasBuilding = false;
-            Debug.Log("Trail Has ended");
         }
     }
 }
