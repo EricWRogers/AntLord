@@ -230,14 +230,23 @@ public class AntBrain : MonoBehaviour
     private void ReassignFollowers(LeadNav oldLeader, LeadNav newLeader)
     {
         FollowNav[] allFollowers = Object.FindObjectsByType<FollowNav>(FindObjectsSortMode.None);
+        int reassignedCount = 0;
+
         foreach (FollowNav f in allFollowers)
         {
             if (f.leader == oldLeader)
             {
                 f.leader = newLeader;
-                f.crumbTrack = 0;
-                if (f.myAgent != null) newLeader.followers.Add(f.myAgent);
+                f.crumbTrack = 0; 
+            
+                if (f.myAgent != null)
+                {
+                    f.myAgent.SetDestination(newLeader.transform.position);
+                    newLeader.followers.Add(f.myAgent);
+                    reassignedCount++;
+                }
             }
         }
+        Debug.Log($"<color=cyan>SQUAD SYNC: {reassignedCount} ants successfully moved to new leader {newLeader.name}.</color>");
     }
 }
