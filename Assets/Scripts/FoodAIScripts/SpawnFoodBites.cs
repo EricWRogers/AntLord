@@ -31,15 +31,18 @@ public class SpawnFoodBites : MonoBehaviour
                 {
                     if (!hitColliders.GetComponent<LeadNav>().enabled)
                     {
+                        hitColliders.GetComponent<FollowNav>().amCarryingFood = true;
                         for (int i = 1; i <= tier; i++)
                         {
+                            
                             Instantiate(foodBitePrefab, hitColliders.transform.position + (biteSpawn * i), transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
                             mostRecentLead = hitColliders.GetComponent<FollowNav>().leader;
+                            
                         }
                         foodHealth -= tier;
                         hitColliders.GetComponent<FollowNav>().leader.foodBits += tier;
                     }
-                    hitColliders.GetComponent<FollowNav>().amCarryingFood = true;
+                    
 
 
                 }
