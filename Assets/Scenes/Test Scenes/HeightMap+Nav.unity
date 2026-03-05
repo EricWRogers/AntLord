@@ -1579,7 +1579,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -31.456863, y: -0.34924674, z: 518.31433, w: -79.55664}
+  m_margin: {x: -31.456863, y: -0.34924674, z: 512.2266, w: -79.55664}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5949,6 +5949,14 @@ MonoBehaviour:
   mouseIndicator: {fileID: 2110717911}
   cellIndicator: {fileID: 525538903}
   cellIndicatorObj: {fileID: 1034242289}
+  cubesAndDudes: {fileID: 0}
+  heightmap: {fileID: 0}
+  falloff:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   selectedObjectIndex: -1
   placementLayermask:
     serializedVersion: 2
@@ -5956,6 +5964,7 @@ MonoBehaviour:
   grid: {fileID: 1830021783}
   inBuildMode: 0
   rotation: 0
+  angle: 0
 --- !u!1001 &2073379533
 PrefabInstance:
   m_ObjectHideFlags: 0
