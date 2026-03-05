@@ -163,55 +163,52 @@ public class CommandAnt : MonoBehaviour
                 if (!antSelect && selectedAnts.Count != 0 && Physics.Raycast(ray, out RaycastHit hit, 500f))
                 {
                     ElectLeader();
+                    selectedLeader.task = AntTask.Manual;
 
                     if (hit.transform.CompareTag("Food"))
                         selectedLeader.target = hit.transform;
                     else
                         selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
-
-                    
                 }
             }
-            else if(taskToAssign == AntTask.Food && selectedAnts.Count != 0)
+            else if(taskToAssign == AntTask.Food && selectedAnts.Count != 0 && !antSelect) // what does antSelect mean?
             {
                 float sphereRadius = 25f;
                 Collider[] hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
                 bool targetYet = false;
                 int tries = 1;
 
-                // what does antSelect mean?
-                if (!antSelect)
+
+                while(!targetYet && sphereRadius <= 500)
                 {
-                    while(!targetYet && sphereRadius <= 500)
+
+                    foreach(Collider col in hits)
                     {
-
-                        foreach(Collider col in hits)
+                        if (col.CompareTag("Food"))
                         {
-                            if (col.CompareTag("Food"))
-                            {
-                                Debug.Log("Found food to target!");
-                                ElectLeader();
-                                selectedLeader.target = col.transform;
-                                targetYet = true;
+                            Debug.Log("Found food to target!");
+                            ElectLeader();
+                            selectedLeader.target = col.transform;
+                            selectedLeader.task = AntTask.Food;
+                            targetYet = true;
 
-                                break;
-                            }
+                            break;
                         }
-
-                        if(!targetYet)
-                        {
-                            sphereRadius *= 2;
-
-                            if(sphereRadius <= 500) // should be relative to map size
-                            {
-                                Debug.Log($"Going for try {++tries}"); 
-                                hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
-                            }
-                            else
-                                Debug.Log("Gave up on finding food");
-                        }
-
                     }
+
+                    if(!targetYet)
+                    {
+                        sphereRadius *= 2;
+
+                        if(sphereRadius <= 500) // should be relative to map size
+                        {
+                            Debug.Log($"Going for try {++tries}"); 
+                            hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
+                        }
+                        else
+                            Debug.Log("Gave up on finding food");
+                    }
+
                 }
             }
         }
@@ -239,7 +236,7 @@ public class CommandAnt : MonoBehaviour
 
     void ElectLeader()
     {
-        Debug.Log("Selecting new leader!");
+        //Debug.Log("Selecting new leader!");
 
         foreach (GameObject ant in selectedAnts)
         {
