@@ -1,103 +1,117 @@
-// using UnityEngine;
-// using System.Collections;
-// using System.Collections.Generic;
-// using System.Threading.Tasks;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-// public class SBBerrySpawn : MonoBehaviour
-// {
-//     //how often to spawn
-//     private float spawnTimer;
-//     // public float spawnInterval = 4f;
-//     public int howManyToSpawn;
+public class SBBerrySpawn : MonoBehaviour
+{
+    //how often to spawn
+    private float spawnTimer;
+    public float spawnInterval;
+    public float spawnTiming;
+    public int howManyToSpawn;
 
-//     //what and where to spawn
-//     public GameObject apple;
-//     public float sphereRadius = 4f;
-//     public List<GameObject> spawnPoints = new List<GameObject>();
+    //what and where to spawn
+    public GameObject berry;
+    public float sphereRadius = 4f;
+    public List<Transform> spawnPoints = new List<Transform>();
 
-//     //size & growth during/after spawn 
-//     public float growDuration = 1.5f;
-//     public float startingSize = 0.1f;
-//     Coroutine growingApple;
-//     private bool isGrowing = false;
+    //size & growth during/after spawn 
+    public float growDuration = 1.5f;
+    public float startingSize = 0.1f;
+    Coroutine growingApple;
+    private bool isGrowing = false;
 
-//     //gravity
-//     private Rigidbody rb;
+    //gravity
+    private Rigidbody rb;
 
 
-//     void Update()
-//     {
-//         if (Time.time >= spawnTimer)
-//         {
-//             SpawnApple();
-//             spawnTimer = Time.time + growDuration + 5; 
-//         }
-//     }
-//     public async Task SpawnApple()
-//     {
-//         howManyToSpawn = Random.Range(0, spawnPoints.Count);
+    void Update()
+    {
+        if (Time.time >= spawnTimer)
+        {
+            SpawnApple();
+            spawnTimer = Time.time + growDuration + 5; 
+        }
+    }
+    public async Task SpawnApple()
+    {
+        howManyToSpawn = Random.Range(1, spawnPoints.Count);
+        Debug.Log("how many: " + howManyToSpawn);
 
-//         // Vector3 randomPoint = Random.insideUnitSphere * sphereRadius;
-//         // Vector3 spawnPosition = transform.position + randomPoint;
+        spawnTiming = Random.Range(spawnInterval, spawnInterval * 2);
+        Debug.Log("timing: "+spawnTiming);
 
-//         Quaternion randomYRotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
+        for (int i = 0; 1 <= howManyToSpawn; i++)
+        {
+            Debug.Log("i: "+i);
 
-//         GameObject anApple = Instantiate(apple, spawnPosition, randomYRotation);
+            int randomIndex = Random.Range(0, spawnPoints.Count);
 
-//         Rigidbody rb = anApple.GetComponent<Rigidbody>();
+            Transform spawnPosition = spawnPoints[randomIndex];
 
-//         anApple.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
+            GameObject aBerry = Instantiate(berry, spawnPosition.position, spawnPosition.rotation);
 
-//         growingApple = StartCoroutine(WatchAppleGrow(anApple.transform));
+            Rigidbody rb = aBerry.GetComponent<Rigidbody>();
 
-//         CollisionDetectorForPrefabs forwarder = anApple.GetComponent<CollisionDetectorForPrefabs>();
-//         forwarder.OnHit = (collision) =>
-//         {
-//             Debug.Log("The apple hit: " + collision.gameObject.name);
+            aBerry.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
+
+            growingApple = StartCoroutine(WatchAppleGrow(aBerry.transform));
+
+            CollisionDetectorForPrefabs forwarder = aBerry.GetComponent<CollisionDetectorForPrefabs>();
+            forwarder.OnHit = (collision) =>
+            {
+                Debug.Log("The berry hit: " + collision.gameObject.name);
             
-//             if (isGrowing == true)
-//             {
-//                 StopCoroutine(growingApple);    
-//                 isGrowing = false;
-//                 Debug.Log ("stopped coroutine grow");
-//             }
+                if (isGrowing == true)
+                {
+                    StopCoroutine(growingApple);    
+                    isGrowing = false;
+                    Debug.Log ("stopped coroutine grow");
+                }
             
 
-//             if (rb != null && rb.useGravity != true)
-//             {
-//                 rb.useGravity = true;
-//                 Debug.Log ("started gravity early");
-//             }
-//         };
+                if (rb != null && rb.useGravity != true)
+                {
+                    rb.useGravity = true;
+                    Debug.Log ("started gravity early");
+                }
+            };
 
-//         await Awaitable.WaitForSecondsAsync(growDuration);
+            await Awaitable.WaitForSecondsAsync(growDuration);
 
-//         if (rb != null)
-//         {
-//             rb.useGravity = true;
-//             Debug.Log ("rb");
-//         }
-//         else
-//         {
-//             Debug.Log ("No rigidbody");
-//         }
-        
-//     }
+            if (rb != null)
+            {
+                rb.useGravity = true;
+                Debug.Log ("rb");
+            }
+            else
+            {
+                Debug.Log ("No rigidbody");
+            }
+     
+        }
 
-//     IEnumerator WatchAppleGrow(Transform objTransform)
-//     {
-//         isGrowing = true;
-//         float elapsed = 0f;
-//         Vector3 startScale = new Vector3 (startingSize, startingSize, startingSize);
-//         Vector3 endScale = Vector3.one;
+        // Vector3 randomPoint = Random.insideUnitSphere * sphereRadius;
+        // Vector3 spawnPosition = transform.position + randomPoint;
 
-//         while (elapsed < growDuration)
-//         {
-//             elapsed += Time.deltaTime;
-//             objTransform.localScale = Vector3.Lerp(startScale, endScale, elapsed / growDuration);
-//             yield return null;
-//         }
-//         objTransform.localScale = endScale;
-//         isGrowing = false;
-//     }
-// }
+        // Quaternion randomYRotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);       
+    }
+
+    IEnumerator WatchAppleGrow(Transform objTransform)
+    {
+        isGrowing = true;
+        float elapsed = 0f;
+        Vector3 startScale = new Vector3 (startingSize, startingSize, startingSize);
+        Vector3 endScale = Vector3.one;
+
+        while (elapsed < growDuration)
+        {
+            elapsed += Time.deltaTime;
+            objTransform.localScale = Vector3.Lerp(startScale, endScale, elapsed / growDuration);
+            yield return null;
+        }
+        objTransform.localScale = endScale;
+        isGrowing = false;
+    }
+}
