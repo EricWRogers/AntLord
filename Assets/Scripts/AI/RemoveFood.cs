@@ -17,10 +17,11 @@ public class RemoveFood : MonoBehaviour
                 if(hitColliders.GetComponent<FollowNav>().enabled && hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {
                     hitColliders.GetComponent<FollowNav>().amCarryingFood = false;
-                    Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject);
+                    
 
                     if(!hitColliders.GetComponent<LeadNav>().enabled)
                     {
+                        Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject);
                         hitColliders.GetComponent<FollowNav>().leader.foodBits--;
                         //hitColliders.GetComponent<FollowNav>().myAgent.isStopped = true;
                         GetComponent<SpawnerBuilding>().GiveFood(1);
@@ -29,11 +30,10 @@ public class RemoveFood : MonoBehaviour
                 else if(hitColliders.GetComponent<LeadNav>().enabled && hitColliders.GetComponent<LeadNav>().amCarryingFood)
                 {
 
-                    if(!hitColliders.GetComponent<FollowNav>().enabled)
-                    {
-                        hitColliders.GetComponent<LeadNav>().amCarryingFood = false;
-                        Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject);
-                        hitColliders.GetComponent<LeadNav>().foodBits--;
+                    
+                    hitColliders.GetComponent<LeadNav>().amCarryingFood = false;
+                    
+                    hitColliders.GetComponent<LeadNav>().foodBits--;
                         
                         // if(hitColliders.GetComponent<LeadNav>().foodBits == 0)
                         // {
@@ -41,8 +41,8 @@ public class RemoveFood : MonoBehaviour
                         //     hitColliders.GetComponent<LeadNav>().target = null;
                         // }
                         
-                        GetComponent<SpawnerBuilding>().GiveFood(1);
-                    }
+                    GetComponent<SpawnerBuilding>().GiveFood(1);
+                    Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject); 
                 }
 
             }
