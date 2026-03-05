@@ -3542,7 +3542,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 89896772328918604, guid: 429d00d8b71fea54fbd277729ddfb203, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1239567093}
   m_SourcePrefab: {fileID: 100100000, guid: 429d00d8b71fea54fbd277729ddfb203, type: 3}
 --- !u!1001 &1114960042
 PrefabInstance:
@@ -3739,7 +3742,7 @@ PrefabInstance:
     - target: {fileID: 5889802519027449559, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: selectionRing
       value: 
-      objectReference: {fileID: 1162950082}
+      objectReference: {fileID: 0}
     - target: {fileID: 5889802519027449559, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: sphereCastRadius
       value: 0.2
@@ -3758,9 +3761,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 339745033775634639, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1162950083}
-    - targetCorrespondingSourceObject: {fileID: 339745033775634639, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1162950082}
   m_SourcePrefab: {fileID: 100100000, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
 --- !u!1 &1162950079 stripped
 GameObject:
@@ -3777,22 +3777,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
   m_PrefabInstance: {fileID: 1162950078}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1162950082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1162950079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94574e186f45a594f9b9167f3d4a7085, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SelectionRingController
-  ring: {fileID: 0}
-  yOffset: 1.3
-  ringThicknessWorld: 0.35
-  ringColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!114 &1162950083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4099,6 +4083,27 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
+--- !u!1 &1239567088 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 89896772328918604, guid: 429d00d8b71fea54fbd277729ddfb203, type: 3}
+  m_PrefabInstance: {fileID: 1106176728}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1239567093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239567088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94574e186f45a594f9b9167f3d4a7085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionRingController
+  ring: {fileID: 0}
+  yOffset: 0.5
+  ringThicknessWorld: 0.35
+  ringColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1001 &1252585629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4842,7 +4847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b13f6b7d6a37154590688e30af8eb1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameModeManager
-  VRIsActivated: 1
+  VRIsActivated: 0
   DesktopCam: {fileID: 1162950079}
   VRCam: {fileID: 1817014048}
 --- !u!4 &1755000137
