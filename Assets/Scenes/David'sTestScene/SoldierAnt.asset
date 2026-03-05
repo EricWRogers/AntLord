@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: SoldierAnt
   m_EditorClassIdentifier: Assembly-CSharp::AntDataType
   typeName: Soldier
-  maxHealth: 200
+  maxHealth: 225
   damage: 25
   moveSpeed: 4
   carryCapacity: 2
   carryWeightLimit: 50
   modelPrefab: {fileID: 0}
+  teamID: 0
