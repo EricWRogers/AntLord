@@ -15,23 +15,29 @@ public class SwarmManager : MonoBehaviour
 
     [HideInInspector] public List<SwarmAnt> ants = new List<SwarmAnt>();
 
+    private static Dictionary<Transform, SwarmManager> activeSwarms = new Dictionary<Transform, SwarmManager>(); // Track swarms by target
+
     void Start()
     {
-        ants.Clear();
-
-        for (int i = 0; i < antCount; i++)
+        // Only spawn if no target is set (for manual swarms)
+        if (swarmTarget == null)
         {
-            Vector3 p = transform.position + new Vector3(
-                Random.Range(-spawnExtents.x, spawnExtents.x),
-                25f,
-                Random.Range(-spawnExtents.y, spawnExtents.y)
-            );
+            ants.Clear();
 
-            p = SnapToGround(p);
+            for (int i = 0; i < antCount; i++)
+            {
+                Vector3 p = transform.position + new Vector3(
+                    Random.Range(-spawnExtents.x, spawnExtents.x),
+                    25f,
+                    Random.Range(-spawnExtents.y, spawnExtents.y)
+                );
 
-            var a = Instantiate(antPrefab, p, Quaternion.identity);
-            a.manager = this;
-            ants.Add(a);
+                p = SnapToGround(p);
+
+                var a = Instantiate(antPrefab, p, Quaternion.identity);
+                a.manager = this;
+                ants.Add(a);
+            }
         }
     }
 
@@ -58,5 +64,45 @@ public class SwarmManager : MonoBehaviour
     {
         if (TryGetGroundInfo(fromAbove, out var p, out _)) return p;
         return fromAbove;
+    }
+
+    // Adds a static method to get or create a SwarmManager for a target
+    public static SwarmManager GetOrCreateSwarm(Transform target, SwarmAnt antPrefab, LayerMask groundMask, Vector2 spawnExtents)
+    {
+        if (activeSwarms.TryGetValue(target, out SwarmManager manager))
+        {
+            return manager;
+        }
+        
+        // Create a new SwarmManager
+        GameObject swarmObj = new GameObject("SwarmManager_" + target.name);
+        manager = swarmObj.AddComponent<SwarmManager>();
+        manager.antPrefab = antPrefab;
+        manager.groundMask = groundMask;
+        manager.spawnExtents = spawnExtents;
+        manager.swarmTarget = target;
+        activeSwarms[target] = manager;
+        return manager;
+    }
+
+    // A method to add an existing SwarmAnt
+    public void AddAnt(SwarmAnt ant)
+    {
+        if (!ants.Contains(ant))
+        {
+            ant.manager = this;
+            ants.Add(ant);
+        }
+    }
+
+    // A method to remove an ant (when swarm ends / self exaplianatory)
+    public void RemoveAnt(SwarmAnt ant)
+    {
+        ants.Remove(ant);
+        if (ants.Count == 0)
+        {
+            activeSwarms.Remove(swarmTarget);
+            Destroy(gameObject);
+        }
     }
 }
