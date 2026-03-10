@@ -217,8 +217,9 @@ public class AntBrain : MonoBehaviour
                 currentState = AntState.Following;
             }
         }
-        if (dist <= attackRange) currentState = AntState.Attacking;
-        else if (dist > detectionRange * 1.5f) ReturnToTask();
+        
+        //if (dist <= attackRange) currentState = AntState.Attacking;
+        //else if (dist > detectionRange * 1.5f) ReturnToTask();
     }
 
     private void HandleAttacking()
