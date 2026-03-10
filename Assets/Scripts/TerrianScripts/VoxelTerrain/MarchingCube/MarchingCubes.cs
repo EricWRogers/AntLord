@@ -89,6 +89,7 @@ public class MarchingCubes : MonoBehaviour
     {
         meshFilter = GetComponent<MeshFilter>();
         mesh = new Mesh();
+        mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         meshFilter.mesh = mesh;
 
         SetHeights();
@@ -186,6 +187,7 @@ public class MarchingCubes : MonoBehaviour
         return configIndex;
     }
 
+    
     public void MarchCubes()
     {
         vertices.Clear();

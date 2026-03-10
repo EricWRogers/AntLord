@@ -214,7 +214,12 @@ public class AntBrain : MonoBehaviour
 
     private void ExecutePromotion(LeadNav oldLeader, FollowNav candidate)
     {
-        LeadNav newLeader = candidate.gameObject.AddComponent<LeadNav>();
+// 1. Get the component and turn it on
+    LeadNav newLeader = candidate.gameObject.GetComponent<LeadNav>();
+    
+    if (newLeader != null)
+    {
+        newLeader.enabled = true;
         newLeader.target = oldLeader.target;
         newLeader.home = oldLeader.home;
         newLeader.recentObjective = oldLeader.recentObjective;
@@ -223,8 +228,18 @@ public class AntBrain : MonoBehaviour
         newLeader.task = oldLeader.task;
         newLeader.followers = new List<NavMeshAgent>();
 
-        Destroy(candidate);
+        NavMeshAgent agent = candidate.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.ResetPath();
+        }
+
+        Destroy(candidate); 
+
         ReassignFollowers(oldLeader, newLeader);
+        
+        Debug.Log($"<color=green>PROMOTION: {candidate.gameObject.name} enabled as new leader.</color>");
+    }
     }
 
     private void ReassignFollowers(LeadNav oldLeader, LeadNav newLeader)

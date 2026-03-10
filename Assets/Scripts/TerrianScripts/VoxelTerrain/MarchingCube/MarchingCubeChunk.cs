@@ -1,16 +1,16 @@
 using UnityEngine;
 
-public class Chunk : MonoBehaviour
+public class MarchingCubeChunk : MonoBehaviour
 {
     private Voxel[,,] voxels;
-    [SerializeField] private int chunkSize = 5; // Serialized so you can see it in Inspector
+    public int chunkSize = 16;
 
-    // Use OnValidate to initialize in the editor without pressing Play
     private void OnValidate()
     {
         if (voxels == null) InitializeVoxels();
     }
 
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         InitializeVoxels();
@@ -32,14 +32,6 @@ public class Chunk : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
-    {
-        if (voxels != null)
-        {
-            Gizmos.color = gizmoColor;
-            Gizmos.DrawCube(transform.position + new Vector3(chunkSize / 2, chunkSize / 2, chunkSize / 2), new Vector3(chunkSize, chunkSize, chunkSize));
-        }
-    }
     public void Initialize(int size)
     {
         this.chunkSize = size;
@@ -47,5 +39,5 @@ public class Chunk : MonoBehaviour
         InitializeVoxels();
         gizmoColor = new Color(0.82f, 0.71f, 0.55f, 1.0f); // Solid tan
     }
-    private Color gizmoColor; 
+    private Color gizmoColor;
 }
