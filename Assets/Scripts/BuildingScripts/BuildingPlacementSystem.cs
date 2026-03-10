@@ -5,10 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 public class BuildingPlacementSystem : MonoBehaviour
 {
-//I mean this is pretty close to what we need.
+    //I mean this is pretty close to what we need.
     [SerializeField] private Camera sceneCamera;
     public List<BuildingSO> allBuildings;
     [SerializeField] private GameObject mouseIndicator, cellIndicator, cellIndicatorObj;
+    public MarchingCubes cubesAndDudes;
+    public HeightmapTerrain heightmap;
+    public AnimationCurve falloff;
     public int selectedObjectIndex = -1;
     Vector3 lastPosition;
     [SerializeField] private LayerMask placementLayermask;
@@ -16,6 +19,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     public event Action OnClicked, OnExit;
     public bool inBuildMode = false;
     public float rotation = 0.0f;
+    public float angle;
 
     void Start()
     {
@@ -35,20 +39,21 @@ public class BuildingPlacementSystem : MonoBehaviour
         if (inBuildMode && Input.GetKeyDown(KeyCode.Q))
         {
             cellIndicatorObj.transform.Rotate(0.0f, 90.0f, 0.0f);
-            rotation = (rotation + 90.0f >= 360)? 0 : rotation + 90.0f;
+            rotation = (rotation + 90.0f >= 360) ? 0 : rotation + 90.0f;
             Debug.Log(rotation);
         }
-        else if(inBuildMode && Input.GetKeyDown(KeyCode.E))
+        else if (inBuildMode && Input.GetKeyDown(KeyCode.E))
         {
             cellIndicatorObj.transform.Rotate(0.0f, -90.0f, 0.0f);
-            rotation = (rotation - 90.0f <= -360)? 0 : rotation - 90.0f;
+            rotation = (rotation - 90.0f <= -360) ? 0 : rotation - 90.0f;
             Debug.Log(rotation);
         }
         //tracks the mouse by grid
         Vector3 mousePosition = GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
         mouseIndicator.transform.position = mousePosition;
-        cellIndicator.transform.position = grid.CellToWorld(grid.WorldToCell(mousePosition));
+
+        cellIndicator.transform.position = (angle >= 15.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
     }
     public void StartPlacement(int ID)
     {
@@ -62,17 +67,18 @@ public class BuildingPlacementSystem : MonoBehaviour
             return;
         }
         cellIndicatorObj.transform.localScale = allBuildings[selectedObjectIndex].size;
-        cellIndicatorObj.transform.position += (new Vector3(0.5f,0.0f,0.5f) * cellIndicatorObj.transform.localScale.x);
+        cellIndicatorObj.transform.position += (new Vector3(0.5f, 0.0f, 0.5f) * cellIndicatorObj.transform.localScale.x);
         cellIndicator.SetActive(true);
         //assigning methods to the events
         OnClicked += PlaceStruct;
         OnExit += StopPlacement;
     }
     void StopPlacement()
-    {   inBuildMode = false;
+    {
+        inBuildMode = false;
         selectedObjectIndex = -1;
         cellIndicator.SetActive(false);
-        cellIndicatorObj.transform.localPosition = new Vector3(0.0f,0.5f,0.0f);
+        cellIndicatorObj.transform.localPosition = new Vector3(0.0f, 0.5f, 0.0f);
         //removes previous invocation of event
         OnClicked -= PlaceStruct;
         OnExit -= StopPlacement;
@@ -89,18 +95,41 @@ public class BuildingPlacementSystem : MonoBehaviour
         //places the building at the selectedIndex at these grid coords
         GameObject buildingParent = Instantiate(allBuildings[selectedObjectIndex].preFab);
         buildingParent.transform.localScale = allBuildings[selectedObjectIndex].size;
-        Debug.Log(rotation);
+
         GameObject building = buildingParent.transform.GetChild(0).gameObject;
         building.transform.Rotate(0.0f, rotation, 0.0f);
-        //buildingParent.transform.localRotation = (0.0f, rotation, 0.0f);
-        buildingParent.transform.position = grid.CellToWorld(gridPosition);
+
+        //45 because all the voxels should be perfect right triangles (weirdly some are like 54)
+        //if its a 45 incline or more just bump the building up one so we dont have to bother with a bunch of conditionals
+        buildingParent.transform.position = (angle >= 1.0f) ? grid.CellToWorld(gridPosition) + Vector3.up : grid.CellToWorld(gridPosition);
+        
+        //if HEIGHTMAP chack if angle is 1.0f or more (if i cant do calculus ill settle for this)
+        //if VOXEL check if 45.0f or more
+
+
+        //these are to set whatever the terrain we choose
+        if (cubesAndDudes != null && cubesAndDudes.enabled)
+        {
+
+            cubesAndDudes.SetVoxel(
+                building.transform.position, // le center of the brush
+                building.transform.localScale.x * 2.5f);//le radius of the brush
+        }
+        else if (heightmap != null && heightmap.enabled)
+        {
+            //heightmap.ApplyFlattenBrushInstant(
+            //    building.transform.position,//le center of the brush
+            //    building.transform.localScale.x * 2.5f,//le radius of the brush (that float needs to be tweeked to idk what but its <5.0f and >2.0f)
+            //    building.transform.position.y - building.transform.localScale.y * 0.5f,//le height it gets set to (currentYPos - radiusOfYScale)
+            //    falloff);
+        }
 
     }
     //look sometimes Lambda functions just do this
     public bool IsPointerOverUI()
     => EventSystem.current.IsPointerOverGameObject();
 
-//tracks mouse position, ignores objects not rendered, shoots a raycast for whatever the building layer is
+    //tracks mouse position, ignores objects not rendered, shoots a raycast for whatever the building layer is
     public Vector3 GetSelectedMapPosition()
     {
         Vector3 mousePos = Input.mousePosition;
@@ -110,6 +139,9 @@ public class BuildingPlacementSystem : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100, placementLayermask))
         {
             lastPosition = hit.point;
+            // i had to draw a diagram for this
+            //and remember stuff from physics which was about 2 years ago
+            angle = Vector3.Angle(hit.normal, Vector3.up);
         }
         return lastPosition;
     }

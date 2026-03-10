@@ -31,15 +31,18 @@ public class SpawnFoodBites : MonoBehaviour
                 {
                     if (!hitColliders.GetComponent<LeadNav>().enabled)
                     {
+                        hitColliders.GetComponent<FollowNav>().amCarryingFood = true;
                         for (int i = 1; i <= tier; i++)
                         {
+                            
                             Instantiate(foodBitePrefab, hitColliders.transform.position + (biteSpawn * i), transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
                             mostRecentLead = hitColliders.GetComponent<FollowNav>().leader;
+                            
                         }
                         foodHealth -= tier;
                         hitColliders.GetComponent<FollowNav>().leader.foodBits += tier;
                     }
-                    hitColliders.GetComponent<FollowNav>().amCarryingFood = true;
+                    
 
 
                 }
@@ -49,8 +52,9 @@ public class SpawnFoodBites : MonoBehaviour
                     {
                         Instantiate(foodBitePrefab, hitColliders.transform.position + (biteSpawn * i), transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
                         mostRecentLead = hitColliders.GetComponent<LeadNav>();
+                        hitColliders.GetComponent<LeadNav>().amCarryingFood = true;
                     }
-                    hitColliders.GetComponent<LeadNav>().amCarryingFood = true;
+                    
                     foodHealth -= tier;
                     hitColliders.GetComponent<LeadNav>().foodBits += tier;
                 }
@@ -59,7 +63,7 @@ public class SpawnFoodBites : MonoBehaviour
         }
         if (foodHealth <= 0 )
         {
-            mostRecentLead.DoneWithFood();
+            mostRecentLead.target = mostRecentLead.home;
             Destroy(gameObject);
         }
     }

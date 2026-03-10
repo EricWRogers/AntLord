@@ -21,53 +21,104 @@ public class CommandAnt : MonoBehaviour
     public Color leaderColor = Color.yellow;
     public float leaderIntensity = 3.0f;
     public AntTask taskToAssign = AntTask.Manual;
+    public SelectionRingController selectionRing;
+    public LayerMask groundMask;
 
     void Awake()
     {
         if (!cam) cam = Camera.main;
+        if (!selectionRing) selectionRing = FindFirstObjectByType<SelectionRingController>();
     }
 
     void Update()
     {
-        // --- shift + drag selection ---
-        if (Input.GetKey(KeyCode.LeftShift))
+        // --- shift + drag selection (fixed) ---
+        bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+        // Start drag only when shift is held and LMB pressed
+        if (shiftHeld && Input.GetMouseButtonDown(0))
         {
-            // start drag
-            if (Input.GetMouseButtonDown(0))
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
             {
-                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit, 500f))
-                {
-                    shiftDragStart = hit.point;
-                    shiftDragging = true;
-                }
+                shiftDragStart = hit.point;
+                shiftDragging = true;
+
+                if (selectionRing) selectionRing.Show(shiftDragStart, 0.1f);
             }
+        }
 
-            // release drag
-            if (shiftDragging && Input.GetMouseButtonUp(0))
+
+        if (shiftDragging)
+        {
+            // If shift was released mid-drag, cancel 
+            if (!shiftHeld && Input.GetMouseButton(0))
             {
-                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit, 500f))
+                shiftDragging = false;
+                if (selectionRing) selectionRing.Hide();
+            }
+            else
+            {
+                // Update ring while LMB held
+                if (Input.GetMouseButton(0))
                 {
-                    float radius = Vector3.Distance(shiftDragStart, hit.point);
-
-                    // clear existing selection
-                    ClearSelectionVisualsOnly();
-                    selectedAnts.Clear();
-                    selectedLeader = null;
-
-                    Collider[] hits = Physics.OverlapSphere(shiftDragStart, radius);
-                    foreach (var col in hits)
+                    Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
                     {
-                        if (col.CompareTag("Ant") && col.transform.GetComponent<AntBrain>().antType.teamID == 0)
-                        {
-                            selectedAnts.Add(col.gameObject);
-                            SetGlow(col.gameObject, selectedColor, selectedIntensity);
-                        }
+                        
+                        // center moves toward mouse, radius is half the distance
+                        Vector3 current = hit.point;
+                        Vector3 center = (shiftDragStart + current) * 0.5f;
+                        float radius = Vector3.Distance(shiftDragStart, current) * 0.5f;
+
+                        if (selectionRing) selectionRing.Show(center, radius);
+                    }
+                    else
+                    {
+                        
+                        if (selectionRing) selectionRing.Hide();
                     }
                 }
 
-                shiftDragging = false;
+                // Release drag on mouse up, even if shift isn't held
+                if (Input.GetMouseButtonUp(0))
+                {
+                    Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
+                    {
+                        Vector3 end = hit.point;
+                        Vector3 center = (shiftDragStart + end) * 0.5f;
+                        float radius = Vector3.Distance(shiftDragStart, end) * 0.5f;
+
+                        // hide ring
+                        if (selectionRing) selectionRing.Hide();
+
+                    
+                        ClearSelectionVisualsOnly();
+                        selectedAnts.Clear();
+                        selectedLeader = null;
+
+                        Collider[] hits = Physics.OverlapSphere(center, radius);
+                        foreach (var col in hits)
+                        {
+                            if (!col.CompareTag("Ant")) continue;
+                            var brain = col.GetComponent<AntBrain>();
+                            if (brain == null) continue;
+
+                            if (brain.antType.teamID == 0)
+                            {
+                                selectedAnts.Add(col.gameObject);
+                                SetGlow(col.gameObject, selectedColor, selectedIntensity);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (selectionRing) selectionRing.Hide();
+                    }
+
+                    shiftDragging = false;
+                }
             }
         }
 
@@ -112,55 +163,52 @@ public class CommandAnt : MonoBehaviour
                 if (!antSelect && selectedAnts.Count != 0 && Physics.Raycast(ray, out RaycastHit hit, 500f))
                 {
                     ElectLeader();
+                    selectedLeader.task = AntTask.Manual;
 
                     if (hit.transform.CompareTag("Food"))
                         selectedLeader.target = hit.transform;
                     else
                         selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
-
-                    
                 }
             }
-            else if(taskToAssign == AntTask.Food && selectedAnts.Count != 0)
+            else if(taskToAssign == AntTask.Food && selectedAnts.Count != 0 && !antSelect) // what does antSelect mean?
             {
                 float sphereRadius = 25f;
                 Collider[] hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
                 bool targetYet = false;
                 int tries = 1;
 
-                // what does antSelect mean?
-                if (!antSelect)
+
+                while(!targetYet && sphereRadius <= 500)
                 {
-                    while(!targetYet && sphereRadius <= 500)
+
+                    foreach(Collider col in hits)
                     {
-
-                        foreach(Collider col in hits)
+                        if (col.CompareTag("Food"))
                         {
-                            if (col.CompareTag("Food"))
-                            {
-                                Debug.Log("Found food to target!");
-                                ElectLeader();
-                                selectedLeader.target = col.transform;
-                                targetYet = true;
+                            Debug.Log("Found food to target!");
+                            ElectLeader();
+                            selectedLeader.target = col.transform;
+                            selectedLeader.task = AntTask.Food;
+                            targetYet = true;
 
-                                break;
-                            }
+                            break;
                         }
-
-                        if(!targetYet)
-                        {
-                            sphereRadius *= 2;
-
-                            if(sphereRadius <= 500) // should be relative to map size
-                            {
-                                Debug.Log($"Going for try {++tries}"); 
-                                hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
-                            }
-                            else
-                                Debug.Log("Gave up on finding food");
-                        }
-
                     }
+
+                    if(!targetYet)
+                    {
+                        sphereRadius *= 2;
+
+                        if(sphereRadius <= 500) // should be relative to map size
+                        {
+                            Debug.Log($"Going for try {++tries}"); 
+                            hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
+                        }
+                        else
+                            Debug.Log("Gave up on finding food");
+                    }
+
                 }
             }
         }
@@ -188,7 +236,7 @@ public class CommandAnt : MonoBehaviour
 
     void ElectLeader()
     {
-        Debug.Log("Selecting new leader!");
+        //Debug.Log("Selecting new leader!");
 
         foreach (GameObject ant in selectedAnts)
         {

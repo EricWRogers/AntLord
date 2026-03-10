@@ -46,7 +46,7 @@ public class FollowNav : MonoBehaviour
             }
 
             // Follow crumbs left by leader
-            if(!leader.arrived && leader.crumbs.Count != 0 && Vector3.Distance(transform.position, leader.transform.position) > leaderTail)
+            if(leader.crumbs.Count != 0 && Vector3.Distance(transform.position, leader.transform.position) > leaderTail)
             {
                 myAgent.destination = leader.crumbs[crumbTrack];
 
@@ -58,14 +58,14 @@ public class FollowNav : MonoBehaviour
                 // Check for nearby agents and apply separation
                 HandleAgentCollisions();
             }
-            else if(leader.arrived)
-            {
-                //myAgent.isStopped = true;
+            // else if(leader.arrived)
+            // {
+            //     //myAgent.isStopped = true;
 
-                myAgent.destination = leader.recentObjective.position;
-                leader.crumbs.Clear();
-                crumbTrack = 0;
-            }
+            //     myAgent.destination = leader.recentObjective.position;
+            //     leader.crumbs.Clear();
+            //     crumbTrack = 0;
+            // }
         }
     }
 
