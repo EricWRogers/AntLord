@@ -77,6 +77,16 @@ public class MM : MonoBehaviour
         Debug.Log("Returned to Home.");
     }
 
+    public void Resume()
+    {
+        if (pm != null)
+        {
+            Time.timeScale = 1;
+            pm.SetActive(false);
+            Debug.Log("Game Resumed.");
+        }
+    }
+    
     public void Restart(string level)
     {
         SceneManager.LoadScene(level);
