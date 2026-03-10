@@ -27,7 +27,7 @@ public class MM : MonoBehaviour
         // VR Pause (Left Hand Menu button)
         InputDevice lefthand = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
 
-        if (lefthand.isValid && lefthand.TryGetFeatureValue(CommonUsages.menuButton, out bool pressed))
+        if (lefthand.isValid && lefthand.TryGetFeatureValue(CommonUsages.primaryButton, out bool pressed))
         {
             // Only trigger once when button is first pressed
             if (!vrButtonPressed)
@@ -86,7 +86,7 @@ public class MM : MonoBehaviour
             Debug.Log("Game Resumed.");
         }
     }
-    
+
     public void Restart(string level)
     {
         SceneManager.LoadScene(level);
