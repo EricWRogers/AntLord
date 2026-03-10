@@ -457,6 +457,8 @@ MonoBehaviour:
   foodAmount: 100
   minFoodPerAnt: 10
   tempWinCon: 0
+  antPrefab: {fileID: 8149717863565348194, guid: b770d7056117e414d87cf46f24994622, type: 3}
+  maxHealth: 10
 --- !u!114 &2998819356754665073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,6 +472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RemoveFood
   radius: 1
+  tier: 1
 --- !u!1 &7520773790017887174
 GameObject:
   m_ObjectHideFlags: 0
