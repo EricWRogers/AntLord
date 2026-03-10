@@ -42,21 +42,27 @@ public class SBBerrySpawn : MonoBehaviour
         spawnTiming = Random.Range(spawnInterval, spawnInterval * 2);
         Debug.Log("timing: "+spawnTiming);
 
-        for (int i = 0; 1 <= howManyToSpawn; i++)
+        for (int i = 0; 1 < howManyToSpawn; i++)
         {
             Debug.Log("i: "+i);
 
             int randomIndex = Random.Range(0, spawnPoints.Count);
+            Debug.Log("randomIndex: " + randomIndex);
 
             Transform spawnPosition = spawnPoints[randomIndex];
+            Debug.Log("SpawnPos: "+spawnPosition);
 
+            //its her \/
             GameObject aBerry = Instantiate(berry, spawnPosition.position, spawnPosition.rotation);
+            Debug.Log("aBerry: "+ aBerry);
 
             Rigidbody rb = aBerry.GetComponent<Rigidbody>();
+            Debug.Log("rb: "+rb);
 
             aBerry.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
 
             growingApple = StartCoroutine(WatchAppleGrow(aBerry.transform));
+            Debug.Log("gAppl: "+growingApple);
 
             CollisionDetectorForPrefabs forwarder = aBerry.GetComponent<CollisionDetectorForPrefabs>();
             forwarder.OnHit = (collision) =>
@@ -100,6 +106,7 @@ public class SBBerrySpawn : MonoBehaviour
 
     IEnumerator WatchAppleGrow(Transform objTransform)
     {
+        Debug.Log("IEnum");
         isGrowing = true;
         float elapsed = 0f;
         Vector3 startScale = new Vector3 (startingSize, startingSize, startingSize);
@@ -107,6 +114,7 @@ public class SBBerrySpawn : MonoBehaviour
 
         while (elapsed < growDuration)
         {
+            Debug.Log("elapsed < growDuration");
             elapsed += Time.deltaTime;
             objTransform.localScale = Vector3.Lerp(startScale, endScale, elapsed / growDuration);
             yield return null;
