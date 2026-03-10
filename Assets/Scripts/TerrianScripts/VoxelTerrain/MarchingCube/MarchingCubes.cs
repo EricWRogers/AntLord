@@ -38,8 +38,6 @@ public class MarchingCubes : MonoBehaviour
     [SerializeField] private float heightTresshold = 0.5f;
 
     [SerializeField] private float noiseAmplitude = 5f;
-
-    [SerializeField] bool visualizeNoise;
     [SerializeField] bool use3DNoise;
 
     private List<Vector3> vertices = new List<Vector3>();
@@ -367,25 +365,5 @@ public class MarchingCubes : MonoBehaviour
 
         if (changed)
             UpdateVisuals();
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (!visualizeNoise || !Application.isPlaying)
-        {
-            return;
-        }
-
-        for (int x = 0; x < width + 1; x++)
-        {
-            for (int y = 0; y < height + 1; y++)
-            {
-                for (int z = 0; z < width + 1; z++)
-                {
-                    Gizmos.color = new Color(heights[x, y, z], heights[x, y, z], heights[x, y, z], 1);
-                    Gizmos.DrawSphere(new Vector3(x * resolution, y * resolution, z * resolution), 0.2f * resolution);
-                }
-            }
-        }
     }
 }
