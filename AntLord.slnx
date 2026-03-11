@@ -1,7 +1,7 @@
 ﻿<Solution>
   <Project Path="Unity.InputSystem.csproj" />
-  <Project Path="Unity.XR.Interaction.Toolkit.Samples.InteractionSimulator.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Unity.XR.Interaction.Toolkit.Samples.InteractionSimulator.csproj" />
   <Project Path="Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj" />
   <Project Path="Unity.AI.Navigation.Samples.csproj" />
   <Project Path="Unity.InputSystem.ForUI.csproj" />
