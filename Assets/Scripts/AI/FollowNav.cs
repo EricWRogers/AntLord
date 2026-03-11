@@ -7,7 +7,9 @@ public class FollowNav : MonoBehaviour
     public NavMeshAgent myAgent;
     public LeadNav leader;
     public Transform recentCollision = null;
-    public float closeEnough = 1f;
+    public float closeEnough = 0.25f;
+    public float closeEnoughModifier = 0.5f;
+    private float finalCloseDist;
     public float leaderTail = 0.3f;
     public int crumbTrack = 0;
     public float separationRadius = 2f;
@@ -34,7 +36,10 @@ public class FollowNav : MonoBehaviour
         if(leader != null){
 
             if(myAgent.remainingDistance >= 2)
+            {
                 transform.LookAt(myAgent.steeringTarget);
+            }
+                
             
             // Supercede normal pathfinding if ants recently bumped
             if(recentCollision != null)
@@ -50,7 +55,16 @@ public class FollowNav : MonoBehaviour
             {
                 myAgent.destination = leader.crumbs[crumbTrack];
 
-                if(crumbTrack < leader.crumbs.Count - 1 && myAgent.remainingDistance < closeEnough)
+
+                finalCloseDist = closeEnough * (leader.followers.Count * closeEnoughModifier);
+
+                if(finalCloseDist < 1f)
+                    finalCloseDist = 1f;
+                else if(finalCloseDist > 2.5f)
+                    finalCloseDist = 2.5f;
+
+
+                if(crumbTrack < leader.crumbs.Count - 1 && myAgent.remainingDistance < finalCloseDist)
                 {
                     crumbTrack++;
                 }

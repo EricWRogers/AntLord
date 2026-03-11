@@ -9,9 +9,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     [SerializeField] private Camera sceneCamera;
     public List<BuildingSO> allBuildings;
     [SerializeField] private GameObject mouseIndicator, cellIndicator, cellIndicatorObj;
-    public MarchingCubes cubesAndDudes;
-    public HeightmapTerrain heightmap;
-    public AnimationCurve falloff;
+    public MarchingCubes voxelTerrain;
     public int selectedObjectIndex = -1;
     Vector3 lastPosition;
     [SerializeField] private LayerMask placementLayermask;
@@ -89,11 +87,12 @@ public class BuildingPlacementSystem : MonoBehaviour
         {
             return;
         }
+        bool canBuild = true;
         Vector3 mousePosition = GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
         //places the building at the selectedIndex at these grid coords
-        GameObject buildingParent = Instantiate(allBuildings[selectedObjectIndex].preFab);
+        GameObject buildingParent = allBuildings[selectedObjectIndex].preFab;
         buildingParent.transform.localScale = allBuildings[selectedObjectIndex].size;
 
         GameObject building = buildingParent.transform.GetChild(0).gameObject;
@@ -101,27 +100,23 @@ public class BuildingPlacementSystem : MonoBehaviour
 
         //45 because all the voxels should be perfect right triangles (weirdly some are like 54)
         //if its a 45 incline or more just bump the building up one so we dont have to bother with a bunch of conditionals
-        buildingParent.transform.position = (angle >= 1.0f) ? grid.CellToWorld(gridPosition) + Vector3.up : grid.CellToWorld(gridPosition);
-        
-        //if HEIGHTMAP chack if angle is 1.0f or more (if i cant do calculus ill settle for this)
-        //if VOXEL check if 45.0f or more
+        buildingParent.transform.position = (angle >= 45.0f) ? grid.CellToWorld(gridPosition) + Vector3.up : grid.CellToWorld(gridPosition);
 
 
         //these are to set whatever the terrain we choose
-        if (cubesAndDudes != null && cubesAndDudes.enabled)
+        if (voxelTerrain != null && voxelTerrain.enabled)
         {
-
-            cubesAndDudes.SetVoxel(
+            canBuild = voxelTerrain.SetVoxel(
                 building.transform.position, // le center of the brush
-                building.transform.localScale.x * 2.5f);//le radius of the brush
+                building.transform.localScale.x * 1.5f);//le radius of the brush a bit bigger than normal to get surronding tiles
         }
-        else if (heightmap != null && heightmap.enabled)
+        if (canBuild)
         {
-            //heightmap.ApplyFlattenBrushInstant(
-            //    building.transform.position,//le center of the brush
-            //    building.transform.localScale.x * 2.5f,//le radius of the brush (that float needs to be tweeked to idk what but its <5.0f and >2.0f)
-            //    building.transform.position.y - building.transform.localScale.y * 0.5f,//le height it gets set to (currentYPos - radiusOfYScale)
-            //    falloff);
+            Instantiate(buildingParent);
+        }
+        else
+        {
+            Debug.Log("NOPE");
         }
 
     }

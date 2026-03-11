@@ -38,13 +38,12 @@ public class MarchingCubes : MonoBehaviour
     [SerializeField] private float heightTresshold = 0.5f;
 
     [SerializeField] private float noiseAmplitude = 5f;
-
-    [SerializeField] bool visualizeNoise;
     [SerializeField] bool use3DNoise;
 
     private List<Vector3> vertices = new List<Vector3>();
     private List<int> triangles = new List<int>();
     private float[,,] heights;
+    public HashSet<Vector3Int> occupiedVoxels = new HashSet<Vector3Int>();
 
     public RayOMayhem rayOMayhem;
 
@@ -52,6 +51,7 @@ public class MarchingCubes : MonoBehaviour
     private Mesh mesh;
 
     public LayerMask layerMask;
+    public int myInt = 0;
 
     public void Start()
     {
@@ -187,7 +187,7 @@ public class MarchingCubes : MonoBehaviour
         return configIndex;
     }
 
-    
+
     public void MarchCubes()
     {
         vertices.Clear();
@@ -270,6 +270,11 @@ public class MarchingCubes : MonoBehaviour
                 {
                     if (x < 0 || x > width || y < 0 || y > height || z < 0 || z > width) continue;
 
+                    if (occupiedVoxels.Contains(new Vector3Int(x, y, z)))
+                    {
+                        continue;
+                    }
+
                     float dist = Vector3.Distance(localPos, new Vector3(x, y, z) * resolution);
 
                     if (dist <= radius)
@@ -308,6 +313,10 @@ public class MarchingCubes : MonoBehaviour
                 {
                     if (x < 0 || x > width || y < 0 || y > height || z < 0 || z > width) continue;
 
+                    if (occupiedVoxels.Contains(new Vector3Int(x, y, z)))
+                    {
+                        continue;
+                    }
                     float dist = Vector3.Distance(localPos, new Vector3(x, y, z) * resolution);
 
                     if (dist <= radius)
@@ -324,8 +333,9 @@ public class MarchingCubes : MonoBehaviour
             UpdateVisuals();
         }
     }
-    public void SetVoxel(Vector3 worldPosition, float radius = 1.5f)
+    public bool SetVoxel(Vector3 worldPosition, float radius = 1.5f)
     {
+        //need a buffer to not place buildings over each other
         Vector3 localPos = transform.InverseTransformPoint(worldPosition);
 
         int startX = Mathf.FloorToInt((localPos.x - radius) / resolution);
@@ -334,6 +344,7 @@ public class MarchingCubes : MonoBehaviour
         int endY = Mathf.CeilToInt((localPos.y + radius) / resolution);
         int startZ = Mathf.FloorToInt((localPos.z - radius) / resolution);
         int endZ = Mathf.CeilToInt((localPos.z + radius) / resolution);
+        bool canPlace = true;
 
         bool changed = false;
 
@@ -341,11 +352,16 @@ public class MarchingCubes : MonoBehaviour
         {
             for (int y = startY; y <= endY; y++)
             {
-                for (int z = startZ; z <= endZ; z++)
+                for (int z = startZ; z <= endZ && canPlace; z++)
                 {
                     if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= width)
                         continue;
-
+                    Vector3Int pos = new Vector3Int(x, y, z);
+                    if (occupiedVoxels.Contains(pos))
+                    {
+                        canPlace = false;
+                        break;
+                    }
                     Vector3 voxelPos = new Vector3(x, y, z) * resolution;
                     float dist = Vector3.Distance(localPos, voxelPos);
 
@@ -357,8 +373,9 @@ public class MarchingCubes : MonoBehaviour
                         }
                         else
                         {
-                            heights[x,y,z] = 0.0f;
+                            heights[x, y, z] = 0.0f;
                         }
+                        occupiedVoxels.Add(new Vector3Int(x, y, z));
                         changed = true;
                     }
                 }
@@ -366,26 +383,13 @@ public class MarchingCubes : MonoBehaviour
         }
 
         if (changed)
+        {
             UpdateVisuals();
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (!visualizeNoise || !Application.isPlaying)
-        {
-            return;
+            return canPlace;
         }
-
-        for (int x = 0; x < width + 1; x++)
+        else
         {
-            for (int y = 0; y < height + 1; y++)
-            {
-                for (int z = 0; z < width + 1; z++)
-                {
-                    Gizmos.color = new Color(heights[x, y, z], heights[x, y, z], heights[x, y, z], 1);
-                    Gizmos.DrawSphere(new Vector3(x * resolution, y * resolution, z * resolution), 0.2f * resolution);
-                }
-            }
+            return canPlace;
         }
     }
 }
