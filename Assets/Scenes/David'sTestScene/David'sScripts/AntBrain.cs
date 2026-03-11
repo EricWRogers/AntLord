@@ -18,16 +18,6 @@ public class AntBrain : MonoBehaviour
     public float attackRange = 1.5f;
     public LayerMask enemyLayer;
 
-    [Header("Swarm Settings")]
-    public bool canSwarm = true; // Toggle for swarm capability
-    public SwarmAnt swarmAntPrefab; // Prefab for SwarmAnt (if needed, or use existing)
-    public LayerMask groundMask; // Ground layer for swarm snapping
-    public Vector2 spawnExtents = new Vector2(15f, 15f); // Spawn area for swarm
-    private SwarmAnt swarmAnt; // Reference to the SwarmAnt component
-    private SwarmManager currentSwarmManager; // Current swarm manager
-    private bool isSwarming = false; // Flag for swarm mode
-    private Transform swarmTarget; // Cached swarm target
-
     [Header("Local UI Damage Feedback")]
     public GameObject damageTextObject;
     public float textDisplayTime = 0.8f;
@@ -60,14 +50,6 @@ public class AntBrain : MonoBehaviour
                 originalEmissionColor = mat.GetColor("_EmissionColor");
                 hadEmission = originalEmissionColor.maxColorComponent > 0f;
             }
-        }
-
-        // Adds SwarmAnt component if not present
-        swarmAnt = GetComponent<SwarmAnt>();
-        if (swarmAnt == null)
-        {
-            swarmAnt = gameObject.AddComponent<SwarmAnt>();
-            swarmAnt.enabled = false; // Start disabled
         }
 
         if (damageTextObject != null) damageTextObject.SetActive(false);
@@ -155,19 +137,8 @@ public class AntBrain : MonoBehaviour
             AntBrain enemyAnt = col.GetComponent<AntBrain>();
             if (enemyAnt != null && enemyAnt.antType.teamID != antType.teamID)
             {
-                // SOLO target: target is another ant
                 currentTarget = enemyAnt;
-                isSwarming = false;
                 currentState = AntState.Chasing;
-                if (followNav != null) followNav.enabled = false;
-                return;
-            }
-            else if (canSwarm && (col.CompareTag("SwarmTarget") || col.GetComponent<EnemyBoidController>() != null)) // Adjust tag/component as needed
-            {
-                // Swarm Target: target is a big creature/base
-                swarmTarget = col.transform;
-                isSwarming = true;
-                currentState = AntState.Chasing; // Or a new "Swarming" state
                 if (followNav != null) followNav.enabled = false;
                 return;
             }
@@ -176,66 +147,16 @@ public class AntBrain : MonoBehaviour
 
     private void HandleChasing()
     {
-        if (isSwarming)
-        {
-            // Join and create swarm
-            if (currentSwarmManager == null)
-            {
-                // Assume SwarmManager has access to antPrefab
-                currentSwarmManager = SwarmManager.GetOrCreateSwarm(swarmTarget, swarmAntPrefab, groundMask, spawnExtents);
-                currentSwarmManager.AddAnt(swarmAnt);
-            }
-            
-            // Enable swarm behavior
-            swarmAnt.enabled = true;
-            agent.enabled = false; // Disable NavMesh for swarm
-            followNav.enabled = false;
-            
-            // SwarmAnt handles movement / check if target is still valid
-            if (swarmTarget == null || Vector3.Distance(transform.position, swarmTarget.position) > detectionRange * 2f)
-            {
-                StopSwarming();
-            }
-        }
-        else
-        {
-            // Solo (David things)
-            if (currentTarget == null)
-            {
-                currentState = AntState.Following;
-                return;
-            }
-            agent.SetDestination(currentTarget.transform.position);
-            float dist = Vector3.Distance(transform.position, currentTarget.transform.position);
-            if (dist <= attackRange)
-            {
-                currentState = AntState.Attacking;
-            }
-            else if (dist > detectionRange * 1.5f)
-            {
-                currentTarget = null;
-                currentState = AntState.Following;
-            }
-        }
-        
-        //if (dist <= attackRange) currentState = AntState.Attacking;
-        //else if (dist > detectionRange * 1.5f) ReturnToTask();
+        if (currentTarget == null) { ReturnToTask(); return; }
+        agent.SetDestination(currentTarget.transform.position);
+
+        float dist = Vector3.Distance(transform.position, currentTarget.transform.position);
+        if (dist <= attackRange) currentState = AntState.Attacking;
+        else if (dist > detectionRange * 1.5f) ReturnToTask();
     }
 
     private void HandleAttacking()
     {
-        if (isSwarming)
-        {
-            // Let boids handle swarm mode
-            return;
-        }
-
-        if (currentTarget == null)
-        {
-            currentState = AntState.Chasing;
-            return;
-        }
-
         if (currentTarget == null) { ReturnToTask(); return; }
         transform.LookAt(currentTarget.transform);
         agent.velocity = Vector3.zero;
@@ -293,7 +214,6 @@ public class AntBrain : MonoBehaviour
 
     private void ExecutePromotion(LeadNav oldLeader, FollowNav candidate)
     {
-// 1. Get the component and turn it on
     LeadNav newLeader = candidate.gameObject.GetComponent<LeadNav>();
     
     if (newLeader != null)
@@ -342,19 +262,5 @@ public class AntBrain : MonoBehaviour
             }
         }
         Debug.Log($"<color=cyan>SQUAD SYNC: {reassignedCount} ants successfully moved to new leader {newLeader.name}.</color>");
-    }
-
-    private void StopSwarming()
-    {
-        if (currentSwarmManager != null)
-        {
-            currentSwarmManager.RemoveAnt(swarmAnt);
-            currentSwarmManager = null;
-        }
-        swarmAnt.enabled = false;
-        agent.enabled = true;
-        isSwarming = false;
-        swarmTarget = null;
-        currentState = AntState.Following;
     }
 }
