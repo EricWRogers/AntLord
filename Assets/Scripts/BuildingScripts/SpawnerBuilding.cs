@@ -16,7 +16,7 @@ public class SpawnerBuilding : Buildings
     public int tempWinCon;
     List<GameObject> ants = new List<GameObject>();
     public GameObject antPrefab;
-    public int maxHealth = 100;
+    public int maxHealth = 10;
 
 
     void Start()
