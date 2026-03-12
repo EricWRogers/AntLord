@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 
 public class MM : MonoBehaviour
 {
     private GameObject pm;
+    private bool vrButtonPressed = false;
     
     void Awake()
     {
@@ -16,15 +18,31 @@ public class MM : MonoBehaviour
 
     void Update()
     {
+        // PC Pause (Escape key)
         if (Input.GetKeyDown(KeyCode.Escape) && pm != null)
         {
             Pause();
         }
+
+        // VR Pause (Left Hand Menu button)
+        InputDevice lefthand = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+
+        if (lefthand.isValid && lefthand.TryGetFeatureValue(CommonUsages.primaryButton, out bool pressed))
+        {
+            // Only trigger once when button is first pressed
+            if (!vrButtonPressed)
+            {
+                Pause();
+            }
+
+            vrButtonPressed = pressed;
+        }
     }
+
 
     public void Play(string level)
     {
-        SceneManager.LoadScene(level);
+        SceneTransitionManager.singleton.GoToSceneAsync(1);
         Debug.Log("Game Started.");
     }
 
@@ -57,6 +75,16 @@ public class MM : MonoBehaviour
         SceneManager.LoadScene(level);
         Time.timeScale = 1;
         Debug.Log("Returned to Home.");
+    }
+
+    public void Resume()
+    {
+        if (pm != null)
+        {
+            Time.timeScale = 1;
+            pm.SetActive(false);
+            Debug.Log("Game Resumed.");
+        }
     }
 
     public void Restart(string level)

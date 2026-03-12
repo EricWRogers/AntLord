@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
+
+public enum AntTask {Manual, Food, Fight}
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class LeadNav : MonoBehaviour
@@ -14,12 +17,14 @@ public class LeadNav : MonoBehaviour
     public Transform target;
     public Transform recentObjective;
     public Transform home;
-    public bool arrived = false;
+    //public bool arrived = false;
     public float separationRadius = 2f;
     public float separationForce = 5f;
     public int foodBits = 0;
     public bool amCarryingFood = false;
     public int antTeir = 1;
+    public AntTask task = AntTask.Manual;
+    //private bool checkingFood = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,7 +41,7 @@ public class LeadNav : MonoBehaviour
             if(myAgent.remainingDistance >= 2)
                 transform.LookAt(myAgent.steeringTarget);
 
-            if(!arrived){
+            //if(!arrived){
                 crumbDropTimer += Time.deltaTime;
 
                 if(crumbDropTimer >= crumbDropDelay)
@@ -50,50 +55,92 @@ public class LeadNav : MonoBehaviour
                     crumbs.Add(transform.position);
                 }
 
-                // Set destination normallly
+                // Set destination normally
                 myAgent.destination = target.position;
 
                 // Check for nearby agents and apply separation
                 HandleAgentCollisions();
-            }
+            //}
 
-            else if (arrived)
-            {
-                foodBits = 0;
-                // bool failed = false;
-                // for(int i = 0; i < followers.Count; i++)
-                // {
-                //     for(int j = 0; i < followers[i].transform.childCount; j++)
-                //     {
-                //         if(followers[i].transform.GetChild(j).tag == "FoodBit")
-                //         {
-                //             foodBits++;
-                //             break;
-                //         }
-                //         else if(j == followers[i].transform.childCount - 1)
-                //             failed = true;
-                //     }
-                //     if (failed)
-                //     {
-                //         break;
-                //     }
-                // }
-
-
-            }
+            // else if (arrived && !checkingFood)
+            // {
+            //     StartCoroutine(DelayedFoodCheck());
+            // }
 
             if(foodBits >= (followers.Count * antTeir) + (1 * antTeir))
             {
-                DoneWithFood();
+                target = home;
+            }
+
+
+        }
+    }
+
+    Transform FindFood()
+    {
+        float sphereRadius = 25f;
+        Collider[] hits = Physics.OverlapSphere(transform.position, sphereRadius);
+        bool targetYet = false;
+        int tries = 1;
+
+        while(!targetYet && sphereRadius <= 500)
+        {
+
+            foreach(Collider col in hits)
+            {
+                if (col.CompareTag("Food"))
+                {
+                    Debug.Log("Found food to target!");
+                    return col.transform;
+                }
+            }
+
+            sphereRadius *= 2;
+
+            if(sphereRadius <= 500) // should be relative to map size
+            {
+                Debug.Log($"Going for try {++tries}"); 
+                hits = Physics.OverlapSphere(transform.position, sphereRadius);
+            }
+            else
+                Debug.Log("Gave up on finding food");
+
+        }
+
+
+        return null; // this means you found no food
+    }
+
+    void FixedUpdate()
+    {
+        if(task == AntTask.Food && target == home && myAgent.remainingDistance <= 2)
+        {
+            int foodCount = 0;
+            foreach (NavMeshAgent follower in followers)
+            {
+                if(follower.GetComponent<FollowNav>().amCarryingFood)
+                    break;
+                else
+                    foodCount++;
+            }
+
+            if(foodCount >= (followers.Count * antTeir)) //+ (1 * antTeir))
+            {
+                Transform foodTransform = FindFood();
+
+                if(foodTransform != null)
+                    target = foodTransform;
+                else
+                    Debug.Log("Failed to find food, freak out!");
             }
         }
     }
 
-    public void DoneWithFood()
-    {
-        arrived = false;
-        target = home;
-    }
+    // public void DoneWithFood()
+    // {
+    //     //arrived = false;
+    //     target = home;
+    // }
 
     void HandleAgentCollisions()
     {
@@ -121,38 +168,28 @@ public class LeadNav : MonoBehaviour
         }
     }
 
-    public void ReachedObjective()
-    {
-        if(!arrived)
-        {
-            Debug.Log("Hit target");
-            recentObjective = target;
-            arrived = true;
-            crumbDropTimer = 0f;
-            myAgent.isStopped = true;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        // Check if NavMeshAgent has reached the destination
-        // if(!arrived && !myAgent.pathPending && myAgent.hasPath && myAgent.remainingDistance < 0.5f)
-        // {
-        //     Debug.Log("Hit target");
-        //     arrived = true;
-        //     crumbDropTimer = 0f;
-        //     myAgent.isStopped = true;
-        // }
-    }
-
-    // // never got called?
-    // void OnTriggerEnter(Collider other)
+    // private IEnumerator DelayedFoodCheck()
     // {
-    //     if(other.tag == "Finish")
+    //     checkingFood = true;
+
+    //     while(checkingFood)
     //     {
-    //         Debug.Log("Hit target");
-    //         myAgent.isStopped = true;
-    //         crumbDropTimer = 0f;
+    //         foreach(NavMeshAgent follower in followers)
+    //         {
+                
+    //         }
+
+    //         yield return new WaitForSeconds(1f);
     //     }
+
+    //     //myAgent.destination = transform.position;
+    //     Transform foodTransform = FindFood();
+
+    //     if(foodTransform != null)
+    //         myAgent.destination = foodTransform.position;
+    //     else
+    //         Debug.Log("Failed to find food, freak out!");
+
+    //     foodBits = 0;
     // }
 }
