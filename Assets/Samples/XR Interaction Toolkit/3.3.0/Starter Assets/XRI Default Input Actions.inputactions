@@ -64,7 +64,7 @@
                     "name": "Eye Gaze Is Tracked",
                     "type": "Button",
                     "id": "ea26ba43-844b-4585-817a-2f124b571813",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -891,7 +891,7 @@
                     "name": "Activate",
                     "type": "Button",
                     "id": "0c0991c5-d329-4afc-8892-1076b440477c",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -963,7 +963,7 @@
                     "name": "Scale Toggle",
                     "type": "Button",
                     "id": "80ed7d74-56de-473c-bf76-da3bdd16b562",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -3411,7 +3411,7 @@
             ]
         },
         {
-            "name": "Mouse + Keyboard",
+            "name": "Controls",
             "id": "e4830c10-da25-4eab-b803-a120ed8ac0bb",
             "actions": [
                 {
@@ -3505,6 +3505,17 @@
                     "name": "",
                     "id": "3ff73095-ee25-4ec6-b56f-f0eb6d2ed066",
                     "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a1712f6e-f82a-426e-adb6-0537a85cd49b",
+                    "path": "<Keyboard>/rightShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

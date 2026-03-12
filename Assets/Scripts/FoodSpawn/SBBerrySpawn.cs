@@ -14,7 +14,7 @@ public class SBBerrySpawn : MonoBehaviour
     //what and where to spawn
     public GameObject berry;
     public float sphereRadius = 4f;
-    public List<Transform> spawnPoints = new List<Transform>();
+    public List<Transform> spawnPoints;
 
     //size & growth during/after spawn 
     public float growDuration = 1.5f;
@@ -24,36 +24,63 @@ public class SBBerrySpawn : MonoBehaviour
 
     //gravity
     private Rigidbody rb;
+    float timer;
 
+    void Start()
+    {
+        if(spawnPoints == null)
+        {
+            spawnPoints.Clear();
+            for(int i = 0; i < transform.childCount; i++)
+            {
+                spawnPoints.Add(transform.GetChild(i));
+            }
+        }
+    }
 
     void Update()
     {
-        if (Time.time >= spawnTimer)
+        timer += Time.deltaTime;
+        if (timer >= spawnTimer)
         {
-            SpawnApple();
-            spawnTimer = Time.time + growDuration + 5; 
+            StartCoroutine(SpawnApple());
+            spawnTimer = Time.deltaTime + growDuration + 5; 
+            timer = 0.0f;
         }
     }
-    public async Task SpawnApple()
+    IEnumerator SpawnApple()
     {
         howManyToSpawn = Random.Range(1, spawnPoints.Count);
         Debug.Log("how many: " + howManyToSpawn);
 
-        spawnTiming = Random.Range(spawnInterval, spawnInterval * 2);
-        Debug.Log("timing: "+spawnTiming);
+        // spawnTiming = Random.Range(spawnInterval, spawnInterval * 2);
+        // Debug.Log("timing: "+spawnTiming);
 
-        for (int i = 0; 1 < howManyToSpawn; i++)
+        for (int i = 0; i < howManyToSpawn; i++)
         {
             Debug.Log("i: "+i);
 
             int randomIndex = Random.Range(0, spawnPoints.Count);
-            Debug.Log("randomIndex: " + randomIndex);
+            Debug.Log("randomIndex: " + spawnPoints[randomIndex].gameObject.name);
 
-            Transform spawnPosition = spawnPoints[randomIndex];
+            // Transform spawnPosition = spawnPoints[randomIndex];
+            // GameObject targetObject = spawnPoints[randomIndex];
+
+            Vector3 spawnPosition = spawnPoints[randomIndex].position;
+            
+
             Debug.Log("SpawnPos: "+spawnPosition);
+            Debug.Log("SpawnPoint: " + spawnPoints);
+            Debug.Log("fdkjf: " + spawnPoints[randomIndex]);
 
-            //its her \/
-            GameObject aBerry = Instantiate(berry, spawnPosition.position, spawnPosition.rotation);
+            // if (berry != null) Debug.Log("Berry prefab is not missing!");
+            // if (spawnPosition == null) Debug.LogError("SpawnPosition Transform is missing!");
+
+            // Debug.Log($"Spawning {berry.name} at {spawnPosition.transform.position}");
+            // Debug.Log("spanPos.Pos" + spawnPosition.position);
+            // Debug.Log("spanPos.Rot" + spawnPosition.rotation);
+
+            GameObject aBerry = Instantiate(berry, spawnPosition, Quaternion.identity);
             Debug.Log("aBerry: "+ aBerry);
 
             Rigidbody rb = aBerry.GetComponent<Rigidbody>();
@@ -84,7 +111,8 @@ public class SBBerrySpawn : MonoBehaviour
                 }
             };
 
-            await Awaitable.WaitForSecondsAsync(growDuration);
+            //await Awaitable.WaitForSecondsAsync(growDuration);
+            yield return new WaitForSeconds(growDuration);
 
             if (rb != null)
             {
@@ -98,6 +126,7 @@ public class SBBerrySpawn : MonoBehaviour
      
         }
 
+        yield return null;
         // Vector3 randomPoint = Random.insideUnitSphere * sphereRadius;
         // Vector3 spawnPosition = transform.position + randomPoint;
 

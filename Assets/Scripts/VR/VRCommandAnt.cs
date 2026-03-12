@@ -4,20 +4,32 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class VRCommandAnt : CommandParent
 {
-
-    public InputActionReference inputActionReference;
     public XRRayInteractor rayInteractor;
-    private InputAction RightTriggerAction;
+
+    [Header("Input Binds")]
+    public InputActionReference inputActionReference;
+    public InputAction LeftTriggerAction;
+    public InputAction XButtonAction; //primary button left
+    public InputAction YButtonAction; //secondary button left
+    public InputAction RightTriggerAction;
+
+    private int taskValue = 0;
 
     void Start()
     {
         if (inputActionReference != null)
         {
+            LeftTriggerAction = inputActionReference.action;
+            XButtonAction = inputActionReference.action;
+            YButtonAction = inputActionReference.action;
+
             RightTriggerAction = inputActionReference.action;
-            if (RightTriggerAction != null)
-            {
-                RightTriggerAction.Enable();
-            }
+
+            LeftTriggerAction?.Enable();
+            XButtonAction?.Enable();
+            YButtonAction?.Enable();
+
+            RightTriggerAction?.Enable();
         }
     }
 
@@ -25,38 +37,48 @@ public class VRCommandAnt : CommandParent
     {
         if(RightTriggerAction != null)
         {
-            //read a float value (good for reading triggers)
+            
             float triggerValue = RightTriggerAction.ReadValue<float>();
             if (triggerValue > 0.1f)
             {
-                //Debug.Log("Trigger pulled"!);
-
-                //RaycastHit rayHit;
-
-            //     if (rayInteractor.TryGetCurrent3DRaycastHit(out rayHit))
-            //     {
-                    
-            //         Debug.Log("raycast hit:" + rayHit.transform.gameObject.name);
-
-            //         if (rayHit.transform.gameObject.CompareTag("Ant"))
-            //         {
-            //             Debug.Log("I spy a little ant!");
-            //         }
-            //     }
-            // }
-
                 if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
                 {
                     SimpleAntSelect(hit);
                 }
             }
+        }
 
-            //check if button was pressed
-            /*
-            if (triggerAction.WasPressedThisFrame())
+        if (LeftTriggerAction != null)
+        {
+            float triggerValue = LeftTriggerAction.ReadValue<float>();
+            if (triggerValue > 0.1f)
             {
-                Debug.Log("Button Pressed This Frame!");
-            } */
+                if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+                {
+                    DirectAnt(hit);
+                }
+            }
+        }
+
+        if (XButtonAction != null)
+        {
+            bool buttonValue = XButtonAction.WasPressedThisFrame();
+            if (buttonValue)
+            {
+                if (taskValue == 1){
+                    SwitchToManual();
+                    taskValue = 0;
+                    Debug.Log("task = manual");
+                }
+                else
+                {
+                    SwitchToFood();
+                    taskValue = 1;
+                    Debug.Log("task = food");
+                }
+                
+            }
         }
     }
+
 }
