@@ -6,7 +6,12 @@ public class CommandAnt : CommandParent
 {
     public InputActionAsset inputActions;
     private InputAction leftClick;
+    private InputAction rightClick;
     private InputAction shift;
+    private InputAction Num1;
+    private InputAction Num2;
+    private InputAction Deselect;
+    private InputAction R;
 
 
     void Awake()
@@ -15,26 +20,31 @@ public class CommandAnt : CommandParent
         if (!selectionRing) selectionRing = FindFirstObjectByType<SelectionRingController>();
 
         leftClick = InputSystem.actions.FindAction("LeftClick");
+        rightClick = InputSystem.actions.FindAction("RightClick");
         shift = InputSystem.actions.FindAction("Shift");
+        Num1 = InputSystem.actions.FindAction("Num1");
+        Num2 = InputSystem.actions.FindAction("Num2");
+        Deselect = InputSystem.actions.FindAction("Deselect");
+        R = InputSystem.actions.FindAction("R");
     }
 
     void OnEnable()
     {
-        inputActions.FindActionMap("Mouse + Keyboard").Enable();
+        inputActions.FindActionMap("Controls").Enable();
     }
 
     void OnDisable()
     {
-        inputActions.FindActionMap("Mouse + Keyboard").Disable();
+        inputActions.FindActionMap("Controls").Disable();
     }
 
     void Update()
     {
         // THIS SHOULD USE THE LASSO FUNCTION BUT UNITY INPUT LITERALLY DOES NOTHING
-        bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        bool shiftHeld = shift.IsPressed();
 
         // Start drag only when shift is held and LMB pressed
-        if (shiftHeld && Input.GetMouseButtonDown(0))
+        if (shiftHeld && rightClick.WasPressedThisFrame())
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
@@ -50,7 +60,7 @@ public class CommandAnt : CommandParent
         if (shiftDragging)
         {
             // If shift was released mid-drag, cancel 
-            if (!shiftHeld && Input.GetMouseButton(0))
+            if (!shiftHeld && leftClick.IsPressed())
             {
                 shiftDragging = false;
                 if (selectionRing) selectionRing.Hide();
@@ -58,7 +68,7 @@ public class CommandAnt : CommandParent
             else
             {
                 // Update ring while LMB held
-                if (Input.GetMouseButton(0))
+                if (leftClick.IsPressed())
                 {
                     Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
@@ -79,7 +89,7 @@ public class CommandAnt : CommandParent
                 }
 
                 // Release drag on mouse up, even if shift isn't held
-                if (Input.GetMouseButtonUp(0))
+                if (leftClick.WasReleasedThisFrame())
                 {
                     Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
@@ -122,7 +132,7 @@ public class CommandAnt : CommandParent
 
         // END LASSO FUNCTION
 
-        if (Input.GetMouseButtonDown(0))
+        if (leftClick.WasPressedThisFrame())
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             
@@ -131,7 +141,7 @@ public class CommandAnt : CommandParent
         }
 
         // -- Set a waypoint or set a task
-        if (Input.GetMouseButtonDown(1))
+        if (rightClick.WasPressedThisFrame())
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
@@ -139,18 +149,20 @@ public class CommandAnt : CommandParent
                 DirectAnt(hit);
         }
 
-
-        else if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R))
+        // Deselect all with shift + R
+        else if (shift.IsPressed() && R.WasPressedThisFrame())
         {
             DeselectAll();
         }
 
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        // Switch to manual with 1
+        else if (Num1.WasPressedThisFrame())
         {
             SwitchToManual();
         }
-            
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+
+        // Switch to food with 2   
+        else if (Num2.WasPressedThisFrame())
         {
             SwitchToFood();
         }
