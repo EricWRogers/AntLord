@@ -1,42 +1,50 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
-public class CommandAnt : MonoBehaviour
+
+public class CommandAnt : CommandParent
 {
-    public Camera cam;
-    public List<GameObject> selectedAnts = new List<GameObject>();
-    public LeadNav selectedLeader;
-    public GameObject wayPointPrefab;
-    private bool antSelect = false;
+    public InputActionAsset inputActions;
+    private InputAction leftClick;
+    private InputAction rightClick;
+    private InputAction shift;
+    private InputAction Num1;
+    private InputAction Num2;
+    private InputAction Deselect;
+    private InputAction R;
 
-    [Header("Drag Select")]
-    public float sphereCastRadius = 2;
-    private Vector3 shiftDragStart;
-    private bool shiftDragging = false;
-
-    [Header("Selection Glow")]
-    public Color selectedColor = Color.green;
-    public float selectedIntensity = 2.5f;
-    public Color leaderColor = Color.yellow;
-    public float leaderIntensity = 3.0f;
-    public AntTask taskToAssign = AntTask.Manual;
-    public SelectionRingController selectionRing;
-    public LayerMask groundMask;
 
     void Awake()
     {
         if (!cam) cam = Camera.main;
         if (!selectionRing) selectionRing = FindFirstObjectByType<SelectionRingController>();
+
+        leftClick = InputSystem.actions.FindAction("LeftClick");
+        rightClick = InputSystem.actions.FindAction("RightClick");
+        shift = InputSystem.actions.FindAction("Shift");
+        Num1 = InputSystem.actions.FindAction("Num1");
+        Num2 = InputSystem.actions.FindAction("Num2");
+        Deselect = InputSystem.actions.FindAction("Deselect");
+        R = InputSystem.actions.FindAction("R");
+    }
+
+    void OnEnable()
+    {
+        inputActions.FindActionMap("Controls").Enable();
+    }
+
+    void OnDisable()
+    {
+        inputActions.FindActionMap("Controls").Disable();
     }
 
     void Update()
     {
-        // --- shift + drag selection (fixed) ---
-        bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        // THIS SHOULD USE THE LASSO FUNCTION BUT UNITY INPUT LITERALLY DOES NOTHING
+        bool shiftHeld = shift.IsPressed();
 
         // Start drag only when shift is held and LMB pressed
-        if (shiftHeld && Input.GetMouseButtonDown(0))
+        if (shiftHeld && rightClick.WasPressedThisFrame())
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
@@ -52,7 +60,7 @@ public class CommandAnt : MonoBehaviour
         if (shiftDragging)
         {
             // If shift was released mid-drag, cancel 
-            if (!shiftHeld && Input.GetMouseButton(0))
+            if (!shiftHeld && leftClick.IsPressed())
             {
                 shiftDragging = false;
                 if (selectionRing) selectionRing.Hide();
@@ -60,7 +68,7 @@ public class CommandAnt : MonoBehaviour
             else
             {
                 // Update ring while LMB held
-                if (Input.GetMouseButton(0))
+                if (leftClick.IsPressed())
                 {
                     Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
@@ -81,7 +89,7 @@ public class CommandAnt : MonoBehaviour
                 }
 
                 // Release drag on mouse up, even if shift isn't held
-                if (Input.GetMouseButtonUp(0))
+                if (leftClick.WasReleasedThisFrame())
                 {
                     Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
@@ -122,208 +130,41 @@ public class CommandAnt : MonoBehaviour
             }
         }
 
-        // normal click selection
-        else if (Input.GetMouseButtonDown(0))
+        // END LASSO FUNCTION
+
+        if (leftClick.WasPressedThisFrame())
         {
-            antSelect = false;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-
-            if ((selectedLeader == null || selectedLeader.target != selectedLeader.home) &&
-                Physics.Raycast(ray, out RaycastHit hit, 500f))
-            {
-                Collider[] hits = Physics.OverlapSphere(hit.point, sphereCastRadius);
-
-                // If clicked directly on an Ant, toggle selection
-                if (hit.transform.CompareTag("Ant") && hit.transform.GetComponent<AntBrain>().antType.teamID == 0)
-                {
-                    ToggleSelection(hit.transform.gameObject);
-                }
-                else
-                {
-                    
-                    foreach (Collider col in hits)
-                    {
-                        if (col.CompareTag("Ant"))
-                        {
-                            ToggleSelection(col.transform.gameObject);
-                            antSelect = true;
-                        }
-                    }
-                }
-            }
+            
+            if (Physics.Raycast(ray, out RaycastHit hit, 500f))
+                SimpleAntSelect(hit);
         }
 
         // -- Set a waypoint or set a task
-        if (Input.GetMouseButtonDown(1) && (selectedLeader == null || selectedLeader.target != selectedLeader.home))
+        if (rightClick.WasPressedThisFrame())
         {
-            if(taskToAssign == AntTask.Manual)
-            {
-                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-                if (!antSelect && selectedAnts.Count != 0 && Physics.Raycast(ray, out RaycastHit hit, 500f))
-                {
-                    ElectLeader();
-                    selectedLeader.task = AntTask.Manual;
-
-                    if (hit.transform.CompareTag("Food"))
-                        selectedLeader.target = hit.transform;
-                    else
-                        selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
-                }
-            }
-            else if(taskToAssign == AntTask.Food && selectedAnts.Count != 0 && !antSelect) // what does antSelect mean?
-            {
-                float sphereRadius = 25f;
-                Collider[] hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
-                bool targetYet = false;
-                int tries = 1;
-
-
-                while(!targetYet && sphereRadius <= 500)
-                {
-
-                    foreach(Collider col in hits)
-                    {
-                        if (col.CompareTag("Food"))
-                        {
-                            Debug.Log("Found food to target!");
-                            ElectLeader();
-                            selectedLeader.target = col.transform;
-                            selectedLeader.task = AntTask.Food;
-                            targetYet = true;
-
-                            break;
-                        }
-                    }
-
-                    if(!targetYet)
-                    {
-                        sphereRadius *= 2;
-
-                        if(sphereRadius <= 500) // should be relative to map size
-                        {
-                            Debug.Log($"Going for try {++tries}"); 
-                            hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
-                        }
-                        else
-                            Debug.Log("Gave up on finding food");
-                    }
-
-                }
-            }
+            if(Physics.Raycast(ray, out RaycastHit hit, 500f))
+                DirectAnt(hit);
         }
 
-
-        else if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R))
+        // Deselect all with shift + R
+        else if (shift.IsPressed() && R.WasPressedThisFrame())
         {
-            ClearSelectionVisualsOnly();
-            selectedAnts.Clear();
-            selectedLeader = null;
+            DeselectAll();
         }
 
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        // Switch to manual with 1
+        else if (Num1.WasPressedThisFrame())
         {
-            Debug.Log("Switching to Manual");
-            taskToAssign = AntTask.Manual;
-        }
-            
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            Debug.Log("Switching to Food");
-            taskToAssign = AntTask.Food;
-        }
-    }
-
-    void ElectLeader()
-    {
-        //Debug.Log("Selecting new leader!");
-
-        foreach (GameObject ant in selectedAnts)
-        {
-            ant.GetComponent<LeadNav>().enabled = false;
-            ant.GetComponent<FollowNav>().enabled = true;
+            SwitchToManual();
         }
 
-        selectedAnts[0].GetComponent<FollowNav>().enabled = false;
-        selectedLeader = selectedAnts[0].GetComponent<LeadNav>();
-        selectedAnts[0].GetComponent<LeadNav>().enabled = true;
-
-        selectedLeader.home = FindFirstObjectByType<SpawnerBuilding>().transform; // TEMP
-
-        
-        selectedLeader.followers.Clear();
-
-        for (int i = 1; i < selectedAnts.Count; i++)
+        // Switch to food with 2   
+        else if (Num2.WasPressedThisFrame())
         {
-            selectedAnts[i].GetComponent<FollowNav>().leader = selectedLeader;
-            selectedAnts[i].GetComponent<FollowNav>().crumbTrack = 0;
-
-            
-            var follow = selectedAnts[i].GetComponent<FollowNav>();
-            if (follow.myAgent == null) follow.myAgent = selectedAnts[i].GetComponent<NavMeshAgent>();
-
-            selectedLeader.followers.Add(follow.myAgent);
-        }
-
-        selectedLeader.GetComponent<FollowNav>().enabled = false;
-
-        selectedLeader.crumbs.Clear();
-
-        selectedLeader.myAgent = selectedLeader.GetComponent<NavMeshAgent>();
-        selectedLeader.myAgent.isStopped = false;
-
-        for (int i = 0; i < selectedLeader.followers.Count; i++)
-            selectedLeader.followers[i].isStopped = false;
-
-        // Make leader a different color before clearing
-        SetGlow(selectedAnts[0], leaderColor, leaderIntensity);
-
-    }
-
-    //visualizzation methods
-
-    void ToggleSelection(GameObject ant)
-    {
-        if (ant == null) return;
-
-        if (selectedAnts.Contains(ant))
-        {
-            // deselect
-            selectedAnts.Remove(ant);
-            DisableGlow(ant);
-        }
-        else
-        {
-            // select
-            selectedAnts.Add(ant);
-            SetGlow(ant, selectedColor, selectedIntensity);
-        }
-    }
-
-    void SetGlow(GameObject ant, Color c, float intensity)
-    {
-        var glow = ant.GetComponent<AntSelectGlow>();
-        if (glow != null) glow.EnableGlow(c, intensity);
-
-        // TEMP
-        if(glow != null) glow.marker.SetActive(true);
-    }
-
-    void DisableGlow(GameObject ant)
-    {
-        var glow = ant.GetComponent<AntSelectGlow>();
-        if (glow != null) glow.DisableGlow();
-
-        // TEMP
-        if(glow != null) glow.marker.SetActive(false);
-    }
-
-    void ClearSelectionVisualsOnly()
-    {
-        for (int i = 0; i < selectedAnts.Count; i++)
-        {
-            if (selectedAnts[i] == null) continue;
-            DisableGlow(selectedAnts[i]);
+            SwitchToFood();
         }
     }
 }

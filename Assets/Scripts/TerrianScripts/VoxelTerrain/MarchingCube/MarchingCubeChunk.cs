@@ -1,5 +1,8 @@
 using UnityEngine;
+using System.Collections.Generic;
+using Unity.AI.Navigation;
 
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class MarchingCubeChunk : MonoBehaviour
 {
     private Voxel[,,] voxels;

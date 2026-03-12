@@ -214,7 +214,6 @@ public class AntBrain : MonoBehaviour
 
     private void ExecutePromotion(LeadNav oldLeader, FollowNav candidate)
     {
-// 1. Get the component and turn it on
     LeadNav newLeader = candidate.gameObject.GetComponent<LeadNav>();
     
     if (newLeader != null)

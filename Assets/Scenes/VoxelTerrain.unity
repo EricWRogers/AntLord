@@ -191,7 +191,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 1223273191}
+  m_Mesh: {fileID: 758047435}
 --- !u!114 &237293909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,13 +210,12 @@ MonoBehaviour:
   noiseScale: 0.1
   heightTresshold: 0.9
   noiseAmplitude: 5
-  visualizeNoise: 0
   use3DNoise: 0
   rayOMayhem: {fileID: 2102848435}
   layerMask:
     serializedVersion: 2
     m_Bits: 8
---- !u!43 &1223273191
+--- !u!43 &758047435
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -604,7 +603,7 @@ PrefabInstance:
     - target: {fileID: 3112755014954916157, guid: d2ad6ffd5ddf6b645b9d5cfc846e69fc, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1223273191}
+      objectReference: {fileID: 758047435}
     - target: {fileID: 5466113427933134159, guid: d2ad6ffd5ddf6b645b9d5cfc846e69fc, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR;
+using UnityEngine.InputSystem;
+using System.Xml;
 
 public class MM : MonoBehaviour
 {
     private GameObject pm;
-    private bool vrButtonPressed = false;
+    
+    public bool activeWristUI = true;
     
     void Awake()
     {
@@ -16,6 +19,11 @@ public class MM : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        DisplayWristUI();
+    }
+
     void Update()
     {
         // PC Pause (Escape key)
@@ -23,22 +31,30 @@ public class MM : MonoBehaviour
         {
             Pause();
         }
-
-        // VR Pause (Left Hand Menu button)
-        InputDevice lefthand = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
-
-        if (lefthand.isValid && lefthand.TryGetFeatureValue(CommonUsages.menuButton, out bool pressed))
-        {
-            // Only trigger once when button is first pressed
-            if (!vrButtonPressed)
-            {
-                Pause();
-            }
-
-            vrButtonPressed = pressed;
-        }
     }
 
+    public void PauseButtonPressed(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Pause();
+        }
+    }
+    public void DisplayWristUI()
+    {
+        if (activeWristUI)
+        {
+            pm.SetActive(false);
+            activeWristUI = false;
+            Time.timeScale = 1;
+        }
+        else if (!activeWristUI && pm != null)
+        {
+            pm.SetActive(true);
+            activeWristUI = true;
+            Time.timeScale = 0;
+        }
+    }
 
     public void Play(string level)
     {
@@ -75,6 +91,16 @@ public class MM : MonoBehaviour
         SceneManager.LoadScene(level);
         Time.timeScale = 1;
         Debug.Log("Returned to Home.");
+    }
+
+    public void Resume()
+    {
+        if (pm != null)
+        {
+            Time.timeScale = 1;
+            pm.SetActive(false);
+            Debug.Log("Game Resumed.");
+        }
     }
 
     public void Restart(string level)

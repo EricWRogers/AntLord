@@ -48,9 +48,6 @@ public class RayOMayhem : MonoBehaviour
         }
 
         
-
-
-
         //left click to add voxel block
         if (Input.GetMouseButton(1))
         {
@@ -69,6 +66,7 @@ public class RayOMayhem : MonoBehaviour
             }
         }
 
+        //Update the navmesh only after the player releases the mouse button to maintain speed.
         if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) ) && wasBuilding)
         {
             trailEnd = true;

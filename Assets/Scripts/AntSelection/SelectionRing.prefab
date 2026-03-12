@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8768303766960785478}
   - component: {fileID: 4249442162037944630}
   - component: {fileID: 4779626593842261476}
+  - component: {fileID: 3463865631701367351}
   m_Layer: 0
   m_Name: SelectionRing
   m_TagString: Untagged
@@ -113,3 +114,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &3463865631701367351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 89896772328918604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94574e186f45a594f9b9167f3d4a7085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionRingController
+  ring: {fileID: 0}
+  yOffset: 1
+  ringThicknessWorld: 0.35
+  ringColor: {r: 0, g: 1, b: 0, a: 1}
