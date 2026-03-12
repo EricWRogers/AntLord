@@ -3411,7 +3411,7 @@
             ]
         },
         {
-            "name": "Mouse + Keyboard",
+            "name": "Controls",
             "id": "e4830c10-da25-4eab-b803-a120ed8ac0bb",
             "actions": [
                 {
@@ -3505,6 +3505,17 @@
                     "name": "",
                     "id": "3ff73095-ee25-4ec6-b56f-f0eb6d2ed066",
                     "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a1712f6e-f82a-426e-adb6-0537a85cd49b",
+                    "path": "<Keyboard>/rightShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
