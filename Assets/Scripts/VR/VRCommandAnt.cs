@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class VRCommandAnt : CommandParent
@@ -12,14 +13,9 @@ public class VRCommandAnt : CommandParent
     public InputActionMap VRLEFTInteraction;
     public InputAction RTrigger;//actions
     public InputAction LTrigger;
+    public InputAction LPrimaryButton;
+    public InputAction LSecondaryButton;
 
-    /*
-    public InputActionReference inputActionReference;
-    public InputAction LeftTriggerAction;
-    public InputAction XButtonAction; //primary button left
-    public InputAction YButtonAction; //secondary button left
-    public InputAction RightTriggerAction;
-    */
     private int taskValue = 0;
 
     private void OnEnable()
@@ -43,6 +39,8 @@ public class VRCommandAnt : CommandParent
 
         RTrigger = VRRIHGHTInteraction.FindAction("Activate");
         LTrigger = VRLEFTInteraction.FindAction("Activate");
+        LPrimaryButton = VRLEFTInteraction.FindAction("PrimaryButtonSelect");
+        LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
 
         if (VRInputActions != null)
         {
@@ -51,27 +49,14 @@ public class VRCommandAnt : CommandParent
 
             RTrigger.Enable();
             LTrigger.Enable();
+            LPrimaryButton.Enable();
+            LSecondaryButton.Enable();
         }
 
         RTrigger.performed += OnRightTrigger;
         LTrigger.performed += OnLeftTrigger;
-
-        /*
-        if (inputActionReference != null)
-        {
-            LeftTriggerAction = inputActionReference.action;
-            XButtonAction = inputActionReference.action;
-            YButtonAction = inputActionReference.action;
-
-            RightTriggerAction = inputActionReference.action;
-
-            LeftTriggerAction?.Enable();
-            XButtonAction?.Enable();
-            YButtonAction?.Enable();
-
-            RightTriggerAction?.Enable();
-        }
-        */
+        LPrimaryButton.performed += OnLeftPrimaryDown;
+        LSecondaryButton.performed += OnLeftSecondaryDown;
     }
 
 
@@ -91,58 +76,27 @@ public class VRCommandAnt : CommandParent
 
         if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
+            Debug.LogWarning("RAYCAST HIT!");
             DirectAnt(hit);
         }
     }
 
-    void Update()
+    private void OnLeftPrimaryDown(InputAction.CallbackContext context)
     {
-        /*
-        if(RightTriggerAction != null)
-        {
-            
-            float triggerValue = RightTriggerAction.ReadValue<float>();
-            if (triggerValue > 0.1f)
-            {
-                if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
-                {
-                    SimpleAntSelect(hit);
-                }
-            }
+        if (taskValue == 1){
+            SwitchToManual();
+            taskValue = 0;
+            Debug.Log("task = manual");
         }
-
-        if (LeftTriggerAction != null)
+        else
         {
-            float triggerValue = LeftTriggerAction.ReadValue<float>();
-            if (triggerValue > 0.1f)
-            {
-                if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
-                {
-                    DirectAnt(hit);
-                }
-            }
+            SwitchToFood();
+            taskValue = 1;
+            Debug.Log("task = food");
         }
-
-        if (XButtonAction != null)
-        {
-            bool buttonValue = XButtonAction.WasPressedThisFrame();
-            if (buttonValue)
-            {
-                if (taskValue == 1){
-                    SwitchToManual();
-                    taskValue = 0;
-                    Debug.Log("task = manual");
-                }
-                else
-                {
-                    SwitchToFood();
-                    taskValue = 1;
-                    Debug.Log("task = food");
-                }
-                
-            }
-        }
-        */
     }
-
+    private void OnLeftSecondaryDown(InputAction.CallbackContext context)
+    {
+        
+    }
 }
