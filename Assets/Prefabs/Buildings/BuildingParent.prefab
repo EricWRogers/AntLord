@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3855913851484395035}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53, y: 4.5, z: 4}
+  m_LocalPosition: {x: 35, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -47,6 +47,10 @@ PrefabInstance:
     - target: {fileID: 1521120396676709679, guid: 53951a2ba6c9a9e40ae2a0d8b4bb8b50, type: 3}
       propertyPath: m_Name
       value: SpawnBuilding
+      objectReference: {fileID: 0}
+    - target: {fileID: 3026306675670589178, guid: 53951a2ba6c9a9e40ae2a0d8b4bb8b50, type: 3}
+      propertyPath: radius
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3489033244722046759, guid: 53951a2ba6c9a9e40ae2a0d8b4bb8b50, type: 3}
       propertyPath: m_Mesh

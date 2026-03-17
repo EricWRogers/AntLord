@@ -14,9 +14,11 @@ public class SpawnerBuilding : Buildings
     public int foodAmount = 100; //placeholder for Im guessing will probably be stored in a GameManager
     public int minFoodPerAnt = 10;
     public int tempWinCon;
+    public float radius = 5.0f;
     List<GameObject> ants = new List<GameObject>();
     public GameObject antPrefab;
     public int maxHealth = 10;
+    Bounds bounds;
 
 
     void Start()
@@ -24,10 +26,11 @@ public class SpawnerBuilding : Buildings
         this.currentHealth = maxHealth;
         slider.maxValue = currentHealth;
         slider.value = currentHealth;
+        bounds = GetComponent<MeshRenderer>().bounds;
     }
     void FixedUpdate()
     {
-        if (ants.Count < maxAnts && foodAmount >= minFoodPerAnt && this.currentHealth > 0) //GameManager.instance.GetFood() > minFoodPerAnt
+        if (ants.Count < maxAnts && ResourceManager.instance.GetFood() > minFoodPerAnt && this.currentHealth > 0)
         {
             timer += Time.deltaTime;
             if (timer >= spawnCooldown)
@@ -41,10 +44,23 @@ public class SpawnerBuilding : Buildings
     void SpawnAnt()
     {
         //Vector3 padding = new Vector3(Random.Range(0.0f, spawnPadding), gameObject.transform.position.y + 1.0f, Random.Range(0.0f, spawnPadding));
-        foodAmount -= 2; //10; //GameManager.instance.EatFood(10);
-        Instantiate(antPrefab, spawnPoint.position, Quaternion.identity); //idk what to do about rotation at the moment so...
+        ResourceManager.instance.AddFood(-2);
+        float randomX = 0.0f;
+        float randomZ = 0.0f;
+        while (randomX < transform.localScale.x && randomX > -transform.localScale.x)
+        {
+            randomX = transform.position.x + transform.localScale.x + Random.Range(-(transform.localScale.x + radius), transform.localScale.x + radius);
+        }
+        while (randomZ < transform.localScale.z && randomZ > -transform.localScale.z)
+        {
+            randomZ = transform.position.z + transform.localScale.z + Random.Range(-(transform.localScale.z + radius), transform.localScale.z + radius);
+        }
+
+        Vector3 spawn = new Vector3(randomX, transform.position.y, randomZ);
+
+        Instantiate(antPrefab, spawn, Quaternion.identity); //idk what to do about rotation at the moment so...
         tempWinCon++;
-        if(tempWinCon >= 300)
+        if (tempWinCon >= 300)
         {
             FindFirstObjectByType<MM>().Pause();
         }
@@ -52,6 +68,6 @@ public class SpawnerBuilding : Buildings
 
     public void GiveFood(int _food) //or floats idk what yall are cooking
     {
-        foodAmount += _food;
+        ResourceManager.instance.AddFood(_food);
     }
 }

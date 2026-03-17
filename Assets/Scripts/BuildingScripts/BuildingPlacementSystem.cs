@@ -26,7 +26,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     void Update()
     {
         //events listening for the keypresses
-        if (Input.GetMouseButton(0))//if you want to crash unity delete Down
+        if (Input.GetMouseButtonDown(0))//if you want to crash unity delete Down
         {
             OnClicked?.Invoke();
         }
@@ -83,7 +83,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     void PlaceStruct()
     {
-        if (IsPointerOverUI())
+        if (IsPointerOverUI() || ResourceManager.instance.GetFood() < allBuildings[selectedObjectIndex].buildCost)
         {
             return;
         }
@@ -108,11 +108,12 @@ public class BuildingPlacementSystem : MonoBehaviour
         {
             canBuild = voxelTerrain.SetVoxel(
                 building.transform.position, // le center of the brush
-                building.transform.localScale.x * 2.0f);//le radius of the brush a bit bigger than normal to get surronding tiles
+                building.transform.localScale.x * 3.0f);//le radius of the brush a bit bigger than normal to get surronding tiles
         }
         if (canBuild)
         {
             Instantiate(buildingParent);
+            ResourceManager.instance.AddFood(-allBuildings[selectedObjectIndex].buildCost);
         }
         else
         {
