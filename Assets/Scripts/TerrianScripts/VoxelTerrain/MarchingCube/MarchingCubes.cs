@@ -144,20 +144,6 @@ public class MarchingCubes : MonoBehaviour
         }
     }
 
-    /*public void ResetFlat(int height)
-    {
-        for (int x = 0; x < width + 1; x++)
-        {
-            for (int y = 0; y < height + 1; y++)
-            {
-                for (int z = 0; z < width + 1; z++)          For some reason breaks the code....DON'T Try it
-                {
-                    heights[x, y, z] = height;
-                }
-            }
-        }
-    }*/
-
     private float PerlinNoise3D(float x, float y, float z) //generates 3D Perlin noise by combining multiple 2D Perlin noise samples, this is a common technique to create 3D noise since Unity doesn't have a built-in 3D Perlin noise function
     {
         float xy = Mathf.PerlinNoise(x, y); //This doesn't really work that well.
