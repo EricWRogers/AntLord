@@ -199,10 +199,18 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -4982249516211480865, guid: 4f419617dd75f4c478a58fca0f03fd70, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7196e089453149f4eaa8fa91d8f8d679, type: 2}
     - target: {fileID: 919132149155446097, guid: 4f419617dd75f4c478a58fca0f03fd70, type: 3}
       propertyPath: m_Name
       value: AppleJW_WS_26
       objectReference: {fileID: 0}
+    - target: {fileID: 1893194068992980029, guid: 4f419617dd75f4c478a58fca0f03fd70, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7196e089453149f4eaa8fa91d8f8d679, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
