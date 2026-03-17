@@ -443,8 +443,37 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 0
-  inputActionReference: {fileID: 0}
   rayInteractor: {fileID: 2409912290989912343}
+  VRRIHGHTInteraction:
+    m_Name: VRRIHGHT Interaction
+    m_Id: d08d70a5-f605-4ce3-937a-05b4551e59b9
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  VRLEFTInteraction:
+    m_Name: VRLEFT Interaction
+    m_Id: d2447259-1aa2-4e0e-af86-52d6c9fab673
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  RTrigger:
+    m_Name: R Trigger
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: dbff1446-729c-4cf6-bf6f-ed1b47f1deb5
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LTrigger:
+    m_Name: L Trigger
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: c85baf34-67d9-4b9d-a0f8-1c2129db270d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &7370047107705055420
 GameObject:
   m_ObjectHideFlags: 0

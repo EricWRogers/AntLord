@@ -91,6 +91,7 @@ public class VRCommandAnt : CommandParent
 
         if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
+            Debug.LogWarning("RAYCAST HIT!");
             DirectAnt(hit);
         }
     }
