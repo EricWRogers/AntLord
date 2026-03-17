@@ -1,62 +1,102 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class VRCommandAnt : CommandParent
 {
-
-    public InputActionReference inputActionReference;
     public XRRayInteractor rayInteractor;
-    private InputAction RightTriggerAction;
 
-    void Start()
+    [Header("Input Binds")]
+    public XRIDefaultInputActions VRInputActions; //input c# script
+    public InputActionMap VRRIHGHTInteraction;//action map
+    public InputActionMap VRLEFTInteraction;
+    public InputAction RTrigger;//actions
+    public InputAction LTrigger;
+    public InputAction LPrimaryButton;
+    public InputAction LSecondaryButton;
+
+    private int taskValue = 0;
+
+    private void OnEnable()
     {
-        if (inputActionReference != null)
+        VRInputActions.XRIRightInteraction.Enable();
+        VRInputActions.XRILeftInteraction.Enable();
+    }
+    private void OnDisable()
+    {
+        VRInputActions.XRIRightInteraction.Disable();
+        VRInputActions.XRILeftInteraction.Disable();
+    }
+
+    void Awake()
+    {
+        //set input binds
+        VRInputActions = new XRIDefaultInputActions();
+
+        VRRIHGHTInteraction = VRInputActions.XRIRightInteraction;
+        VRLEFTInteraction = VRInputActions.XRILeftInteraction;
+
+        RTrigger = VRRIHGHTInteraction.FindAction("Activate");
+        LTrigger = VRLEFTInteraction.FindAction("Activate");
+        LPrimaryButton = VRLEFTInteraction.FindAction("PrimaryButtonSelect");
+        LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
+
+        if (VRInputActions != null)
         {
-            RightTriggerAction = inputActionReference.action;
-            if (RightTriggerAction != null)
-            {
-                RightTriggerAction.Enable();
-            }
+            VRRIHGHTInteraction.Enable();
+            VRLEFTInteraction.Enable();
+
+            RTrigger.Enable();
+            LTrigger.Enable();
+            LPrimaryButton.Enable();
+            LSecondaryButton.Enable();
+        }
+
+        RTrigger.performed += OnRightTrigger;
+        LTrigger.performed += OnLeftTrigger;
+        LPrimaryButton.performed += OnLeftPrimaryDown;
+        LSecondaryButton.performed += OnLeftSecondaryDown;
+    }
+
+
+    private void OnRightTrigger(InputAction.CallbackContext context)
+    {
+        Debug.Log("VR INPUT: Right trigger Activated");
+
+        if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        {
+            SimpleAntSelect(hit);
         }
     }
 
-    void Update()
+    private void OnLeftTrigger(InputAction.CallbackContext context)
     {
-        if(RightTriggerAction != null)
+        Debug.Log("VR INPUT: Left trigger Activated");
+
+        if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
-            //read a float value (good for reading triggers)
-            float triggerValue = RightTriggerAction.ReadValue<float>();
-            if (triggerValue > 0.1f)
-            {
-                //Debug.Log("Trigger pulled"!);
-
-                //RaycastHit rayHit;
-
-            //     if (rayInteractor.TryGetCurrent3DRaycastHit(out rayHit))
-            //     {
-                    
-            //         Debug.Log("raycast hit:" + rayHit.transform.gameObject.name);
-
-            //         if (rayHit.transform.gameObject.CompareTag("Ant"))
-            //         {
-            //             Debug.Log("I spy a little ant!");
-            //         }
-            //     }
-            // }
-
-                if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
-                {
-                    SimpleAntSelect(hit);
-                }
-            }
-
-            //check if button was pressed
-            /*
-            if (triggerAction.WasPressedThisFrame())
-            {
-                Debug.Log("Button Pressed This Frame!");
-            } */
+            Debug.LogWarning("RAYCAST HIT!");
+            DirectAnt(hit);
         }
+    }
+
+    private void OnLeftPrimaryDown(InputAction.CallbackContext context)
+    {
+        if (taskValue == 1){
+            SwitchToManual();
+            taskValue = 0;
+            Debug.Log("task = manual");
+        }
+        else
+        {
+            SwitchToFood();
+            taskValue = 1;
+            Debug.Log("task = food");
+        }
+    }
+    private void OnLeftSecondaryDown(InputAction.CallbackContext context)
+    {
+        
     }
 }

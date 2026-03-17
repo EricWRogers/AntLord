@@ -20,7 +20,7 @@
                 {
                     "name": "",
                     "id": "d210dbd4-40e2-4f41-9185-8133d0f99993",
-                    "path": "<QuestProTouchController>/secondaryButton",
+                    "path": "<QuestTouchPlusController>{LeftHand}/menu",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
