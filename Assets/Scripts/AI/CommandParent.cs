@@ -61,15 +61,15 @@ public class CommandParent : MonoBehaviour
     {
         //Debug.LogWarning("SelectedLeader: " + selectedLeader.gameObject.name);
         if(selectedLeader == null || selectedLeader.target != selectedLeader.home){
-            Debug.LogWarning("1st pass");
+            //Debug.LogWarning("1st pass");
             if(taskToAssign == AntTask.Manual)
             {
-                Debug.LogWarning("2nd pass");
+                //Debug.LogWarning("2nd pass");
                 //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
                 if (antSelect)
                 {
-                    Debug.LogWarning("3rd pass");
+                    //Debug.LogWarning("3rd pass");
                     ElectLeader();
                     selectedLeader.task = AntTask.Manual;
 

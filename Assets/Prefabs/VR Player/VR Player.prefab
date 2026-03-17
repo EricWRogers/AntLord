@@ -442,7 +442,7 @@ MonoBehaviour:
   selectionRing: {fileID: 0}
   groundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   rayInteractor: {fileID: 2409912290989912343}
   VRRIHGHTInteraction:
     m_Name: VRRIHGHT Interaction
@@ -470,6 +470,24 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 104683a8-1091-4531-a3fb-bd99976ffcdb
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LPrimaryButton:
+    m_Name: L Primary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a0a6db18-0bbc-4d1e-ae9c-7822d760104b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LSecondaryButton:
+    m_Name: L Secondary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 8ea06290-1606-46d2-a2fb-1135bd02a9fd
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
@@ -2629,38 +2647,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 8f458013-b102-4293-be72-0eea35888838
     m_ActionName: 'Controls/R[/Keyboard/r]'
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 303256391695022653}
-        m_TargetAssemblyTypeName: MM, Assembly-CSharp
-        m_MethodName: PauseButtonPressed
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: b0b4e4dc-c672-49c3-afc4-4a39a162e8c9
-    m_ActionName: Menu/MenuPressed
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 303256391695022653}
-        m_TargetAssemblyTypeName: MM, Assembly-CSharp
-        m_MethodName: PauseButtonPressed
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: b0b4e4dc-c672-49c3-afc4-4a39a162e8c9
-    m_ActionName: Menu/MenuPressed
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: XRI Head
