@@ -51,7 +51,6 @@ public class MarchingCubes : MonoBehaviour
     private Mesh mesh;
 
     public LayerMask layerMask;
-    public int myInt = 0;
 
     public void Start()
     {
@@ -60,7 +59,7 @@ public class MarchingCubes : MonoBehaviour
     }
 
     void Update()
-    { 
+    {
         if (rayOMayhem.trailEnd == true) //if the player is done placing voxels, update the navmesh so the ant AI can pathfind through the new terrain
         {
             UpdateNavMesh();
@@ -215,7 +214,7 @@ public class MarchingCubes : MonoBehaviour
 
     private void MarchCube(Vector3 position, float[] cubeCorners)//generates the triangles for a single cube based on the heights of its corners and the marching cubes algorithm, it uses the config index to look up the edges that need to be connected to form the triangles for the current cube configuration
     {
-        int configIndex = GetConfigIndex(cubeCorners); 
+        int configIndex = GetConfigIndex(cubeCorners);
 
         if (configIndex == 0 || configIndex == 255)
         {
@@ -335,7 +334,6 @@ public class MarchingCubes : MonoBehaviour
     {
         //need a buffer to not place buildings over each other
         Vector3 localPos = transform.InverseTransformPoint(worldPosition);
-
         int startX = Mathf.FloorToInt((localPos.x - radius) / resolution);
         int endX = Mathf.CeilToInt((localPos.x + radius) / resolution);
         int startY = Mathf.FloorToInt((localPos.y - radius) / resolution);
@@ -346,20 +344,25 @@ public class MarchingCubes : MonoBehaviour
 
         bool changed = false;
 
-        for (int x = startX; x <= endX; x++)
+        for (int x = startX; x <= endX && canPlace; x++)
         {
-            for (int y = startY; y <= endY; y++)
+            for (int y = startY; y <= endY && canPlace; y++)
             {
                 for (int z = startZ; z <= endZ && canPlace; z++)
                 {
                     if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= width)
                         continue;
+
                     Vector3Int pos = new Vector3Int(x, y, z);
-                    if (occupiedVoxels.Contains(pos))
+                    foreach (Vector3Int voxel in occupiedVoxels)
                     {
-                        canPlace = false;
-                        break;
+                        if (Vector3Int.Distance(voxel, pos) <= (radius * 2.0f) / resolution)
+                        {
+                            canPlace = false;
+                            break;
+                        }
                     }
+
                     Vector3 voxelPos = new Vector3(x, y, z) * resolution;
                     float dist = Vector3.Distance(localPos, voxelPos);
 
@@ -383,11 +386,11 @@ public class MarchingCubes : MonoBehaviour
         if (changed)
         {
             UpdateVisuals();
-            return canPlace;
+            return true;
         }
         else
         {
-            return canPlace;
+            return false;
         }
     }
 }
