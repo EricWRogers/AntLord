@@ -10958,6 +10958,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 1392985749354470473, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392985749354470473, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -12.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392985749354470473, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.32
+      objectReference: {fileID: 0}
     - target: {fileID: 2034189979593878518, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -11098,6 +11110,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 4217510097651988332, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4310885243197138294, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.16
@@ -11141,6 +11157,30 @@ PrefabInstance:
     - target: {fileID: 4378258174320488667, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491181385830792015, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: LTrigger.m_Name
+      value: L Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491181385830792015, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: RTrigger.m_Name
+      value: R Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491181385830792015, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: VRLEFTInteraction.m_Id
+      value: 9feb3863-8f95-4952-99cf-7e378547cf87
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491181385830792015, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: VRLEFTInteraction.m_Name
+      value: VRLEFT Interaction
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491181385830792015, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: VRRIHGHTInteraction.m_Id
+      value: 6ae6d8f6-9619-47c4-8904-7d500ba07401
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491181385830792015, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: VRRIHGHTInteraction.m_Name
+      value: VRRIHGHT Interaction
       objectReference: {fileID: 0}
     - target: {fileID: 4708548855986757638, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Enabled

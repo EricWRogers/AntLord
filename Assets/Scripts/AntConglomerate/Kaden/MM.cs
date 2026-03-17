@@ -21,7 +21,7 @@ public class MM : MonoBehaviour
 
     void Start()
     {
-        DisplayWristUI();
+        //DisplayWristUI();
     }
 
     void Update()
