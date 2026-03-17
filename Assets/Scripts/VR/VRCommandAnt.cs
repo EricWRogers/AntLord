@@ -62,7 +62,7 @@ public class VRCommandAnt : CommandParent
 
     private void OnRightTrigger(InputAction.CallbackContext context)
     {
-        Debug.Log("VR INPUT: Right trigger Activated");
+        //Debug.Log("VR INPUT: Right trigger Activated " + gameObject.name);
 
         if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
@@ -72,11 +72,11 @@ public class VRCommandAnt : CommandParent
 
     private void OnLeftTrigger(InputAction.CallbackContext context)
     {
-        Debug.Log("VR INPUT: Left trigger Activated");
+        //Debug.Log("VR INPUT: Left trigger Activated " + gameObject.name);
 
         if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
-            Debug.LogWarning("RAYCAST HIT!");
+            //Debug.LogWarning("RAYCAST HIT!");
             DirectAnt(hit);
         }
     }
