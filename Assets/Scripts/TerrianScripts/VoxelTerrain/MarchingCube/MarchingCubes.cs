@@ -316,67 +316,58 @@ public class MarchingCubes : MonoBehaviour
             UpdateVisuals();
         }
     }
+    //Sets the Voxels within a buildings radius to the same height
+    //may wonder why this took so long well
+    //floating points and rounding had something to do with and thats all Ill say
     public bool SetVoxel(Vector3 worldPosition, float radius = 1.5f)
     {
-        //need a buffer to not place buildings over each other
         Vector3 localPos = transform.InverseTransformPoint(worldPosition);
+        int cutoffY = Mathf.RoundToInt(localPos.y / resolution);
+
         int startX = Mathf.FloorToInt((localPos.x - radius) / resolution);
         int endX = Mathf.CeilToInt((localPos.x + radius) / resolution);
         int startY = Mathf.FloorToInt((localPos.y - radius) / resolution);
         int endY = Mathf.CeilToInt((localPos.y + radius) / resolution);
         int startZ = Mathf.FloorToInt((localPos.z - radius) / resolution);
         int endZ = Mathf.CeilToInt((localPos.z + radius) / resolution);
-        bool canPlace = true;
 
-        bool changed = false;
+        List<Vector3Int> affected = new List<Vector3Int>();
 
-        for (int x = startX; x <= endX && canPlace; x++)
-        {
-            for (int y = startY; y <= endY && canPlace; y++)
-            {
-                for (int z = startZ; z <= endZ && canPlace; z++)
+        for (int x = startX; x <= endX; x++)
+            for (int y = startY; y <= endY; y++)
+                for (int z = startZ; z <= endZ; z++)
                 {
                     if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= width)
                         continue;
 
-                    Vector3Int pos = new Vector3Int(x, y, z);
-                    foreach (Vector3Int voxel in occupiedVoxels)
-                    {
-                        if (Vector3Int.Distance(voxel, pos) <= (radius * 2.0f) / resolution)
-                        {
-                            canPlace = false;
-                            break;
-                        }
-                    }
+                    Vector3 voxelPos = (new Vector3(x, y, z) + Vector3.one * 0.5f) * resolution;
 
-                    Vector3 voxelPos = new Vector3(x, y, z) * resolution;
-                    float dist = Vector3.Distance(localPos, voxelPos);
-
-                    if (dist <= radius)
+                    if (Vector3.Distance(localPos, voxelPos) <= radius)
                     {
-                        if (localPos.y == voxelPos.y || voxelPos.y > localPos.y)
-                        {
-                            heights[x, y, z] = 1.0f;
-                        }
-                        else
-                        {
-                            heights[x, y, z] = 0.0f;
-                        }
-                        occupiedVoxels.Add(new Vector3Int(x, y, z));
-                        changed = true;
+                        Vector3Int pos = new Vector3Int(x, y, z);
+
+                        if (occupiedVoxels.Contains(pos))
+                            return false;
+
+                        affected.Add(pos);
                     }
                 }
+
+        foreach (var pos in affected)
+        {
+            if (pos.y >= cutoffY)
+            {
+                heights[pos.x, pos.y, pos.z] = 1f; // air
             }
+            else
+            {
+                heights[pos.x, pos.y, pos.z] = 0f; // solid
+            }
+
+            occupiedVoxels.Add(pos);
         }
 
-        if (changed)
-        {
-            UpdateVisuals();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        UpdateVisuals();
+        return true;
     }
 }
