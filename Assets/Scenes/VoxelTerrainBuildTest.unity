@@ -1174,6 +1174,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 244382698372745018, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
+      propertyPath: m_LeftHand
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 244382698372745018, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
+      propertyPath: m_RightHand
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3300364588362678929, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
       propertyPath: m_LocalPosition.x
       value: 50.63951
@@ -1214,45 +1222,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6801482656891590627, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: LPrimaryButton.m_Name
-      value: L Primary Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 6801482656891590627, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: LSecondaryButton.m_Name
-      value: L Secondary Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 6887183292792508767, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: LTrigger.m_Name
-      value: L Trigger
-      objectReference: {fileID: 0}
-    - target: {fileID: 6887183292792508767, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: RTrigger.m_Name
-      value: R Trigger
-      objectReference: {fileID: 0}
-    - target: {fileID: 6887183292792508767, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: LPrimaryButton.m_Name
-      value: L Primary Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 6887183292792508767, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: VRLEFTInteraction.m_Id
-      value: 71f89474-d874-48a5-9088-c39231db7cba
-      objectReference: {fileID: 0}
-    - target: {fileID: 6887183292792508767, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: LSecondaryButton.m_Name
-      value: L Secondary Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 6887183292792508767, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: VRLEFTInteraction.m_Name
-      value: VRLEFT Interaction
-      objectReference: {fileID: 0}
-    - target: {fileID: 6887183292792508767, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: VRRIHGHTInteraction.m_Id
-      value: f1ad3094-6ccf-40d2-9579-c4a41c7c1bda
-      objectReference: {fileID: 0}
-    - target: {fileID: 6887183292792508767, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: VRRIHGHTInteraction.m_Name
-      value: VRRIHGHT Interaction
+    - target: {fileID: 4582776880783913724, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
+      propertyPath: m_Camera
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7208993197742861887, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
       propertyPath: m_Name
@@ -1260,29 +1232,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7208993197742861887, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7677329748115765073, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
+    - target: {fileID: 9088988851116558168, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
+      propertyPath: m_Camera
+      value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 7677329748115765073, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
+    - target: {fileID: 9088988851116558168, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
+      propertyPath: m_CameraFloorOffsetObject
+      value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 7677329748115765073, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7677329748115765073, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6887183292792508767, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-    m_RemovedGameObjects:
-    - {fileID: 6448768558895343504, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
-    - {fileID: 2374473485000645912, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
@@ -1370,7 +1331,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1453216891
 Transform:
   m_ObjectHideFlags: 0
