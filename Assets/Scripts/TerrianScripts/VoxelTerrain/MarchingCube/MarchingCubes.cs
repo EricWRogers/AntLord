@@ -84,7 +84,7 @@ public class MarchingCubes : MonoBehaviour
     }
 
 
-    public void Initialize() //initializes the mesh and sets the heights of the voxels based on Perlin noise
+    public void Initialize()
     {
         meshFilter = GetComponent<MeshFilter>();
         mesh = new Mesh();
@@ -93,6 +93,11 @@ public class MarchingCubes : MonoBehaviour
 
         SetHeights();
         UpdateVisuals();
+
+    
+        GameObject.Find("NavMesh Surface")
+            ?.GetComponent<Unity.AI.Navigation.NavMeshSurface>()
+            ?.BuildNavMesh();
     }
     private IEnumerator TestAll()
     {
