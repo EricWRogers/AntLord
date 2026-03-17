@@ -13,7 +13,7 @@ public class SBBerrySpawn : MonoBehaviour
 
     //what and where to spawn
     public GameObject berry;
-    public float sphereRadius = 4f;
+    public float sphereRadius = 40f;
     public List<Transform> spawnPoints;
 
     //size & growth during/after spawn 
@@ -61,17 +61,22 @@ public class SBBerrySpawn : MonoBehaviour
             Debug.Log("i: "+i);
 
             int randomIndex = Random.Range(0, spawnPoints.Count);
-            Debug.Log("randomIndex: " + spawnPoints[randomIndex].gameObject.name);
+            // Debug.Log("randomIndex: " + spawnPoints[randomIndex].gameObject.name);
 
             // Transform spawnPosition = spawnPoints[randomIndex];
             // GameObject targetObject = spawnPoints[randomIndex];
 
             Vector3 spawnPosition = spawnPoints[randomIndex].position;
+
+            if (Physics.CheckSphere(spawnPosition, sphereRadius))
+            {
+                Debug.Log("something is there");
+            }
             
 
-            Debug.Log("SpawnPos: "+spawnPosition);
-            Debug.Log("SpawnPoint: " + spawnPoints);
-            Debug.Log("fdkjf: " + spawnPoints[randomIndex]);
+            // Debug.Log("SpawnPos: "+spawnPosition);
+            // Debug.Log("SpawnPoint: " + spawnPoints);
+            // Debug.Log("fdkjf: " + spawnPoints[randomIndex]);
 
             // if (berry != null) Debug.Log("Berry prefab is not missing!");
             // if (spawnPosition == null) Debug.LogError("SpawnPosition Transform is missing!");
@@ -81,15 +86,21 @@ public class SBBerrySpawn : MonoBehaviour
             // Debug.Log("spanPos.Rot" + spawnPosition.rotation);
 
             GameObject aBerry = Instantiate(berry, spawnPosition, Quaternion.identity);
-            Debug.Log("aBerry: "+ aBerry);
+            // Debug.Log("aBerry: "+ aBerry);
 
             Rigidbody rb = aBerry.GetComponent<Rigidbody>();
-            Debug.Log("rb: "+rb);
+            // Debug.Log("rb: "+rb);
+
+            if (rb != null && rb.useGravity == true)
+            {
+                rb.useGravity = false;
+                // Debug.Log ("Turned off to grow");
+            }
 
             aBerry.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
 
             growingApple = StartCoroutine(WatchAppleGrow(aBerry.transform));
-            Debug.Log("gAppl: "+growingApple);
+            // Debug.Log("gAppl: "+growingApple);
 
             CollisionDetectorForPrefabs forwarder = aBerry.GetComponent<CollisionDetectorForPrefabs>();
             forwarder.OnHit = (collision) =>

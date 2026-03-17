@@ -6,10 +6,10 @@ using UnityEngine.InputSystem;
 public class CommandParent : MonoBehaviour
 {
     public Camera cam;
-    public List<GameObject> selectedAnts = new List<GameObject>();
-    public LeadNav selectedLeader;
+    public List<GameObject> selectedAnts;
+    public LeadNav selectedLeader = null;
     public GameObject wayPointPrefab;
-    private bool antSelect = false;
+    private bool antSelect { get {return selectedAnts.Count > 0;} }
 
     [Header("Drag Select")]
     public float sphereCastRadius = 2;
@@ -33,7 +33,6 @@ public class CommandParent : MonoBehaviour
 
     public void SimpleAntSelect(RaycastHit hit)
     {
-        antSelect = false;
 
         if (selectedLeader == null || selectedLeader.target != selectedLeader.home){
 
@@ -52,7 +51,6 @@ public class CommandParent : MonoBehaviour
                     if (col.CompareTag("Ant"))
                     {
                         ToggleSelection(col.transform.gameObject);
-                        antSelect = true;
                     }
                 }
             }
@@ -61,14 +59,17 @@ public class CommandParent : MonoBehaviour
 
     public void DirectAnt(RaycastHit hit)
     {
+        //Debug.LogWarning("SelectedLeader: " + selectedLeader.gameObject.name);
         if(selectedLeader == null || selectedLeader.target != selectedLeader.home){
-
+            //Debug.LogWarning("1st pass");
             if(taskToAssign == AntTask.Manual)
             {
+                //Debug.LogWarning("2nd pass");
                 //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-                if (!antSelect && selectedAnts.Count != 0)
+                if (antSelect)
                 {
+                    //Debug.LogWarning("3rd pass");
                     ElectLeader();
                     selectedLeader.task = AntTask.Manual;
 

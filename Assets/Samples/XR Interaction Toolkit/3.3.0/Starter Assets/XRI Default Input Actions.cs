@@ -1062,6 +1062,24 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PrimaryButtonSelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""181dff1f-60f2-4e3b-b5c6-f1fe7c8b7b77"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryButtonSelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""a0ef48a9-c483-4d9d-a336-fa90ff1a7fd0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1370,6 +1388,28 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""processors"": ""ScaleVector2(x=0),StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""Translate Manipulation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e2e1f5ff-9eab-440d-ac44-8747f2a104e9"",
+                    ""path"": ""<XRController>{LeftHand}/primaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PrimaryButtonSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b669b966-a6ba-4b7d-9eec-022e984f0722"",
+                    ""path"": ""<XRController>{LeftHand}/secondaryButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SecondaryButtonSelect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -3760,6 +3800,8 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         m_XRILeftInteraction_Manipulation = m_XRILeftInteraction.FindAction("Manipulation", throwIfNotFound: true);
         m_XRILeftInteraction_ScaleToggle = m_XRILeftInteraction.FindAction("Scale Toggle", throwIfNotFound: true);
         m_XRILeftInteraction_ScaleOverTime = m_XRILeftInteraction.FindAction("Scale Over Time", throwIfNotFound: true);
+        m_XRILeftInteraction_PrimaryButtonSelect = m_XRILeftInteraction.FindAction("PrimaryButtonSelect", throwIfNotFound: true);
+        m_XRILeftInteraction_SecondaryButtonSelect = m_XRILeftInteraction.FindAction("SecondaryButtonSelect", throwIfNotFound: true);
         // XRI Left Locomotion
         m_XRILeftLocomotion = asset.FindActionMap("XRI Left Locomotion", throwIfNotFound: true);
         m_XRILeftLocomotion_TeleportMode = m_XRILeftLocomotion.FindAction("Teleport Mode", throwIfNotFound: true);
@@ -4354,6 +4396,8 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
     private readonly InputAction m_XRILeftInteraction_Manipulation;
     private readonly InputAction m_XRILeftInteraction_ScaleToggle;
     private readonly InputAction m_XRILeftInteraction_ScaleOverTime;
+    private readonly InputAction m_XRILeftInteraction_PrimaryButtonSelect;
+    private readonly InputAction m_XRILeftInteraction_SecondaryButtonSelect;
     /// <summary>
     /// Provides access to input actions defined in input action map "XRI Left Interaction".
     /// </summary>
@@ -4413,6 +4457,14 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// Provides access to the underlying input action "XRILeftInteraction/ScaleOverTime".
         /// </summary>
         public InputAction @ScaleOverTime => m_Wrapper.m_XRILeftInteraction_ScaleOverTime;
+        /// <summary>
+        /// Provides access to the underlying input action "XRILeftInteraction/PrimaryButtonSelect".
+        /// </summary>
+        public InputAction @PrimaryButtonSelect => m_Wrapper.m_XRILeftInteraction_PrimaryButtonSelect;
+        /// <summary>
+        /// Provides access to the underlying input action "XRILeftInteraction/SecondaryButtonSelect".
+        /// </summary>
+        public InputAction @SecondaryButtonSelect => m_Wrapper.m_XRILeftInteraction_SecondaryButtonSelect;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -4475,6 +4527,12 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @ScaleOverTime.started += instance.OnScaleOverTime;
             @ScaleOverTime.performed += instance.OnScaleOverTime;
             @ScaleOverTime.canceled += instance.OnScaleOverTime;
+            @PrimaryButtonSelect.started += instance.OnPrimaryButtonSelect;
+            @PrimaryButtonSelect.performed += instance.OnPrimaryButtonSelect;
+            @PrimaryButtonSelect.canceled += instance.OnPrimaryButtonSelect;
+            @SecondaryButtonSelect.started += instance.OnSecondaryButtonSelect;
+            @SecondaryButtonSelect.performed += instance.OnSecondaryButtonSelect;
+            @SecondaryButtonSelect.canceled += instance.OnSecondaryButtonSelect;
         }
 
         /// <summary>
@@ -4522,6 +4580,12 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @ScaleOverTime.started -= instance.OnScaleOverTime;
             @ScaleOverTime.performed -= instance.OnScaleOverTime;
             @ScaleOverTime.canceled -= instance.OnScaleOverTime;
+            @PrimaryButtonSelect.started -= instance.OnPrimaryButtonSelect;
+            @PrimaryButtonSelect.performed -= instance.OnPrimaryButtonSelect;
+            @PrimaryButtonSelect.canceled -= instance.OnPrimaryButtonSelect;
+            @SecondaryButtonSelect.started -= instance.OnSecondaryButtonSelect;
+            @SecondaryButtonSelect.performed -= instance.OnSecondaryButtonSelect;
+            @SecondaryButtonSelect.canceled -= instance.OnSecondaryButtonSelect;
         }
 
         /// <summary>
@@ -6148,6 +6212,20 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScaleOverTime(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PrimaryButtonSelect" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPrimaryButtonSelect(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SecondaryButtonSelect" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSecondaryButtonSelect(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "XRI Left Locomotion" which allows adding and removing callbacks.

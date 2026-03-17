@@ -1,96 +1,89 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.XR;
 using UnityEngine.InputSystem;
-using System.Xml;
 
 public class MM : MonoBehaviour
 {
-    private GameObject pm;
-    
-    public bool activeWristUI = true;
-    
-    void Awake()
+    [Header("Setup")]
+    [SerializeField] private GameObject pm; // Drag the PM object here in Inspector
+    [SerializeField] private InputActionAsset customActions; // Drag your Input Asset here
+    [SerializeField] private string actionMapName = "Menu"; // Matches your custom map name
+
+    private InputAction pauseAction;
+
+    void OnEnable()
     {
-        Transform t = transform.Find("PM");
-        if (t != null)
+        // This turns on the 'radio' so Unity actually hears the button click
+        if (customActions != null)
         {
-            pm = t.gameObject;
+            var map = customActions.FindActionMap(actionMapName);
+            if (map != null)
+            {
+                map.Enable();
+                // Optional: find the action directly if Unity Events act up
+                pauseAction = map.FindAction("MenuPressed");
+            }
         }
     }
 
-    void Start()
+    void Awake()
     {
-        DisplayWristUI();
+        // Backup: if you didn't drag it in, we try to find it
+        if (pm == null)
+        {
+            Transform t = transform.Find("PM");
+            if (t != null) pm = t.gameObject;
+        }
+
+        // Start with the menu hidden so it's not in your face at spawn
+        if (pm != null) pm.SetActive(false);
     }
 
     void Update()
     {
-        // PC Pause (Escape key)
-        if (Input.GetKeyDown(KeyCode.Escape) && pm != null)
+        // PC Pause (Escape key) - Keepin' it classic
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Pause();
         }
     }
 
+    // This is the one you link to your Player Input Events
     public void PauseButtonPressed(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        // 'started' is better than 'performed' for VR menu buttons
+        // It prevents the menu from flickering on/off in one click
+        if (context.started)
         {
             Pause();
         }
     }
-    public void DisplayWristUI()
+
+    public void Pause()
     {
-        if (activeWristUI)
+        if (pm == null) 
         {
-            pm.SetActive(false);
-            activeWristUI = false;
-            Time.timeScale = 1;
+            Debug.LogError("Yo! The PM (Pause Menu) object is missing!");
+            return;
         }
-        else if (!activeWristUI && pm != null)
+
+        bool isCurrentlyPaused = Time.timeScale == 0;
+        
+        if (isCurrentlyPaused)
         {
-            pm.SetActive(true);
-            activeWristUI = true;
-            Time.timeScale = 0;
-        }
-    }
-
-    public void Play(string level)
-    {
-        SceneTransitionManager.singleton.GoToSceneAsync(1);
-        Debug.Log("Game Started.");
-    }
-
-    public void Options(GameObject menu)
-    {
-        menu.SetActive(true);
-        Debug.Log("Options Menu Opened.");
-    }
-
-    public void Quit()
-    {
-        Time.timeScale = 1;
-
-        Debug.Log("Bye, Bye! (Exited Game)");
-
-        if (Application.isEditor)
-        {
-            #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-            #endif
+            Resume();
         }
         else
         {
-            Application.Quit();
-        }
-    }
+            Time.timeScale = 0;
+            pm.SetActive(true);
+            
+            // Pro Tip: Force the menu to look at the player when it pops up
+            pm.transform.LookAt(new Vector3(Camera.main.transform.position.x, pm.transform.position.y, Camera.main.transform.position.z));
+            pm.transform.Rotate(0, 180, 0); // Flip it so it's not backwards
 
-    public void Home(string level)
-    {
-        SceneManager.LoadScene(level);
-        Time.timeScale = 1;
-        Debug.Log("Returned to Home.");
+            Debug.Log("Game Paused.");
+        }
     }
 
     public void Resume()
@@ -103,20 +96,28 @@ public class MM : MonoBehaviour
         }
     }
 
-    public void Restart(string level)
+    // --- Scene Management (Keeping your original logic) ---
+
+    public void Restart(string levelName)
     {
-        SceneManager.LoadScene(level);
         Time.timeScale = 1;
-        Debug.Log("Game Restarted.");
+        SceneManager.LoadScene(levelName);
     }
 
-    public void Pause()
+    public void Home(string levelName)
     {
-        if (pm == null) return;
+        Time.timeScale = 1;
+        SceneManager.LoadScene(levelName);
+    }
 
-        bool paused = Time.timeScale == 0;
-        Time.timeScale = paused ? 1:0;
-        pm.SetActive(!paused);
-        Debug.Log("Game " + (paused ? "Resumed." : "Paused."));
+    public void Quit()
+    {
+        Time.timeScale = 1;
+        Debug.Log("Exiting Game...");
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
