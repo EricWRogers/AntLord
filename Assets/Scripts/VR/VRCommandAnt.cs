@@ -7,16 +7,56 @@ public class VRCommandAnt : CommandParent
     public XRRayInteractor rayInteractor;
 
     [Header("Input Binds")]
+    public XRIDefaultInputActions VRInputActions; //input c# script
+    public InputActionMap VRRIHGHTInteraction;//action map
+    public InputActionMap VRLEFTInteraction;
+    public InputAction RTrigger;//actions
+    public InputAction LTrigger;
+
+    /*
     public InputActionReference inputActionReference;
     public InputAction LeftTriggerAction;
     public InputAction XButtonAction; //primary button left
     public InputAction YButtonAction; //secondary button left
     public InputAction RightTriggerAction;
-
+    */
     private int taskValue = 0;
 
-    void Start()
+    private void OnEnable()
     {
+        VRInputActions.XRIRightInteraction.Enable();
+        VRInputActions.XRILeftInteraction.Enable();
+    }
+    private void OnDisable()
+    {
+        VRInputActions.XRIRightInteraction.Disable();
+        VRInputActions.XRILeftInteraction.Disable();
+    }
+
+    void Awake()
+    {
+        //set input binds
+        VRInputActions = new XRIDefaultInputActions();
+
+        VRRIHGHTInteraction = VRInputActions.XRIRightInteraction;
+        VRLEFTInteraction = VRInputActions.XRILeftInteraction;
+
+        RTrigger = VRRIHGHTInteraction.FindAction("Activate");
+        LTrigger = VRLEFTInteraction.FindAction("Activate");
+
+        if (VRInputActions != null)
+        {
+            VRRIHGHTInteraction.Enable();
+            VRLEFTInteraction.Enable();
+
+            RTrigger.Enable();
+            LTrigger.Enable();
+        }
+
+        RTrigger.performed += OnRightTrigger;
+        LTrigger.performed += OnLeftTrigger;
+
+        /*
         if (inputActionReference != null)
         {
             LeftTriggerAction = inputActionReference.action;
@@ -31,10 +71,33 @@ public class VRCommandAnt : CommandParent
 
             RightTriggerAction?.Enable();
         }
+        */
+    }
+
+
+    private void OnRightTrigger(InputAction.CallbackContext context)
+    {
+        Debug.Log("VR INPUT: Right trigger Activated");
+
+        if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        {
+            SimpleAntSelect(hit);
+        }
+    }
+
+    private void OnLeftTrigger(InputAction.CallbackContext context)
+    {
+        Debug.Log("VR INPUT: Left trigger Activated");
+
+        if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        {
+            DirectAnt(hit);
+        }
     }
 
     void Update()
     {
+        /*
         if(RightTriggerAction != null)
         {
             
@@ -79,6 +142,7 @@ public class VRCommandAnt : CommandParent
                 
             }
         }
+        */
     }
 
 }
