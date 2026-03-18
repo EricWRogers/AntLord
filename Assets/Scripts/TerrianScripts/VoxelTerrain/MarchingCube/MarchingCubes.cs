@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
 
-#if UNITY_EDITOR
+// #if UNITY_EDITOR
 
-using UnityEditor;
+// using UnityEditor;
 
-[CustomEditor(typeof(MarchingCubes))]
-public class CubeEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
+// [CustomEditor(typeof(MarchingCubes))]
+// public class CubeEditor : Editor
+// {
+//     public override void OnInspectorGUI()
+//     {
+//         base.OnInspectorGUI();
 
-        MarchingCubes mc = (MarchingCubes)target;
+//         MarchingCubes mc = (MarchingCubes)target;
 
-        if (GUILayout.Button("MarchCubes"))
-        {
-            mc.Initialize();
-            mc.MarchCubes();
-        }
-    }
-}
+//         if (GUILayout.Button("MarchCubes"))
+//         {
+//             mc.Initialize();
+//             mc.MarchCubes();
+//         }
+//     }
+// }
 
-#endif
+// #endif
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class MarchingCubes : MonoBehaviour

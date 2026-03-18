@@ -1,46 +1,43 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
 
-// #if UNITY_EDITOR
+#if UNITY_EDITOR
+using UnityEditor;
 
-// using UnityEditor;
-
-// [CustomEditor(typeof(MarchingCubeManager))]
-// public class CubeEditor : Editor
-// {
-//     public override void OnInspectorGUI()
-//     {
-//         base.OnInspectorGUI();
-
-//         MarchingCubeChunk mc = (MarchingCubeChunk)target;
-
-//         if (GUILayout.Button("MarchCubes"))
-//         {
-//             mc.UpdateMesh();
-//         }
-//     }
-// }
-
-// #endif
+[CustomEditor(typeof(MarchingCubeManager))]
+public class CubeEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        MarchingCubeManager mcm = (MarchingCubeManager)target;
+        if (GUILayout.Button("MarchCubes"))
+        {
+            mcm.ClearWorld();
+            mcm.InitializeWorld();
+        }
+    }
+}
+#endif
 
 
 public class MarchingCubeManager : MonoBehaviour
 {
-    [Header("World Settings")]
+    [Header("World Settings:")]
     [SerializeField] private int worldSizeInChunks = 3;
     [SerializeField] private int chunkSize = 16;
     [SerializeField] private float resolution = 1f;
     [SerializeField] private float threshold = 0.5f;
 
-    [Header("Noise Settings")]
+    [Header("Noise Settings:")]
     [SerializeField] private float noiseScale = 0.1f;
     [SerializeField] private float noiseAmplitude = 5f;
     [SerializeField] private bool use3DNoise;
 
-    private Dictionary<Vector3Int, MarchingCubeChunk> chunks = new Dictionary<Vector3Int, MarchingCubeChunk>();
+    private Dictionary<Vector3Int, MarchingCubeChunk> chunks = new Dictionary<Vector3Int, MarchingCubeChunk>(); //dictionary holding all chunks!
     
+    [Header("Inspector Fields:")]
     public MarchingCubeChunk chunkPrefab;
     public Material sandMaterial;
     public RayOMayhem rayOMayhem;
@@ -57,7 +54,7 @@ public class MarchingCubeManager : MonoBehaviour
         }
     }
 
-    private void InitializeWorld()
+    public void InitializeWorld()
     {
         if (chunks == null) chunks = new Dictionary<Vector3Int, MarchingCubeChunk>();
         
@@ -102,14 +99,14 @@ public class MarchingCubeManager : MonoBehaviour
 
     public void ClearWorld()
     {
-        // We have to find all children because the dictionary 
-        // clears whenever the script recompiles in the editor.
+        //find all children in the dictionary 
+        //clears whenever the script recompiles in the editor.
         var children = new List<GameObject>();
         foreach (Transform child in transform) children.Add(child.gameObject);
     
         foreach (var child in children)
         {
-            // Must use DestroyImmediate in Editor scripts
+            //must use DestroyImmediate in Editor scripts
             DestroyImmediate(child);
         }
 

@@ -3,7 +3,6 @@ using UnityEngine;
 public class RayOMayhem : MonoBehaviour
 {
     public Camera cam;
-    // Point this to your new MarchingCubeManager instead of a single Chunk
     public MarchingCubeManager voxelManager; 
     public LayerMask layerMask;
 
@@ -53,12 +52,12 @@ public class RayOMayhem : MonoBehaviour
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 500f, layerMask))
             {
-                //logic check: if breaking, check if we are above floor. If placing, check if we are below ceiling.
+                //if breaking, check if we are above floor. If placing, check if we are below ceiling.
                 bool withinHeightLimit = isBreaking ? (hit.point.y >= yThreshold) : (hit.point.y <= yThreshold);
 
                 if (withinHeightLimit)
                 {
-                    //we call the Manager's generic Modify method
+                    //call the Manager's generic Modify method
                     voxelManager.ModifyVoxel(hit.point, 1.0f, targetValue);
                     
                     nextAdjustmentTime = Time.time + adjustmentRate;

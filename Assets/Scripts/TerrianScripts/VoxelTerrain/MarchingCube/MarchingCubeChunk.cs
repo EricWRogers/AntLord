@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.AI.Navigation;
-using Unity.Mathematics;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class MarchingCubeChunk : MonoBehaviour
