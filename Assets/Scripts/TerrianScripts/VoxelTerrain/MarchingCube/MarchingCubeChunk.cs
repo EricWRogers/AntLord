@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
+using Unity.Mathematics;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class MarchingCubeChunk : MonoBehaviour
@@ -8,6 +9,8 @@ public class MarchingCubeChunk : MonoBehaviour
     private Mesh mesh;
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
+
+    private MeshRenderer meshRenderer;
     
     public float[,,] heights;
     private Vector3Int chunkOffset;
@@ -15,7 +18,7 @@ public class MarchingCubeChunk : MonoBehaviour
     private float resolution;
     private float threshold;
 
-    public void Setup(Vector3Int offset, int size, float res, float threshold)
+    public void Setup(Vector3Int offset, int size, float res, float threshold, Material mat)
     {
         this.chunkOffset = offset;
         this.size = size;
@@ -24,10 +27,13 @@ public class MarchingCubeChunk : MonoBehaviour
         
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
+        meshRenderer = GetComponent<MeshRenderer>();
+
         mesh = new Mesh();
         mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         meshFilter.mesh = mesh;
-        
+
+        meshRenderer.material = mat;
         heights = new float[size + 1, size + 1, size + 1];
     }
 
@@ -62,7 +68,7 @@ public class MarchingCubeChunk : MonoBehaviour
         meshCollider.sharedMesh = mesh;
     }
 
-    private void MarchCube(Vector3 position, float[] cubeCorners, List<Vector3> verts, List<int> tris)
+    public void MarchCube(Vector3 position, float[] cubeCorners, List<Vector3> verts, List<int> tris)
     {
         int configIndex = 0;
         for (int i = 0; i < 8; i++)

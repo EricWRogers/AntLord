@@ -3,6 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
 
+// #if UNITY_EDITOR
+
+// using UnityEditor;
+
+// [CustomEditor(typeof(MarchingCubeManager))]
+// public class CubeEditor : Editor
+// {
+//     public override void OnInspectorGUI()
+//     {
+//         base.OnInspectorGUI();
+
+//         MarchingCubeChunk mc = (MarchingCubeChunk)target;
+
+//         if (GUILayout.Button("MarchCubes"))
+//         {
+//             mc.UpdateMesh();
+//         }
+//     }
+// }
+
+// #endif
+
+
 public class MarchingCubeManager : MonoBehaviour
 {
     [Header("World Settings")]
@@ -18,6 +41,8 @@ public class MarchingCubeManager : MonoBehaviour
 
     private Dictionary<Vector3Int, MarchingCubeChunk> chunks = new Dictionary<Vector3Int, MarchingCubeChunk>();
     
+    public MarchingCubeChunk chunkPrefab;
+    public Material sandMaterial;
     public RayOMayhem rayOMayhem;
     public NavMeshSurface navMeshSurface;
 
@@ -34,6 +59,8 @@ public class MarchingCubeManager : MonoBehaviour
 
     private void InitializeWorld()
     {
+        if (chunks == null) chunks = new Dictionary<Vector3Int, MarchingCubeChunk>();
+        
         for (int x = 0; x < worldSizeInChunks; x++)
         {
             for (int z = 0; z < worldSizeInChunks; z++)
@@ -45,17 +72,48 @@ public class MarchingCubeManager : MonoBehaviour
 
     private void CreateChunk(Vector3Int offset)
     {
-        GameObject chunkObj = new GameObject($"Chunk_{offset.x}_{offset.z}");
-        chunkObj.transform.parent = transform;
-        chunkObj.transform.position = (Vector3)offset * resolution;
-        
-        MarchingCubeChunk chunk = chunkObj.AddComponent<MarchingCubeChunk>();
-        chunk.Setup(offset, chunkSize, resolution, threshold);
+        MarchingCubeChunk chunk = Instantiate(chunkPrefab, (Vector3)offset * resolution, Quaternion.identity, transform);
+        chunk.name = $"Chunk_{offset.x}_{offset.z}";
+
+        int TerrainLayer = LayerMask.NameToLayer("Terrain");
+        if (TerrainLayer != -1)
+        {
+            chunk.gameObject.layer = TerrainLayer;
+        }
+        else
+        {
+            Debug.LogWarning("Layer 'Terrain' not found.");
+        }
+        chunk.Setup(offset, chunkSize, resolution, threshold, sandMaterial);
         
         //noise Generation
         GenerateChunkHeights(chunk, offset);
         chunk.UpdateMesh();
         chunks.Add(offset, chunk);
+    }
+
+    public void GenerateEditorWorld()
+    {
+        //clear existing chunks to avoid stacking
+        ClearWorld();
+        InitializeWorld();
+        Debug.Log("Editor Marching Complete.");
+    }
+
+    public void ClearWorld()
+    {
+        // We have to find all children because the dictionary 
+        // clears whenever the script recompiles in the editor.
+        var children = new List<GameObject>();
+        foreach (Transform child in transform) children.Add(child.gameObject);
+    
+        foreach (var child in children)
+        {
+            // Must use DestroyImmediate in Editor scripts
+            DestroyImmediate(child);
+        }
+
+        if (chunks != null) chunks.Clear();
     }
 
     private void GenerateChunkHeights(MarchingCubeChunk chunk, Vector3Int offset)
