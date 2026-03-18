@@ -7,93 +7,68 @@ public class FollowNav : MonoBehaviour
     public NavMeshAgent myAgent;
     public LeadNav leader;
     public Transform recentCollision = null;
+
     public float closeEnough = 0.25f;
     public float closeEnoughModifier = 0.5f;
     private float finalCloseDist;
+
     public float leaderTail = 0.3f;
     public int crumbTrack = 0;
+
     public float separationRadius = 2f;
     public float separationForce = 5f;
+
     public bool amCarryingFood = false;
     public int antTier = 1;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         myAgent = GetComponent<NavMeshAgent>();
-
-        // temp add self to leader group
-        if(leader != null)
-            leader.followers.Add(myAgent);
-
+        if (leader != null) leader.followers.Add(myAgent);
         myAgent.isStopped = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(leader != null){
+        if (myAgent == null || !myAgent.isOnNavMesh) return;
+        if (leader == null) return;
 
-            if(myAgent.remainingDistance >= 2)
-            {
-                transform.LookAt(myAgent.steeringTarget);
-            }
-                
-            
-            // Supercede normal pathfinding if ants recently bumped
-            if(recentCollision != null)
-            {
-                if(Vector3.Distance(transform.position, recentCollision.position) > transform.localScale.x)
-                {
-                    recentCollision = null;
-                }
-            }
+        if (myAgent.remainingDistance >= 2f)
+            transform.LookAt(myAgent.steeringTarget);
 
-            // Follow crumbs left by leader
-            if(leader.crumbs.Count != 0 && Vector3.Distance(transform.position, leader.transform.position) > leaderTail)
-            {
-                myAgent.destination = leader.crumbs[crumbTrack];
+        if (recentCollision != null)
+        {
+            if (Vector3.Distance(transform.position, recentCollision.position) > transform.localScale.x)
+                recentCollision = null;
+        }
 
+        if (leader.crumbs.Count != 0 && Vector3.Distance(transform.position, leader.transform.position) > leaderTail)
+        {
+            // Clamp crumbTrack just in case
+            crumbTrack = Mathf.Clamp(crumbTrack, 0, leader.crumbs.Count - 1);
 
-                finalCloseDist = closeEnough * (leader.followers.Count * closeEnoughModifier);
+            myAgent.destination = leader.crumbs[crumbTrack];
 
-                if(finalCloseDist < 1f)
-                    finalCloseDist = 1f;
-                else if(finalCloseDist > 2.5f)
-                    finalCloseDist = 2.5f;
+            finalCloseDist = closeEnough * (leader.followers.Count * closeEnoughModifier);
+            finalCloseDist = Mathf.Clamp(finalCloseDist, 1f, 2.5f);
 
+            if (crumbTrack < leader.crumbs.Count - 1 && myAgent.remainingDistance < finalCloseDist)
+                crumbTrack++;
 
-                if(crumbTrack < leader.crumbs.Count - 1 && myAgent.remainingDistance < finalCloseDist)
-                {
-                    crumbTrack++;
-                }
-
-                // Check for nearby agents and apply separation
-                HandleAgentCollisions();
-            }
-            // else if(leader.arrived)
-            // {
-            //     //myAgent.isStopped = true;
-
-            //     myAgent.destination = leader.recentObjective.position;
-            //     leader.crumbs.Clear();
-            //     crumbTrack = 0;
-            // }
+            HandleAgentCollisions();
         }
     }
 
     void HandleAgentCollisions()
     {
-        // Find all nearby agents within separationRadius
+        if (!myAgent.isOnNavMesh) return;
+
         Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, separationRadius);
         Vector3 separationVector = Vector3.zero;
 
         foreach (Collider collider in nearbyColliders)
         {
             NavMeshAgent otherAgent = collider.GetComponent<NavMeshAgent>();
-            
-            // If it's another agent (not self), apply separation
             if (otherAgent != null && otherAgent != myAgent)
             {
                 Vector3 awayFromAgent = (transform.position - otherAgent.transform.position).normalized;
@@ -101,13 +76,10 @@ public class FollowNav : MonoBehaviour
             }
         }
 
-        // Apply separation by slightly offsetting the destination
-        if (separationVector.magnitude > 0)
+        if (separationVector.sqrMagnitude > 0f)
         {
             Vector3 separatedDestination = myAgent.destination + separationVector.normalized * separationForce;
             myAgent.destination = separatedDestination;
         }
     }
-
-
 }
