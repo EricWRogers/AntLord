@@ -17,8 +17,12 @@ public class SpawnFoodBites : MonoBehaviour
         biteSpawn = new Vector3(0f, 0.3f, 0f);
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        SpawnFoodBit();
+    }
+    // Update is called once per frame
+    public void SpawnFoodBit()
     {
         hitColliders = Physics.OverlapSphere(transform.position, radius);
         foreach (var hitColliders in hitColliders)
