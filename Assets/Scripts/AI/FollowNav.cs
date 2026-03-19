@@ -1,31 +1,17 @@
 using UnityEngine;
-using UnityEngine.AI;
-
-[RequireComponent(typeof(NavMeshAgent))]
-public class FollowNav : MonoBehaviour
+public class FollowNav : NavParent
 {
-    public NavMeshAgent myAgent;
     public LeadNav leader;
-    public Transform recentCollision = null;
-
     public float closeEnough = 0.25f;
     public float closeEnoughModifier = 0.5f;
     private float finalCloseDist;
-
     public float leaderTail = 0.3f;
     public int crumbTrack = 0;
 
-    public float separationRadius = 2f;
-    public float separationForce = 5f;
-
-    public bool amCarryingFood = false;
-    public int antTier = 1;
-
-    void Start()
+    public override void Start()
     {
-        myAgent = GetComponent<NavMeshAgent>();
+        base.Start();
         if (leader != null) leader.followers.Add(myAgent);
-        myAgent.isStopped = false;
     }
 
     void Update()
@@ -56,30 +42,6 @@ public class FollowNav : MonoBehaviour
                 crumbTrack++;
 
             HandleAgentCollisions();
-        }
-    }
-
-    void HandleAgentCollisions()
-    {
-        if (!myAgent.isOnNavMesh) return;
-
-        Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, separationRadius);
-        Vector3 separationVector = Vector3.zero;
-
-        foreach (Collider collider in nearbyColliders)
-        {
-            NavMeshAgent otherAgent = collider.GetComponent<NavMeshAgent>();
-            if (otherAgent != null && otherAgent != myAgent)
-            {
-                Vector3 awayFromAgent = (transform.position - otherAgent.transform.position).normalized;
-                separationVector += awayFromAgent;
-            }
-        }
-
-        if (separationVector.sqrMagnitude > 0f)
-        {
-            Vector3 separatedDestination = myAgent.destination + separationVector.normalized * separationForce;
-            myAgent.destination = separatedDestination;
         }
     }
 }
