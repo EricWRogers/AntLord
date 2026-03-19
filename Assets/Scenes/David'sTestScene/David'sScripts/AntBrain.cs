@@ -223,7 +223,7 @@ public class AntBrain : MonoBehaviour
         newLeader.home = oldLeader.home;
         newLeader.recentObjective = oldLeader.recentObjective;
         newLeader.crumbs = new List<Vector3>(oldLeader.crumbs);
-        newLeader.antTeir = candidate.antTier;
+        newLeader.antTier = candidate.antTier;
         newLeader.task = oldLeader.task;
         newLeader.followers = new List<NavMeshAgent>();
 

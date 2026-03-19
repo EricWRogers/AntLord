@@ -25,7 +25,7 @@ public class SpawnFoodBites : MonoBehaviour
         {
             if(hitColliders.CompareTag("Ant"))
             {   
-                tier = hitColliders.GetComponent<LeadNav>().antTeir;
+                tier = hitColliders.GetComponent<LeadNav>().antTier;
                 GameObject ant = hitColliders.gameObject;
                 if (hitColliders.GetComponent<FollowNav>().enabled && !hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {
