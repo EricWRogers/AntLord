@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class CommandParent : MonoBehaviour
+public abstract class CommandParent : MonoBehaviour
 {
     public Camera cam;
     public List<GameObject> selectedAnts;

@@ -17,15 +17,19 @@ public class SpawnFoodBites : MonoBehaviour
         biteSpawn = new Vector3(0f, 0.3f, 0f);
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        SpawnFoodBit();
+    }
+    // Update is called once per frame
+    public void SpawnFoodBit()
     {
         hitColliders = Physics.OverlapSphere(transform.position, radius);
         foreach (var hitColliders in hitColliders)
         {
             if(hitColliders.CompareTag("Ant"))
             {   
-                tier = hitColliders.GetComponent<LeadNav>().antTeir;
+                tier = hitColliders.GetComponent<LeadNav>().antTier;
                 GameObject ant = hitColliders.gameObject;
                 if (hitColliders.GetComponent<FollowNav>().enabled && !hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {

@@ -15,7 +15,7 @@ public class RemoveFood : MonoBehaviour
         {
             if(hitColliders.CompareTag("Ant"))
             {
-                tier = hitColliders.GetComponent<LeadNav>().antTeir;
+                tier = hitColliders.GetComponent<LeadNav>().antTier;
                 if (hitColliders.GetComponent<FollowNav>().enabled && hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {
                     

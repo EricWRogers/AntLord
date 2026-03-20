@@ -1020,7 +1020,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc81f27d504229c43bd1b31eb672258e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MM
-  activeWristUI: 1
+  pm: {fileID: 4217510097651988332}
+  customActions: {fileID: -944628639613478452, guid: e565c3bf8905b6e4695621c18f6b63fa, type: 3}
+  actionMapName: Menu
 --- !u!4 &325252835286639991 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 202364688, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
@@ -2871,6 +2873,18 @@ PrefabInstance:
     - target: {fileID: 7236524884439499278, guid: 51408ed87dd313d43853346d0b410fbb, type: 3}
       propertyPath: m_Name
       value: PM (Hand)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8188442194668940740, guid: 51408ed87dd313d43853346d0b410fbb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 8188442194668940740, guid: 51408ed87dd313d43853346d0b410fbb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 8188442194668940740, guid: 51408ed87dd313d43853346d0b410fbb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.5
       objectReference: {fileID: 0}
     - target: {fileID: 8258820983272525808, guid: 51408ed87dd313d43853346d0b410fbb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

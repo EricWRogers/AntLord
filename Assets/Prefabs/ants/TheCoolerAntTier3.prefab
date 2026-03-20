@@ -55,6 +55,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LeadNav
   myAgent: {fileID: 0}
+  recentCollision: {fileID: 0}
+  separationRadius: 2
+  separationForce: 5
+  amCarryingFood: 0
+  antTier: 3
   followers: []
   crumbPrefab: {fileID: 0}
   crumbs: []
@@ -62,11 +67,7 @@ MonoBehaviour:
   target: {fileID: 0}
   recentObjective: {fileID: 0}
   home: {fileID: 0}
-  separationRadius: 2
-  separationForce: 5
   foodBits: 0
-  amCarryingFood: 0
-  antTeir: 3
   task: 0
 --- !u!114 &6033563585228847766
 MonoBehaviour:
@@ -81,15 +82,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
   myAgent: {fileID: 0}
-  leader: {fileID: 0}
   recentCollision: {fileID: 0}
-  closeEnough: 1
-  leaderTail: 0.3
-  crumbTrack: 0
   separationRadius: 2
   separationForce: 5
   amCarryingFood: 0
   antTier: 3
+  leader: {fileID: 0}
+  closeEnough: 1
+  closeEnoughModifier: 0.5
+  leaderTail: 0.3
+  crumbTrack: 0
 --- !u!114 &5903967380002915471
 MonoBehaviour:
   m_ObjectHideFlags: 0
