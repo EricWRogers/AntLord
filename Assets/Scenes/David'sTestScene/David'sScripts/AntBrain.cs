@@ -233,6 +233,12 @@ public class AntBrain : MonoBehaviour
             agent.ResetPath();
         }
 
+        EnemyCommanderAI commander = Object.FindFirstObjectByType<EnemyCommanderAI>();
+        if (commander != null)
+        {
+            commander.RegisterNewSquad(newLeader);
+        }
+
         Destroy(candidate); 
 
         ReassignFollowers(oldLeader, newLeader);
