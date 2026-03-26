@@ -8,22 +8,22 @@ public class BuildingPlacementSystem : MonoBehaviour
     //I mean this is pretty close to what we need.
     [SerializeField] private Camera sceneCamera;
     public List<BuildingSO> allBuildings;
-    [SerializeField] private GameObject mouseIndicator, cellIndicator, cellIndicatorObj;
+    public GameObject mouseIndicator, cellIndicator, cellIndicatorObj;
     public MarchingCubes voxelTerrain;
     public int selectedObjectIndex = -1;
-    Vector3 lastPosition;
-    [SerializeField] private LayerMask placementLayermask;
-    [SerializeField] private Grid grid;
+    protected Vector3 lastPosition;
+    public LayerMask placementLayermask;
+    public Grid grid;
     public event Action OnClicked, OnExit;
     public bool inBuildMode = false;
-    public float rotation = 0.0f;
-    public float angle;
+    float rotation = 0.0f;
+    protected float angle;
 
     void Start()
     {
         StopPlacement();
     }
-    void Update()
+    protected virtual void Update()
     {
         //events listening for the keypresses
         if (Input.GetMouseButtonDown(0))//if you want to crash unity delete Down
@@ -51,7 +51,7 @@ public class BuildingPlacementSystem : MonoBehaviour
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
         mouseIndicator.transform.position = mousePosition;
 
-        cellIndicator.transform.position = (angle >= 15.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
+        cellIndicator.transform.position = (angle >= 45.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
     }
     public void StartPlacement(int ID)
     {
@@ -71,7 +71,7 @@ public class BuildingPlacementSystem : MonoBehaviour
         OnClicked += PlaceStruct;
         OnExit += StopPlacement;
     }
-    void StopPlacement()
+    public void StopPlacement()
     {
         inBuildMode = false;
         selectedObjectIndex = -1;
@@ -81,7 +81,7 @@ public class BuildingPlacementSystem : MonoBehaviour
         OnClicked -= PlaceStruct;
         OnExit -= StopPlacement;
     }
-    void PlaceStruct()
+    protected virtual void PlaceStruct()
     {
         if (IsPointerOverUI() || ResourceManager.instance.GetFood() < allBuildings[selectedObjectIndex].buildCost)
         {
@@ -126,7 +126,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     => EventSystem.current.IsPointerOverGameObject();
 
     //tracks mouse position, ignores objects not rendered, shoots a raycast for whatever the building layer is
-    public Vector3 GetSelectedMapPosition()
+    protected virtual Vector3 GetSelectedMapPosition()
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = sceneCamera.nearClipPlane;
@@ -142,4 +142,25 @@ public class BuildingPlacementSystem : MonoBehaviour
         return lastPosition;
     }
 
+
+
+    public void AssignActions()
+    {
+        OnClicked += PlaceStruct;
+        OnExit += StopPlacement;
+    }
+    public void DismissActions()
+    {
+        OnClicked -= PlaceStruct;
+        OnExit -= StopPlacement;
+    }
+    protected void TriggerClick()
+    {
+        OnClicked?.Invoke();
+    }
+
+    protected void TriggerExit()
+    {
+        OnExit?.Invoke();
+    }
 }
