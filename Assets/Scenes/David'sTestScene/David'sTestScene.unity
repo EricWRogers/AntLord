@@ -2719,8 +2719,6 @@ MonoBehaviour:
     m_Bits: 8
   grid: {fileID: 1706381513}
   inBuildMode: 0
-  rotation: 0
-  angle: 0
 --- !u!4 &1364238064
 Transform:
   m_ObjectHideFlags: 0
@@ -3129,10 +3127,6 @@ PrefabInstance:
     - target: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: m_Name
       value: TheCoolerAnt (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2303937482787535869, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3949,9 +3943,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   commander: {fileID: 7528586178797122432}
-  antPrefab: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
+  leaderPrefab: {fileID: 0}
+  followerPrefab: {fileID: 0}
   maxActiveAnts: 10
   spawnCooldown: 10
+  followersPerSquad: 3
   minSpawnDistance: 2
   maxSpawnDistance: 6
 --- !u!1660057539 &9223372036854775807
