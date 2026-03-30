@@ -4,26 +4,32 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class TeleportIActivator : MonoBehaviour
 {
+    [Header("References")]
     public XRRayInteractor teleportInteractor;
     public InputActionProperty teleportActivatorAction;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnEnable()
     {
-        teleportInteractor.gameObject.SetActive(false);
-        teleportActivatorAction.action.performed += Action_performed;
-    }
-    private void Action_performed(InputAction.CallbackContext obj)
-    {
-        teleportInteractor.gameObject.SetActive(true);
+        if (teleportInteractor != null)
+            teleportInteractor.gameObject.SetActive(false);
+
+        if (teleportActivatorAction.action != null)
+            teleportActivatorAction.action.Enable();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        if(teleportActivatorAction.action.WasReleasedThisFrame())
-        {
-            teleportInteractor.gameObject.SetActive(false);
-        }
+        if (teleportActivatorAction.action != null)
+            teleportActivatorAction.action.Disable();
+    }
+
+    private void Update()
+    {
+        if (teleportInteractor == null || teleportActivatorAction.action == null)
+            return;
+
+        float inputValue = teleportActivatorAction.action.ReadValue<Vector2>().y;
+
+        teleportInteractor.gameObject.SetActive(inputValue > 0.7f);
     }
 }
