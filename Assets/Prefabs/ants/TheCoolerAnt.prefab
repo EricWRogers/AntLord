@@ -76,12 +76,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965442970529633344}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65ab087c14722578bbe065692fbe81b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
-  myAgent: {fileID: 0}
+  myAgent: {fileID: 3444462172619519081}
   recentCollision: {fileID: 0}
   separationRadius: 2
   separationForce: 5
