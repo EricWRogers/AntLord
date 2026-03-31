@@ -6,27 +6,21 @@ using UnityEngine.EventSystems;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 //Reminder: include the ResourceManager in the build with like 100000 food
-//Possible problems:
-//both triggers are pressed to enter buildMode, and I cant test simultaneous button presses in fake VR
+//Right Primary button toggles build mode
+//Right Trigger places buildings
 public class VRBuildingSystem : BuildingPlacementSystem
 {
     public XRRayInteractor rayInteractor;
 
     [Header("Input Binds")]
     public XRIDefaultInputActions VRInputActions; //input c# script
-    public InputActionMap VRRIHGHTInteraction;//action map
+    public InputActionMap VRRIGHTInteraction;//action map
     public InputActionMap VRLEFTInteraction;
     public InputAction RTrigger;//actions
+    public InputAction RPrimaryButton;
     public InputAction LTrigger;
     public InputAction LPrimaryButton;
     public InputAction LSecondaryButton;
-
-    [Header("Building System")]
-    bool rightIsPressed = false;
-    bool leftIsPressed = false;
-
-
-
 
 
     //-----------VR
@@ -46,48 +40,55 @@ public class VRBuildingSystem : BuildingPlacementSystem
         //set input binds
         VRInputActions = new XRIDefaultInputActions();
 
-        VRRIHGHTInteraction = VRInputActions.XRIRightInteraction;
-        VRLEFTInteraction = VRInputActions.XRILeftInteraction;
+        VRRIGHTInteraction = VRInputActions.XRIRightInteraction;
+        //VRLEFTInteraction = VRInputActions.XRILeftInteraction;
 
-        RTrigger = VRRIHGHTInteraction.FindAction("Activate");
-        LTrigger = VRLEFTInteraction.FindAction("Activate");
-        LPrimaryButton = VRLEFTInteraction.FindAction("PrimaryButtonSelect");
-        LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
+        RTrigger = VRRIGHTInteraction.FindAction("Activate");
+        RPrimaryButton = VRRIGHTInteraction.FindAction("PrimaryButtonSelect");
+        //LTrigger = VRLEFTInteraction.FindAction("Activate");
+        //LPrimaryButton = VRLEFTInteraction.FindAction("PrimaryButtonSelect");
+        //LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
 
         if (VRInputActions != null)
         {
-            VRRIHGHTInteraction.Enable();
-            VRLEFTInteraction.Enable();
+            VRRIGHTInteraction.Enable();
+            //VRLEFTInteraction.Enable();
 
             RTrigger.Enable();
-            LTrigger.Enable();
-            LPrimaryButton.Enable();
-            LSecondaryButton.Enable();
+            RPrimaryButton.Enable();
+            //LTrigger.Enable();
+            //LPrimaryButton.Enable();
+            //LSecondaryButton.Enable();
         }
 
         RTrigger.performed += OnRightTrigger;
-        LTrigger.performed += OnLeftTrigger;
+        RPrimaryButton.performed += OnRightPrimary;
         //LPrimaryButton.performed += OnLeftPrimaryDown;
         //LSecondaryButton.performed += OnLeftSecondaryDown;
     }
 
+    void OnRightPrimary(InputAction.CallbackContext context)
+    {
+        inBuildMode = !inBuildMode;
+        Debug.Log($"Build mode {inBuildMode}");
+        if (inBuildMode)
+        {
+            //UI stuff and pop ups should go here
+            //assign a button with StartPlacement and with whatever index the building is
+            StartPlacement(0);
+        }
+        else
+        {
+            TriggerExit();
+        }
+    }
     private void OnRightTrigger(InputAction.CallbackContext context)
     {
-        //Debug.Log("VR INPUT: Right trigger Activated " + gameObject.name);
 
-        rightIsPressed = true;
-        CheckBuildToggle();
         if (inBuildMode)
         {
             TriggerClick();
         }
-    }
-    private void OnLeftTrigger(InputAction.CallbackContext context)
-    {
-        //Debug.Log("VR INPUT: Right trigger Activated " + gameObject.name);
-
-        leftIsPressed = true;
-        CheckBuildToggle();
     }
 
     //-----------RayCast thingie
@@ -95,7 +96,7 @@ public class VRBuildingSystem : BuildingPlacementSystem
     {
         if (rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
-        //voodoo bitwise operation im not going to pretend to understand because i cant just do hit.layer == placementlayer
+            //voodoo bitwise operation im not going to pretend to understand because i cant just do hit.layer == placementlayer
             if (((1 << hit.collider.gameObject.layer) & placementLayermask) != 0)
             {
                 lastPosition = hit.point;
@@ -104,30 +105,7 @@ public class VRBuildingSystem : BuildingPlacementSystem
         }
         return lastPosition;
     }
-
-    //--------Building Stuff
-
-    void CheckBuildToggle()
-    {
-        if ((rightIsPressed && leftIsPressed) && !inBuildMode)//<----replace the && with || inside the paranthesis to test
-        {
-            AssignActions();
-            StartPlacement(0);
-
-            //Debug.Log($"Build mode: {inBuildMode}");
-
-            rightIsPressed = false;
-            leftIsPressed = false;
-        }
-        else if (rightIsPressed && leftIsPressed && inBuildMode)//<----Dont touch this one because it will just enable and disable buildMode instantly
-        {
-            DismissActions();
-            StopPlacement();
-
-            rightIsPressed = false;
-            leftIsPressed = false;
-        }
-    }
 }
+
 
 

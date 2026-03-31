@@ -362,6 +362,7 @@ GameObject:
   - component: {fileID: 1346623802840892906}
   - component: {fileID: 7431690840864011382}
   - component: {fileID: 4491181385830792015}
+  - component: {fileID: 7677280984369032711}
   m_Layer: 0
   m_Name: VR Player
   m_TagString: Untagged
@@ -488,6 +489,88 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 8ea06290-1606-46d2-a2fb-1135bd02a9fd
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+--- !u!114 &7677280984369032711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7075886389968614136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3736ba99ab130c14abd6219f10fe42f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRBuildingSystem
+  sceneCamera: {fileID: 0}
+  allBuildings: []
+  mouseIndicator: {fileID: 0}
+  cellIndicator: {fileID: 0}
+  cellIndicatorObj: {fileID: 0}
+  voxelTerrain: {fileID: 0}
+  selectedObjectIndex: -1
+  placementLayermask:
+    serializedVersion: 2
+    m_Bits: 0
+  grid: {fileID: 0}
+  inBuildMode: 0
+  rayInteractor: {fileID: 0}
+  VRRIGHTInteraction:
+    m_Name: VRRIGHT Interaction
+    m_Id: b0c45d96-0ca9-44a5-8706-0627fb0d0355
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  VRLEFTInteraction:
+    m_Name: VRLEFT Interaction
+    m_Id: bd7ccdd2-3b4b-4b12-bf33-f03189f6caaf
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  RTrigger:
+    m_Name: R Trigger
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 193fe077-54be-429b-9745-499de3180ffc
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  RPrimaryButton:
+    m_Name: R Primary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a0ef3f44-7b2b-4b7b-8a83-f61c62d54319
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LTrigger:
+    m_Name: L Trigger
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 4745394f-f644-40d0-8261-611b18070052
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LPrimaryButton:
+    m_Name: L Primary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: bda010b6-2b63-40a5-be3f-a8d86bda3470
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LSecondaryButton:
+    m_Name: L Secondary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 3e23648e-d6ba-4daf-b643-6b29d3cb624a
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
