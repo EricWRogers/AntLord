@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fdee9924f6698ce59f95ad38cfe4f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LeadNav
-  myAgent: {fileID: 0}
+  myAgent: {fileID: 3444462172619519081}
   recentCollision: {fileID: 0}
   separationRadius: 2
   separationForce: 5
