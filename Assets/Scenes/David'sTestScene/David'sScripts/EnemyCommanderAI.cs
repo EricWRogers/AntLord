@@ -1,13 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum CommanderState { Scavenging, Defending, AllOutAttack }
+public enum CommanderState { LookingForFood, Defending, AllOutAttack }
 public enum EnemyPersonality { Aggressive, Balanced, Turtling }
 
 public class EnemyCommanderAI : MonoBehaviour
 {
     [Header("State & Personality")]
-    public CommanderState currentState = CommanderState.Scavenging;
+    public CommanderState currentState = CommanderState.LookingForFood;
     public EnemyPersonality personality = EnemyPersonality.Balanced;
 
     [Header("Thresholds & Strategy")]
@@ -36,8 +36,8 @@ public class EnemyCommanderAI : MonoBehaviour
 
         switch (currentState)
         {
-            case CommanderState.Scavenging:
-                HandleScavenging();
+            case CommanderState.LookingForFood:
+                HandleLookingForFood();
                 break;
             case CommanderState.Defending:
                 HandleDefending();
@@ -59,7 +59,7 @@ public class EnemyCommanderAI : MonoBehaviour
             return;
         }
 
-        if (currentState == CommanderState.Scavenging && AreResourcesDepleted())
+        if (currentState == CommanderState.LookingForFood && AreResourcesDepleted())
         {
             Debug.Log("<color=red>Enemy Commander: Resources depleted! Forcing All-Out Attack!</color>");
             ChangeState(CommanderState.AllOutAttack);
@@ -87,24 +87,29 @@ public class EnemyCommanderAI : MonoBehaviour
         {
             if (squad == null) continue;
 
-            if (currentState == CommanderState.AllOutAttack)
+            switch (currentState)
             {
-                squad.target = playerBase; 
-                squad.task = AntTask.Manual; 
-            }
-            else if (currentState == CommanderState.Defending)
-            {
-                squad.target = enemyBase;
-                squad.task = AntTask.Manual; 
+                case CommanderState.LookingForFood:
+                    squad.task = AntTask.Food;
+                    squad.home = enemyBase;
+                    break;
+                case CommanderState.Defending:
+                    squad.target = enemyBase;
+                    break;
+                case CommanderState.AllOutAttack:
+                    squad.target = playerBase;
+                    break;
             }
         }
     }
 
-    private void HandleScavenging()
+    private void HandleLookingForFood()
     {
         foreach (LeadNav squad in activeEnemySquads)
         {
-            if (squad != null && squad.task != AntTask.Food)
+            if (squad == null) continue;
+
+            if (squad.task != AntTask.Food)
             {
                 squad.task = AntTask.Food; 
                 squad.home = enemyBase;    
