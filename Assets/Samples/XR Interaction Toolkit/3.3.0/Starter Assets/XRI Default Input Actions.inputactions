@@ -2127,6 +2127,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Teleport Toggle",
+                    "type": "Button",
+                    "id": "475c12a4-99c7-4f27-a572-3c943f21a0bc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2457,6 +2466,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SecondaryButtonSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ee8ba3ea-4e19-402c-95f0-505fdac633a5",
+                    "path": "<XRController>{RightHand}/primary2DAxisClick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Teleport Toggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

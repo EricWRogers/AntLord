@@ -2213,6 +2213,15 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Teleport Toggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""475c12a4-99c7-4f27-a572-3c943f21a0bc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -2543,6 +2552,17 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SecondaryButtonSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ee8ba3ea-4e19-402c-95f0-505fdac633a5"",
+                    ""path"": ""<XRController>{RightHand}/primary2DAxisClick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Teleport Toggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -3842,6 +3862,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         m_XRIRightInteraction_ScaleOverTime = m_XRIRightInteraction.FindAction("Scale Over Time", throwIfNotFound: true);
         m_XRIRightInteraction_PrimaryButtonSelect = m_XRIRightInteraction.FindAction("PrimaryButtonSelect", throwIfNotFound: true);
         m_XRIRightInteraction_SecondaryButtonSelect = m_XRIRightInteraction.FindAction("SecondaryButtonSelect", throwIfNotFound: true);
+        m_XRIRightInteraction_TeleportToggle = m_XRIRightInteraction.FindAction("Teleport Toggle", throwIfNotFound: true);
         // XRI Right Locomotion
         m_XRIRightLocomotion = asset.FindActionMap("XRI Right Locomotion", throwIfNotFound: true);
         m_XRIRightLocomotion_TeleportMode = m_XRIRightLocomotion.FindAction("Teleport Mode", throwIfNotFound: true);
@@ -5027,6 +5048,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
     private readonly InputAction m_XRIRightInteraction_ScaleOverTime;
     private readonly InputAction m_XRIRightInteraction_PrimaryButtonSelect;
     private readonly InputAction m_XRIRightInteraction_SecondaryButtonSelect;
+    private readonly InputAction m_XRIRightInteraction_TeleportToggle;
     /// <summary>
     /// Provides access to input actions defined in input action map "XRI Right Interaction".
     /// </summary>
@@ -5095,6 +5117,10 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// </summary>
         public InputAction @SecondaryButtonSelect => m_Wrapper.m_XRIRightInteraction_SecondaryButtonSelect;
         /// <summary>
+        /// Provides access to the underlying input action "XRIRightInteraction/TeleportToggle".
+        /// </summary>
+        public InputAction @TeleportToggle => m_Wrapper.m_XRIRightInteraction_TeleportToggle;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_XRIRightInteraction; }
@@ -5162,6 +5188,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @SecondaryButtonSelect.started += instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.performed += instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.canceled += instance.OnSecondaryButtonSelect;
+            @TeleportToggle.started += instance.OnTeleportToggle;
+            @TeleportToggle.performed += instance.OnTeleportToggle;
+            @TeleportToggle.canceled += instance.OnTeleportToggle;
         }
 
         /// <summary>
@@ -5215,6 +5244,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @SecondaryButtonSelect.started -= instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.performed -= instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.canceled -= instance.OnSecondaryButtonSelect;
+            @TeleportToggle.started -= instance.OnTeleportToggle;
+            @TeleportToggle.performed -= instance.OnTeleportToggle;
+            @TeleportToggle.canceled -= instance.OnTeleportToggle;
         }
 
         /// <summary>
@@ -6488,6 +6520,13 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSecondaryButtonSelect(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Teleport Toggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTeleportToggle(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "XRI Right Locomotion" which allows adding and removing callbacks.
