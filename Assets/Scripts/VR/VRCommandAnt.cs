@@ -65,7 +65,7 @@ public class VRCommandAnt : CommandParent
 
         if (LSecondaryButton.WasPerformedThisFrame())
         {
-            Debug.LogWarning("STARTING!");
+            //Debug.LogWarning("STARTING!");
             //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             if (rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
             {
@@ -79,76 +79,70 @@ public class VRCommandAnt : CommandParent
 
         if (shiftDragging)
         {
-            // If shift was released mid-drag, cancel 
-            if (!LSecondaryButton.IsInProgress())
+            // Update ring while LMB held
+            if (shiftDragging)
             {
-                shiftDragging = false;
-                if (selectionRing) selectionRing.Hide();
-            }
-            else
-            {
-                // Update ring while LMB held
-                if (shiftDragging)
+                //Debug.LogWarning("UPDATING");
+
+                //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                if (rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
                 {
-                    Debug.LogWarning("UPDATING");
-
-                    //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                    if (rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
-                    {
-                        
-                        // center moves toward mouse, radius is half the distance
-                        Vector3 current = hit.point;
-                        Vector3 center = (shiftDragStart + current) * 0.5f;
-                        float radius = Vector3.Distance(shiftDragStart, current) * 0.5f;
-
-                        if (selectionRing) selectionRing.Show(center, radius);
-                    }
-                    else
-                    {
-                        
-                        if (selectionRing) selectionRing.Hide();
-                    }
-                }
-
-                // Release drag on mouse up, even if shift isn't held
-                if (LSecondaryButton.WasCompletedThisFrame())
-                {
-                    Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                    if (rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
-                    {
-                        Vector3 end = hit.point;
-                        Vector3 center = (shiftDragStart + end) * 0.5f;
-                        float radius = Vector3.Distance(shiftDragStart, end) * 0.5f;
-
-                        // hide ring
-                        if (selectionRing) selectionRing.Hide();
-
                     
-                        ClearSelectionVisualsOnly();
-                        selectedAnts.Clear();
-                        selectedLeader = null;
+                    // center moves toward mouse, radius is half the distance
+                    Vector3 current = hit.point;
+                    Vector3 center = (shiftDragStart + current) * 0.5f;
+                    float radius = Vector3.Distance(shiftDragStart, current) * 0.5f;
 
-                        Collider[] hits = Physics.OverlapSphere(center, radius);
-                        foreach (var col in hits)
+                    if (selectionRing) selectionRing.Show(center, radius);
+                }
+                else
+                {
+                    
+                    if (selectionRing) selectionRing.Hide();
+                }
+            }
+
+            // Release drag on mouse up, even if shift isn't held
+            if (LSecondaryButton.WasCompletedThisFrame())
+            {
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                if (rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+                {
+                    Vector3 end = hit.point;
+                    Vector3 center = (shiftDragStart + end) * 0.5f;
+                    float radius = Vector3.Distance(shiftDragStart, end) * 0.5f;
+
+                    // hide ring
+                    if (selectionRing) selectionRing.Hide();
+
+                
+                    ClearSelectionVisualsOnly();
+                    selectedAnts.Clear();
+                    selectedLeader = null;
+
+                    Collider[] hits = Physics.OverlapSphere(center, radius);
+                    foreach (var col in hits)
+                    {
+                        if (!col.CompareTag("Ant")) continue;
+                        var brain = col.GetComponent<AntBrain>();
+                        if (brain == null) continue;
+
+                        //Debug.LogWarning("Found ANT");
+
+                        if (brain.antType.teamID == 0)
                         {
-                            if (!col.CompareTag("Ant")) continue;
-                            var brain = col.GetComponent<AntBrain>();
-                            if (brain == null) continue;
-
-                            if (brain.antType.teamID == 0)
-                            {
-                                selectedAnts.Add(col.gameObject);
-                                SetGlow(col.gameObject, selectedColor, selectedIntensity);
-                            }
+                            //Debug.LogWarning("Adding ANT");
+                            selectedAnts.Add(col.gameObject);
+                            SetGlow(col.gameObject, selectedColor, selectedIntensity);
                         }
                     }
-                    else
-                    {
-                        if (selectionRing) selectionRing.Hide();
-                    }
-
-                    shiftDragging = false;
                 }
+                else
+                {
+                    if (selectionRing) selectionRing.Hide();
+                }
+
+                shiftDragging = false;
             }
         }
 
