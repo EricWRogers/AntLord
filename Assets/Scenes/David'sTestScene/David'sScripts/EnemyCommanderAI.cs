@@ -162,10 +162,15 @@ public class EnemyCommanderAI : MonoBehaviour
 
     public void RegisterNewSquad(LeadNav newSquad)
     {
-        if (!activeEnemySquads.Contains(newSquad))
+        AntBrain brain = newSquad.GetComponent<AntBrain>();
+    
+        if (brain != null && brain.antType.teamID == 1) 
         {
-            activeEnemySquads.Add(newSquad);
-            IssueGlobalCommand();
+            if (!activeEnemySquads.Contains(newSquad))
+            {
+                activeEnemySquads.Add(newSquad);
+                IssueGlobalCommand(); 
+            }
         }
     }
 }

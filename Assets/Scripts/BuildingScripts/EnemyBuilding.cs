@@ -52,7 +52,51 @@ public class EnemyBuilding : Buildings
 
         Vector3 spawn = new Vector3(randomX, transform.position.y, randomZ);
 
-        Instantiate(antPrefab, spawn, Quaternion.identity); //idk what to do about rotation at the moment so...
+        GameObject newAnt = Instantiate(antPrefab, spawn, Quaternion.identity);
+    
+        AntBrain brain = newAnt.GetComponent<AntBrain>();
+        LeadNav ln = newAnt.GetComponent<LeadNav>();
+        FollowNav fn = newAnt.GetComponent<FollowNav>();
+
+        LeadNav existingLeader = FindActiveEnemyLeader(brain.antType.teamID);
+
+        if (existingLeader == null)
+        {
+            ln.enabled = true;
+            if (fn != null) fn.enabled = false;
         
+            ln.home = this.transform; 
+        
+            Debug.Log($"<color=orange>Enemy Spawner: First ant is now a Leader.</color>");
+        }
+        else
+        {
+            ln.enabled = false;
+            if (fn != null)
+            {
+                fn.enabled = true;
+                fn.leader = existingLeader;
+            
+                if(!existingLeader.followers.Contains(fn.myAgent))
+                    existingLeader.followers.Add(fn.myAgent);
+            }
+        }
+
+        ants.Add(newAnt);
+    }
+
+    private LeadNav FindActiveEnemyLeader(int teamID)
+    {
+        LeadNav[] allLeaders = Object.FindObjectsByType<LeadNav>(FindObjectsSortMode.None);
+        foreach (LeadNav leader in allLeaders)
+        {
+            AntBrain b = leader.GetComponent<AntBrain>();
+            // We only care about leaders on our team that are actually enabled
+            if (leader.enabled && b != null && b.antType.teamID == teamID)
+            {
+                return leader;
+            }
+        }
+        return null;
     }
 }
