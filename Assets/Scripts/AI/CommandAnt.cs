@@ -44,7 +44,7 @@ public class CommandAnt : CommandParent
         bool shiftHeld = shift.IsPressed();
 
         // Start drag only when shift is held and LMB pressed
-        if (shiftHeld && rightClick.WasPressedThisFrame())
+        if (shiftHeld && leftClick.WasPressedThisFrame())
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))

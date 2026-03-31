@@ -478,7 +478,7 @@ MonoBehaviour:
   radius: 5
   maxAnts: 10
   antPrefab: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
-  maxHealth: 10
+  maxHealth: 1000
 --- !u!114 &4815465384528328678
 MonoBehaviour:
   m_ObjectHideFlags: 0

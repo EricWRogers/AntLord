@@ -140,7 +140,7 @@ MonoBehaviour:
   tempWinCon: 0
   radius: 3
   antPrefab: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
-  maxHealth: 10
+  maxHealth: 1000
 --- !u!114 &8622619615116508004
 MonoBehaviour:
   m_ObjectHideFlags: 0

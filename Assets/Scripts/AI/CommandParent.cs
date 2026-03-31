@@ -25,11 +25,11 @@ public abstract class CommandParent : MonoBehaviour
     public SelectionRingController selectionRing;
     public LayerMask groundMask;
 
-    // void Awake()
-    // {
-    //     if (!cam) cam = Camera.main;
-    //     if (!selectionRing) selectionRing = FindFirstObjectByType<SelectionRingController>();
-    // }
+    void Awake()
+    {
+        //if (!cam) cam = Camera.main;
+        if (!selectionRing) selectionRing = FindFirstObjectByType<SelectionRingController>();
+    }
 
     public void SimpleAntSelect(RaycastHit hit)
     {

@@ -894,7 +894,11 @@ PrefabInstance:
       propertyPath: currentHealth
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4815465384528328678, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+    - {fileID: 5013528279394648991, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+    - {fileID: 2663632918962937179, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+    - {fileID: 2192418726491174163, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2766,6 +2770,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6801482656891590627, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
+      propertyPath: selectionRing
+      value: 
+      objectReference: {fileID: 2054002551}
     - target: {fileID: 7208147014428131291, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
       propertyPath: m_RenderPostProcessing
       value: 0
@@ -2776,7 +2784,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7208993197742861887, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7306085453604903265, guid: 1ce0809bcadcd318fac7ce9cd8fcc774, type: 3}
       propertyPath: m_IsActive
@@ -2855,9 +2863,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
   m_SerializedVersion: 0
   m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
+  m_CollectObjects: 1
+  m_Size: {x: 99.46, y: 11.45, z: 100.8}
+  m_Center: {x: 4.7, y: -13.3, z: 23.2}
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -4763,6 +4771,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1463606985599424359, guid: 429d00d8b71fea54fbd277729ddfb203, type: 3}
   m_PrefabInstance: {fileID: 2054002549}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2054002551 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3463865631701367351, guid: 429d00d8b71fea54fbd277729ddfb203, type: 3}
+  m_PrefabInstance: {fileID: 2054002549}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94574e186f45a594f9b9167f3d4a7085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionRingController
 --- !u!1001 &2061464841
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5136,6 +5155,10 @@ PrefabInstance:
     - target: {fileID: 339745033775634639, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_Name
       value: GameFreeFlyCam
+      objectReference: {fileID: 0}
+    - target: {fileID: 339745033775634639, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalPosition.x
