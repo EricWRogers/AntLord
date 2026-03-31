@@ -239,7 +239,7 @@ public class AntBrain : MonoBehaviour
             commander.RegisterNewSquad(newLeader);
         }
 
-        Destroy(candidate); 
+        //Destroy(candidate); 
 
         ReassignFollowers(oldLeader, newLeader);
         
