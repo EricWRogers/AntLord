@@ -75,6 +75,11 @@ public abstract class CommandParent : MonoBehaviour
 
                     if (hit.transform.CompareTag("Food"))
                         selectedLeader.target = hit.transform;
+                    // else if(hit.transform.CompareTag("Building"))
+                    // {
+                    //     Debug.LogWarning("Seeking building!");
+                    //     selectedLeader.target = hit.transform;
+                    // }
                     else
                         selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
                 }
@@ -254,7 +259,17 @@ public abstract class CommandParent : MonoBehaviour
         selectedLeader = selectedAnts[0].GetComponent<LeadNav>();
         selectedAnts[0].GetComponent<LeadNav>().enabled = true;
 
-        selectedLeader.home = FindFirstObjectByType<SpawnerBuilding>().transform; // TEMP
+        //selectedLeader.home = FindFirstObjectByType<SpawnerBuilding>().transform; // TEMP
+        var spawners = FindObjectsByType<SpawnerBuilding>(FindObjectsSortMode.None);
+
+        foreach(SpawnerBuilding spawner in spawners)
+        {
+            if(spawner.GetComponent<EnemyBuilding>() == null)
+            {
+                selectedLeader.home = spawner.transform;
+                break;
+            }
+        }
 
         
         selectedLeader.followers.Clear();
