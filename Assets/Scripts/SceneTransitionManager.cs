@@ -51,4 +51,29 @@ public class SceneTransitionManager : MonoBehaviour
 
         operation.allowSceneActivation = true;
     }
+
+    public void GoToSceneAsyncByName(string sceneName)
+    {
+        StartCoroutine(GoToSceneAsyncRoutineByName(sceneName));
+    }
+
+    IEnumerator GoToSceneAsyncRoutineByName(string sceneName)
+    {
+        if (fadeScreen != null) fadeScreen.FadeOut();
+        
+        // Use the string name directly here
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+        operation.allowSceneActivation = false;
+
+        float timer = 0;
+        float duration = (fadeScreen != null) ? fadeScreen.fadeDuration : 0.5f;
+
+        while(timer <= duration && !operation.isDone)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        operation.allowSceneActivation = true;
+    }
 }
