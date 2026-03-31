@@ -14,11 +14,16 @@ public class EnemyBuilding : Buildings
     public GameObject antPrefab;
     public int maxHealth = 10;
 
+    [Tooltip("TEMPORARY! Win screen")]
+    public GameObject winScreen;
+
     void Start()
     {
         this.currentHealth = maxHealth;
         slider.maxValue = currentHealth;
         slider.value = currentHealth;
+
+        winScreen.SetActive(false);
     }
     void FixedUpdate()
     {
@@ -34,6 +39,7 @@ public class EnemyBuilding : Buildings
         if (this.currentHealth <= 0)
         {
             FindFirstObjectByType<MM>().Pause();
+            winScreen.SetActive(true);
         }
     }
 
