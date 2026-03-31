@@ -1594,40 +1594,8 @@ PrefabInstance:
       value: VR Player
       objectReference: {fileID: 0}
     - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
-      propertyPath: m_ActionEvents.Array.size
-      value: 103
-      objectReference: {fileID: 0}
-    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
-      propertyPath: m_ActionEvents.Array.data[99].m_ActionId
-      value: 181dff1f-60f2-4e3b-b5c6-f1fe7c8b7b77
-      objectReference: {fileID: 0}
-    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
-      propertyPath: m_ActionEvents.Array.data[100].m_ActionId
-      value: a0ef48a9-c483-4d9d-a336-fa90ff1a7fd0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
-      propertyPath: m_ActionEvents.Array.data[101].m_ActionId
-      value: e6f102d5-cffc-4887-b37e-205fae849203
-      objectReference: {fileID: 0}
-    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
-      propertyPath: m_ActionEvents.Array.data[102].m_ActionId
-      value: e4a6918b-45e7-47ef-a6bd-7fd2704d57e4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
-      propertyPath: m_ActionEvents.Array.data[99].m_ActionName
-      value: XRI Left Interaction/PrimaryButtonSelect
-      objectReference: {fileID: 0}
-    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
-      propertyPath: m_ActionEvents.Array.data[100].m_ActionName
-      value: XRI Left Interaction/SecondaryButtonSelect
-      objectReference: {fileID: 0}
-    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
-      propertyPath: m_ActionEvents.Array.data[101].m_ActionName
-      value: XRI Right Interaction/PrimaryButtonSelect
-      objectReference: {fileID: 0}
-    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
-      propertyPath: m_ActionEvents.Array.data[102].m_ActionName
-      value: XRI Right Interaction/SecondaryButtonSelect
+      propertyPath: m_DefaultActionMap
+      value: 09ff3ccc-21b4-4346-a3a2-7c978b5af892
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

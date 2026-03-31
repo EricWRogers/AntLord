@@ -3068,7 +3068,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_ActionEvents.Array.size
-      value: 103
+      value: 105
       objectReference: {fileID: 0}
     - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_ActionEvents.Array.data[99].m_ActionId
@@ -3087,6 +3087,10 @@ PrefabInstance:
       value: e4a6918b-45e7-47ef-a6bd-7fd2704d57e4
       objectReference: {fileID: 0}
     - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_ActionEvents.Array.data[104].m_ActionId
+      value: 475c12a4-99c7-4f27-a572-3c943f21a0bc
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_ActionEvents.Array.data[99].m_ActionName
       value: XRI Left Interaction/PrimaryButtonSelect
       objectReference: {fileID: 0}
@@ -3101,6 +3105,26 @@ PrefabInstance:
     - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_ActionEvents.Array.data[102].m_ActionName
       value: XRI Right Interaction/SecondaryButtonSelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_ActionEvents.Array.data[104].m_ActionName
+      value: XRI Right Interaction/Teleport Toggle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_ActionEvents.Array.data[103].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 732770942}
+    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_ActionEvents.Array.data[103].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Pause
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_ActionEvents.Array.data[103].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MM, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_ActionEvents.Array.data[103].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3137,6 +3161,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c416f1a5c494e224fb5564fd1362b50d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &732770942 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 303256391695022653, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+  m_PrefabInstance: {fileID: 732770938}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc81f27d504229c43bd1b31eb672258e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MM
 --- !u!114 &732770943 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9201300362648267955, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
