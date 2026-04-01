@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.AI;
+using Debug = UnityEngine.Debug;
 public class LeadNav : NavParent
 {
     public List<NavMeshAgent> followers;
@@ -18,6 +20,7 @@ public class LeadNav : NavParent
     {
         EnemyCommanderAI commander = Object.FindFirstObjectByType<EnemyCommanderAI>();
         AntBrain brain = GetComponent<AntBrain>();
+        myAgent.updateRotation = false;
 
         if (commander != null && brain != null && brain.antType.teamID == 1)
         {
@@ -49,11 +52,30 @@ public class LeadNav : NavParent
         }
 
         // 3. MOVEMENT & PATHING LOGIC
-        if (target != null)
+if (target != null)
         {
-            myAgent.SetDestination(target.position);
+            // 1. Find the actual floor directly beneath the food's center point
+            Vector3 actualDestination = target.position;
+            UnityEngine.AI.NavMeshHit hit;
+            
+            // This searches up to 5 units away from the food's center for a valid NavMesh surface
+            if (UnityEngine.AI.NavMesh.SamplePosition(target.position, out hit, 5.0f, UnityEngine.AI.NavMesh.AllAreas))
+            {
+                actualDestination = hit.position;
+            }
 
-            if (myAgent.remainingDistance >= 1.0f)
+            // 2. Flatten the coordinates to prevent the Y-Axis recalculation loop
+            Vector3 flatAgentDest = new Vector3(myAgent.destination.x, 0, myAgent.destination.z);
+            Vector3 flatTargetDest = new Vector3(actualDestination.x, 0, actualDestination.z);
+
+            // 3. Set the destination ONLY if the food has moved or we don't have a path
+            if (!myAgent.hasPath || Vector3.Distance(flatAgentDest, flatTargetDest) > 1.0f)
+            {
+                myAgent.SetDestination(actualDestination);
+            }
+
+            // 4. Handle manual rotation safely
+            if (!myAgent.pathPending && myAgent.remainingDistance >= 1.0f)
             {
                 Vector3 lookPos = myAgent.steeringTarget - transform.position;
                 lookPos.y = 0;
@@ -64,6 +86,7 @@ public class LeadNav : NavParent
                 }
             }
 
+            // 5. Drop crumbs for the followers
             crumbDropTimer += Time.deltaTime;
             if (crumbDropTimer >= crumbDropDelay)
             {
