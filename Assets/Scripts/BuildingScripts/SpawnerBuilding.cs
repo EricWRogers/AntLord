@@ -20,6 +20,8 @@ public class SpawnerBuilding : Buildings
     public int maxHealth = 10;
     Bounds bounds;
 
+    public GameObject LoseScreen;
+
 
     void Start()
     {
@@ -27,6 +29,8 @@ public class SpawnerBuilding : Buildings
         slider.maxValue = currentHealth;
         slider.value = currentHealth;
         bounds = GetComponent<MeshRenderer>().bounds;
+
+        LoseScreen.SetActive(false);
     }
     void FixedUpdate()
     {
@@ -38,6 +42,11 @@ public class SpawnerBuilding : Buildings
                 SpawnAnt();
                 timer = 0;
             }
+            if (this.currentHealth <= 0)
+        {
+            FindFirstObjectByType<MM>().Pause();
+            LoseScreen.SetActive(true);
+        }
         }
     }
 
