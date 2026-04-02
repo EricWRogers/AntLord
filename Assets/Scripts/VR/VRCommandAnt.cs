@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class VRCommandAnt : CommandParent
@@ -62,92 +61,7 @@ public class VRCommandAnt : CommandParent
 
     void Update()
     {
-        // THIS WAS MEANT TO USE THE LASSO FUNCTION
-
-        if (LSecondaryButton.WasPerformedThisFrame())
-        {
-            //Debug.LogWarning("STARTING!");
-            //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
-            {
-                shiftDragStart = hit.point;
-                shiftDragging = true;
-
-                if (selectionRing) selectionRing.Show(shiftDragStart, 0.1f);
-            }
-        }
-
-
-        if (shiftDragging)
-        {
-            // Update ring while LMB held
-            if (shiftDragging)
-            {
-                //Debug.LogWarning("UPDATING");
-
-                //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                if (LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
-                {
-                    
-                    // center moves toward mouse, radius is half the distance
-                    Vector3 current = hit.point;
-                    Vector3 center = (shiftDragStart + current) * 0.5f;
-                    float radius = Vector3.Distance(shiftDragStart, current) * 0.5f;
-
-                    if (selectionRing) selectionRing.Show(center, radius);
-                }
-                else
-                {
-                    
-                    if (selectionRing) selectionRing.Hide();
-                }
-            }
-
-            // Release drag on mouse up, even if shift isn't held
-            if (LSecondaryButton.WasCompletedThisFrame())
-            {
-                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                if (LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
-                {
-                    Vector3 end = hit.point;
-                    Vector3 center = (shiftDragStart + end) * 0.5f;
-                    float radius = Vector3.Distance(shiftDragStart, end) * 0.5f;
-
-                    // hide ring
-                    if (selectionRing) selectionRing.Hide();
-
-                
-                    ClearSelectionVisualsOnly();
-                    selectedAnts.Clear();
-                    selectedLeader = null;
-
-                    Collider[] hits = Physics.OverlapSphere(center, radius);
-                    foreach (var col in hits)
-                    {
-                        if (!col.CompareTag("Ant")) continue;
-                        var brain = col.GetComponent<AntBrain>();
-                        if (brain == null) continue;
-
-                        //Debug.LogWarning("Found ANT");
-
-                        if (brain.antType.teamID == 0)
-                        {
-                            //Debug.LogWarning("Adding ANT");
-                            selectedAnts.Add(col.gameObject);
-                            SetGlow(col.gameObject, selectedColor, selectedIntensity);
-                        }
-                    }
-                }
-                else
-                {
-                    if (selectionRing) selectionRing.Hide();
-                }
-
-                shiftDragging = false;
-            }
-        }
-
-        // END LASSO FUNCTION
+        CheckLassoSelect(LSecondaryButton);
     }
 
 
