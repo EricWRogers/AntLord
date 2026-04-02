@@ -702,9 +702,9 @@ MonoBehaviour:
   grid: {fileID: 0}
   inBuildMode: 0
   rayInteractor: {fileID: 3578752960377608561}
-  VRRIHGHTInteraction:
-    m_Name: VRRIHGHT Interaction
-    m_Id: 663fd805-e719-482f-b321-8ab50c6f1582
+  VRRIGHTInteraction:
+    m_Name: 
+    m_Id: 
     m_Asset: {fileID: 0}
     m_Actions: []
     m_Bindings: []
@@ -719,6 +719,15 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 4d4cacde-9ef0-494d-90ca-1677a38c94e1
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  RPrimaryButton:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 0f243dd5-d5ea-4be0-8433-80c27a119ea4
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
