@@ -10,7 +10,8 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 //Right Trigger places buildings
 public class VRBuildingSystem : BuildingPlacementSystem
 {
-    public XRRayInteractor rayInteractor;
+    public XRRayInteractor LeftRayInteractor;
+    public XRRayInteractor RightRayInteractor;
 
     [Header("Input Binds")]
     public XRIDefaultInputActions VRInputActions; //input c# script
@@ -94,7 +95,7 @@ public class VRBuildingSystem : BuildingPlacementSystem
     //-----------RayCast thingie
     protected override Vector3 GetSelectedMapPosition()
     {
-        if (rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        if (RightRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
             //voodoo bitwise operation im not going to pretend to understand because i cant just do hit.layer == placementlayer
             if (((1 << hit.collider.gameObject.layer) & placementLayermask) != 0)
