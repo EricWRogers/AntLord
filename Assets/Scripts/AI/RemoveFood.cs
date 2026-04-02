@@ -18,35 +18,45 @@ public class RemoveFood : MonoBehaviour
                 tier = hitColliders.GetComponent<LeadNav>().antTier;
                 if (hitColliders.GetComponent<FollowNav>().enabled && hitColliders.GetComponent<FollowNav>().amCarryingFood)
                 {
-                    
-                    for (int i = 1; i <= tier; i++)
+                    foreach (Transform child in hitColliders.transform)
                     {
-                        if (!hitColliders.GetComponent<LeadNav>().enabled)
+                        if (child.CompareTag("FoodBit"))
                         {
-                            Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject); 
-                            //hitColliders.GetComponent<FollowNav>().myAgent.isStopped = true;
-                            GetComponent<SpawnerBuilding>().GiveFood(1);
+                            if (!hitColliders.GetComponent<LeadNav>().enabled)
+                            {
+                                Destroy(child.gameObject);
+                                hitColliders.GetComponent<FollowNav>().myAgent.isStopped = true;
+                                GetComponent<SpawnerBuilding>().GiveFood(1);
+                                hitColliders.GetComponent<FollowNav>().leader.foodBits--;
+                            }
+                        }
+                        else if (child.CompareTag("RockBit"))
+                        {
+                            Destroy(child.gameObject);
+                            hitColliders.GetComponent<FollowNav>().myAgent.isStopped = true;
+                            GetComponent<SpawnerBuilding>().GiveRock(1);
                             hitColliders.GetComponent<FollowNav>().leader.foodBits--;
                         }
-                       
                     }
                     hitColliders.GetComponent<FollowNav>().amCarryingFood = false;
                 }
                 else if (hitColliders.GetComponent<LeadNav>().enabled && hitColliders.GetComponent<LeadNav>().amCarryingFood)
                 {
-                   
-                    for (int i = 1; i <= tier; i++)
+                    foreach (Transform child in hitColliders.transform)
                     {
-
-                        // if(hitColliders.GetComponent<LeadNav>().foodBits == 0)
-                        // {
-                        //     hitColliders.GetComponent<LeadNav>().myAgent.isStopped = true;
-                        //     hitColliders.GetComponent<LeadNav>().target = null;
-                        // }
-                        Destroy(hitColliders.transform.GetComponentInChildren<FoodBites>().gameObject);
-                    }
-                    hitColliders.GetComponent<LeadNav>().foodBits-=tier;
-                    GetComponent<SpawnerBuilding>().GiveFood(tier);
+                        if (child.CompareTag("FoodBit"))
+                        {
+                            Destroy(child.gameObject);
+                            GetComponent<SpawnerBuilding>().GiveFood(1);
+                            hitColliders.GetComponent<LeadNav>().foodBits -= 1;
+                        }
+                        else if (child.CompareTag("RockBit"))
+                        {
+                            Destroy(child.gameObject);
+                            GetComponent<SpawnerBuilding>().GiveRock(1);
+                            hitColliders.GetComponent<LeadNav>().foodBits -= 1;
+                        }
+                    }    
                     hitColliders.GetComponent<LeadNav>().amCarryingFood = false;
                 }
 

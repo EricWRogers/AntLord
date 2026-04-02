@@ -43,10 +43,10 @@ public class SpawnerBuilding : Buildings
                 timer = 0;
             }
             if (this.currentHealth <= 0)
-        {
-            FindFirstObjectByType<MM>().Pause();
-            LoseScreen.SetActive(true);
-        }
+            {
+                FindFirstObjectByType<MM>().Pause();
+                LoseScreen.SetActive(true);
+            }
         }
     }
 
@@ -78,5 +78,9 @@ public class SpawnerBuilding : Buildings
     public void GiveFood(int _food) //or floats idk what yall are cooking
     {
         ResourceManager.instance.AddFood(_food);
+    }
+    public void GiveRock(int _rock) //or floats idk what yall are cooking
+    {
+        ResourceManager.instance.AddRock(_rock);
     }
 }
