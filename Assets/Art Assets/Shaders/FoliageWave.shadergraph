@@ -363,8 +363,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 656.6666259765625,
-            "y": 328.6666564941406
+            "x": 694.0000610351563,
+            "y": 346.66668701171877
         },
         "m_Blocks": [
             {
@@ -791,7 +791,7 @@
     "m_Hidden": false,
     "m_PerRendererData": false,
     "m_customAttributes": [],
-    "m_Value": 0.0,
+    "m_Value": 1.0,
     "m_FloatType": 0,
     "m_LiteralFloatMode": false,
     "m_RangeValues": {
@@ -897,9 +897,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 491.3333435058594,
-            "y": 314.0,
-            "width": 131.33340454101563,
+            "x": 511.3333740234375,
+            "y": 328.66668701171877,
+            "width": 131.33331298828126,
             "height": 120.0
         }
     },
@@ -954,7 +954,7 @@
     "m_PerRendererData": false,
     "m_customAttributes": [],
     "m_Value": {
-        "m_SerializedTexture": "",
+        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"ef4c789874163d247a351a45fb9eec19\",\"type\":3}}",
         "m_Guid": ""
     },
     "isMainTexture": false,
@@ -1412,7 +1412,7 @@
     "m_Hidden": false,
     "m_PerRendererData": false,
     "m_customAttributes": [],
-    "m_Value": 0.0,
+    "m_Value": 0.5,
     "m_FloatType": 0,
     "m_LiteralFloatMode": false,
     "m_RangeValues": {
@@ -1620,10 +1620,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 576.666748046875,
-            "y": 604.0,
-            "width": 131.99993896484376,
-            "height": 35.99993896484375
+            "x": 340.0000305175781,
+            "y": 401.3333435058594,
+            "width": 132.0,
+            "height": 36.000030517578128
         }
     },
     "m_Slots": [
@@ -2613,9 +2613,9 @@
     "m_PerRendererData": false,
     "m_customAttributes": [],
     "m_Value": {
-        "r": 0.0,
-        "g": 0.0,
-        "b": 0.0,
+        "r": 0.14509804546833039,
+        "g": 0.4941176772117615,
+        "b": 0.24313727021217347,
         "a": 1.0
     },
     "isMainColor": false,
