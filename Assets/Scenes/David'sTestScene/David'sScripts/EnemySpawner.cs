@@ -41,17 +41,25 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnSquad()
     {
+        // 1. SPAWN LEADER
         Vector3 leaderPos = GetRandomSpawnPosition();
         GameObject leaderObj = Instantiate(leaderPrefab, leaderPos, Quaternion.identity);
         activeAnts.Add(leaderObj);
 
         LeadNav squadLeader = leaderObj.GetComponent<LeadNav>();
+        UnityEngine.AI.NavMeshAgent leaderAgent = leaderObj.GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+        if (squadLeader != null && leaderAgent != null)
+        {
+            squadLeader.myAgent = leaderAgent;
+        }
 
         if (commander != null && squadLeader != null)
         {
             commander.RegisterNewSquad(squadLeader);
         }
 
+        // 2. SPAWN FOLLOWERS
         for (int i = 0; i < followersPerSquad; i++)
         {
             Vector3 followerPos = GetRandomSpawnPosition();
@@ -59,9 +67,18 @@ public class EnemySpawner : MonoBehaviour
             activeAnts.Add(followerObj);
 
             FollowNav followerNav = followerObj.GetComponent<FollowNav>();
-            if (followerNav != null && squadLeader != null)
+            UnityEngine.AI.NavMeshAgent followerAgent = followerObj.GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+            if (followerNav != null && followerAgent != null)
             {
-                followerNav.leader = squadLeader; 
+                followerNav.myAgent = followerAgent;
+            
+                if (squadLeader != null)
+                {
+                    followerNav.leader = squadLeader;
+                    if (squadLeader.followers == null) squadLeader.followers = new List<UnityEngine.AI.NavMeshAgent>();
+                    squadLeader.followers.Add(followerAgent);
+                }
             }
         }
     }

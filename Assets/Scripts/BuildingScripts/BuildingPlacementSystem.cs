@@ -83,10 +83,12 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     protected virtual void PlaceStruct()
     {
+        Debug.Log("eher");
         if (IsPointerOverUI() || ResourceManager.instance.GetFood() < allBuildings[selectedObjectIndex].buildCost)
         {
             return;
         }
+        Debug.Log("LELELELEL");
         bool canBuild = true;
         Vector3 mousePosition = GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
@@ -142,18 +144,6 @@ public class BuildingPlacementSystem : MonoBehaviour
         return lastPosition;
     }
 
-
-
-    public void AssignActions()
-    {
-        OnClicked += PlaceStruct;
-        OnExit += StopPlacement;
-    }
-    public void DismissActions()
-    {
-        OnClicked -= PlaceStruct;
-        OnExit -= StopPlacement;
-    }
     protected void TriggerClick()
     {
         OnClicked?.Invoke();

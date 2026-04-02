@@ -51,6 +51,7 @@ public abstract class CommandParent : MonoBehaviour
                     if (col.CompareTag("Ant"))
                     {
                         ToggleSelection(col.transform.gameObject);
+                        break;
                     }
                 }
             }

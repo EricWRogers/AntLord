@@ -5,7 +5,8 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class VRCommandAnt : CommandParent
 {
-    public XRRayInteractor rayInteractor;
+    public XRRayInteractor LeftRayInteractor;
+    public XRRayInteractor RightRayInteractor;
 
     [Header("Input Binds")]
     public XRIDefaultInputActions VRInputActions; //input c# script
@@ -67,7 +68,7 @@ public class VRCommandAnt : CommandParent
         {
             //Debug.LogWarning("STARTING!");
             //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+            if (LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
             {
                 shiftDragStart = hit.point;
                 shiftDragging = true;
@@ -85,7 +86,7 @@ public class VRCommandAnt : CommandParent
                 //Debug.LogWarning("UPDATING");
 
                 //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                if (rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+                if (LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
                 {
                     
                     // center moves toward mouse, radius is half the distance
@@ -106,7 +107,7 @@ public class VRCommandAnt : CommandParent
             if (LSecondaryButton.WasCompletedThisFrame())
             {
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-                if (rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+                if (LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
                 {
                     Vector3 end = hit.point;
                     Vector3 center = (shiftDragStart + end) * 0.5f;
@@ -154,7 +155,7 @@ public class VRCommandAnt : CommandParent
     {
         //Debug.Log("VR INPUT: Right trigger Activated " + gameObject.name);
 
-        if(RTrigger.WasPerformedThisFrame() && rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        if(RTrigger.WasPerformedThisFrame() && RightRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
             SimpleAntSelect(hit);
         }
@@ -164,7 +165,7 @@ public class VRCommandAnt : CommandParent
     {
         //Debug.Log("VR INPUT: Left trigger Activated " + gameObject.name);
 
-        if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        if(LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
             //Debug.LogWarning("RAYCAST HIT!");
             DirectAnt(hit);
