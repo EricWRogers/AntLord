@@ -3589,6 +3589,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Lasso",
+                    "type": "Button",
+                    "id": "9ce617b8-b163-456b-a148-b6f48ded185a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "R",
                     "type": "Button",
                     "id": "8f458013-b102-4293-be72-0eea35888838",
@@ -3695,6 +3704,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Deselect",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "d56ffb50-4043-462c-92e6-6b2db8919e7b",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lasso",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "83a37470-0f90-40a8-93cc-789fcdcc33fa",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lasso",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "b6ef17bb-5770-4f2b-922e-af7f96c58ffb",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lasso",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
