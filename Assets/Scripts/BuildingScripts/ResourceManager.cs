@@ -5,6 +5,7 @@ public class ResourceManager : MonoBehaviour
     public static ResourceManager instance;
     public int food = 1000;
     public int sand = 0;
+    public int rocks = 0;
 
     void Start()
     {
@@ -28,6 +29,11 @@ public class ResourceManager : MonoBehaviour
     {
         food += amount;
         //Debug.Log(food);
+    }
+    public void AddRock(int amount)
+    {
+        rocks += amount;
+        Debug.Log(rocks);
     }
 
     public void AddSand(int amount)
