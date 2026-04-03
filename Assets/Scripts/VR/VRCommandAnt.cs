@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class VRCommandAnt : CommandParent
 {
-    public XRRayInteractor rayInteractor;
+    public XRRayInteractor LeftRayInteractor;
+    public XRRayInteractor RightRayInteractor;
 
     [Header("Input Binds")]
     public XRIDefaultInputActions VRInputActions; //input c# script
@@ -59,12 +59,17 @@ public class VRCommandAnt : CommandParent
         LSecondaryButton.performed += OnLeftSecondaryDown;
     }
 
+    void Update()
+    {
+        CheckLassoSelect(LSecondaryButton);
+    }
+
 
     private void OnRightTrigger(InputAction.CallbackContext context)
     {
         //Debug.Log("VR INPUT: Right trigger Activated " + gameObject.name);
 
-        if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        if(RTrigger.WasPerformedThisFrame() && RightRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
             SimpleAntSelect(hit);
         }
@@ -74,7 +79,7 @@ public class VRCommandAnt : CommandParent
     {
         //Debug.Log("VR INPUT: Left trigger Activated " + gameObject.name);
 
-        if(rayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        if(LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
             //Debug.LogWarning("RAYCAST HIT!");
             DirectAnt(hit);

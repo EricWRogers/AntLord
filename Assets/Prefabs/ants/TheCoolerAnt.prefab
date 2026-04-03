@@ -54,7 +54,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fdee9924f6698ce59f95ad38cfe4f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LeadNav
-  myAgent: {fileID: 0}
+  myAgent: {fileID: 3444462172619519081}
+  recentCollision: {fileID: 0}
+  separationRadius: 2
+  separationForce: 5
+  amCarryingFood: 0
+  antTier: 1
   followers: []
   crumbPrefab: {fileID: 0}
   crumbs: []
@@ -62,11 +67,7 @@ MonoBehaviour:
   target: {fileID: 0}
   recentObjective: {fileID: 0}
   home: {fileID: 0}
-  separationRadius: 2
-  separationForce: 5
   foodBits: 0
-  amCarryingFood: 0
-  antTeir: 1
   task: 0
 --- !u!114 &9126265470297457125
 MonoBehaviour:
@@ -75,22 +76,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965442970529633344}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65ab087c14722578bbe065692fbe81b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
-  myAgent: {fileID: 0}
-  leader: {fileID: 0}
+  myAgent: {fileID: 3444462172619519081}
   recentCollision: {fileID: 0}
-  closeEnough: 0.25
-  closeEnoughModifier: 0.5
-  leaderTail: 0.3
-  crumbTrack: 0
   separationRadius: 2
   separationForce: 5
   amCarryingFood: 0
   antTier: 1
+  leader: {fileID: 0}
+  closeEnough: 0.25
+  closeEnoughModifier: 0.5
+  leaderTail: 0.3
+  crumbTrack: 0
 --- !u!195 &3444462172619519081
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -109,8 +110,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1
-  m_Height: 0.4
-  m_BaseOffset: 0.05
+  m_Height: 0.5
+  m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!135 &5266563285919827775

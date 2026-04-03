@@ -34,6 +34,7 @@ public class MarchingCubeManager : MonoBehaviour
     [SerializeField] private float noiseScale = 0.1f;
     [SerializeField] private float noiseAmplitude = 5f;
     [SerializeField] private bool use3DNoise;
+    [SerializeField] private bool chunkGenerated;
 
     private Dictionary<Vector3Int, MarchingCubeChunk> chunks = new Dictionary<Vector3Int, MarchingCubeChunk>(); //dictionary holding all chunks!
     
@@ -43,8 +44,11 @@ public class MarchingCubeManager : MonoBehaviour
     public RayOMayhem rayOMayhem;
     public NavMeshSurface navMeshSurface;
 
-    void Start() => InitializeWorld();
-
+    void Start() 
+    {
+        ClearWorld();
+        InitializeWorld();
+    }
     void Update()
     {
         if (rayOMayhem != null && rayOMayhem.trailEnd)

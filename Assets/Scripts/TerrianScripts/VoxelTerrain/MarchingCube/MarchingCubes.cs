@@ -60,7 +60,7 @@ public class MarchingCubes : MonoBehaviour
 
     void Update()
     {
-        if (rayOMayhem.trailEnd == true) //if the player is done placing voxels, update the navmesh so the ant AI can pathfind through the new terrain
+        if (rayOMayhem != null && rayOMayhem.trailEnd == true) //if the player is done placing voxels, update the navmesh so the ant AI can pathfind through the new terrain
         {
             UpdateNavMesh();
             rayOMayhem.trailEnd = false;

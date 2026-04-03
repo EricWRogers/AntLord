@@ -25,49 +25,49 @@ using UnityEngine.InputSystem.Utilities;
 /// <code>
 /// using namespace UnityEngine;
 /// using UnityEngine.InputSystem;
-/// 
+///
 /// // Example of using an InputActionMap named "Player" from a UnityEngine.MonoBehaviour implementing callback interface.
 /// public class Example : MonoBehaviour, MyActions.IPlayerActions
 /// {
 ///     private MyActions_Actions m_Actions;                  // Source code representation of asset.
 ///     private MyActions_Actions.PlayerActions m_Player;     // Source code representation of action map.
-/// 
+///
 ///     void Awake()
 ///     {
 ///         m_Actions = new MyActions_Actions();              // Create asset object.
 ///         m_Player = m_Actions.Player;                      // Extract action map object.
 ///         m_Player.AddCallbacks(this);                      // Register callback interface IPlayerActions.
 ///     }
-/// 
+///
 ///     void OnDestroy()
 ///     {
 ///         m_Actions.Dispose();                              // Destroy asset object.
 ///     }
-/// 
+///
 ///     void OnEnable()
 ///     {
 ///         m_Player.Enable();                                // Enable all actions within map.
 ///     }
-/// 
+///
 ///     void OnDisable()
 ///     {
 ///         m_Player.Disable();                               // Disable all actions within map.
 ///     }
-/// 
+///
 ///     #region Interface implementation of MyActions.IPlayerActions
-/// 
+///
 ///     // Invoked when "Move" action is either started, performed or canceled.
 ///     public void OnMove(InputAction.CallbackContext context)
 ///     {
 ///         Debug.Log($"OnMove: {context.ReadValue&lt;Vector2&gt;()}");
 ///     }
-/// 
+///
 ///     // Invoked when "Attack" action is either started, performed or canceled.
 ///     public void OnAttack(InputAction.CallbackContext context)
 ///     {
 ///         Debug.Log($"OnAttack: {context.ReadValue&lt;float&gt;()}");
 ///     }
-/// 
+///
 ///     #endregion
 /// }
 /// </code>
@@ -1080,6 +1080,15 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""04ef3100-99ff-4bc7-a609-ebbe99b38c37"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1410,6 +1419,17 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SecondaryButtonSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c82a3297-7a91-4a9a-b90f-1a6055524c47"",
+                    ""path"": ""<XRController>{LeftHand}/{Menu}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -2213,6 +2233,15 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Teleport Toggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""475c12a4-99c7-4f27-a572-3c943f21a0bc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -2543,6 +2572,17 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SecondaryButtonSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ee8ba3ea-4e19-402c-95f0-505fdac633a5"",
+                    ""path"": ""<XRController>{RightHand}/primary2DAxisClick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Teleport Toggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -3635,6 +3675,15 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Lasso"",
+                    ""type"": ""Button"",
+                    ""id"": ""9ce617b8-b163-456b-a148-b6f48ded185a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""R"",
                     ""type"": ""Button"",
                     ""id"": ""8f458013-b102-4293-be72-0eea35888838"",
@@ -3745,6 +3794,39 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""d56ffb50-4043-462c-92e6-6b2db8919e7b"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lasso"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""83a37470-0f90-40a8-93cc-789fcdcc33fa"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lasso"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""b6ef17bb-5770-4f2b-922e-af7f96c58ffb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lasso"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""c065f8f8-c482-403c-8b4e-aec701ac969c"",
                     ""path"": ""<Keyboard>/r"",
@@ -3802,6 +3884,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         m_XRILeftInteraction_ScaleOverTime = m_XRILeftInteraction.FindAction("Scale Over Time", throwIfNotFound: true);
         m_XRILeftInteraction_PrimaryButtonSelect = m_XRILeftInteraction.FindAction("PrimaryButtonSelect", throwIfNotFound: true);
         m_XRILeftInteraction_SecondaryButtonSelect = m_XRILeftInteraction.FindAction("SecondaryButtonSelect", throwIfNotFound: true);
+        m_XRILeftInteraction_Menu = m_XRILeftInteraction.FindAction("Menu", throwIfNotFound: true);
         // XRI Left Locomotion
         m_XRILeftLocomotion = asset.FindActionMap("XRI Left Locomotion", throwIfNotFound: true);
         m_XRILeftLocomotion_TeleportMode = m_XRILeftLocomotion.FindAction("Teleport Mode", throwIfNotFound: true);
@@ -3842,6 +3925,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         m_XRIRightInteraction_ScaleOverTime = m_XRIRightInteraction.FindAction("Scale Over Time", throwIfNotFound: true);
         m_XRIRightInteraction_PrimaryButtonSelect = m_XRIRightInteraction.FindAction("PrimaryButtonSelect", throwIfNotFound: true);
         m_XRIRightInteraction_SecondaryButtonSelect = m_XRIRightInteraction.FindAction("SecondaryButtonSelect", throwIfNotFound: true);
+        m_XRIRightInteraction_TeleportToggle = m_XRIRightInteraction.FindAction("Teleport Toggle", throwIfNotFound: true);
         // XRI Right Locomotion
         m_XRIRightLocomotion = asset.FindActionMap("XRI Right Locomotion", throwIfNotFound: true);
         m_XRIRightLocomotion_TeleportMode = m_XRIRightLocomotion.FindAction("Teleport Mode", throwIfNotFound: true);
@@ -3882,6 +3966,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         m_Controls_Num1 = m_Controls.FindAction("Num1", throwIfNotFound: true);
         m_Controls_Num2 = m_Controls.FindAction("Num2", throwIfNotFound: true);
         m_Controls_Deselect = m_Controls.FindAction("Deselect", throwIfNotFound: true);
+        m_Controls_Lasso = m_Controls.FindAction("Lasso", throwIfNotFound: true);
         m_Controls_R = m_Controls.FindAction("R", throwIfNotFound: true);
     }
 
@@ -4398,6 +4483,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
     private readonly InputAction m_XRILeftInteraction_ScaleOverTime;
     private readonly InputAction m_XRILeftInteraction_PrimaryButtonSelect;
     private readonly InputAction m_XRILeftInteraction_SecondaryButtonSelect;
+    private readonly InputAction m_XRILeftInteraction_Menu;
     /// <summary>
     /// Provides access to input actions defined in input action map "XRI Left Interaction".
     /// </summary>
@@ -4466,6 +4552,10 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// </summary>
         public InputAction @SecondaryButtonSelect => m_Wrapper.m_XRILeftInteraction_SecondaryButtonSelect;
         /// <summary>
+        /// Provides access to the underlying input action "XRILeftInteraction/Menu".
+        /// </summary>
+        public InputAction @Menu => m_Wrapper.m_XRILeftInteraction_Menu;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_XRILeftInteraction; }
@@ -4533,6 +4623,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @SecondaryButtonSelect.started += instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.performed += instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.canceled += instance.OnSecondaryButtonSelect;
+            @Menu.started += instance.OnMenu;
+            @Menu.performed += instance.OnMenu;
+            @Menu.canceled += instance.OnMenu;
         }
 
         /// <summary>
@@ -4586,6 +4679,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @SecondaryButtonSelect.started -= instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.performed -= instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.canceled -= instance.OnSecondaryButtonSelect;
+            @Menu.started -= instance.OnMenu;
+            @Menu.performed -= instance.OnMenu;
+            @Menu.canceled -= instance.OnMenu;
         }
 
         /// <summary>
@@ -5027,6 +5123,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
     private readonly InputAction m_XRIRightInteraction_ScaleOverTime;
     private readonly InputAction m_XRIRightInteraction_PrimaryButtonSelect;
     private readonly InputAction m_XRIRightInteraction_SecondaryButtonSelect;
+    private readonly InputAction m_XRIRightInteraction_TeleportToggle;
     /// <summary>
     /// Provides access to input actions defined in input action map "XRI Right Interaction".
     /// </summary>
@@ -5095,6 +5192,10 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// </summary>
         public InputAction @SecondaryButtonSelect => m_Wrapper.m_XRIRightInteraction_SecondaryButtonSelect;
         /// <summary>
+        /// Provides access to the underlying input action "XRIRightInteraction/TeleportToggle".
+        /// </summary>
+        public InputAction @TeleportToggle => m_Wrapper.m_XRIRightInteraction_TeleportToggle;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_XRIRightInteraction; }
@@ -5162,6 +5263,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @SecondaryButtonSelect.started += instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.performed += instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.canceled += instance.OnSecondaryButtonSelect;
+            @TeleportToggle.started += instance.OnTeleportToggle;
+            @TeleportToggle.performed += instance.OnTeleportToggle;
+            @TeleportToggle.canceled += instance.OnTeleportToggle;
         }
 
         /// <summary>
@@ -5215,6 +5319,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @SecondaryButtonSelect.started -= instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.performed -= instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.canceled -= instance.OnSecondaryButtonSelect;
+            @TeleportToggle.started -= instance.OnTeleportToggle;
+            @TeleportToggle.performed -= instance.OnTeleportToggle;
+            @TeleportToggle.canceled -= instance.OnTeleportToggle;
         }
 
         /// <summary>
@@ -5799,6 +5906,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
     private readonly InputAction m_Controls_Num1;
     private readonly InputAction m_Controls_Num2;
     private readonly InputAction m_Controls_Deselect;
+    private readonly InputAction m_Controls_Lasso;
     private readonly InputAction m_Controls_R;
     /// <summary>
     /// Provides access to input actions defined in input action map "Controls".
@@ -5835,6 +5943,10 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// Provides access to the underlying input action "Controls/Deselect".
         /// </summary>
         public InputAction @Deselect => m_Wrapper.m_Controls_Deselect;
+        /// <summary>
+        /// Provides access to the underlying input action "Controls/Lasso".
+        /// </summary>
+        public InputAction @Lasso => m_Wrapper.m_Controls_Lasso;
         /// <summary>
         /// Provides access to the underlying input action "Controls/R".
         /// </summary>
@@ -5883,6 +5995,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @Deselect.started += instance.OnDeselect;
             @Deselect.performed += instance.OnDeselect;
             @Deselect.canceled += instance.OnDeselect;
+            @Lasso.started += instance.OnLasso;
+            @Lasso.performed += instance.OnLasso;
+            @Lasso.canceled += instance.OnLasso;
             @R.started += instance.OnR;
             @R.performed += instance.OnR;
             @R.canceled += instance.OnR;
@@ -5915,6 +6030,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @Deselect.started -= instance.OnDeselect;
             @Deselect.performed -= instance.OnDeselect;
             @Deselect.canceled -= instance.OnDeselect;
+            @Lasso.started -= instance.OnLasso;
+            @Lasso.performed -= instance.OnLasso;
+            @Lasso.canceled -= instance.OnLasso;
             @R.started -= instance.OnR;
             @R.performed -= instance.OnR;
             @R.canceled -= instance.OnR;
@@ -6226,6 +6344,13 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSecondaryButtonSelect(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Menu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMenu(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "XRI Left Locomotion" which allows adding and removing callbacks.
@@ -6488,6 +6613,13 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSecondaryButtonSelect(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Teleport Toggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnTeleportToggle(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "XRI Right Locomotion" which allows adding and removing callbacks.
@@ -6744,6 +6876,13 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDeselect(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Lasso" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLasso(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "R" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

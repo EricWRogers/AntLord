@@ -33,6 +33,8 @@ public class AntBrain : MonoBehaviour
     private Color originalEmissionColor;
     private bool hadEmission;
 
+    private EnemyBuilding currentBuildingTarget;
+
     void Start()
     {
         currentHealth = antType.maxHealth;
@@ -62,6 +64,7 @@ public class AntBrain : MonoBehaviour
             case AntState.Following:
                 HandleFollowing();
                 CheckForEnemies();
+                CheckForEnemyBuildings();
                 break;
             case AntState.Chasing:
                 HandleChasing();
@@ -145,30 +148,79 @@ public class AntBrain : MonoBehaviour
         }
     }
 
+    private void CheckForEnemyBuildings()
+    {
+        Collider[] potentialTargets = Physics.OverlapSphere(transform.position, detectionRange);
+        foreach (var col in potentialTargets)
+        {
+            if(antType.teamID == 0)
+            {
+                if(col.GetComponent<EnemyBuilding>())
+                {
+                    currentBuildingTarget = col.GetComponent<EnemyBuilding>();
+                    currentState = AntState.Chasing;
+                    if (followNav != null) followNav.enabled = false;
+                    return;
+                }
+            }
+            else
+            {
+                if(col.CompareTag("Building") && col.GetComponent<EnemyBuilding>() == null)
+                {
+                    currentBuildingTarget = col.GetComponent<EnemyBuilding>();
+                    currentState = AntState.Chasing;
+                    if (followNav != null) followNav.enabled = false;
+                    return;
+                }
+            }
+        }
+    }
+
     private void HandleChasing()
     {
-        if (currentTarget == null) { ReturnToTask(); return; }
-        agent.SetDestination(currentTarget.transform.position);
+        if (currentTarget == null && currentBuildingTarget == null) { ReturnToTask(); return; }
 
-        float dist = Vector3.Distance(transform.position, currentTarget.transform.position);
+        float dist = 0.0f;
+
+        if(currentTarget != null)
+        {
+            agent.SetDestination(currentTarget.transform.position);
+            dist = Vector3.Distance(transform.position, currentTarget.transform.position);
+        }
+        else if(currentBuildingTarget != null)
+        {
+            agent.SetDestination(currentBuildingTarget.transform.position);
+            dist = Vector3.Distance(transform.position, currentBuildingTarget.transform.position);
+        }
+
+
         if (dist <= attackRange) currentState = AntState.Attacking;
         else if (dist > detectionRange * 1.5f) ReturnToTask();
     }
 
     private void HandleAttacking()
     {
-        if (currentTarget == null) { ReturnToTask(); return; }
-        transform.LookAt(currentTarget.transform);
+        if (currentTarget == null && currentBuildingTarget == null) { ReturnToTask(); return; }
+
+        if(currentTarget != null)
+            transform.LookAt(currentTarget.transform);
+        else if(currentBuildingTarget != null)
+            transform.LookAt(currentBuildingTarget.transform);
+
         agent.velocity = Vector3.zero;
 
         attackTimer += Time.deltaTime;
         if (attackTimer >= 1f)
         {
-            Attack(currentTarget);
+            if(currentTarget != null)
+                Attack(currentTarget);
+            else if(currentBuildingTarget != null)
+                Attack(currentBuildingTarget);
+
             attackTimer = 0;
         }
 
-        if (Vector3.Distance(transform.position, currentTarget.transform.position) > attackRange)
+        if ((currentTarget != null || currentBuildingTarget != null) && Vector3.Distance(transform.position, currentTarget.transform.position) > attackRange)
             currentState = AntState.Chasing;
     }
 
@@ -176,10 +228,13 @@ public class AntBrain : MonoBehaviour
     {
         currentState = AntState.Following;
         currentTarget = null;
+        currentBuildingTarget = null;
         if (followNav != null) followNav.enabled = true;
     }
 
     public void Attack(AntBrain target) { target.TakeDamage(antType.damage); }
+
+    public void Attack(EnemyBuilding target) { target.TakeDamage((int)antType.damage); }
 
 
     void Die()
@@ -233,7 +288,13 @@ public class AntBrain : MonoBehaviour
             agent.ResetPath();
         }
 
-        Destroy(candidate); 
+        EnemyCommanderAI commander = Object.FindFirstObjectByType<EnemyCommanderAI>();
+        if (commander != null)
+        {
+            commander.RegisterNewSquad(newLeader);
+        }
+
+        //Destroy(candidate); 
 
         ReassignFollowers(oldLeader, newLeader);
         
@@ -243,6 +304,9 @@ public class AntBrain : MonoBehaviour
 
     private void ReassignFollowers(LeadNav oldLeader, LeadNav newLeader)
     {
+        oldLeader.crumbs.Clear();
+        newLeader.crumbs.Clear();
+
         FollowNav[] allFollowers = Object.FindObjectsByType<FollowNav>(FindObjectsSortMode.None);
         int reassignedCount = 0;
 

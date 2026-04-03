@@ -59,6 +59,18 @@ public class MM : MonoBehaviour
         }
     }
 
+     public void Play(string level)
+    {
+        SceneTransitionManager.singleton.GoToSceneAsyncByName(level);
+        Debug.Log("Game Started: " + level);
+    }
+
+    public void Options(GameObject menu)
+    {
+        menu.SetActive(true);
+        Debug.Log("Options Menu Opened.");
+    }
+    
     public void Pause()
     {
         if (pm == null) 

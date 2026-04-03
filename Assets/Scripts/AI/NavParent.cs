@@ -16,7 +16,9 @@ public abstract class NavParent : MonoBehaviour
     public virtual void Start()
     {
         myAgent = GetComponent<NavMeshAgent>();
-        myAgent.isStopped = false;
+        
+        if(myAgent.navMeshOwner != null)
+            myAgent.isStopped = false;
     }
 
     public void HandleAgentCollisions()
