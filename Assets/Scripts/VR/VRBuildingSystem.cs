@@ -24,6 +24,7 @@ public class VRBuildingSystem : BuildingPlacementSystem
     public InputAction LSecondaryButton;
 
 
+
     //-----------VR
     private void OnEnable()
     {
@@ -74,12 +75,11 @@ public class VRBuildingSystem : BuildingPlacementSystem
         Debug.Log($"Build mode {inBuildMode}");
         if (inBuildMode)
         {
-            //UI stuff and pop ups should go here
-            //assign a button with StartPlacement and with whatever index the building is
-            StartPlacement(0);
+            OpenBuildMenu();
         }
         else
         {
+            buildingUI.SetActive(false);
             TriggerExit();
         }
     }
@@ -106,6 +106,7 @@ public class VRBuildingSystem : BuildingPlacementSystem
         }
         return lastPosition;
     }
+
 }
 
 

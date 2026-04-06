@@ -3,21 +3,38 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 public class BuildingPlacementSystem : MonoBehaviour
 {
-    //I mean this is pretty close to what we need.
     [SerializeField] private Camera sceneCamera;
+
+    [Header("Building Placement Data")]
     public List<BuildingSO> allBuildings;
-    public GameObject mouseIndicator, cellIndicator, cellIndicatorObj;
     public MarchingCubes voxelTerrain;
+    public Grid grid;
+
+    [Header("Building State")]
     public int selectedObjectIndex = -1;
     protected Vector3 lastPosition;
-    public LayerMask placementLayermask;
-    public Grid grid;
-    public event Action OnClicked, OnExit;
+    protected float angle;
     public bool inBuildMode = false;
     float rotation = 0.0f;
-    protected float angle;
+    public LayerMask placementLayermask;
+    public GameObject mouseIndicator;
+    public GameObject cellIndicator;
+    public GameObject cellIndicatorObj;
+    public event Action OnClicked, OnExit;
+
+    // ===== VR / UI SETTINGS =====
+    [Header("VR & UI")]
+    public GameObject buildingUI;
+    public Transform head;
+    public float spawnDistance = 50.0f;
+    public TMP_Text nameText;
+    public TMP_Text descText;
+    public TMP_Text costText;
+    public TMP_Text healthText;
+
 
     void Start()
     {
@@ -32,20 +49,13 @@ public class BuildingPlacementSystem : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            buildingUI.SetActive(!buildingUI.activeSelf);
             OnExit?.Invoke();
         }
-        if (inBuildMode && Input.GetKeyDown(KeyCode.Q))
-        {
-            cellIndicatorObj.transform.Rotate(0.0f, 90.0f, 0.0f);
-            rotation = (rotation + 90.0f >= 360) ? 0 : rotation + 90.0f;
-            Debug.Log(rotation);
-        }
-        else if (inBuildMode && Input.GetKeyDown(KeyCode.E))
-        {
-            cellIndicatorObj.transform.Rotate(0.0f, -90.0f, 0.0f);
-            rotation = (rotation - 90.0f <= -360) ? 0 : rotation - 90.0f;
-            Debug.Log(rotation);
-        }
+        //tracks BuildingUI to always face the player.
+        buildingUI.transform.LookAt(new Vector3(head.position.x, buildingUI.transform.position.y, head.position.z));
+        buildingUI.transform.forward *= -1;
+
         //tracks the mouse by grid
         Vector3 mousePosition = GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
@@ -53,17 +63,16 @@ public class BuildingPlacementSystem : MonoBehaviour
 
         cellIndicator.transform.position = (angle >= 45.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
     }
-    public void StartPlacement(int ID)
+    public void StartPlacement()
     {
-        StopPlacement();
+        buildingUI.SetActive(false);
         inBuildMode = true;
-        //checks to see if the index is in the list of buildings
-        selectedObjectIndex = allBuildings.FindIndex(data => data.ID == ID);
         if (selectedObjectIndex < 0)
         {
-            UnityEngine.Debug.Log($"NO ID FOUND: {ID}");
+            UnityEngine.Debug.Log($"NO ID FOUND: {selectedObjectIndex}");
             return;
         }
+        Debug.Log(selectedObjectIndex);
         cellIndicatorObj.transform.localScale = allBuildings[selectedObjectIndex].size;
         cellIndicatorObj.transform.position += (new Vector3(0.5f, 0.0f, 0.5f) * cellIndicatorObj.transform.localScale.x);
         cellIndicator.SetActive(true);
@@ -74,7 +83,6 @@ public class BuildingPlacementSystem : MonoBehaviour
     public void StopPlacement()
     {
         inBuildMode = false;
-        selectedObjectIndex = -1;
         cellIndicator.SetActive(false);
         cellIndicatorObj.transform.localPosition = new Vector3(0.0f, 0.5f, 0.0f);
         //removes previous invocation of event
@@ -83,12 +91,10 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     protected virtual void PlaceStruct()
     {
-        Debug.Log("eher");
         if (IsPointerOverUI() || ResourceManager.instance.GetFood() < allBuildings[selectedObjectIndex].buildCost)
         {
             return;
         }
-        Debug.Log("LELELELEL");
         bool canBuild = true;
         Vector3 mousePosition = GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
@@ -137,13 +143,45 @@ public class BuildingPlacementSystem : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100, placementLayermask))
         {
             lastPosition = hit.point;
-            // i had to draw a diagram for this
-            //and remember stuff from physics which was about 2 years ago
             angle = Vector3.Angle(hit.normal, Vector3.up);
         }
         return lastPosition;
     }
+    public void OpenBuildMenu()
+    {
+        buildingUI.transform.position = head.position + new Vector3(head.forward.x, 0, head.forward.z).normalized * spawnDistance;
+        buildingUI.SetActive(true);
+        selectedObjectIndex = 0;
+        SetBuildingInfo(allBuildings[selectedObjectIndex]);
 
+    }
+    public void NextBuilding()
+    {
+        selectedObjectIndex++;
+        Debug.Log($"increment {selectedObjectIndex}");
+        SetBuildingInfo(allBuildings[selectedObjectIndex]);
+    }
+
+    public void PreviousBuilding()
+    {
+        selectedObjectIndex--;
+        Debug.Log($"decrement {selectedObjectIndex}");
+        SetBuildingInfo(allBuildings[selectedObjectIndex]);
+    }
+    public void Build()
+    {
+        StartPlacement();
+    }
+    public void SetBuildingInfo(BuildingSO building)
+    {
+        nameText.text = building.buildName;
+        descText.text = building.buildDesc;
+        costText.text = $"Cost: {building.buildCost}";
+        healthText.text = $"Health: {building.buildHealth}";
+    }
+
+    //these are for VR invoking events
+    //you cant directly invoke another classes events even if theyre inherited
     protected void TriggerClick()
     {
         OnClicked?.Invoke();
