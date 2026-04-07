@@ -88,52 +88,52 @@ public class SBBerrySpawn : MonoBehaviour
             GameObject aBerry = Instantiate(berry, spawnPosition, Quaternion.identity);
             // Debug.Log("aBerry: "+ aBerry);
 
-            Rigidbody rb = aBerry.GetComponent<Rigidbody>();
-            // Debug.Log("rb: "+rb);
+        //     Rigidbody rb = aBerry.GetComponent<Rigidbody>();
+        //     // Debug.Log("rb: "+rb);
 
-            if (rb != null && rb.useGravity == true)
-            {
-                rb.useGravity = false;
-                // Debug.Log ("Turned off to grow");
-            }
+        //     if (rb != null && rb.useGravity == true)
+        //     {
+        //         rb.useGravity = false;
+        //         // Debug.Log ("Turned off to grow");
+        //     }
 
-            aBerry.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
+        //     aBerry.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
 
-            growingApple = StartCoroutine(WatchAppleGrow(aBerry.transform));
-            // Debug.Log("gAppl: "+growingApple);
+        //     growingApple = StartCoroutine(WatchAppleGrow(aBerry.transform));
+        //     // Debug.Log("gAppl: "+growingApple);
 
-            CollisionDetectorForPrefabs forwarder = aBerry.GetComponent<CollisionDetectorForPrefabs>();
-            forwarder.OnHit = (collision) =>
-            {
-                Debug.Log("The berry hit: " + collision.gameObject.name);
+        //     CollisionDetectorForPrefabs forwarder = aBerry.GetComponent<CollisionDetectorForPrefabs>();
+        //     forwarder.OnHit = (collision) =>
+        //     {
+        //         Debug.Log("The berry hit: " + collision.gameObject.name);
             
-                if (isGrowing == true)
-                {
-                    StopCoroutine(growingApple);    
-                    isGrowing = false;
-                    Debug.Log ("stopped coroutine grow");
-                }
+        //         if (isGrowing == true)
+        //         {
+        //             StopCoroutine(growingApple);    
+        //             isGrowing = false;
+        //             Debug.Log ("stopped coroutine grow");
+        //         }
             
 
-                if (rb != null && rb.useGravity != true)
-                {
-                    rb.useGravity = true;
-                    Debug.Log ("started gravity early");
-                }
-            };
+        //         if (rb != null && rb.useGravity != true)
+        //         {
+        //             rb.useGravity = true;
+        //             Debug.Log ("started gravity early");
+        //         }
+        //     };
 
-            //await Awaitable.WaitForSecondsAsync(growDuration);
-            yield return new WaitForSeconds(growDuration);
+        //     //await Awaitable.WaitForSecondsAsync(growDuration);
+        //     yield return new WaitForSeconds(growDuration);
 
-            if (rb != null)
-            {
-                rb.useGravity = true;
-                Debug.Log ("rb");
-            }
-            else
-            {
-                Debug.Log ("No rigidbody");
-            }
+        //     if (rb != null)
+        //     {
+        //         rb.useGravity = true;
+        //         Debug.Log ("rb");
+        //     }
+        //     else
+        //     {
+        //         Debug.Log ("No rigidbody");
+        //     }
      
         }
 
@@ -144,22 +144,22 @@ public class SBBerrySpawn : MonoBehaviour
         // Quaternion randomYRotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);       
     }
 
-    IEnumerator WatchAppleGrow(Transform objTransform)
-    {
-        Debug.Log("IEnum");
-        isGrowing = true;
-        float elapsed = 0f;
-        Vector3 startScale = new Vector3 (startingSize, startingSize, startingSize);
-        Vector3 endScale = Vector3.one;
+    // IEnumerator WatchAppleGrow(Transform objTransform)
+    // {
+    //     Debug.Log("IEnum");
+    //     isGrowing = true;
+    //     float elapsed = 0f;
+    //     Vector3 startScale = new Vector3 (startingSize, startingSize, startingSize);
+    //     Vector3 endScale = Vector3.one;
 
-        while (elapsed < growDuration)
-        {
-            Debug.Log("elapsed < growDuration");
-            elapsed += Time.deltaTime;
-            objTransform.localScale = Vector3.Lerp(startScale, endScale, elapsed / growDuration);
-            yield return null;
-        }
-        objTransform.localScale = endScale;
-        isGrowing = false;
-    }
+    //     while (elapsed < growDuration)
+    //     {
+    //         Debug.Log("elapsed < growDuration");
+    //         elapsed += Time.deltaTime;
+    //         objTransform.localScale = Vector3.Lerp(startScale, endScale, elapsed / growDuration);
+    //         yield return null;
+    //     }
+    //     objTransform.localScale = endScale;
+    //     isGrowing = false;
+    // }
 }
