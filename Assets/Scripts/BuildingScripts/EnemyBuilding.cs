@@ -27,7 +27,7 @@ public class EnemyBuilding : Buildings
     }
     void FixedUpdate()
     {
-        if (ants.Count < maxAnts && this.currentHealth > 0) //GameManager.instance.GetFood() > minFoodPerAnt
+        if (ants.Count < maxAnts && this.currentHealth > 0)
         {
             timer += Time.deltaTime;
             if (timer >= spawnCooldown)
@@ -59,7 +59,7 @@ public class EnemyBuilding : Buildings
         Vector3 spawn = new Vector3(randomX, transform.position.y, randomZ);
 
         GameObject newAnt = Instantiate(antPrefab, spawn, Quaternion.identity);
-    
+
         AntBrain brain = newAnt.GetComponent<AntBrain>();
         LeadNav ln = newAnt.GetComponent<LeadNav>();
         FollowNav fn = newAnt.GetComponent<FollowNav>();
@@ -70,9 +70,9 @@ public class EnemyBuilding : Buildings
         {
             ln.enabled = true;
             if (fn != null) fn.enabled = false;
-        
-            ln.home = this.transform; 
-        
+
+            ln.home = this.transform;
+
             Debug.Log($"<color=orange>Enemy Spawner: First ant is now a Leader.</color>");
         }
         else
@@ -82,9 +82,10 @@ public class EnemyBuilding : Buildings
             {
                 fn.enabled = true;
                 fn.leader = existingLeader;
-            
-                if(!existingLeader.followers.Contains(fn.myAgent))
-                    existingLeader.followers.Add(fn.myAgent);
+
+                if (existingLeader.followers == null) existingLeader.followers = new List<FollowNav>();
+                if (!existingLeader.followers.Contains(fn))
+                    existingLeader.followers.Add(fn);
             }
         }
 
@@ -97,7 +98,6 @@ public class EnemyBuilding : Buildings
         foreach (LeadNav leader in allLeaders)
         {
             AntBrain b = leader.GetComponent<AntBrain>();
-            // We only care about leaders on our team that are actually enabled
             if (leader.enabled && b != null && b.antType.teamID == teamID)
             {
                 return leader;

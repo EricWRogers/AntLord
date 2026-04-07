@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public abstract class CommandParent : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public abstract class CommandParent : MonoBehaviour
     public AntTask taskToAssign = AntTask.Manual;
     public SelectionRingController selectionRing;
     public LayerMask groundMask;
+
+    public XRRayInteractor LassoPointerVR;
 
     void Awake()
     {
@@ -153,103 +156,113 @@ public abstract class CommandParent : MonoBehaviour
     //     LassoSelect(shiftAction?.action, primaryClick?.action);
     // }
 
-    public bool LassoSelect(InputAction shiftInput, InputAction primaryInput)
+    public void CheckLassoSelect(InputAction LassoInput, bool VRMode = true)
     {
-        // --- shift + drag selection (fixed) ---
-        bool shiftHeld = shiftInput != null && shiftInput.ReadValue<float>() > 0.1f;
-        bool primaryDown = primaryInput != null && primaryInput.WasPerformedThisFrame();
-        bool primaryHold = primaryInput != null && primaryInput.ReadValue<float>() > 0.1f;
-        bool primaryUp = primaryInput != null && primaryInput.WasReleasedThisFrame();
 
-        // Start drag only when shift is held and LMB pressed
-        if (shiftHeld && primaryDown)
+        if (LassoInput.WasPerformedThisFrame())
         {
-            Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-            if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
+            //Debug.LogWarning("STARTING!");
+            //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+
+            if(VRMode)
+                LassoPointerVR.TryGetCurrent3DRaycastHit(out hit);
+            else
             {
-                shiftDragStart = hit.point;
-                shiftDragging = true;
-                if (selectionRing) selectionRing.Show(shiftDragStart, 0.1f);
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                Physics.Raycast(ray, out hit, 500f, groundMask);
             }
+            
+            shiftDragStart = hit.point;
+            shiftDragging = true;
+
+            if (selectionRing) selectionRing.Show(shiftDragStart, 0.1f);
         }
+
 
         if (shiftDragging)
         {
-            // If shift was released mid-drag, cancel
-            if (!shiftHeld && primaryHold)
+            // Update ring while LMB held
+            if (shiftDragging)
             {
-                shiftDragging = false;
-                if (selectionRing) selectionRing.Hide();
-                return false;
+                //Debug.LogWarning("UPDATING");
+
+                //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if(VRMode)
+                    LassoPointerVR.TryGetCurrent3DRaycastHit(out hit);
+                else
+                {
+                    Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                    Physics.Raycast(ray, out hit, 500f, groundMask);
+                }
+                    
+                // center moves toward mouse, radius is half the distance
+                Vector3 current = hit.point;
+                Vector3 center = (shiftDragStart + current) * 0.5f;
+                float radius = Vector3.Distance(shiftDragStart, current) * 0.5f;
+
+                if (selectionRing) selectionRing.Show(center, radius);
+
+                else
+                {
+                    
+                    if (selectionRing) selectionRing.Hide();
+                }
             }
-            else
+
+            // Release drag on mouse up, even if shift isn't held
+            if (LassoInput.WasCompletedThisFrame())
             {
-                // Update ring while LMB held
-                if (primaryHold)
+                RaycastHit hit;
+
+                if(VRMode)
+                    LassoPointerVR.TryGetCurrent3DRaycastHit(out hit);
+                else
                 {
-                    Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-                    if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
+                    Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                    Physics.Raycast(ray, out hit, 500f, groundMask);
+                }
+
+                Vector3 end = hit.point;
+                Vector3 center = (shiftDragStart + end) * 0.5f;
+                float radius = Vector3.Distance(shiftDragStart, end) * 0.5f;
+
+                // hide ring
+                if (selectionRing) selectionRing.Hide();
+
+            
+                ClearSelectionVisualsOnly();
+                selectedAnts.Clear();
+                selectedLeader = null;
+
+                Collider[] hits = Physics.OverlapSphere(center, radius);
+                foreach (var col in hits)
+                {
+                    if (!col.CompareTag("Ant")) continue;
+                    var brain = col.GetComponent<AntBrain>();
+                    if (brain == null) continue;
+
+                    //Debug.LogWarning("Found ANT");
+
+                    if (brain.antType.teamID == 0)
                     {
-                        Vector3 current = hit.point;
-                        Vector3 center = (shiftDragStart + current) * 0.5f;
-                        float radius = Vector3.Distance(shiftDragStart, current) * 0.5f;
-                        if (selectionRing) selectionRing.Show(center, radius);
-                    }
-                    else
-                    {
-                        if (selectionRing) selectionRing.Hide();
+                        //Debug.LogWarning("Adding ANT");
+                        selectedAnts.Add(col.gameObject);
+                        SetGlow(col.gameObject, selectedColor, selectedIntensity);
                     }
                 }
 
-                // Release drag on mouse up, even if shift isn't held
-                if (primaryUp)
-                {
-                    Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-                    if (Physics.Raycast(ray, out RaycastHit hit, 500f, groundMask))
-                    {
-                        Vector3 end = hit.point;
-                        Vector3 center = (shiftDragStart + end) * 0.5f;
-                        float radius = Vector3.Distance(shiftDragStart, end) * 0.5f;
-
-                        if (selectionRing) selectionRing.Hide();
-                        ClearSelectionVisualsOnly();
-                        selectedAnts.Clear();
-                        selectedLeader = null;
-
-                        Collider[] hits = Physics.OverlapSphere(center, radius);
-                        foreach (var col in hits)
-                        {
-                            if (!col.CompareTag("Ant")) continue;
-                            var brain = col.GetComponent<AntBrain>();
-                            if (brain == null) continue;
-
-                            if (brain.antType.teamID == 0)
-                            {
-                                selectedAnts.Add(col.gameObject);
-                                SetGlow(col.gameObject, selectedColor, selectedIntensity);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (selectionRing) selectionRing.Hide();
-                    }
-
-                    shiftDragging = false;
-                }
+                shiftDragging = false;
             }
         }
-
-        if(!(shiftHeld && shiftDragging))
-            return false;
-        else
-            return true;
     }
 
+    
     public void ElectLeader()
     {
-        //Debug.Log("Selecting new leader!");
-
         foreach (GameObject ant in selectedAnts)
         {
             ant.GetComponent<LeadNav>().enabled = false;
@@ -260,46 +273,35 @@ public abstract class CommandParent : MonoBehaviour
         selectedLeader = selectedAnts[0].GetComponent<LeadNav>();
         selectedAnts[0].GetComponent<LeadNav>().enabled = true;
 
-        //selectedLeader.home = FindFirstObjectByType<SpawnerBuilding>().transform; // TEMP
+        // Find friendly home spawner
         var spawners = FindObjectsByType<SpawnerBuilding>(FindObjectsSortMode.None);
-
-        foreach(SpawnerBuilding spawner in spawners)
+        foreach (SpawnerBuilding spawner in spawners)
         {
-            if(spawner.GetComponent<EnemyBuilding>() == null)
+            if (spawner.GetComponent<EnemyBuilding>() == null)
             {
                 selectedLeader.home = spawner.transform;
                 break;
             }
         }
 
-        
+        // Followers list is FollowNav now
         selectedLeader.followers.Clear();
 
         for (int i = 1; i < selectedAnts.Count; i++)
         {
-            selectedAnts[i].GetComponent<FollowNav>().leader = selectedLeader;
-            selectedAnts[i].GetComponent<FollowNav>().crumbTrack = 0;
+            var f = selectedAnts[i].GetComponent<FollowNav>();
+            if (f == null) continue;
 
-            
-            var follow = selectedAnts[i].GetComponent<FollowNav>();
-            if (follow.myAgent == null) follow.myAgent = selectedAnts[i].GetComponent<NavMeshAgent>();
+            f.leader = selectedLeader;
+            f.crumbTrack = 0;
 
-            selectedLeader.followers.Add(follow.myAgent);
+            selectedLeader.followers.Add(f);
         }
 
         selectedLeader.GetComponent<FollowNav>().enabled = false;
-
         selectedLeader.crumbs.Clear();
 
-        selectedLeader.myAgent = selectedLeader.GetComponent<NavMeshAgent>();
-        selectedLeader.myAgent.isStopped = false;
-
-        for (int i = 0; i < selectedLeader.followers.Count; i++)
-            selectedLeader.followers[i].isStopped = false;
-
-        // Make leader a different color before clearing
         SetGlow(selectedAnts[0], leaderColor, leaderIntensity);
-
     }
 
     //visualizzation methods

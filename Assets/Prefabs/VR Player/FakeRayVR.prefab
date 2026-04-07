@@ -1068,7 +1068,9 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
-  rayInteractor: {fileID: 2421400997576540759}
+  LassoPointerVR: {fileID: 2421400997576540759}
+  LeftRayInteractor: {fileID: 2935611260903661680}
+  RightRayInteractor: {fileID: 2421400997576540759}
   VRRIHGHTInteraction:
     m_Name: VRRIHGHT Interaction
     m_Id: 645d05f9-0359-4691-abac-27e4990a13cb
@@ -1142,7 +1144,8 @@ MonoBehaviour:
     m_Bits: 8
   grid: {fileID: 0}
   inBuildMode: 0
-  rayInteractor: {fileID: 2935611260903661680}
+  LeftRayInteractor: {fileID: 0}
+  RightRayInteractor: {fileID: 0}
   VRRIGHTInteraction:
     m_Name: VRRIGHT Interaction
     m_Id: 799568ee-2424-478f-8d58-ee1b9413774b
