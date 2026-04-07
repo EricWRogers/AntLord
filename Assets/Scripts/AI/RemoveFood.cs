@@ -13,34 +13,63 @@ public class RemoveFood : MonoBehaviour
         hitColliders = Physics.OverlapSphere(transform.position, radius);
         foreach (var hitColliders in hitColliders)
         {
-            if(hitColliders.CompareTag("Ant"))
+            if (hitColliders.CompareTag("Ant"))
             {
-                tier = hitColliders.GetComponent<LeadNav>().antTier;
-                if (hitColliders.GetComponent<FollowNav>().enabled && hitColliders.GetComponent<FollowNav>().amCarryingFood)
+                
+                var lead = hitColliders.GetComponent<LeadNav>();
+                var follow = hitColliders.GetComponent<FollowNav>();
+
+                if (lead != null) tier = lead.antTier;
+
+                // FOLLOWER deposit 
+                if (follow != null && follow.enabled && follow.amCarryingFood)
                 {
                     foreach (Transform child in hitColliders.transform)
                     {
                         if (child.CompareTag("FoodBit"))
                         {
-                            if (!hitColliders.GetComponent<LeadNav>().enabled)
+                            if (lead == null || !lead.enabled)
                             {
                                 Destroy(child.gameObject);
-                                hitColliders.GetComponent<FollowNav>().myAgent.isStopped = true;
+
+                                // Old: follow.myAgent.isStopped = true;
+                                // New: stop movement by clearing mover goal
+                                if (follow.mover != null) follow.mover.ClearGoal();
+
                                 GetComponent<SpawnerBuilding>().GiveFood(1);
-                                hitColliders.GetComponent<FollowNav>().leader.foodBits--;
+
+                                if (follow.leader != null) follow.leader.foodBits--;
                             }
                         }
                         else if (child.CompareTag("RockBit"))
                         {
                             Destroy(child.gameObject);
-                            hitColliders.GetComponent<FollowNav>().myAgent.isStopped = true;
+
+                            // Old: follow.myAgent.isStopped = true;
+                            if (follow.mover != null) follow.mover.ClearGoal();
+
                             GetComponent<SpawnerBuilding>().GiveRock(1);
-                            hitColliders.GetComponent<FollowNav>().leader.foodBits--;
+
+                            if (follow.leader != null) follow.leader.foodBits--;
+                        }
+                        else if (child.CompareTag("StickBit"))
+                        {
+                            Debug.Log("desroyed stick");
+                            Destroy(child.gameObject);
+
+                            // Old: follow.myAgent.isStopped = true;
+                            if (follow.mover != null) follow.mover.ClearGoal();
+
+                            GetComponent<SpawnerBuilding>().GiveStick(1);
+
+                            if (follow.leader != null) follow.leader.foodBits--;
                         }
                     }
-                    hitColliders.GetComponent<FollowNav>().amCarryingFood = false;
+
+                    follow.amCarryingFood = false;
                 }
-                else if (hitColliders.GetComponent<LeadNav>().enabled && hitColliders.GetComponent<LeadNav>().amCarryingFood)
+                // LEADER deposit 
+                else if (lead != null && lead.enabled && lead.amCarryingFood)
                 {
                     foreach (Transform child in hitColliders.transform)
                     {
@@ -48,20 +77,25 @@ public class RemoveFood : MonoBehaviour
                         {
                             Destroy(child.gameObject);
                             GetComponent<SpawnerBuilding>().GiveFood(1);
-                            hitColliders.GetComponent<LeadNav>().foodBits -= 1;
+                            lead.foodBits -= 1;
                         }
                         else if (child.CompareTag("RockBit"))
                         {
                             Destroy(child.gameObject);
                             GetComponent<SpawnerBuilding>().GiveRock(1);
-                            hitColliders.GetComponent<LeadNav>().foodBits -= 1;
+                            lead.foodBits -= 1;
                         }
-                    }    
-                    hitColliders.GetComponent<LeadNav>().amCarryingFood = false;
+                        else if (child.CompareTag("StickBit"))
+                        {
+                            Debug.Log("desroyed stick");
+                            Destroy(child.gameObject);
+                            GetComponent<SpawnerBuilding>().GiveStick(1);
+                            lead.foodBits -= 1;
+                        }
+                    }
+                    lead.amCarryingFood = false;
                 }
-
             }
         }
     }
-    
 }

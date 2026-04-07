@@ -260,10 +260,9 @@ public abstract class CommandParent : MonoBehaviour
         }
     }
 
+    
     public void ElectLeader()
     {
-        //Debug.Log("Selecting new leader!");
-
         foreach (GameObject ant in selectedAnts)
         {
             ant.GetComponent<LeadNav>().enabled = false;
@@ -274,46 +273,35 @@ public abstract class CommandParent : MonoBehaviour
         selectedLeader = selectedAnts[0].GetComponent<LeadNav>();
         selectedAnts[0].GetComponent<LeadNav>().enabled = true;
 
-        //selectedLeader.home = FindFirstObjectByType<SpawnerBuilding>().transform; // TEMP
+        // Find friendly home spawner
         var spawners = FindObjectsByType<SpawnerBuilding>(FindObjectsSortMode.None);
-
-        foreach(SpawnerBuilding spawner in spawners)
+        foreach (SpawnerBuilding spawner in spawners)
         {
-            if(spawner.GetComponent<EnemyBuilding>() == null)
+            if (spawner.GetComponent<EnemyBuilding>() == null)
             {
                 selectedLeader.home = spawner.transform;
                 break;
             }
         }
 
-        
+        // Followers list is FollowNav now
         selectedLeader.followers.Clear();
 
         for (int i = 1; i < selectedAnts.Count; i++)
         {
-            selectedAnts[i].GetComponent<FollowNav>().leader = selectedLeader;
-            selectedAnts[i].GetComponent<FollowNav>().crumbTrack = 0;
+            var f = selectedAnts[i].GetComponent<FollowNav>();
+            if (f == null) continue;
 
-            
-            var follow = selectedAnts[i].GetComponent<FollowNav>();
-            if (follow.myAgent == null) follow.myAgent = selectedAnts[i].GetComponent<NavMeshAgent>();
+            f.leader = selectedLeader;
+            f.crumbTrack = 0;
 
-            selectedLeader.followers.Add(follow.myAgent);
+            selectedLeader.followers.Add(f);
         }
 
         selectedLeader.GetComponent<FollowNav>().enabled = false;
-
         selectedLeader.crumbs.Clear();
 
-        selectedLeader.myAgent = selectedLeader.GetComponent<NavMeshAgent>();
-        selectedLeader.myAgent.isStopped = false;
-
-        for (int i = 0; i < selectedLeader.followers.Count; i++)
-            selectedLeader.followers[i].isStopped = false;
-
-        // Make leader a different color before clearing
         SetGlow(selectedAnts[0], leaderColor, leaderIntensity);
-
     }
 
     //visualizzation methods

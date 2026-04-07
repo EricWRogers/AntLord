@@ -1,35 +1,55 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.AI;
 using Debug = UnityEngine.Debug;
+
 public class LeadNav : NavParent
 {
-    public List<NavMeshAgent> followers;
+    // Old: public List<NavMeshAgent> followers;
+    // New: store follower components
+    public List<FollowNav> followers = new List<FollowNav>();
+
     public GameObject crumbPrefab;
     public List<Vector3> crumbs;
     public float crumbDropDelay = 1f;
     private float crumbDropTimer = 0f;
+
     public Transform target;
     public Transform recentObjective;
     public Transform home;
+
     public int foodBits = 0;
     public AntTask task = AntTask.Manual;
+
+    // New: references to custom navmesh + A*
+    public VoxelAStar astar;
+
+    // Internal path state
+    private List<Vector3> path = new List<Vector3>();
+    private int pathIndex = 0;
+    private float repathCooldown = 0.5f;
+    private float nextRepathTime = 0f;
+    private Vector3 lastFlatGoal;
 
     void Start()
     {
         EnemyCommanderAI commander = Object.FindFirstObjectByType<EnemyCommanderAI>();
         AntBrain brain = GetComponent<AntBrain>();
-        myAgent.updateRotation = false;
+
+        // Old: myAgent.updateRotation = false;
+        // New: AntMover rotates manually already.
+
+        if (!astar) astar = Object.FindFirstObjectByType<VoxelAStar>();
 
         if (commander != null && brain != null && brain.antType.teamID == 1)
         {
             commander.RegisterNewSquad(this);
         }
     }
-    
+
     void Update()
     {
+        
         // 1. Identify if this is an AI-controlled Enemy Ant
         AntBrain brain = GetComponent<AntBrain>();
         bool isAI = brain != null && brain.antType.teamID != 0;
@@ -38,55 +58,78 @@ public class LeadNav : NavParent
         if (isAI && task == AntTask.Food && target == null)
         {
             Transform foundFood = FindFood();
-        
+
             if (foundFood != null)
             {
                 target = foundFood;
                 recentObjective = foundFood;
-            
-                myAgent.isStopped = false;
-                myAgent.SetDestination(target.position);
-            
+
+                // Old:
+                // myAgent.isStopped = false;
+                // myAgent.SetDestination(target.position);
+
                 Debug.Log($"<color=green>{name} targeting: {target.name} at {target.position}</color>");
             }
         }
 
         // 3. MOVEMENT & PATHING LOGIC
-if (target != null)
+        if (target != null)
         {
-            // 1. Find the actual floor directly beneath the food's center point
-            Vector3 actualDestination = target.position;
-            UnityEngine.AI.NavMeshHit hit;
-            
-            // This searches up to 5 units away from the food's center for a valid NavMesh surface
-            if (UnityEngine.AI.NavMesh.SamplePosition(target.position, out hit, 5.0f, UnityEngine.AI.NavMesh.AllAreas))
-            {
-                actualDestination = hit.position;
-            }
+            // Old logic:
+            // - SamplePosition to find actual navmesh surface under food
+            // - Only SetDestination when needed
+            //
+            // New logic:
+            // - Use A* over VoxelNavGrid to build a waypoint list
+            // - Follow waypoints with AntMover
 
-            // 2. Flatten the coordinates to prevent the Y-Axis recalculation loop
-            Vector3 flatAgentDest = new Vector3(myAgent.destination.x, 0, myAgent.destination.z);
-            Vector3 flatTargetDest = new Vector3(actualDestination.x, 0, actualDestination.z);
+            Vector3 goal = target.position;
 
-            // 3. Set the destination ONLY if the food has moved or we don't have a path
-            if (!myAgent.hasPath || Vector3.Distance(flatAgentDest, flatTargetDest) > 1.0f)
-            {
-                myAgent.SetDestination(actualDestination);
-            }
+            // Flattened comparisons (same idea as your old "flatten coordinates" block)
+            Vector3 flatGoal = new Vector3(goal.x, 0, goal.z);
 
-            // 4. Handle manual rotation safely
-            if (!myAgent.pathPending && myAgent.remainingDistance >= 1.0f)
+            bool needRepath = path.Count == 0 || pathIndex >= path.Count;
+            bool goalMoved = Vector3.Distance(lastFlatGoal, flatGoal) > 1.0f;
+
+            if (Time.time >= nextRepathTime && (needRepath || goalMoved))
             {
-                Vector3 lookPos = myAgent.steeringTarget - transform.position;
-                lookPos.y = 0;
-                if (lookPos != Vector3.zero)
+                nextRepathTime = Time.time + repathCooldown;
+                lastFlatGoal = flatGoal;
+
+                if (astar != null && astar.TryPath(transform.position, goal, out List<Vector3> newPath))
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(lookPos);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+                    path = newPath;
+                    pathIndex = 0;
+                }
+                else
+                {
+                    // If no path found, still try direct (mirrors "reach at all costs" feel)
+                    path.Clear();
+                    pathIndex = 0;
                 }
             }
 
-            // 5. Drop crumbs for the followers
+            // Follow path (or direct)
+            if (mover != null)
+            {
+                if (path.Count > 0 && pathIndex < path.Count)
+                {
+                    Vector3 wp = path[pathIndex];
+                    mover.SetGoal(wp);
+
+                    Vector3 a = transform.position; a.y = 0;
+                    Vector3 b = wp; b.y = 0;
+
+                    if (Vector3.Distance(a, b) <= 0.6f)
+                        pathIndex++;
+                }
+                else
+                {
+                    mover.SetGoal(goal);
+                }
+            }
+
+            // 5. Drop crumbs for the followers 
             crumbDropTimer += Time.deltaTime;
             if (crumbDropTimer >= crumbDropDelay)
             {
@@ -96,17 +139,17 @@ if (target != null)
 
             HandleAgentCollisions();
 
-        // 4. SCAVENGING STATE CHECK
+            // 4. SCAVENGING STATE CHECK (unchanged logic)
             if (task == AntTask.Food)
             {
                 int capacity = (followers.Count + 1) * antTier;
-            
+
                 if (foodBits >= capacity)
                 {
                     if (home != null)
                     {
                         target = home;
-                        recentObjective = home; 
+                        recentObjective = home;
                         Debug.Log($"<color=yellow>{name} squad is full! Returning to {home.name}</color>");
                     }
                 }
@@ -114,73 +157,89 @@ if (target != null)
         }
         else if (isAI && recentObjective != null)
         {
-            myAgent.SetDestination(recentObjective.position);
-        
-            if (myAgent.remainingDistance <= 1.0f)
+            // Old:
+            // myAgent.SetDestination(recentObjective.position);
+            // if (myAgent.remainingDistance <= 1.0f) recentObjective = null;
+
+            // New: treat recentObjective as a goal to move toward directly
+            if (mover != null) mover.SetGoal(recentObjective.position);
+
+            Vector3 a = transform.position; a.y = 0;
+            Vector3 b = recentObjective.position; b.y = 0;
+
+            if (Vector3.Distance(a, b) <= 1.0f)
             {
                 recentObjective = null;
             }
         }
     }
-    
+
     Transform FindFood()
     {
-    float sphereRadius = 25f;
+        float sphereRadius = 25f;
         float maxSearchRange = 500f;
 
         while (sphereRadius <= maxSearchRange)
-       {
-           Collider[] hits = Physics.OverlapSphere(transform.position, sphereRadius);
-           Transform closestFood = null;
+        {
+            Collider[] hits = Physics.OverlapSphere(transform.position, sphereRadius);
+            Transform closestFood = null;
             float closestDistance = Mathf.Infinity;
 
             foreach (Collider col in hits)
-           {
-               if (col.CompareTag("Food"))
-               {
-                   float dist = Vector3.Distance(transform.position, col.transform.position);
-                   if (dist < closestDistance)
-                   {
-                       closestDistance = dist;
-                       closestFood = col.transform;
-                   }
-               }
+            {
+                if (col.CompareTag("Food"))
+                {
+                    float dist = Vector3.Distance(transform.position, col.transform.position);
+                    if (dist < closestDistance)
+                    {
+                        closestDistance = dist;
+                        closestFood = col.transform;
+                    }
+                }
             }
 
             if (closestFood != null)
             {
-                recentObjective = closestFood; 
-            
+                recentObjective = closestFood;
                 Debug.Log($"<color=green>New Objective: {closestFood.name} at {closestFood.position}</color>");
                 return closestFood;
             }
 
-               sphereRadius *= 2;
-    }
-    return null;
+            sphereRadius *= 2;
+        }
+
+        return null;
     }
 
     void FixedUpdate()
     {
-        if(task == AntTask.Food && target == home && myAgent.remainingDistance <= 2)
+        // Old condition: if(task == Food && target == home && myAgent.remainingDistance <= 2)
+        // New condition: if close to home in flat distance
+        if (task == AntTask.Food && target == home && home != null)
         {
-            int foodCount = 0;
-            foreach (NavMeshAgent follower in followers)
-            {
-                if(follower.GetComponent<FollowNav>().amCarryingFood)
-                    break;
-                else
-                    foodCount++;
-            }
+            Vector3 a = transform.position; a.y = 0;
+            Vector3 b = home.position; b.y = 0;
 
-            if(foodCount >= (followers.Count * antTier)) //+ (1 * antTeir))
+            if (Vector3.Distance(a, b) <= 2f)
             {
-                Transform foodTransform = FindFood();
+                int foodCount = 0;
+                foreach (FollowNav follower in followers)
+                {
+                    if (follower != null && follower.amCarryingFood)
+                        break;
+                    else
+                        foodCount++;
+                }
 
-                if(foodTransform != null)
-                    target = foodTransform;
-                else
-                    Debug.Log("Failed to find food, freak out!");
+                if (foodCount >= (followers.Count * antTier))
+                {
+                    Transform foodTransform = FindFood();
+
+                    if (foodTransform != null)
+                        target = foodTransform;
+                    else
+                        Debug.Log("Failed to find food, freak out!");
+                }
             }
         }
     }

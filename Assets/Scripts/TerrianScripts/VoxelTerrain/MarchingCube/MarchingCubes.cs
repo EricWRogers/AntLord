@@ -52,6 +52,9 @@ public class MarchingCubes : MonoBehaviour
 
     public LayerMask layerMask;
 
+    public float WorldSizeX => width * resolution;
+    public float WorldSizeZ => width * resolution;
+
     public void Start()
     {
         //if (GetComponent<MeshCollider>() == null || GameObject.Find("NavMesh Surface") == null)
@@ -277,6 +280,7 @@ public class MarchingCubes : MonoBehaviour
         if (changed)
         {
             UpdateVisuals();
+            GetComponent<VoxelNavGrid>()?.MarkDirty(worldPosition, radius);
         }
     }
 
@@ -319,6 +323,7 @@ public class MarchingCubes : MonoBehaviour
         if (changed)
         {
             UpdateVisuals();
+            GetComponent<VoxelNavGrid>()?.MarkDirty(worldPosition, radius);
         }
     }
     //Sets the Voxels within a buildings radius to the same height
