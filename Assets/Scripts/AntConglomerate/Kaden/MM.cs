@@ -19,6 +19,7 @@ public class MM : MonoBehaviour
             var map = customActions.FindActionMap(actionMapName);
             if (map != null)
             {
+                Debug.Log("Enabling Input Action Map: " + actionMapName);
                 map.Enable();
                 // Optional: find the action directly if Unity Events act up
                 pauseAction = map.FindAction("MenuPressed");
