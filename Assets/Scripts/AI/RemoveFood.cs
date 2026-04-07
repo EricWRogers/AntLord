@@ -52,6 +52,18 @@ public class RemoveFood : MonoBehaviour
 
                             if (follow.leader != null) follow.leader.foodBits--;
                         }
+                        else if (child.CompareTag("StickBit"))
+                        {
+                            Debug.Log("desroyed stick");
+                            Destroy(child.gameObject);
+
+                            // Old: follow.myAgent.isStopped = true;
+                            if (follow.mover != null) follow.mover.ClearGoal();
+
+                            GetComponent<SpawnerBuilding>().GiveStick(1);
+
+                            if (follow.leader != null) follow.leader.foodBits--;
+                        }
                     }
 
                     follow.amCarryingFood = false;
@@ -71,6 +83,13 @@ public class RemoveFood : MonoBehaviour
                         {
                             Destroy(child.gameObject);
                             GetComponent<SpawnerBuilding>().GiveRock(1);
+                            lead.foodBits -= 1;
+                        }
+                        else if (child.CompareTag("StickBit"))
+                        {
+                            Debug.Log("desroyed stick");
+                            Destroy(child.gameObject);
+                            GetComponent<SpawnerBuilding>().GiveStick(1);
                             lead.foodBits -= 1;
                         }
                     }

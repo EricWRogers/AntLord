@@ -49,6 +49,7 @@ public class LeadNav : NavParent
 
     void Update()
     {
+        
         // 1. Identify if this is an AI-controlled Enemy Ant
         AntBrain brain = GetComponent<AntBrain>();
         bool isAI = brain != null && brain.antType.teamID != 0;
