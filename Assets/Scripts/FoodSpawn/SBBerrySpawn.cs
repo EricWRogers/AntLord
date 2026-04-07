@@ -44,7 +44,8 @@ public class SBBerrySpawn : MonoBehaviour
         if (timer >= spawnTimer)
         {
             StartCoroutine(SpawnApple());
-            spawnTimer = Time.deltaTime + growDuration + 5; 
+            float randomTimer = Random.Range(growDuration/10, growDuration*2);
+            spawnTimer = randomTimer; 
             timer = 0.0f;
         }
     }
@@ -61,7 +62,6 @@ public class SBBerrySpawn : MonoBehaviour
             Debug.Log("i: "+i);
 
             int randomIndex = Random.Range(0, spawnPoints.Count);
-            // Debug.Log("randomIndex: " + spawnPoints[randomIndex].gameObject.name);
 
             // Transform spawnPosition = spawnPoints[randomIndex];
             // GameObject targetObject = spawnPoints[randomIndex];
@@ -72,21 +72,14 @@ public class SBBerrySpawn : MonoBehaviour
             {
                 Debug.Log("something is there");
             }
+
+            else
+            {
+                GameObject aBerry = Instantiate(berry, spawnPosition, Quaternion.identity);
+            }
+
+
             
-
-            // Debug.Log("SpawnPos: "+spawnPosition);
-            // Debug.Log("SpawnPoint: " + spawnPoints);
-            // Debug.Log("fdkjf: " + spawnPoints[randomIndex]);
-
-            // if (berry != null) Debug.Log("Berry prefab is not missing!");
-            // if (spawnPosition == null) Debug.LogError("SpawnPosition Transform is missing!");
-
-            // Debug.Log($"Spawning {berry.name} at {spawnPosition.transform.position}");
-            // Debug.Log("spanPos.Pos" + spawnPosition.position);
-            // Debug.Log("spanPos.Rot" + spawnPosition.rotation);
-
-            GameObject aBerry = Instantiate(berry, spawnPosition, Quaternion.identity);
-            // Debug.Log("aBerry: "+ aBerry);
 
         //     Rigidbody rb = aBerry.GetComponent<Rigidbody>();
         //     // Debug.Log("rb: "+rb);
