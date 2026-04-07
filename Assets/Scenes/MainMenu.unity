@@ -1935,7 +1935,7 @@ PrefabInstance:
       objectReference: {fileID: 1227677919}
     - target: {fileID: 5705493015460907995, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: VoxelTerrianBuildTest
+      value: VoxelTerrainBuildTest
       objectReference: {fileID: 0}
     - target: {fileID: 6061151561552063308, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
       propertyPath: m_Pivot.x
@@ -2016,6 +2016,10 @@ PrefabInstance:
     - target: {fileID: 6061151561552063308, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6207654123027600290, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2200,6 +2204,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4310885243197138294, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4566476520416345443, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5101480525071444230, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
