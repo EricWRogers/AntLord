@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
@@ -26,8 +25,10 @@ public class AntBrain : MonoBehaviour
     private float currentHealth;
     private float attackTimer;
     private AntBrain currentTarget;
-    private NavMeshAgent agent;
     private FollowNav followNav;
+    private LeadNav leadNav;
+    private AntMover mover;
+
     private Renderer antRenderer;
     private Color originalColor;
     private Color originalEmissionColor;
@@ -38,9 +39,13 @@ public class AntBrain : MonoBehaviour
     void Start()
     {
         currentHealth = antType.maxHealth;
-        agent = GetComponent<NavMeshAgent>();
+
         followNav = GetComponent<FollowNav>();
-        agent.speed = antType.moveSpeed;
+        leadNav = GetComponent<LeadNav>();
+        mover = GetComponent<AntMover>();
+
+        if (mover != null)
+            mover.SetAbsoluteSpeed(antType.moveSpeed);
 
         antRenderer = GetComponentInChildren<Renderer>();
         if (antRenderer != null)
@@ -123,13 +128,19 @@ public class AntBrain : MonoBehaviour
 
     private void HandleFollowing()
     {
-        LeadNav lead = GetComponent<LeadNav>();
-        if (lead != null)
+        
+        // If LeadNav exists and has a target, the leader moves toward it.
+        // Otherwise follower stays in FollowNav mode.
+
+        if (leadNav != null && leadNav.enabled && leadNav.target != null)
         {
-            if (lead.target != null && agent.destination != lead.target.position)
-                agent.SetDestination(lead.target.position);
+            if (mover != null)
+                mover.SetGoal(leadNav.target.position);
         }
-        else if (followNav != null) followNav.enabled = true;
+        else
+        {
+            if (followNav != null) followNav.enabled = true;
+        }
     }
 
     private void CheckForEnemies()
@@ -153,9 +164,9 @@ public class AntBrain : MonoBehaviour
         Collider[] potentialTargets = Physics.OverlapSphere(transform.position, detectionRange);
         foreach (var col in potentialTargets)
         {
-            if(antType.teamID == 0)
+            if (antType.teamID == 0)
             {
-                if(col.GetComponent<EnemyBuilding>())
+                if (col.GetComponent<EnemyBuilding>())
                 {
                     currentBuildingTarget = col.GetComponent<EnemyBuilding>();
                     currentState = AntState.Chasing;
@@ -165,7 +176,7 @@ public class AntBrain : MonoBehaviour
             }
             else
             {
-                if(col.CompareTag("Building") && col.GetComponent<EnemyBuilding>() == null)
+                if (col.CompareTag("Building") && col.GetComponent<EnemyBuilding>() == null)
                 {
                     currentBuildingTarget = col.GetComponent<EnemyBuilding>();
                     currentState = AntState.Chasing;
@@ -182,17 +193,16 @@ public class AntBrain : MonoBehaviour
 
         float dist = 0.0f;
 
-        if(currentTarget != null)
+        if (currentTarget != null)
         {
-            agent.SetDestination(currentTarget.transform.position);
+            if (mover != null) mover.SetGoal(currentTarget.transform.position);
             dist = Vector3.Distance(transform.position, currentTarget.transform.position);
         }
-        else if(currentBuildingTarget != null)
+        else if (currentBuildingTarget != null)
         {
-            agent.SetDestination(currentBuildingTarget.transform.position);
+            if (mover != null) mover.SetGoal(currentBuildingTarget.transform.position);
             dist = Vector3.Distance(transform.position, currentBuildingTarget.transform.position);
         }
-
 
         if (dist <= attackRange) currentState = AntState.Attacking;
         else if (dist > detectionRange * 1.5f) ReturnToTask();
@@ -202,25 +212,31 @@ public class AntBrain : MonoBehaviour
     {
         if (currentTarget == null && currentBuildingTarget == null) { ReturnToTask(); return; }
 
-        if(currentTarget != null)
+        if (currentTarget != null)
             transform.LookAt(currentTarget.transform);
-        else if(currentBuildingTarget != null)
+        else if (currentBuildingTarget != null)
             transform.LookAt(currentBuildingTarget.transform);
 
-        agent.velocity = Vector3.zero;
+        // Old: agent.velocity = Vector3.zero;
+        // New: stop moving by clearing mover goal
+        if (mover != null) mover.ClearGoal();
 
         attackTimer += Time.deltaTime;
         if (attackTimer >= 1f)
         {
-            if(currentTarget != null)
+            if (currentTarget != null)
                 Attack(currentTarget);
-            else if(currentBuildingTarget != null)
+            else if (currentBuildingTarget != null)
                 Attack(currentBuildingTarget);
 
             attackTimer = 0;
         }
 
-        if ((currentTarget != null || currentBuildingTarget != null) && Vector3.Distance(transform.position, currentTarget.transform.position) > attackRange)
+        
+        if (currentTarget != null && Vector3.Distance(transform.position, currentTarget.transform.position) > attackRange)
+            currentState = AntState.Chasing;
+
+        if (currentBuildingTarget != null && Vector3.Distance(transform.position, currentBuildingTarget.transform.position) > attackRange)
             currentState = AntState.Chasing;
     }
 
@@ -233,9 +249,7 @@ public class AntBrain : MonoBehaviour
     }
 
     public void Attack(AntBrain target) { target.TakeDamage(antType.damage); }
-
     public void Attack(EnemyBuilding target) { target.TakeDamage((int)antType.damage); }
-
 
     void Die()
     {
@@ -244,7 +258,7 @@ public class AntBrain : MonoBehaviour
 
         LeadNav leadNav = GetComponent<LeadNav>();
         if (leadNav != null) PromoteNewLeader(leadNav);
-        
+
         Destroy(gameObject);
     }
 
@@ -269,37 +283,31 @@ public class AntBrain : MonoBehaviour
 
     private void ExecutePromotion(LeadNav oldLeader, FollowNav candidate)
     {
-    LeadNav newLeader = candidate.gameObject.GetComponent<LeadNav>();
-    
-    if (newLeader != null)
-    {
-        newLeader.enabled = true;
-        newLeader.target = oldLeader.target;
-        newLeader.home = oldLeader.home;
-        newLeader.recentObjective = oldLeader.recentObjective;
-        newLeader.crumbs = new List<Vector3>(oldLeader.crumbs);
-        newLeader.antTier = candidate.antTier;
-        newLeader.task = oldLeader.task;
-        newLeader.followers = new List<NavMeshAgent>();
+        LeadNav newLeader = candidate.gameObject.GetComponent<LeadNav>();
 
-        NavMeshAgent agent = candidate.GetComponent<NavMeshAgent>();
-        if (agent != null)
+        if (newLeader != null)
         {
-            agent.ResetPath();
+            newLeader.enabled = true;
+            newLeader.target = oldLeader.target;
+            newLeader.home = oldLeader.home;
+            newLeader.recentObjective = oldLeader.recentObjective;
+            newLeader.crumbs = new List<Vector3>(oldLeader.crumbs);
+            newLeader.antTier = candidate.antTier;
+            newLeader.task = oldLeader.task;
+
+            // ollowers list is FollowNav now, not NavMeshAgent
+            newLeader.followers = new List<FollowNav>();
+
+            EnemyCommanderAI commander = Object.FindFirstObjectByType<EnemyCommanderAI>();
+            if (commander != null)
+            {
+                commander.RegisterNewSquad(newLeader);
+            }
+
+            ReassignFollowers(oldLeader, newLeader);
+
+            Debug.Log($"<color=green>PROMOTION: {candidate.gameObject.name} enabled as new leader.</color>");
         }
-
-        EnemyCommanderAI commander = Object.FindFirstObjectByType<EnemyCommanderAI>();
-        if (commander != null)
-        {
-            commander.RegisterNewSquad(newLeader);
-        }
-
-        //Destroy(candidate); 
-
-        ReassignFollowers(oldLeader, newLeader);
-        
-        Debug.Log($"<color=green>PROMOTION: {candidate.gameObject.name} enabled as new leader.</color>");
-    }
     }
 
     private void ReassignFollowers(LeadNav oldLeader, LeadNav newLeader)
@@ -315,16 +323,18 @@ public class AntBrain : MonoBehaviour
             if (f.leader == oldLeader)
             {
                 f.leader = newLeader;
-                f.crumbTrack = 0; 
-            
-                if (f.myAgent != null)
+                f.crumbTrack = 0;
+
+                // Old: f.myAgent.SetDestination(newLeader.transform.position); newLeader.followers.Add(f.myAgent);
+                // New: just add the follower component, and let FollowNav handle crumb movement.
+                if (!newLeader.followers.Contains(f))
                 {
-                    f.myAgent.SetDestination(newLeader.transform.position);
-                    newLeader.followers.Add(f.myAgent);
+                    newLeader.followers.Add(f);
                     reassignedCount++;
                 }
             }
         }
+
         Debug.Log($"<color=cyan>SQUAD SYNC: {reassignedCount} ants successfully moved to new leader {newLeader.name}.</color>");
     }
 }

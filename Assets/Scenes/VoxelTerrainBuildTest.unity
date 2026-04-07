@@ -4328,6 +4328,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2303937482787535869, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
   m_PrefabInstance: {fileID: 688246356}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &706394683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 706394684}
+  - component: {fileID: 706394685}
+  m_Layer: 0
+  m_Name: Pathfinding
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &706394684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706394683}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1720360767}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &706394685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706394683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42056b7409753634fb44ddb15e1ee45c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VoxelAStar
+  grid: {fileID: 0}
 --- !u!1001 &710595731
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9215,6 +9260,7 @@ Transform:
   - {fileID: 1939775702}
   - {fileID: 115076553}
   - {fileID: 1449165478}
+  - {fileID: 706394684}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1725599060
@@ -10657,6 +10703,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 843721128962493452, guid: d2ad6ffd5ddf6b645b9d5cfc846e69fc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1939775707}
+    - targetCorrespondingSourceObject: {fileID: 843721128962493452, guid: d2ad6ffd5ddf6b645b9d5cfc846e69fc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1939775708}
   m_SourcePrefab: {fileID: 100100000, guid: d2ad6ffd5ddf6b645b9d5cfc846e69fc, type: 3}
 --- !u!4 &1939775702 stripped
 Transform:
@@ -10746,6 +10795,31 @@ MonoBehaviour:
   m_Teleporting:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1939775708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237293898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae0c0786ff0f6040b09a75a19f87933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VoxelNavGrid
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
+  rayStartHeight: 120
+  rayLength: 300
+  cellSize: 1
+  maxStepHeight: 1.25
+  maxSlopeDeg: 60
+  slopePenalty: 2
+  slopePower: 2
+  origin: {x: 0, y: 0, z: 0}
+  sizeX: 0
+  sizeZ: 0
 --- !u!1 &1941057262 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3210899195265792381, guid: a3171406bb565c545a426e05ef021dab, type: 3}

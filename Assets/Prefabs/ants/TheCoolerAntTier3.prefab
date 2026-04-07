@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 5193211598700607853}
   - component: {fileID: 7238624562607218791}
   - component: {fileID: 6033563585228847766}
-  - component: {fileID: 5903967380002915471}
-  - component: {fileID: 4401608577932833296}
   - component: {fileID: 7377458664429087470}
   - component: {fileID: 5680339141486303906}
   - component: {fileID: 1548463965053062302}
   - component: {fileID: 4771407150307704747}
+  - component: {fileID: 4242313418050954338}
+  - component: {fileID: 3958565284729554011}
   m_Layer: 6
   m_Name: TheCoolerAntTier3
   m_TagString: Ant
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fdee9924f6698ce59f95ad38cfe4f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LeadNav
-  myAgent: {fileID: 0}
+  mover: {fileID: 0}
   recentCollision: {fileID: 0}
   separationRadius: 2
   separationForce: 5
@@ -69,6 +69,7 @@ MonoBehaviour:
   home: {fileID: 0}
   foodBits: 0
   task: 0
+  astar: {fileID: 0}
 --- !u!114 &6033563585228847766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ab087c14722578bbe065692fbe81b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FollowNav
-  myAgent: {fileID: 0}
+  mover: {fileID: 0}
   recentCollision: {fileID: 0}
   separationRadius: 2
   separationForce: 5
@@ -92,48 +93,6 @@ MonoBehaviour:
   closeEnoughModifier: 0.5
   leaderTail: 0.3
   crumbTrack: 0
---- !u!114 &5903967380002915471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3021146613608209645}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
-  m_SerializedVersion: 0
-  m_OverrideArea: 0
-  m_Area: 0
-  m_OverrideGenerateLinks: 0
-  m_GenerateLinks: 0
-  m_IgnoreFromBuild: 1
-  m_ApplyToChildren: 1
-  m_AffectedAgents: ffffffff
---- !u!195 &4401608577932833296
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3021146613608209645}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5000001
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2.0000005
-  m_BaseOffset: 1.26
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!135 &7377458664429087470
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -213,6 +172,47 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.34
   m_Center: {x: 0, y: 2.23, z: 0}
+--- !u!143 &4242313418050954338
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3021146613608209645}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.15
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.25, z: 0}
+--- !u!114 &3958565284729554011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3021146613608209645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: badb3dc0db3244743a9358030c948a04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AntMover
+  baseSpeed: 3.5
+  minSpeed: 1
+  turnSpeedDeg: 540
+  arriveDist: 0.25
 --- !u!1 &7142961466328030181
 GameObject:
   m_ObjectHideFlags: 0
