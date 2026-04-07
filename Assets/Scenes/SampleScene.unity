@@ -11341,11 +11341,11 @@ PrefabInstance:
     - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_ActionEvents.Array.data[100].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1997405678}
+      objectReference: {fileID: 0}
     - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_ActionEvents.Array.data[102].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1997405678}
+      objectReference: {fileID: 0}
     - target: {fileID: 8366009891469272367, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_ActionEvents.Array.data[100].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -11378,7 +11378,8 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[102].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 303256391695022653, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -15268,17 +15269,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1994332309}
   m_CullTransparentMesh: 1
---- !u!114 &1997405678 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 303256391695022653, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
-  m_PrefabInstance: {fileID: 1485558633}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc81f27d504229c43bd1b31eb672258e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MM
 --- !u!1 &1999169001
 GameObject:
   m_ObjectHideFlags: 0
