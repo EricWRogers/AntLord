@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f2033dc683c3c843a9bcff5f2419296, type: 3}
-  m_Name: CrazyAnt
+  m_Name: EnemeyCrazyAnt
   m_EditorClassIdentifier: Assembly-CSharp::AntDataType
   typeName: 
   maxHealth: 100
@@ -19,4 +19,4 @@ MonoBehaviour:
   carryCapacity: 5
   carryWeightLimit: 50
   modelPrefab: {fileID: 0}
-  teamID: 0
+  teamID: 1
