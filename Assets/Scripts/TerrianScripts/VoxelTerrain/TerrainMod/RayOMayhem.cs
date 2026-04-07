@@ -28,12 +28,7 @@ public class RayOMayhem : MonoBehaviour
 
     void Update()
     {
-        if (voxelManager == null)
-        {
-            
-            Debug.LogWarning("RayOMayhem: voxelManager not assigned.");
-            return;
-        }
+        if (voxelManager == null) return;
 
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             return;
