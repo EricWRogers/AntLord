@@ -8929,7 +8929,7 @@ PrefabInstance:
     - target: {fileID: -6011283042107458658, guid: a828838adf9d43e429f3de3cd8de1afa, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: e072c217bab52ad48b318449c8fa084e, type: 2}
+      objectReference: {fileID: -876546973899608171, guid: 2366259583737b9498709b2be740b9c3, type: 3}
     - target: {fileID: 919132149155446097, guid: a828838adf9d43e429f3de3cd8de1afa, type: 3}
       propertyPath: m_Name
       value: Tree_1 (12)
