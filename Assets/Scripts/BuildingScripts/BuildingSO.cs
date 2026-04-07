@@ -14,6 +14,7 @@ public class BuildingSO : ScriptableObject
     [field: SerializeField] public string buildDesc { get; set; }
     [field: SerializeField] public int ID { get; set; }
     [field: SerializeField] public int buildCost { get; set; }
+    [field: SerializeField] public int buildHealth { get; set; }
     [field: SerializeField] public Vector3Int size { get; set; } = Vector3Int.one;
     [field: SerializeField] public GameObject preFab { get; set; }
 }
