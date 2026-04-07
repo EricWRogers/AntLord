@@ -20,7 +20,6 @@ public class RayOMayhem : MonoBehaviour
     private VoxelAction currentAction = VoxelAction.None;
     void Update()
     {
-        //safety check if manager isn't assigned
         if (voxelManager == null) return;
 
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
