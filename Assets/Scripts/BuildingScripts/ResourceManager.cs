@@ -6,6 +6,7 @@ public class ResourceManager : MonoBehaviour
     public int food = 1000;
     public int sand = 0;
     public int rocks = 0;
+    public int sticks = 0;
 
     void Start()
     {
@@ -33,7 +34,12 @@ public class ResourceManager : MonoBehaviour
     public void AddRock(int amount)
     {
         rocks += amount;
-        Debug.Log(rocks);
+        //Debug.Log(rocks);
+    }
+    public void AddStick(int amount)
+    {
+        sticks += amount;
+        Debug.Log(sticks);
     }
 
     public void AddSand(int amount)
