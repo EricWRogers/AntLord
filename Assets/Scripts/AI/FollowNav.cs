@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public class FollowNav : NavParent
 {
     public LeadNav leader;
@@ -11,16 +12,19 @@ public class FollowNav : NavParent
     public override void Start()
     {
         base.Start();
-        if (leader != null) leader.followers.Add(myAgent);
+
+        // Old: if (leader != null) leader.followers.Add(myAgent);
+        // New: followers list is FollowNav components
+        if (leader != null) leader.followers.Add(this);
     }
 
     void Update()
     {
-        if (myAgent == null || !myAgent.isOnNavMesh) return;
+        if (mover == null) return;
         if (leader == null) return;
 
-        if (myAgent.remainingDistance >= 2f)
-            transform.LookAt(myAgent.steeringTarget);
+        // Old: rotate to steering target when moving
+        // New: AntMover already handles rotation toward goal.
 
         if (recentCollision != null)
         {
@@ -28,17 +32,25 @@ public class FollowNav : NavParent
                 recentCollision = null;
         }
 
-        if (leader.crumbs.Count != 0 && Vector3.Distance(transform.position, leader.transform.position) > leaderTail)
+        if (leader.crumbs.Count != 0 &&
+            Vector3.Distance(transform.position, leader.transform.position) > leaderTail)
         {
             // Clamp crumbTrack just in case
             crumbTrack = Mathf.Clamp(crumbTrack, 0, leader.crumbs.Count - 1);
 
-            myAgent.destination = leader.crumbs[crumbTrack];
+            // Old: myAgent.destination = leader.crumbs[crumbTrack];
+            mover.SetGoal(leader.crumbs[crumbTrack]);
 
             finalCloseDist = closeEnough * (leader.followers.Count * closeEnoughModifier);
             finalCloseDist = Mathf.Clamp(finalCloseDist, 1f, 2.5f);
 
-            if (crumbTrack < leader.crumbs.Count - 1 && myAgent.remainingDistance < finalCloseDist)
+            // Old: if (crumbTrack < ... && myAgent.remainingDistance < finalCloseDist) crumbTrack++;
+            // New: compute 2D distance to current crumb
+            Vector3 a = transform.position; a.y = 0;
+            Vector3 b = leader.crumbs[crumbTrack]; b.y = 0;
+
+            if (crumbTrack < leader.crumbs.Count - 1 &&
+                Vector3.Distance(a, b) < finalCloseDist)
                 crumbTrack++;
 
             HandleAgentCollisions();

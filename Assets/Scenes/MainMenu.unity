@@ -1935,7 +1935,7 @@ PrefabInstance:
       objectReference: {fileID: 1227677919}
     - target: {fileID: 5705493015460907995, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: HeightMap+Nav
+      value: VoxelTerrianBuildTest
       objectReference: {fileID: 0}
     - target: {fileID: 6061151561552063308, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
       propertyPath: m_Pivot.x

@@ -12,11 +12,11 @@ public class EnemySpawner : MonoBehaviour
     public GameObject followerPrefab;
 
     [Header("Spawn Settings")]
-    public int maxActiveAnts = 20; 
+    public int maxActiveAnts = 20;
     public float spawnCooldown = 15.0f;
     [Tooltip("How many followers spawn with each leader?")]
-    public int followersPerSquad = 3; 
-    
+    public int followersPerSquad = 3;
+
     [Header("Spawn Area")]
     public float minSpawnDistance = 2.0f;
     public float maxSpawnDistance = 6.0f;
@@ -47,11 +47,12 @@ public class EnemySpawner : MonoBehaviour
         activeAnts.Add(leaderObj);
 
         LeadNav squadLeader = leaderObj.GetComponent<LeadNav>();
-        UnityEngine.AI.NavMeshAgent leaderAgent = leaderObj.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        FollowNav leaderFollow = leaderObj.GetComponent<FollowNav>();
 
-        if (squadLeader != null && leaderAgent != null)
+        if (squadLeader != null)
         {
-            squadLeader.myAgent = leaderAgent;
+            squadLeader.enabled = true;
+            if (leaderFollow != null) leaderFollow.enabled = false;
         }
 
         if (commander != null && squadLeader != null)
@@ -67,18 +68,22 @@ public class EnemySpawner : MonoBehaviour
             activeAnts.Add(followerObj);
 
             FollowNav followerNav = followerObj.GetComponent<FollowNav>();
-            UnityEngine.AI.NavMeshAgent followerAgent = followerObj.GetComponent<UnityEngine.AI.NavMeshAgent>();
+            LeadNav followerLead = followerObj.GetComponent<LeadNav>();
 
-            if (followerNav != null && followerAgent != null)
+            if (followerNav != null)
             {
-                followerNav.myAgent = followerAgent;
-            
-                if (squadLeader != null)
-                {
-                    followerNav.leader = squadLeader;
-                    if (squadLeader.followers == null) squadLeader.followers = new List<UnityEngine.AI.NavMeshAgent>();
-                    squadLeader.followers.Add(followerAgent);
-                }
+                followerNav.enabled = true;
+                followerNav.leader = squadLeader;
+                followerNav.crumbTrack = 0;
+            }
+
+            if (followerLead != null) followerLead.enabled = false;
+
+            if (squadLeader != null && followerNav != null)
+            {
+                if (squadLeader.followers == null) squadLeader.followers = new List<FollowNav>();
+                if (!squadLeader.followers.Contains(followerNav))
+                    squadLeader.followers.Add(followerNav);
             }
         }
     }
@@ -87,7 +92,7 @@ public class EnemySpawner : MonoBehaviour
     {
         Vector2 randomDir = Random.insideUnitCircle.normalized;
         float randomDist = Random.Range(minSpawnDistance, maxSpawnDistance);
-        
+
         return new Vector3(
             transform.position.x + (randomDir.x * randomDist),
             transform.position.y,

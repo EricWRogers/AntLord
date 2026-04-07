@@ -25,49 +25,49 @@ using UnityEngine.InputSystem.Utilities;
 /// <code>
 /// using namespace UnityEngine;
 /// using UnityEngine.InputSystem;
-/// 
+///
 /// // Example of using an InputActionMap named "Player" from a UnityEngine.MonoBehaviour implementing callback interface.
 /// public class Example : MonoBehaviour, MyActions.IPlayerActions
 /// {
 ///     private MyActions_Actions m_Actions;                  // Source code representation of asset.
 ///     private MyActions_Actions.PlayerActions m_Player;     // Source code representation of action map.
-/// 
+///
 ///     void Awake()
 ///     {
 ///         m_Actions = new MyActions_Actions();              // Create asset object.
 ///         m_Player = m_Actions.Player;                      // Extract action map object.
 ///         m_Player.AddCallbacks(this);                      // Register callback interface IPlayerActions.
 ///     }
-/// 
+///
 ///     void OnDestroy()
 ///     {
 ///         m_Actions.Dispose();                              // Destroy asset object.
 ///     }
-/// 
+///
 ///     void OnEnable()
 ///     {
 ///         m_Player.Enable();                                // Enable all actions within map.
 ///     }
-/// 
+///
 ///     void OnDisable()
 ///     {
 ///         m_Player.Disable();                               // Disable all actions within map.
 ///     }
-/// 
+///
 ///     #region Interface implementation of MyActions.IPlayerActions
-/// 
+///
 ///     // Invoked when "Move" action is either started, performed or canceled.
 ///     public void OnMove(InputAction.CallbackContext context)
 ///     {
 ///         Debug.Log($"OnMove: {context.ReadValue&lt;Vector2&gt;()}");
 ///     }
-/// 
+///
 ///     // Invoked when "Attack" action is either started, performed or canceled.
 ///     public void OnAttack(InputAction.CallbackContext context)
 ///     {
 ///         Debug.Log($"OnAttack: {context.ReadValue&lt;float&gt;()}");
 ///     }
-/// 
+///
 ///     #endregion
 /// }
 /// </code>
@@ -3675,6 +3675,15 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Lasso"",
+                    ""type"": ""Button"",
+                    ""id"": ""9ce617b8-b163-456b-a148-b6f48ded185a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""R"",
                     ""type"": ""Button"",
                     ""id"": ""8f458013-b102-4293-be72-0eea35888838"",
@@ -3781,6 +3790,39 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Deselect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""d56ffb50-4043-462c-92e6-6b2db8919e7b"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lasso"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""83a37470-0f90-40a8-93cc-789fcdcc33fa"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lasso"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""b6ef17bb-5770-4f2b-922e-af7f96c58ffb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lasso"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -3924,6 +3966,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         m_Controls_Num1 = m_Controls.FindAction("Num1", throwIfNotFound: true);
         m_Controls_Num2 = m_Controls.FindAction("Num2", throwIfNotFound: true);
         m_Controls_Deselect = m_Controls.FindAction("Deselect", throwIfNotFound: true);
+        m_Controls_Lasso = m_Controls.FindAction("Lasso", throwIfNotFound: true);
         m_Controls_R = m_Controls.FindAction("R", throwIfNotFound: true);
     }
 
@@ -5863,6 +5906,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
     private readonly InputAction m_Controls_Num1;
     private readonly InputAction m_Controls_Num2;
     private readonly InputAction m_Controls_Deselect;
+    private readonly InputAction m_Controls_Lasso;
     private readonly InputAction m_Controls_R;
     /// <summary>
     /// Provides access to input actions defined in input action map "Controls".
@@ -5899,6 +5943,10 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// Provides access to the underlying input action "Controls/Deselect".
         /// </summary>
         public InputAction @Deselect => m_Wrapper.m_Controls_Deselect;
+        /// <summary>
+        /// Provides access to the underlying input action "Controls/Lasso".
+        /// </summary>
+        public InputAction @Lasso => m_Wrapper.m_Controls_Lasso;
         /// <summary>
         /// Provides access to the underlying input action "Controls/R".
         /// </summary>
@@ -5947,6 +5995,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @Deselect.started += instance.OnDeselect;
             @Deselect.performed += instance.OnDeselect;
             @Deselect.canceled += instance.OnDeselect;
+            @Lasso.started += instance.OnLasso;
+            @Lasso.performed += instance.OnLasso;
+            @Lasso.canceled += instance.OnLasso;
             @R.started += instance.OnR;
             @R.performed += instance.OnR;
             @R.canceled += instance.OnR;
@@ -5979,6 +6030,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @Deselect.started -= instance.OnDeselect;
             @Deselect.performed -= instance.OnDeselect;
             @Deselect.canceled -= instance.OnDeselect;
+            @Lasso.started -= instance.OnLasso;
+            @Lasso.performed -= instance.OnLasso;
+            @Lasso.canceled -= instance.OnLasso;
             @R.started -= instance.OnR;
             @R.performed -= instance.OnR;
             @R.canceled -= instance.OnR;
@@ -6822,6 +6876,13 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDeselect(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Lasso" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLasso(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "R" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

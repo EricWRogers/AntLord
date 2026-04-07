@@ -11,6 +11,8 @@ TagManager:
   - Food
   - Sand
   - Building
+  - RockBit
+  - Rock
   layers:
   - Default
   - TransparentFX

@@ -546,6 +546,7 @@ GameObject:
   - component: {fileID: 9088988851116558168}
   - component: {fileID: 2860242948500629217}
   - component: {fileID: 6801482656891590627}
+  - component: {fileID: 4834909803800107818}
   m_Layer: 0
   m_Name: VR Player
   m_TagString: Untagged
@@ -626,7 +627,8 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
-  rayInteractor: {fileID: 3578752960377608561}
+  LeftRayInteractor: {fileID: 0}
+  RightRayInteractor: {fileID: 0}
   VRRIHGHTInteraction:
     m_Name: VRRIHGHT Interaction
     m_Id: 645d05f9-0359-4691-abac-27e4990a13cb
@@ -671,6 +673,91 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: eac23129-80c5-4fd1-a480-d3d3e91a4d20
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+--- !u!114 &4834909803800107818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474848081008840888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3736ba99ab130c14abd6219f10fe42f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRBuildingSystem
+  sceneCamera: {fileID: 0}
+  allBuildings:
+  - {fileID: 11400000, guid: a170635a27b8d694dac8aaac276d4395, type: 2}
+  mouseIndicator: {fileID: 0}
+  cellIndicator: {fileID: 0}
+  cellIndicatorObj: {fileID: 0}
+  voxelTerrain: {fileID: 0}
+  selectedObjectIndex: 0
+  placementLayermask:
+    serializedVersion: 2
+    m_Bits: 8
+  grid: {fileID: 0}
+  inBuildMode: 0
+  LeftRayInteractor: {fileID: 0}
+  RightRayInteractor: {fileID: 0}
+  buildingUI: {fileID: 0}
+  VRRIGHTInteraction:
+    m_Name: VRRIGHT Interaction
+    m_Id: 92ff600b-068a-47dd-8a6c-05d35c56b8e2
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  VRLEFTInteraction:
+    m_Name: VRLEFT Interaction
+    m_Id: 6597dd23-b21b-4554-aff2-3117c7039ed7
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  RTrigger:
+    m_Name: R Trigger
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 4d4cacde-9ef0-494d-90ca-1677a38c94e1
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  RPrimaryButton:
+    m_Name: R Primary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: deb715c4-ea9d-4eeb-955e-00dc2e63add3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LTrigger:
+    m_Name: L Trigger
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: f74dc93b-8084-407d-b2cd-c65e5f772dec
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LPrimaryButton:
+    m_Name: L Primary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: d70e7e3a-26a7-4f21-ba4e-c2663df7d5ae
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LSecondaryButton:
+    m_Name: L Secondary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 6e19c35d-4871-4161-817b-a9c74a81fe62
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
@@ -1459,7 +1546,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc81f27d504229c43bd1b31eb672258e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MM
-  activeWristUI: 1
+  pm: {fileID: 0}
+  customActions: {fileID: 0}
+  actionMapName: Menu
 --- !u!1 &946812033818423871
 GameObject:
   m_ObjectHideFlags: 0
@@ -7204,7 +7293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3300364588362678929
 Transform:
   m_ObjectHideFlags: 0
