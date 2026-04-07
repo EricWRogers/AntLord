@@ -1118,6 +1118,53 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
+--- !u!1 &567669068
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 567669069}
+  - component: {fileID: 567669070}
+  m_Layer: 0
+  m_Name: ResourceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &567669069
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567669068}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 39.18821, y: 2.5, z: 15.96278}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1720360767}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &567669070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567669068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76afdbe44e33f784da21eaa36ab7ece4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceManager
+  food: 1000
+  sand: 0
+  rocks: 0
 --- !u!1 &582705356
 GameObject:
   m_ObjectHideFlags: 0
@@ -3444,6 +3491,7 @@ Transform:
   - {fileID: 1939775702}
   - {fileID: 115076553}
   - {fileID: 1449165478}
+  - {fileID: 567669069}
   - {fileID: 1657315598}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4803,10 +4851,13 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  resourceManager: {fileID: 0}
+  resourceManager: {fileID: 567669070}
   didModifyVoxel: 0
   trailEnd: 0
   adjustmentRate: 0.1
+  useHeightLimits: 0
+  breakMinY: 1.4
+  placeMaxY: 8.4
 --- !u!114 &2102848436
 MonoBehaviour:
   m_ObjectHideFlags: 0

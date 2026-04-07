@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 2333056623413198969}
   - component: {fileID: 351053253140415952}
   - component: {fileID: 6910238771657737329}
+  - component: {fileID: -301483217493495681}
+  - component: {fileID: -768597789033698990}
   m_Layer: 6
   m_Name: TheCoolerAnt
   m_TagString: Ant
@@ -170,9 +172,9 @@ CharacterController:
   serializedVersion: 3
   m_Height: 2
   m_Radius: 0.15
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SlopeLimit: 60
+  m_StepOffset: 0.2
+  m_SkinWidth: 0.05
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!114 &6910238771657737329
@@ -191,6 +193,50 @@ MonoBehaviour:
   minSpeed: 1
   turnSpeedDeg: 540
   arriveDist: 0.25
+--- !u!114 &-301483217493495681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965442970529633344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f9877ff7cf31154da978214ebafc0e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AntGroundAlign
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
+  rayStartHeight: 1
+  rayLength: 3
+  hoverOffset: 0.02
+  maxSnapDown: 1
+  maxSnapUp: 1
+  snapSpeed: 20
+  tiltToGround: 1
+  tiltLerp: 25
+--- !u!114 &-768597789033698990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965442970529633344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec2a9409a4755c44b7d5b6a228297d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AntSlopeSpeed
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
+  probeOffset: 0.25
+  rayStartHeight: 1
+  rayLength: 3
+  maxSlowSlopeDeg: 45
+  minSpeedMultiplier: 0.35
+  smoothing: 10
 --- !u!1 &5913962457646326635
 GameObject:
   m_ObjectHideFlags: 0
