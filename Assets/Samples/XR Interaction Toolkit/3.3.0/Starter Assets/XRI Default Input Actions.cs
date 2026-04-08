@@ -25,49 +25,49 @@ using UnityEngine.InputSystem.Utilities;
 /// <code>
 /// using namespace UnityEngine;
 /// using UnityEngine.InputSystem;
-///
+/// 
 /// // Example of using an InputActionMap named "Player" from a UnityEngine.MonoBehaviour implementing callback interface.
 /// public class Example : MonoBehaviour, MyActions.IPlayerActions
 /// {
 ///     private MyActions_Actions m_Actions;                  // Source code representation of asset.
 ///     private MyActions_Actions.PlayerActions m_Player;     // Source code representation of action map.
-///
+/// 
 ///     void Awake()
 ///     {
 ///         m_Actions = new MyActions_Actions();              // Create asset object.
 ///         m_Player = m_Actions.Player;                      // Extract action map object.
 ///         m_Player.AddCallbacks(this);                      // Register callback interface IPlayerActions.
 ///     }
-///
+/// 
 ///     void OnDestroy()
 ///     {
 ///         m_Actions.Dispose();                              // Destroy asset object.
 ///     }
-///
+/// 
 ///     void OnEnable()
 ///     {
 ///         m_Player.Enable();                                // Enable all actions within map.
 ///     }
-///
+/// 
 ///     void OnDisable()
 ///     {
 ///         m_Player.Disable();                               // Disable all actions within map.
 ///     }
-///
+/// 
 ///     #region Interface implementation of MyActions.IPlayerActions
-///
+/// 
 ///     // Invoked when "Move" action is either started, performed or canceled.
 ///     public void OnMove(InputAction.CallbackContext context)
 ///     {
 ///         Debug.Log($"OnMove: {context.ReadValue&lt;Vector2&gt;()}");
 ///     }
-///
+/// 
 ///     // Invoked when "Attack" action is either started, performed or canceled.
 ///     public void OnAttack(InputAction.CallbackContext context)
 ///     {
 ///         Debug.Log($"OnAttack: {context.ReadValue&lt;float&gt;()}");
 ///     }
-///
+/// 
 ///     #endregion
 /// }
 /// </code>
@@ -1082,7 +1082,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Menu"",
+                    ""name"": ""MenuPressed"",
                     ""type"": ""Button"",
                     ""id"": ""04ef3100-99ff-4bc7-a609-ebbe99b38c37"",
                     ""expectedControlType"": """",
@@ -1425,11 +1425,11 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                 {
                     ""name"": """",
                     ""id"": ""c82a3297-7a91-4a9a-b90f-1a6055524c47"",
-                    ""path"": ""<XRController>{LeftHand}/{Menu}"",
+                    ""path"": ""<XRController>{LeftHand}/{SecondaryButton}"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Menu"",
+                    ""action"": ""MenuPressed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -3884,7 +3884,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         m_XRILeftInteraction_ScaleOverTime = m_XRILeftInteraction.FindAction("Scale Over Time", throwIfNotFound: true);
         m_XRILeftInteraction_PrimaryButtonSelect = m_XRILeftInteraction.FindAction("PrimaryButtonSelect", throwIfNotFound: true);
         m_XRILeftInteraction_SecondaryButtonSelect = m_XRILeftInteraction.FindAction("SecondaryButtonSelect", throwIfNotFound: true);
-        m_XRILeftInteraction_Menu = m_XRILeftInteraction.FindAction("Menu", throwIfNotFound: true);
+        m_XRILeftInteraction_MenuPressed = m_XRILeftInteraction.FindAction("MenuPressed", throwIfNotFound: true);
         // XRI Left Locomotion
         m_XRILeftLocomotion = asset.FindActionMap("XRI Left Locomotion", throwIfNotFound: true);
         m_XRILeftLocomotion_TeleportMode = m_XRILeftLocomotion.FindAction("Teleport Mode", throwIfNotFound: true);
@@ -4483,7 +4483,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
     private readonly InputAction m_XRILeftInteraction_ScaleOverTime;
     private readonly InputAction m_XRILeftInteraction_PrimaryButtonSelect;
     private readonly InputAction m_XRILeftInteraction_SecondaryButtonSelect;
-    private readonly InputAction m_XRILeftInteraction_Menu;
+    private readonly InputAction m_XRILeftInteraction_MenuPressed;
     /// <summary>
     /// Provides access to input actions defined in input action map "XRI Left Interaction".
     /// </summary>
@@ -4552,9 +4552,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// </summary>
         public InputAction @SecondaryButtonSelect => m_Wrapper.m_XRILeftInteraction_SecondaryButtonSelect;
         /// <summary>
-        /// Provides access to the underlying input action "XRILeftInteraction/Menu".
+        /// Provides access to the underlying input action "XRILeftInteraction/MenuPressed".
         /// </summary>
-        public InputAction @Menu => m_Wrapper.m_XRILeftInteraction_Menu;
+        public InputAction @MenuPressed => m_Wrapper.m_XRILeftInteraction_MenuPressed;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -4623,9 +4623,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @SecondaryButtonSelect.started += instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.performed += instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.canceled += instance.OnSecondaryButtonSelect;
-            @Menu.started += instance.OnMenu;
-            @Menu.performed += instance.OnMenu;
-            @Menu.canceled += instance.OnMenu;
+            @MenuPressed.started += instance.OnMenuPressed;
+            @MenuPressed.performed += instance.OnMenuPressed;
+            @MenuPressed.canceled += instance.OnMenuPressed;
         }
 
         /// <summary>
@@ -4679,9 +4679,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @SecondaryButtonSelect.started -= instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.performed -= instance.OnSecondaryButtonSelect;
             @SecondaryButtonSelect.canceled -= instance.OnSecondaryButtonSelect;
-            @Menu.started -= instance.OnMenu;
-            @Menu.performed -= instance.OnMenu;
-            @Menu.canceled -= instance.OnMenu;
+            @MenuPressed.started -= instance.OnMenuPressed;
+            @MenuPressed.performed -= instance.OnMenuPressed;
+            @MenuPressed.canceled -= instance.OnMenuPressed;
         }
 
         /// <summary>
@@ -6345,12 +6345,12 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSecondaryButtonSelect(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Menu" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "MenuPressed" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMenu(InputAction.CallbackContext context);
+        void OnMenuPressed(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "XRI Left Locomotion" which allows adding and removing callbacks.
