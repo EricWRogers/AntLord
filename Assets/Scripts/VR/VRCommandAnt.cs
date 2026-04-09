@@ -17,7 +17,6 @@ public class VRCommandAnt : CommandParent
     public InputAction LTrigger;
     public InputAction LPrimaryButton;
     public InputAction LSecondaryButton;
-    public InputAction RSecondaryButton;
 
     private int taskValue = 0;
 
