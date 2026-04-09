@@ -996,7 +996,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Menu",
+                    "name": "MenuPressed",
                     "type": "Button",
                     "id": "04ef3100-99ff-4bc7-a609-ebbe99b38c37",
                     "expectedControlType": "",
@@ -1339,11 +1339,11 @@
                 {
                     "name": "",
                     "id": "c82a3297-7a91-4a9a-b90f-1a6055524c47",
-                    "path": "<XRController>{LeftHand}/{Menu}",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Menu",
+                    "action": "MenuPressed",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
@@ -10,7 +9,6 @@ public abstract class CommandParent : MonoBehaviour
     public List<GameObject> selectedAnts;
     public LeadNav selectedLeader = null;
     public GameObject wayPointPrefab;
-    private bool antSelect { get {return selectedAnts.Count > 0;} }
 
     [Header("Drag Select")]
     public float sphereCastRadius = 2;
@@ -63,7 +61,6 @@ public abstract class CommandParent : MonoBehaviour
 
     public void DirectAnt(RaycastHit hit)
     {
-        //Debug.LogWarning("SelectedLeader: " + selectedLeader.gameObject.name);
         if(selectedLeader == null || selectedLeader.target != selectedLeader.home){
             //Debug.LogWarning("1st pass");
             if(taskToAssign == AntTask.Manual)
@@ -71,7 +68,7 @@ public abstract class CommandParent : MonoBehaviour
                 //Debug.LogWarning("2nd pass");
                 //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-                if (antSelect)
+                if (selectedAnts.Count > 0)
                 {
                     //Debug.LogWarning("3rd pass");
                     ElectLeader();
@@ -88,8 +85,9 @@ public abstract class CommandParent : MonoBehaviour
                         selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
                 }
             }
-            else if(taskToAssign == AntTask.Food && selectedAnts.Count != 0 && !antSelect) // what does antSelect mean?
+            else if(taskToAssign == AntTask.Food && selectedAnts.Count != 0)
             {
+                //Debug.LogWarning("2nd Pass");
                 float sphereRadius = 25f;
                 Collider[] hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
                 bool targetYet = false;
@@ -161,8 +159,6 @@ public abstract class CommandParent : MonoBehaviour
 
         if (LassoInput.WasPerformedThisFrame())
         {
-            //Debug.LogWarning("STARTING!");
-            //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
 
@@ -183,12 +179,8 @@ public abstract class CommandParent : MonoBehaviour
 
         if (shiftDragging)
         {
-            // Update ring while LMB held
             if (shiftDragging)
             {
-                //Debug.LogWarning("UPDATING");
-
-                //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
 
                 if(VRMode)
@@ -213,7 +205,6 @@ public abstract class CommandParent : MonoBehaviour
                 }
             }
 
-            // Release drag on mouse up, even if shift isn't held
             if (LassoInput.WasCompletedThisFrame())
             {
                 RaycastHit hit;
