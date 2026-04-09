@@ -2567,7 +2567,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                 {
                     ""name"": """",
                     ""id"": ""37c739cc-5e3c-41ad-b568-02c016b5bf8d"",
-                    ""path"": ""<XRController>{RightHand}/secondaryTouch"",
+                    ""path"": ""<XRController>{RightHand}/secondaryButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
