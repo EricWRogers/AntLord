@@ -38,6 +38,8 @@ public class VRCommandAnt : CommandParent
         VRLEFTInteraction = VRInputActions.XRILeftInteraction;
 
         RTrigger = VRRIHGHTInteraction.FindAction("Activate");
+        //RSecondaryButton = VRRIHGHTInteraction.FindAction("SecondaryButtonSelect");
+
         LTrigger = VRLEFTInteraction.FindAction("Activate");
         LPrimaryButton = VRLEFTInteraction.FindAction("PrimaryButtonSelect");
         LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
@@ -79,7 +81,7 @@ public class VRCommandAnt : CommandParent
     {
         //Debug.Log("VR INPUT: Left trigger Activated " + gameObject.name);
 
-        if(LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        if(LTrigger.WasPerformedThisFrame() && LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
             //Debug.LogWarning("RAYCAST HIT!");
             DirectAnt(hit);

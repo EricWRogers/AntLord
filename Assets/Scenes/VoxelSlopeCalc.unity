@@ -912,6 +912,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1264562544}
     m_Modifications:
+    - target: {fileID: -4674532439672601325, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
+      propertyPath: m_Constraints
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 96670100808516071, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
       propertyPath: m_Name
       value: Food (2)
@@ -2644,6 +2648,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1720360767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1454346796 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3463865631701367351, guid: 429d00d8b71fea54fbd277729ddfb203, type: 3}
+  m_PrefabInstance: {fileID: 1384086017}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94574e186f45a594f9b9167f3d4a7085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SelectionRingController
 --- !u!1 &1491851640
 GameObject:
   m_ObjectHideFlags: 0
@@ -3957,6 +3972,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1264562544}
     m_Modifications:
+    - target: {fileID: -4674532439672601325, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
+      propertyPath: m_Constraints
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 96670100808516071, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
       propertyPath: m_Name
       value: Food
@@ -4623,6 +4642,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1264562544}
     m_Modifications:
+    - target: {fileID: -4674532439672601325, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
+      propertyPath: m_Constraints
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 96670100808516071, guid: 8806ea9cf2aff3a55b890738e1770cc4, type: 3}
       propertyPath: m_Name
       value: Food (1)
@@ -4880,7 +4903,7 @@ MonoBehaviour:
   leaderColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   leaderIntensity: 3
   taskToAssign: 0
-  selectionRing: {fileID: 3463865631701367351, guid: 429d00d8b71fea54fbd277729ddfb203, type: 3}
+  selectionRing: {fileID: 1454346796}
   groundMask:
     serializedVersion: 2
     m_Bits: 8
