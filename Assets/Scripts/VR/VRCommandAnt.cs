@@ -38,6 +38,8 @@ public class VRCommandAnt : CommandParent
         VRLEFTInteraction = VRInputActions.XRILeftInteraction;
 
         RTrigger = VRRIHGHTInteraction.FindAction("Activate");
+        //RSecondaryButton = VRRIHGHTInteraction.FindAction("SecondaryButtonSelect");
+
         LTrigger = VRLEFTInteraction.FindAction("Activate");
         LPrimaryButton = VRLEFTInteraction.FindAction("PrimaryButtonSelect");
         LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
