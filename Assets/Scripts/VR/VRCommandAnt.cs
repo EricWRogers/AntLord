@@ -12,6 +12,8 @@ public class VRCommandAnt : CommandParent
     public InputActionMap VRRIHGHTInteraction;//action map
     public InputActionMap VRLEFTInteraction;
     public InputAction RTrigger;//actions
+    public InputAction RPrimaryButton; //this is being used in building system!
+    public InputAction RSecondaryButton; 
     public InputAction LTrigger;
     public InputAction LPrimaryButton;
     public InputAction LSecondaryButton;
@@ -38,7 +40,8 @@ public class VRCommandAnt : CommandParent
         VRLEFTInteraction = VRInputActions.XRILeftInteraction;
 
         RTrigger = VRRIHGHTInteraction.FindAction("Activate");
-        //RSecondaryButton = VRRIHGHTInteraction.FindAction("SecondaryButtonSelect");
+        RPrimaryButton = VRLEFTInteraction.FindAction("PrimaryButtonSelect");
+        RSecondaryButton = VRRIHGHTInteraction.FindAction("SecondaryButtonSelect");
 
         LTrigger = VRLEFTInteraction.FindAction("Activate");
         LPrimaryButton = VRLEFTInteraction.FindAction("PrimaryButtonSelect");
@@ -50,12 +53,18 @@ public class VRCommandAnt : CommandParent
             VRLEFTInteraction.Enable();
 
             RTrigger.Enable();
+            RPrimaryButton.Enable();
+            RSecondaryButton.Enable();
+
             LTrigger.Enable();
             LPrimaryButton.Enable();
             LSecondaryButton.Enable();
         }
 
         RTrigger.performed += OnRightTrigger;
+        RPrimaryButton.performed += OnRightPrimaryDown;
+        RSecondaryButton.performed += OnRightSecondaryDown;
+
         LTrigger.performed += OnLeftTrigger;
         LPrimaryButton.performed += OnLeftPrimaryDown;
         LSecondaryButton.performed += OnLeftSecondaryDown;
@@ -63,7 +72,7 @@ public class VRCommandAnt : CommandParent
 
     void Update()
     {
-        CheckLassoSelect(LSecondaryButton);
+        CheckLassoSelect(RSecondaryButton);
     }
 
 
@@ -103,6 +112,15 @@ public class VRCommandAnt : CommandParent
         }
     }
     private void OnLeftSecondaryDown(InputAction.CallbackContext context)
+    {
+        
+    }
+
+    private void OnRightPrimaryDown(InputAction.CallbackContext context)
+    {
+        
+    }
+    private void OnRightSecondaryDown(InputAction.CallbackContext context)
     {
         
     }
