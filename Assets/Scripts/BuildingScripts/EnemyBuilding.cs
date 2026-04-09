@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 public class EnemyBuilding : Buildings
 {
@@ -13,6 +14,8 @@ public class EnemyBuilding : Buildings
     List<GameObject> ants = new List<GameObject>();
     public GameObject antPrefab;
     public int maxHealth = 10;
+
+    public TextMeshProUGUI timerText;
 
     [Tooltip("TEMPORARY! Win screen")]
     public GameObject winScreen;
@@ -36,10 +39,26 @@ public class EnemyBuilding : Buildings
                 timer = 0;
             }
         }
+        else if (timerText != null)
+        {
+            timerText.text = "All Ants Spawned";
+        }
+
         if (this.currentHealth <= 0)
         {
             FindFirstObjectByType<MM>().Pause();
             winScreen.SetActive(true);
+        }
+
+        UpdateTimerUI();
+    }
+
+    void UpdateTimerUI()
+    {
+        if (timerText != null)
+        {
+            float timeRemaining = Mathf.Max(0, spawnCooldown - timer);
+            timerText.text = $"Next Spawn: {timeRemaining:F1}s";
         }
     }
 
