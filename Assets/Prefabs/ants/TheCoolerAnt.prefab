@@ -58,7 +58,7 @@ MonoBehaviour:
   mover: {fileID: 0}
   recentCollision: {fileID: 0}
   separationRadius: 2
-  separationForce: 5
+  separationForce: 15
   amCarryingFood: 0
   antTier: 1
   followers: []
@@ -86,7 +86,7 @@ MonoBehaviour:
   mover: {fileID: 0}
   recentCollision: {fileID: 0}
   separationRadius: 2
-  separationForce: 5
+  separationForce: 15
   amCarryingFood: 0
   antTier: 1
   leader: {fileID: 0}
@@ -234,6 +234,7 @@ MonoBehaviour:
   probeOffset: 0.25
   rayStartHeight: 1
   rayLength: 3
+  noSlowBelowDeg: 8
   maxSlowSlopeDeg: 45
   minSpeedMultiplier: 0.35
   smoothing: 10
