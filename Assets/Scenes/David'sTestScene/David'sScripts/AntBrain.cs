@@ -105,7 +105,19 @@ public class AntBrain : MonoBehaviour
         }
 
         damageTextObject.SetActive(true);
-        yield return new WaitForSeconds(textDisplayTime);
+        
+        float elaped = 0f;
+        Transform camTransform = Camera.main.transform;
+
+        while (elaped < textDisplayTime)
+        {
+            damageTextObject.transform.LookAt(damageTextObject.transform.position + camTransform.forward);
+            elaped += Time.deltaTime;
+            yield return null;
+        }
+
+    
+        
         damageTextObject.SetActive(false);
     }
 

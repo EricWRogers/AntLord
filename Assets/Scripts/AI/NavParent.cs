@@ -46,7 +46,8 @@ public abstract class NavParent : MonoBehaviour
         {
             // Old version offset the NavMeshAgent destination.
             // New version nudges position slightly; movement still follows path/crumb goals.
-            transform.position += separationVector.normalized * (separationForce * Time.deltaTime * 0.1f);
+            //transform.position += separationVector.normalized * (separationForce * Time.deltaTime * 0.1f);
+            transform.GetComponent<CharacterController>().Move(separationVector.normalized * (separationForce * Time.deltaTime * 0.1f));
         }
     }
 }

@@ -81,7 +81,7 @@ public class VRCommandAnt : CommandParent
     {
         //Debug.Log("VR INPUT: Left trigger Activated " + gameObject.name);
 
-        if(LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        if(LTrigger.WasPerformedThisFrame() && LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
             //Debug.LogWarning("RAYCAST HIT!");
             DirectAnt(hit);

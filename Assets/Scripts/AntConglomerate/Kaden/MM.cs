@@ -9,55 +9,7 @@ public class MM : MonoBehaviour
     [SerializeField] private InputActionAsset customActions; // Drag your Input Asset here
     [SerializeField] private string actionMapName = "Menu"; // Matches your custom map name
 
-    private InputAction pauseAction;
-
-    void OnEnable()
-    {
-        // This turns on the 'radio' so Unity actually hears the button click
-        if (customActions != null)
-        {
-            var map = customActions.FindActionMap(actionMapName);
-            if (map != null)
-            {
-                map.Enable();
-                // Optional: find the action directly if Unity Events act up
-                pauseAction = map.FindAction("MenuPressed");
-            }
-        }
-    }
-
-    void Awake()
-    {
-        // Backup: if you didn't drag it in, we try to find it
-        if (pm == null)
-        {
-            Transform t = transform.Find("PM");
-            if (t != null) pm = t.gameObject;
-        }
-
-        // Start with the menu hidden so it's not in your face at spawn
-        if (pm != null) pm.SetActive(false);
-    }
-
-    void Update()
-    {
-        // PC Pause (Escape key) - Keepin' it classic
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Pause();
-        }
-    }
-
-    // This is the one you link to your Player Input Events
-    public void PauseButtonPressed(InputAction.CallbackContext context)
-    {
-        // 'started' is better than 'performed' for VR menu buttons
-        // It prevents the menu from flickering on/off in one click
-        if (context.started)
-        {
-            Pause();
-        }
-    }
+    // private InputAction pauseAction;
 
      public void Play(string level)
     {
@@ -69,6 +21,23 @@ public class MM : MonoBehaviour
     {
         menu.SetActive(true);
         Debug.Log("Options Menu Opened.");
+    }
+
+    public void Restart(string levelName)
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(levelName);
+    }
+
+    public void Quit()
+    {
+        Time.timeScale = 1;
+        Debug.Log("Exiting Game...");
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        Application.Quit();
+    #endif
     }
     
     public void Pause()
@@ -110,26 +79,52 @@ public class MM : MonoBehaviour
 
     // --- Scene Management (Keeping your original logic) ---
 
-    public void Restart(string levelName)
+   /* void OnEnable()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(levelName);
+        // This turns on the 'radio' so Unity actually hears the button click
+        if (customActions != null)
+        {
+            var map = customActions.FindActionMap(actionMapName);
+            if (map != null)
+            {
+                Debug.Log("Enabling Input Action Map: " + actionMapName);
+                map.Enable();
+                // Optional: find the action directly if Unity Events act up
+                pauseAction = map.FindAction("MenuP");
+            }
+        }
     }
 
-    public void Home(string levelName)
+    void Awake()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(levelName);
+        // Backup: if you didn't drag it in, we try to find it
+        if (pm == null)
+        {
+            Transform t = transform.Find("PM");
+            if (t != null) pm = t.gameObject;
+        }
+
+        // Start with the menu hidden so it's not in your face at spawn
+        if (pm != null) pm.SetActive(false);
     }
 
-    public void Quit()
+    void Update()
     {
-        Time.timeScale = 1;
-        Debug.Log("Exiting Game...");
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        // PC Pause (Escape key) - Keepin' it classic
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Pause();
+        }
     }
+
+    // This is the one you link to your Player Input Events
+    public void PauseButtonPressed(InputAction.CallbackContext context)
+    {
+        // 'started' is better than 'performed' for VR menu buttons
+        // It prevents the menu from flickering on/off in one click
+        if (context.started)
+        {
+            Pause();
+        }
+    }*/
 }
