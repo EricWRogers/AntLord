@@ -1078,6 +1078,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2132690213345006877, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: RPrimaryButton.m_Name
+      value: R Primary Button
+      objectReference: {fileID: 0}
     - target: {fileID: 4736265008600254134, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_Name
       value: FakeVR
