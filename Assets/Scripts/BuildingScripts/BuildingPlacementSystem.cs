@@ -34,23 +34,26 @@ public class BuildingPlacementSystem : MonoBehaviour
     public TMP_Text descText;
     public TMP_Text costText;
     public TMP_Text healthText;
-
+    public FlyCam DesktopCam;
 
     void Start()
     {
+        DesktopCam = FindFirstObjectByType<FlyCam>();
         StopPlacement();
     }
     protected virtual void Update()
     {
-        //events listening for the keypresses
-        if (Input.GetMouseButtonDown(0))//if you want to crash unity delete Down
-        {
-            OnClicked?.Invoke();
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            buildingUI.SetActive(!buildingUI.activeSelf);
-            OnExit?.Invoke();
+        if(DesktopCam != null){
+            //events listening for the keypresses
+            if (Input.GetMouseButtonDown(0))//if you want to crash unity delete Down
+            {
+                OnClicked?.Invoke();
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                buildingUI.SetActive(!buildingUI.activeSelf);
+                OnExit?.Invoke();
+            }
         }
         //tracks BuildingUI to always face the player.
         buildingUI.transform.LookAt(new Vector3(head.position.x, buildingUI.transform.position.y, head.position.z));

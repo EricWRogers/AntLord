@@ -11,9 +11,25 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine("StartXRCoroutine");
+        //StartCoroutine("StartXRCoroutine");
+
+        Debug.Log("Initializing XR...");
+        if (XRGeneralSettings.Instance.Manager.activeLoader != null) 
+        {
+            Debug.Log("Loading VR.");
+            // XR device detected/loaded
+            VRCam.gameObject.SetActive(false);
+            DesktopCam.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("VR failed. Loading Desktop.");
+            VRCam.gameObject.SetActive(true);
+            DesktopCam.gameObject.SetActive(false);
+        }
     }
 
+    /*
     public IEnumerator StartXRCoroutine()
     {
         Debug.Log("Initializing XR...");
@@ -22,13 +38,29 @@ public class CameraManager : MonoBehaviour
         if (XRGeneralSettings.Instance.Manager.activeLoader == null)
         {
             Debug.LogError("Initializing XR Failed. Check Editor or Player log for details.");
+
             //load desktop instead
+            StopXR();
+            StartDesktopMode();
         }
         else
-        {
-            Debug.Log("Starting XR...");
-            XRGeneralSettings.Instance.Manager.StartSubsystems();
-        }
+            Debug.Log("Initialization Finished. Starting XR Subsystems...");
+
+            //Try to start all subsystems and check if they were all successfully started (HMD prepared).
+            bool loaderSuccess = XRGeneralSettings.Instance.Manager.activeLoader.Start();               
+            if(loaderSuccess)
+            {
+                Debug.Log("All Subsystems Started!");
+
+                VRCam.gameObject.SetActive(true);
+                DesktopCam.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("Starting Subsystems Failed. Directing to Normal Interaciton Mode...!");
+                StopXR();
+                StartDesktopMode();
+            }
     }
 
     void StopXR()
@@ -39,4 +71,11 @@ public class CameraManager : MonoBehaviour
         XRGeneralSettings.Instance.Manager.DeinitializeLoader();
         Debug.Log("XR stopped completely.");
     }
+    void StartDesktopMode()
+    {
+        VRCam.gameObject.SetActive(false);
+        DesktopCam.gameObject.SetActive(true);
+    }
+    */
+
 }
