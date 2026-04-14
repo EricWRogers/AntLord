@@ -4,8 +4,8 @@ using UnityEngine;
 public class RayOMayhem : MonoBehaviour
 {
     public Camera cam;
+    public GameObject shovel;
     public MarchingCubeManager voxelManager;
-    public ItemPickup itemPickup;
     public LayerMask layerMask = ~0; 
     public ResourceManager resourceManager;
 
@@ -41,6 +41,7 @@ public class RayOMayhem : MonoBehaviour
         // LEFT mouse: break
         if (Input.GetMouseButton(0))
         {
+            if (!shovel.activeInHierarchy) return;
             currentAction = VoxelAction.Breaking;
             HandleVoxelInput(targetValue: 1.0f, isBreaking: true);
         }
@@ -59,11 +60,6 @@ public class RayOMayhem : MonoBehaviour
             didModifyVoxel = false;
             currentAction = VoxelAction.None;
             Debug.Log("End Of Trail");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F) && Physics.Raycast(ray, out RaycastHit hit, 500f))
-        {
-            itemPickup.OnMouseDown();
         }
     }
 
