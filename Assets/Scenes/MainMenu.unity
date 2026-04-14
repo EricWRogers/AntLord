@@ -2119,6 +2119,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MM
       objectReference: {fileID: 0}
+    - target: {fileID: 494479700355425993, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 595133915431927634, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
       propertyPath: m_text
       value: quit
@@ -2607,6 +2611,10 @@ PrefabInstance:
     - target: {fileID: 7075886389968614136, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Name
       value: VR Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7075886389968614136, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7402575161620570124, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_GripInput.m_InputActionReference
