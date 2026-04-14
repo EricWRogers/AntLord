@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dac8cff101acc044826436d3daf8b2d, type: 3}
   m_Name: TestType
   m_EditorClassIdentifier: Assembly-CSharp::BuildingSO
-  <buildName>k__BackingField: Testing
-  <buildDesc>k__BackingField: youre attention please
+  <buildName>k__BackingField: Bigger Spawner
+  <buildDesc>k__BackingField: Its like the regular spawner but BIGGER
   <ID>k__BackingField: 1
   <buildCost>k__BackingField: 100
   <buildHealth>k__BackingField: 10
-  <ant>k__BackingField: {fileID: 1509342720769325512, guid: dd130a1143b62044bb7ceff8cc0fb9ae, type: 3}
   <size>k__BackingField: {x: 2, y: 1, z: 2}
   <preFab>k__BackingField: {fileID: 3855913851484395035, guid: 6d1cb50dfb1861b4881f8d8d4347ec02, type: 3}
+  <type>k__BackingField: 0
