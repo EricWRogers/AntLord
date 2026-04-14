@@ -617,7 +617,7 @@ MonoBehaviour:
   maxAnts: 10
   antPrefab: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
   maxHealth: 1000
-  timerText: {fileID: 0}
+  timerText: {fileID: 5654690002916950053}
   winScreen: {fileID: 0}
 --- !u!114 &4815465384528328678
 MonoBehaviour:
