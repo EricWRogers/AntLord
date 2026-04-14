@@ -14,6 +14,8 @@ public abstract class CommandParent : MonoBehaviour
     public float sphereCastRadius = 2;
     protected Vector3 shiftDragStart;
     protected bool shiftDragging = false;
+    public float maxRingSize = 50f;
+    public float minRingSize = 1f;
 
     [Header("Selection Glow")]
     public Color selectedColor = Color.green;
@@ -23,8 +25,9 @@ public abstract class CommandParent : MonoBehaviour
     public AntTask taskToAssign = AntTask.Manual;
     public SelectionRingController selectionRing;
     public LayerMask groundMask;
-
     public XRRayInteractor LassoPointerVR;
+    private float tempDist;
+    
 
     void Awake()
     {
@@ -196,7 +199,9 @@ public abstract class CommandParent : MonoBehaviour
                 Vector3 center = (shiftDragStart + current) * 0.5f;
                 float radius = Vector3.Distance(shiftDragStart, current) * 0.5f;
 
-                if (selectionRing) selectionRing.Show(center, radius);
+                tempDist = Vector3.Distance(shiftDragStart, current);
+
+                if (selectionRing && tempDist > minRingSize && tempDist < maxRingSize) selectionRing.Show(center, radius);
 
                 else
                 {
@@ -238,7 +243,7 @@ public abstract class CommandParent : MonoBehaviour
 
                     //Debug.LogWarning("Found ANT");
 
-                    if (brain.antType.teamID == 0)
+                    if (brain.antType.teamID == 0) //&& !selectedAnts.Contains(col.gameObject))
                     {
                         //Debug.LogWarning("Adding ANT");
                         selectedAnts.Add(col.gameObject);

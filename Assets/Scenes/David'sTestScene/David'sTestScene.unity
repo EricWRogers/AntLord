@@ -423,6 +423,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5076980179783574979, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 5105101445747831887, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -435,6 +439,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySpawnBuilding
       objectReference: {fileID: 0}
+    - target: {fileID: 8752463228130190757, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+      propertyPath: timerText
+      value: 
+      objectReference: {fileID: 1025231024}
     - target: {fileID: 8752463228130190757, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
       propertyPath: winScreen
       value: 
@@ -3286,6 +3294,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d64e905ec2ec9964dab9cd86b5e221b2, type: 3}
   m_PrefabInstance: {fileID: 1002591484}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1025231024 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5654690002916950053, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+  m_PrefabInstance: {fileID: 59384611}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1033473091
 GameObject:
   m_ObjectHideFlags: 0
@@ -5246,6 +5265,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourceManager
   food: 0
   sand: 0
+  rocks: 0
+  sticks: 0
 --- !u!4 &1719083270
 Transform:
   m_ObjectHideFlags: 0

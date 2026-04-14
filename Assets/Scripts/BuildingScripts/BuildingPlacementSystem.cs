@@ -12,6 +12,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     public List<BuildingSO> allBuildings;
     public MarchingCubes voxelTerrain;
     public Grid grid;
+    public GameObject firstBuilding;
 
     [Header("Building State")]
     public int selectedObjectIndex = -1;
@@ -34,23 +35,32 @@ public class BuildingPlacementSystem : MonoBehaviour
     public TMP_Text descText;
     public TMP_Text costText;
     public TMP_Text healthText;
-
+    public FlyCam DesktopCam;
 
     void Start()
     {
+        DesktopCam = FindFirstObjectByType<FlyCam>();
         StopPlacement();
+        voxelTerrain.SetVoxel(
+            firstBuilding.transform.position,
+            firstBuilding.transform.localScale.x * 3.0f,
+            true);
+
     }
     protected virtual void Update()
     {
-        //events listening for the keypresses
-        if (Input.GetMouseButtonDown(0))//if you want to crash unity delete Down
+        if (DesktopCam != null)
         {
-            OnClicked?.Invoke();
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            buildingUI.SetActive(!buildingUI.activeSelf);
-            OnExit?.Invoke();
+            //events listening for the keypresses
+            if (Input.GetMouseButtonDown(0))//if you want to crash unity delete Down
+            {
+                OnClicked?.Invoke();
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                buildingUI.SetActive(!buildingUI.activeSelf);
+                OnExit?.Invoke();
+            }
         }
         //tracks BuildingUI to always face the player.
         buildingUI.transform.LookAt(new Vector3(head.position.x, buildingUI.transform.position.y, head.position.z));
@@ -125,7 +135,7 @@ public class BuildingPlacementSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("NOPE");
+            //Debug.Log("NOPE");
         }
 
     }
