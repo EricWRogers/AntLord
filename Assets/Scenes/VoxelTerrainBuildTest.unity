@@ -1086,6 +1086,42 @@ PrefabInstance:
       propertyPath: m_Name
       value: FakeVR
       objectReference: {fileID: 0}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: grid
+      value: 
+      objectReference: {fileID: 1164504035}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: DesktopCam
+      value: 
+      objectReference: {fileID: 2147230906}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: voxelTerrain
+      value: 
+      objectReference: {fileID: 237293909}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: cellIndicator
+      value: 
+      objectReference: {fileID: 822151175}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: firstBuilding
+      value: 
+      objectReference: {fileID: 1675047469}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: mouseIndicator
+      value: 
+      objectReference: {fileID: 207769946}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: cellIndicatorObj
+      value: 
+      objectReference: {fileID: 1941057262}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: allBuildings.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: 'allBuildings.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: fa211efc9027c0e49a7151f5c0abda7b, type: 2}
     - target: {fileID: 6342732502496770442, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: VRPLayer
       value: 
@@ -6768,6 +6804,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619553209}
   m_CullTransparentMesh: 1
+--- !u!1 &1675047469 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1521120396676709679, guid: 53951a2ba6c9a9e40ae2a0d8b4bb8b50, type: 3}
+  m_PrefabInstance: {fileID: 2063632239}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1692079993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8030,6 +8071,10 @@ PrefabInstance:
       propertyPath: cellIndicator
       value: 
       objectReference: {fileID: 822151175}
+    - target: {fileID: 7677280984369032711, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: firstBuilding
+      value: 
+      objectReference: {fileID: 1675047469}
     - target: {fileID: 7677280984369032711, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: mouseIndicator
       value: 
@@ -9392,6 +9437,17 @@ MonoBehaviour:
   yOffset: 0.05
   ringThicknessWorld: 0.35
   ringColor: {r: 0, g: 1, b: 0, a: 1}
+--- !u!114 &2147230906 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 604305573163227434, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
+  m_PrefabInstance: {fileID: 2147230903}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147230904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de9e3b02862d52f42ae1d2b7219c4c1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlyCam
 --- !u!1001 &38286811276587367
 PrefabInstance:
   m_ObjectHideFlags: 0
