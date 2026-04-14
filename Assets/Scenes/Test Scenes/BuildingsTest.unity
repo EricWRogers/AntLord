@@ -1544,6 +1544,7 @@ MonoBehaviour:
   food: 1000
   sand: 0
   rocks: 0
+  sticks: 0
 --- !u!1001 &322344699
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2994,6 +2995,10 @@ PrefabInstance:
       propertyPath: RightRayInteractor
       value: 
       objectReference: {fileID: 1092481486}
+    - target: {fileID: 2132690213345006877, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: RPrimaryButton.m_Name
+      value: R Primary Button
+      objectReference: {fileID: 0}
     - target: {fileID: 2421400997576540759, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_MaxRaycastDistance
       value: 50
@@ -3021,7 +3026,7 @@ PrefabInstance:
     - target: {fileID: 2421400997576540759, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_UIPressInput.m_InputActionReferencePerformed
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1502125167}
     - target: {fileID: 2421400997576540759, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_RotateManipulationInput.m_InputActionReference
       value: 
@@ -3126,6 +3131,10 @@ PrefabInstance:
       propertyPath: cellIndicator
       value: 
       objectReference: {fileID: 1898436435}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: firstBuilding
+      value: 
+      objectReference: {fileID: 1475651759}
     - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: spawnDistance
       value: 10
@@ -6458,10 +6467,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 026ff71e5fd57404c961837119d719e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  nameText: {fileID: 399454755}
-  descText: {fileID: 2109224796}
-  costText: {fileID: 972034484}
-  healthText: {fileID: 204151453}
 --- !u!4 &1138390200 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2303937482787535869, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
@@ -7825,6 +7830,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4165513747271860446, guid: f949466655c1042999d421745d3f9583, type: 3}
   m_PrefabInstance: {fileID: 582366338}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1475651759 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1521120396676709679, guid: 53951a2ba6c9a9e40ae2a0d8b4bb8b50, type: 3}
+  m_PrefabInstance: {fileID: 933692061}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1476258418 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2409912290989912343, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
@@ -7942,6 +7952,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cae31031ebc6b084ea11d6ef17b813ba, type: 3}
+--- !u!114 &1502125167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: XRI Right Interaction/Activate
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  m_ActionId: 41976d89-60de-4deb-bff9-16b4af96b290
 --- !u!114 &1507698348 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}

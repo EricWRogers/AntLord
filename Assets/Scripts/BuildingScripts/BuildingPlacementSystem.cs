@@ -12,6 +12,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     public List<BuildingSO> allBuildings;
     public MarchingCubes voxelTerrain;
     public Grid grid;
+    public GameObject firstBuilding;
 
     [Header("Building State")]
     public int selectedObjectIndex = -1;
@@ -40,10 +41,16 @@ public class BuildingPlacementSystem : MonoBehaviour
     {
         DesktopCam = FindFirstObjectByType<FlyCam>();
         StopPlacement();
+        voxelTerrain.SetVoxel(
+            firstBuilding.transform.position,
+            firstBuilding.transform.localScale.x * 3.0f,
+            true);
+
     }
     protected virtual void Update()
     {
-        if(DesktopCam != null){
+        if (DesktopCam != null)
+        {
             //events listening for the keypresses
             if (Input.GetMouseButtonDown(0))//if you want to crash unity delete Down
             {
@@ -128,7 +135,7 @@ public class BuildingPlacementSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("NOPE");
+            //Debug.Log("NOPE");
         }
 
     }
