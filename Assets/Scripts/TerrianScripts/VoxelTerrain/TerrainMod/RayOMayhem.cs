@@ -1,8 +1,10 @@
+using NUnit.Framework;
 using UnityEngine;
 
 public class RayOMayhem : MonoBehaviour
 {
     public Camera cam;
+    public GameObject shovel;
     public MarchingCubeManager voxelManager;
     public LayerMask layerMask = ~0; 
     public ResourceManager resourceManager;
@@ -28,6 +30,9 @@ public class RayOMayhem : MonoBehaviour
 
     void Update()
     {
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
+
         if (voxelManager == null) return;
 
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
@@ -36,6 +41,7 @@ public class RayOMayhem : MonoBehaviour
         // LEFT mouse: break
         if (Input.GetMouseButton(0))
         {
+            if (!shovel.activeInHierarchy) return;
             currentAction = VoxelAction.Breaking;
             HandleVoxelInput(targetValue: 1.0f, isBreaking: true);
         }
@@ -47,7 +53,6 @@ public class RayOMayhem : MonoBehaviour
             currentAction = VoxelAction.Placing;
             HandleVoxelInput(targetValue: 0.0f, isBreaking: false);
         }
-
         
         if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) && currentAction != VoxelAction.None)
         {
@@ -68,7 +73,6 @@ public class RayOMayhem : MonoBehaviour
             Debug.Log("Raycast did NOT hit voxel terrain. Check layerMask + collider.");
             return;
         }
-
         
         Debug.Log($"Hit: {hit.collider.name} layer={LayerMask.LayerToName(hit.collider.gameObject.layer)} point={hit.point}");
 
