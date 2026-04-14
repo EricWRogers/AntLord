@@ -1079,12 +1079,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2132690213345006877, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: selectionRing
+      value: 
+      objectReference: {fileID: 2054002551}
+    - target: {fileID: 2132690213345006877, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: RPrimaryButton.m_Name
       value: R Primary Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181415571227427407, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4736265008600254134, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_Name
       value: FakeVR
+      objectReference: {fileID: 0}
+    - target: {fileID: 4736265008600254134, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: grid
@@ -1094,6 +1106,10 @@ PrefabInstance:
       propertyPath: DesktopCam
       value: 
       objectReference: {fileID: 2147230906}
+    - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: sceneCamera
+      value: 
+      objectReference: {fileID: 2147230910}
     - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: voxelTerrain
       value: 
@@ -9366,7 +9382,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 339745033775634639, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9448,6 +9464,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de9e3b02862d52f42ae1d2b7219c4c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlyCam
+--- !u!20 &2147230910 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 4556105333747752609, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
+  m_PrefabInstance: {fileID: 2147230903}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &38286811276587367
 PrefabInstance:
   m_ObjectHideFlags: 0
