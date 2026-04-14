@@ -1,19 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
-
 public class InventoryScript : MonoBehaviour
 {
-    private List<GameObject> inventory;
-    private bool isStackable;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static InventoryScript Instance;
+    public List<Item> inventory  = new List<Item>();
+    void Awake() => Instance = this;
+    
+    public void AddItem(Item item)
     {
-        
+        inventory.Add(item);
+        Debug.Log("Added " + item.itemName);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void RemoveItem(Item item)
     {
-        
+        inventory.Remove(item);
+        Debug.Log("Removed " + item.itemName);
     }
 }

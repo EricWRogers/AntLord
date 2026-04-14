@@ -7298,9 +7298,10 @@ GameObject:
   - component: {fileID: 784654906}
   - component: {fileID: 784654905}
   - component: {fileID: 784654904}
+  - component: {fileID: 784654909}
   m_Layer: 0
   m_Name: Shovel
-  m_TagString: Untagged
+  m_TagString: Shovel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7400,6 +7401,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &784654909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784654903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcedefc20ccdaa449a957dd691fcc94e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemPickup
+  item: {fileID: 0}
 --- !u!43 &793867737
 Mesh:
   m_ObjectHideFlags: 0
@@ -20104,14 +20118,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RayOMayhem
   cam: {fileID: 2102848431}
   voxelManager: {fileID: 626253227}
+  itemPickup: {fileID: 784654909}
   layerMask:
     serializedVersion: 2
     m_Bits: 8
   resourceManager: {fileID: 135605057}
-  sandShovel: {fileID: 784654903}
   didModifyVoxel: 0
   trailEnd: 0
   adjustmentRate: 0.1
+  useHeightLimits: 1
+  breakMinY: 1.4
+  placeMaxY: 8.4
 --- !u!1 &2122980219
 GameObject:
   m_ObjectHideFlags: 0

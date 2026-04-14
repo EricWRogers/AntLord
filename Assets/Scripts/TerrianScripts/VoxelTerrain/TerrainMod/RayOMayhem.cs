@@ -1,9 +1,11 @@
+using NUnit.Framework;
 using UnityEngine;
 
 public class RayOMayhem : MonoBehaviour
 {
     public Camera cam;
     public MarchingCubeManager voxelManager;
+    public ItemPickup itemPickup;
     public LayerMask layerMask = ~0; 
     public ResourceManager resourceManager;
 
@@ -28,6 +30,9 @@ public class RayOMayhem : MonoBehaviour
 
     void Update()
     {
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
+
         if (voxelManager == null) return;
 
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
@@ -47,7 +52,6 @@ public class RayOMayhem : MonoBehaviour
             currentAction = VoxelAction.Placing;
             HandleVoxelInput(targetValue: 0.0f, isBreaking: false);
         }
-
         
         if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) && currentAction != VoxelAction.None)
         {
@@ -55,6 +59,11 @@ public class RayOMayhem : MonoBehaviour
             didModifyVoxel = false;
             currentAction = VoxelAction.None;
             Debug.Log("End Of Trail");
+        }
+
+        if (Input.GetKeyDown(KeyCode.F) && Physics.Raycast(ray, out RaycastHit hit, 500f))
+        {
+            itemPickup.OnMouseDown();
         }
     }
 
@@ -68,7 +77,6 @@ public class RayOMayhem : MonoBehaviour
             Debug.Log("Raycast did NOT hit voxel terrain. Check layerMask + collider.");
             return;
         }
-
         
         Debug.Log($"Hit: {hit.collider.name} layer={LayerMask.LayerToName(hit.collider.gameObject.layer)} point={hit.point}");
 
