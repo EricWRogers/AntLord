@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -31,15 +30,15 @@ public class LeadNav : NavParent
     private float nextRepathTime = 0f;
     private Vector3 lastFlatGoal;
 
-    void Start()
+    override public void Start()
     {
-        EnemyCommanderAI commander = Object.FindFirstObjectByType<EnemyCommanderAI>();
+        EnemyCommanderAI commander = FindFirstObjectByType<EnemyCommanderAI>();
         AntBrain brain = GetComponent<AntBrain>();
 
         // Old: myAgent.updateRotation = false;
         // New: AntMover rotates manually already.
 
-        if (!astar) astar = Object.FindFirstObjectByType<VoxelAStar>();
+        if (!astar) astar = FindFirstObjectByType<VoxelAStar>();
 
         if (commander != null && brain != null && brain.antType.teamID == 1)
         {
@@ -55,14 +54,14 @@ public class LeadNav : NavParent
         bool isAI = brain != null && brain.antType.teamID != 0;
 
         // 2. AI TARGET ACQUISITION
-        if (isAI && task == AntTask.Food && target == null)
+        if (isAI && (task == AntTask.Food || task == AntTask.Materials) && target == null)
         {
-            Transform foundFood = FindFood();
+            Transform foundObjective = FindObjective();
 
-            if (foundFood != null)
+            if (foundObjective != null)
             {
-                target = foundFood;
-                recentObjective = foundFood;
+                target = foundObjective;
+                recentObjective = foundObjective;
 
                 // Old:
                 // myAgent.isStopped = false;
@@ -140,7 +139,7 @@ public class LeadNav : NavParent
             HandleAgentCollisions();
 
             // 4. SCAVENGING STATE CHECK (unchanged logic)
-            if (task == AntTask.Food)
+            if (task == AntTask.Food || task == AntTask.Materials)
             {
                 int capacity = (followers.Count + 1) * antTier;
 
@@ -174,8 +173,15 @@ public class LeadNav : NavParent
         }
     }
 
-    Transform FindFood()
+    Transform FindObjective()
     {
+        string tag;
+
+        if(task == AntTask.Food)
+            tag = "Food";
+        else
+            tag = "Material";
+
         float sphereRadius = 25f;
         float maxSearchRange = 500f;
 
@@ -187,7 +193,7 @@ public class LeadNav : NavParent
 
             foreach (Collider col in hits)
             {
-                if (col.CompareTag("Food"))
+                if (col.CompareTag(tag))
                 {
                     float dist = Vector3.Distance(transform.position, col.transform.position);
                     if (dist < closestDistance)
@@ -215,7 +221,7 @@ public class LeadNav : NavParent
     {
         // Old condition: if(task == Food && target == home && myAgent.remainingDistance <= 2)
         // New condition: if close to home in flat distance
-        if (task == AntTask.Food && target == home && home != null)
+        if ((task == AntTask.Food || task == AntTask.Materials) && target == home && home != null)
         {
             Vector3 a = transform.position; a.y = 0;
             Vector3 b = home.position; b.y = 0;
@@ -233,12 +239,12 @@ public class LeadNav : NavParent
 
                 if (foodCount >= (followers.Count * antTier))
                 {
-                    Transform foodTransform = FindFood();
+                    Transform foodTransform = FindObjective();
 
                     if (foodTransform != null)
                         target = foodTransform;
                     else
-                        Debug.Log("Failed to find food, freak out!");
+                        Debug.Log("Failed to find objective, freak out!");
                 }
             }
         }
