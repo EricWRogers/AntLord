@@ -70,7 +70,7 @@ public class SBBerrySpawn : MonoBehaviour
 
             if (Physics.CheckSphere(spawnPosition, sphereRadius))
             {
-                // Debug.Log("something is there");
+                Debug.Log("something is there");
             }
 
             else
