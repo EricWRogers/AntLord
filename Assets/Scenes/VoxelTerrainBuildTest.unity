@@ -11044,7 +11044,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 594574134641103040, guid: cea9b00fc01c2b943b9d0bef239a5898, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2407385536782023179, guid: cea9b00fc01c2b943b9d0bef239a5898, type: 3}
       propertyPath: enemyBase
@@ -11285,7 +11285,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2092713351
 Transform:
   m_ObjectHideFlags: 0
