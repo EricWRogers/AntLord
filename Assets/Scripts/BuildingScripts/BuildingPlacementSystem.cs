@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 public class BuildingPlacementSystem : MonoBehaviour
 {
-    [SerializeField] private Camera sceneCamera;
+    private Camera sceneCamera; //no touchie leave alone
 
     [Header("Building Placement Data")]
     public List<BuildingSO> allBuildings;
@@ -58,7 +58,11 @@ public class BuildingPlacementSystem : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                buildingUI.SetActive(!buildingUI.activeSelf);
+                inBuildMode = !inBuildMode;
+                if (inBuildMode)
+                {
+                    OpenBuildMenu();
+                }
                 OnExit?.Invoke();
             }
         }
@@ -73,10 +77,10 @@ public class BuildingPlacementSystem : MonoBehaviour
 
         cellIndicator.transform.position = (angle >= 45.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
         if (voxelTerrain.CheckVoxel(grid.WorldToCell(mousePosition), cellIndicatorObj.transform.localScale.x * 3.0f))
-            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.green);
+            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_BaseColor", Color.green);
         else
-            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.red);
-        
+            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_BaseColor", Color.red);
+
     }
     public void StartPlacement()
     {
@@ -106,7 +110,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     protected virtual void PlaceStruct()
     {
-        if (IsPointerOverUI() || ResourceManager.instance.GetFood() < allBuildings[selectedObjectIndex].buildCost)
+        if (IsPointerOverUI() || ResourceManager.instance.rocks < allBuildings[selectedObjectIndex].RockCost || ResourceManager.instance.sticks < allBuildings[selectedObjectIndex].StickCost)
         {
             return;
         }
@@ -126,7 +130,6 @@ public class BuildingPlacementSystem : MonoBehaviour
         //if its a 45 incline or more just bump the building up one so we dont have to bother with a bunch of conditionals
         buildingParent.transform.position = (angle >= 45.0f) ? grid.CellToWorld(gridPosition) + Vector3.up : grid.CellToWorld(gridPosition);
 
-
         //these are to set whatever the terrain we choose
         if (voxelTerrain != null && voxelTerrain.enabled)
         {
@@ -138,7 +141,7 @@ public class BuildingPlacementSystem : MonoBehaviour
                         building.transform.position,  // le center of the brush
                         building.transform.localScale.x * 3.0f);//le radius of the brush a bit bigger than normal to get surronding tiles
                     break;
-            
+
                 //checks if a defense building that must be built in own territory
                 case BuildingSO.BuildingType.MilitaryIndustiralComplex:
                     canBuild = voxelTerrain.SetVoxelWithTerritory(
@@ -150,7 +153,9 @@ public class BuildingPlacementSystem : MonoBehaviour
         if (canBuild)
         {
             Instantiate(buildingParent);
-            ResourceManager.instance.AddFood(-allBuildings[selectedObjectIndex].buildCost);
+            //esourceManager.instance.AddFood(-allBuildings[selectedObjectIndex].buildCost);
+            ResourceManager.instance.AddRock(-allBuildings[selectedObjectIndex].RockCost);
+            ResourceManager.instance.AddStick(-allBuildings[selectedObjectIndex].StickCost);
         }
 
     }
@@ -183,14 +188,14 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     public void NextBuilding()
     {
-        selectedObjectIndex = (selectedObjectIndex >= allBuildings.Count - 1) ? selectedObjectIndex + 1: 0;
+        selectedObjectIndex = (selectedObjectIndex >= allBuildings.Count - 1) ? 0 : selectedObjectIndex + 1;
         Debug.Log($"increment {selectedObjectIndex}");
         SetBuildingInfo(allBuildings[selectedObjectIndex]);
     }
 
     public void PreviousBuilding()
     {
-        selectedObjectIndex = (selectedObjectIndex <= 0) ? selectedObjectIndex + 1: allBuildings.Count - 1;
+        selectedObjectIndex = (selectedObjectIndex <= 0) ? allBuildings.Count - 1 : selectedObjectIndex - 1;
         Debug.Log($"decrement {selectedObjectIndex}");
         SetBuildingInfo(allBuildings[selectedObjectIndex]);
     }
@@ -202,7 +207,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     {
         nameText.text = building.buildName;
         descText.text = building.buildDesc;
-        costText.text = $"Cost: {building.buildCost}";
+        costText.text = $"Stick Cost: {building.StickCost} Rock Cost: {building.RockCost}";
         healthText.text = $"Health: {building.buildHealth}";
     }
 

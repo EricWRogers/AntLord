@@ -3580,6 +3580,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Num3",
+                    "type": "Button",
+                    "id": "c84aa3ad-b4b9-42e2-b372-1b893ca1defa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Deselect",
                     "type": "Button",
                     "id": "7e54b93e-ff0b-4519-82f5-4c50ec93e16f",
@@ -3671,6 +3680,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Num2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fa6b6b12-11f3-4a76-ac7f-7ce4471217a4",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Num3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

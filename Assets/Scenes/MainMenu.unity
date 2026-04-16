@@ -2784,6 +2784,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MM
       objectReference: {fileID: 0}
+    - target: {fileID: 494479700355425993, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 595133915431927634, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
       propertyPath: m_text
       value: quit

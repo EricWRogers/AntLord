@@ -135,12 +135,13 @@ MonoBehaviour:
   spawnPadding: 5
   spawnCooldown: 5
   maxAnts: 10
-  foodAmount: 4
+  foodAmount: 0
   minFoodPerAnt: 2
   tempWinCon: 0
   radius: 3
   antPrefab: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
   maxHealth: 1000
+  LoseScreen: {fileID: 0}
 --- !u!114 &8622619615116508004
 MonoBehaviour:
   m_ObjectHideFlags: 0

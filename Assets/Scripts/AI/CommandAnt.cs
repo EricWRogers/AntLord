@@ -10,7 +10,8 @@ public class CommandAnt : CommandParent
     private InputAction shift;
     private InputAction Num1;
     private InputAction Num2;
-    private InputAction Deselect;
+    private InputAction Num3;
+    // private InputAction Deselect;
     private InputAction R;
     private InputAction Lasso;
 
@@ -25,7 +26,8 @@ public class CommandAnt : CommandParent
         shift = InputSystem.actions.FindAction("Shift");
         Num1 = InputSystem.actions.FindAction("Num1");
         Num2 = InputSystem.actions.FindAction("Num2");
-        Deselect = InputSystem.actions.FindAction("Deselect");
+        Num3 = InputSystem.actions.FindAction("Num3");
+        // Deselect = InputSystem.actions.FindAction("Deselect");
         R = InputSystem.actions.FindAction("R");
         Lasso = InputSystem.actions.FindAction("Lasso");
     }
@@ -77,6 +79,11 @@ public class CommandAnt : CommandParent
         else if (Num2.WasPressedThisFrame())
         {
             SwitchToFood();
+        }
+
+        else if (Num3.WasPressedThisFrame())
+        {
+            SwitchToMaterial();
         }
     }
 }
