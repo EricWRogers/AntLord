@@ -1,5 +1,10 @@
 using NUnit.Framework;
+using System.Collections;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using TMPro;
 
 public class RayOMayhem : MonoBehaviour
 {
@@ -14,6 +19,7 @@ public class RayOMayhem : MonoBehaviour
 
     public bool didModifyVoxel = false;
     public bool trailEnd = false;
+    public bool inModMode = false;
 
     public float adjustmentRate = 0.1f;
     private float nextAdjustmentTime;
@@ -22,38 +28,53 @@ public class RayOMayhem : MonoBehaviour
     public bool useHeightLimits = false;
     public float breakMinY = 1.4f;
     public float placeMaxY = 8.4f;
+    public event Action OnClicked, OnExit;
 
     void Awake()
     {
         if (!cam) cam = Camera.main;
     }
 
-    void Update()
+    protected virtual void Update()
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
+        // Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        // Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
 
         if (voxelManager == null) return;
 
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-            return;
+        // if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        //     return;
 
         // LEFT mouse: break
         if (Input.GetMouseButton(0))
         {
             if (!shovel.activeInHierarchy) return;
-            currentAction = VoxelAction.Breaking;
-            HandleVoxelInput(targetValue: 1.0f, isBreaking: true);
+
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 500f, layerMask))
+            {
+                currentAction = VoxelAction.Breaking;
+                HandleVoxelInput(hit.point, isBreaking: true);
+            }
+            // currentAction = VoxelAction.Breaking;
+            // HandleVoxelInput(targetValue: 1.0f, isBreaking: true);
         }
         // RIGHT mouse: place
         else if (Input.GetMouseButton(1))
         {
             if (resourceManager != null && resourceManager.sand <= 0) return;
 
-            currentAction = VoxelAction.Placing;
-            HandleVoxelInput(targetValue: 0.0f, isBreaking: false);
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 500f, layerMask))
+            {
+                currentAction = VoxelAction.Placing;
+                HandleVoxelInput(hit.point, isBreaking: false);
+            } 
+            // currentAction = VoxelAction.Placing;
+            // HandleVoxelInput(targetValue: 0.0f, isBreaking: false);
         }
         
+        // Reset state when mouse buttons are released
         if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) && currentAction != VoxelAction.None)
         {
             trailEnd = true;
@@ -63,26 +84,28 @@ public class RayOMayhem : MonoBehaviour
         }
     }
 
-    private void HandleVoxelInput(float targetValue, bool isBreaking)
+    public void HandleVoxelInput(Vector3 hitPoint, bool isBreaking)//, float targetValue, bool isBreaking)
     {
         if (Time.time < nextAdjustmentTime) return;
 
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit, 500f, layerMask, QueryTriggerInteraction.Ignore))
-        {
-            Debug.Log("Raycast did NOT hit voxel terrain. Check layerMask + collider.");
-            return;
-        }
+        float targetValue = isBreaking ? 1.0f : 0.0f;
+
+        // Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        // if (!Physics.Raycast(ray, out RaycastHit hit, 500f, layerMask, QueryTriggerInteraction.Ignore))
+        // {
+        //     Debug.Log("Raycast did NOT hit voxel terrain. Check layerMask + collider.");
+        //     return;
+        // }
         
-        Debug.Log($"Hit: {hit.collider.name} layer={LayerMask.LayerToName(hit.collider.gameObject.layer)} point={hit.point}");
+        //Debug.Log($"Hit: {hit.collider.name} layer={LayerMask.LayerToName(hit.collider.gameObject.layer)} point={hit.point}");
 
         if (useHeightLimits)
         {
-            if (isBreaking && hit.point.y < breakMinY) return;
-            if (!isBreaking && hit.point.y > placeMaxY) return;
+            if (isBreaking && hitPoint.y < breakMinY) return;
+            if (!isBreaking && hitPoint.y > placeMaxY) return;
         }
-
-        voxelManager.ModifyVoxel(hit.point, 1.0f, targetValue);
+        //modify the terrain at the hit point
+        voxelManager.ModifyVoxel(hitPoint, 1.0f, targetValue);
 
         if (resourceManager != null)
         {
@@ -92,5 +115,17 @@ public class RayOMayhem : MonoBehaviour
 
         nextAdjustmentTime = Time.time + adjustmentRate;
         didModifyVoxel = true;
+    }
+
+    //these are for VR invoking events
+    //you cant directly invoke another classes events even if theyre inherited
+    protected void TriggerClick()
+    {
+        OnClicked?.Invoke();
+    }
+
+    protected void TriggerExit()
+    {
+        OnExit?.Invoke();
     }
 }

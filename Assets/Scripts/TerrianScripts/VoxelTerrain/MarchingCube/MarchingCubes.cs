@@ -56,7 +56,10 @@ public class MarchingCubes : MonoBehaviour
     public float WorldSizeX => width * resolution;
     public float WorldSizeZ => width * resolution;
 
-    public void Start()
+//this was Start() moved to Awake
+//The BuildingPlacementSystem needed it to be initialized earlier
+//Im sure this wont haunt me, right?
+    public void Awake() 
     {
         //if (GetComponent<MeshCollider>() == null || GameObject.Find("NavMesh Surface") == null)
         Initialize();
@@ -328,19 +331,27 @@ public class MarchingCubes : MonoBehaviour
         }
     }
     //Sets the Voxels within a buildings radius to the same height
-    //may wonder why this took so long well
-    //floating points and rounding had something to do with and thats all Ill say
-    public bool SetVoxel(Vector3 worldPosition, float radius = 1.5f, bool isInit = false)
+    //only adjust the voxels that are in the players territory
+    //also grows the territory when conditions are all met
+    public bool SetVoxelWithTerritory(Vector3 worldPosition, float radius = 1.5f, bool isInit = false)
     {
+
+        if (heights == null)
+        {
+            Debug.LogError("<color=purple>heights array is NULL");
+            return false;
+        }
         Vector3 localPos = transform.InverseTransformPoint(worldPosition);
         int cutoffY = Mathf.RoundToInt(localPos.y / resolution);
 
         int startX = Mathf.FloorToInt((localPos.x - radius) / resolution);
         int endX = Mathf.CeilToInt((localPos.x + radius) / resolution);
-        int startY = Mathf.FloorToInt((localPos.y - radius) / resolution);
-        int endY = Mathf.CeilToInt((localPos.y + radius) / resolution);
+        int startY = Mathf.FloorToInt((localPos.y - radius / 3.0f) / resolution);
+        int endY = Mathf.CeilToInt((localPos.y + radius / 3.0f) / resolution);
         int startZ = Mathf.FloorToInt((localPos.z - radius) / resolution);
         int endZ = Mathf.CeilToInt((localPos.z + radius) / resolution);
+
+        float sqrRadius = radius * radius;
 
         List<Vector3Int> affected = new List<Vector3Int>();
         List<Vector3Int> freshVoxels = new List<Vector3Int>();
@@ -353,12 +364,14 @@ public class MarchingCubes : MonoBehaviour
                         continue;
 
                     Vector3 voxelPos = (new Vector3(x, y, z) + Vector3.one * 0.5f) * resolution;
-                    float distance = Vector3.Distance(localPos, voxelPos);
 
-                    Vector3Int pos = new Vector3Int(x, y, z);
+                    //nearly 10 loops call for desperate measures
+                    //yes Im hurting this much for optimization
+                    float sqrDist = (localPos - voxelPos).sqrMagnitude;
 
-                    if (distance <= radius)
+                    if (sqrDist <= sqrRadius)
                     {
+                        Vector3Int pos = new Vector3Int(x, y, z);
                         if (!isInit)
                         {
                             if (occupiedVoxels.Contains(pos))
@@ -367,17 +380,17 @@ public class MarchingCubes : MonoBehaviour
                                 return false;
                             }
 
-                            if (!ContainsNear(availableVoxels, pos, 4))
+                            if (!ContainsNear(availableVoxels, pos, 10))
                             {
                                 Debug.Log($"<color=yellow>Blocked: not available {pos}");
                                 return false;
                             }
                         }
-
                         affected.Add(pos);
                     }
-                    else if (distance <= radius * 5f)
+                    else if (sqrDist <= sqrRadius * 100f)
                     {
+                        Vector3Int pos = new Vector3Int(x, y, z);
                         freshVoxels.Add(pos);
                     }
                 }
@@ -407,19 +420,126 @@ public class MarchingCubes : MonoBehaviour
                 availableVoxels.Add(pos);
             }
         }
-
         UpdateVisuals();
         return true;
     }
-    bool ContainsNear(HashSet<Vector3Int> set, Vector3Int p, int leeway = 1)
-{
-    for (int dx = -leeway; dx <= leeway; dx++)
-    for (int dy = -leeway; dy <= leeway; dy++)
-    for (int dz = -leeway; dz <= leeway; dz++)
+    //this one skips the availableVoxel stuff
+    //so you can place a building anywhere and the terrain will adjust
+    //it also doesnt add to the territory the player can build on
+    //in theory its for resource buildings that go on the outskirts
+    public bool SetVoxelWithoutTerritory(Vector3 worldPosition, float radius = 1.5f, bool isInit = false)
     {
-        if (set.Contains(new Vector3Int(p.x + dx, p.y + dy, p.z + dz)))
-            return true;
+        Vector3 localPos = transform.InverseTransformPoint(worldPosition);
+        int cutoffY = Mathf.RoundToInt(localPos.y / resolution);
+
+        int startX = Mathf.FloorToInt((localPos.x - radius) / resolution);
+        int endX = Mathf.CeilToInt((localPos.x + radius) / resolution);
+        int startY = Mathf.FloorToInt((localPos.y - radius / 3.0f) / resolution);
+        int endY = Mathf.CeilToInt((localPos.y + radius / 3.0f) / resolution);
+        int startZ = Mathf.FloorToInt((localPos.z - radius) / resolution);
+        int endZ = Mathf.CeilToInt((localPos.z + radius) / resolution);
+
+        float sqrRadius = radius * radius;
+
+        List<Vector3Int> affected = new List<Vector3Int>();
+
+        for (int x = startX; x <= endX; x++)
+            for (int y = startY; y <= endY; y++)
+                for (int z = startZ; z <= endZ; z++)
+                {
+                    if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= width)
+                        continue;
+
+                    Vector3 voxelPos = (new Vector3(x, y, z) + Vector3.one * 0.5f) * resolution;
+
+                    float sqrDist = (localPos - voxelPos).sqrMagnitude;
+
+                    if (sqrDist <= sqrRadius)
+                    {
+                        Vector3Int pos = new Vector3Int(x, y, z);
+                        if (!isInit)
+                        {
+                            if (occupiedVoxels.Contains(pos))
+                            {
+                                Debug.Log($"<color=red>Blocked: occupied {pos}");
+                                return false;
+                            }
+                        }
+
+                        affected.Add(pos);
+                    }
+                }
+
+        foreach (var pos in affected)
+        {
+            if (pos.y >= cutoffY)
+            {
+                heights[pos.x, pos.y, pos.z] = 1f; // air
+            }
+            else
+            {
+                heights[pos.x, pos.y, pos.z] = 0f; // solid
+            }
+            occupiedVoxels.Add(pos);
+        }
+        UpdateVisuals();
+        return true;
     }
-    return false;
-}
+    //A fuzzy Contains check because all these conversions from floats to ints
+    //make it near impossible to only use precise checks
+    //({x, y, 13} straight up doesnt exists to the system and there are others just like it)
+    bool ContainsNear(HashSet<Vector3Int> set, Vector3Int p, int leeway = 1)
+    {
+        for (int dx = -leeway; dx <= leeway; dx++)
+            for (int dy = -leeway; dy <= leeway / 2; dy++)
+                for (int dz = -leeway; dz <= leeway; dz++)
+                {
+                    if (set.Contains(new Vector3Int(p.x + dx, p.y + dy, p.z + dz)))
+                        return true;
+                }
+        return false;
+    }
+    public bool CheckVoxel(Vector3Int worldPosition, float radius = 1.0f)
+    {
+
+        Vector3 localPos = transform.InverseTransformPoint(worldPosition);
+
+        int startX = Mathf.FloorToInt((localPos.x - radius) / resolution);
+        int endX = Mathf.CeilToInt((localPos.x + radius) / resolution);
+        int startY = Mathf.FloorToInt((localPos.y - radius / 3.0f) / resolution);
+        int endY = Mathf.CeilToInt((localPos.y + radius / 3.0f) / resolution);
+        int startZ = Mathf.FloorToInt((localPos.z - radius) / resolution);
+        int endZ = Mathf.CeilToInt((localPos.z + radius) / resolution);
+
+        float sqrRadius = radius * radius;
+
+
+        for (int x = startX; x <= endX; x++)
+            for (int y = startY; y <= endY; y++)
+                for (int z = startZ; z <= endZ; z++)
+                {
+                    if (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= width)
+                        continue;
+
+                    Vector3 voxelPos = (new Vector3(x, y, z) + Vector3.one * 0.5f) * resolution;
+
+                    float sqrDist = (localPos - voxelPos).sqrMagnitude;
+
+                    if (sqrDist <= sqrRadius)
+                    {
+                        Vector3Int pos = new Vector3Int(x, y, z);
+                        if (occupiedVoxels.Contains(pos))
+                        {
+                            return false;
+                        }
+
+                        if (!ContainsNear(availableVoxels, pos, 10))
+                        {
+                            return false;
+                        }
+
+                    }
+                }
+        return true;
+    }
 }
