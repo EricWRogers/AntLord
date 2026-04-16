@@ -37,17 +37,16 @@ public class CameraManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("No headset found, enabling desktop controls.");
-            VRCam.gameObject.SetActive(false);
-            DesktopCam.gameObject.SetActive(true);
-        }*/
-
-        Debug.Log("Initializing XR...");
-        if (IsHeadsetConnected())
-        {
-            Debug.Log("headset connected!");
+            Debug.Log("Loading VR.");
+            // XR device detected/loaded
             VRCam.gameObject.SetActive(true);
             DesktopCam.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("VR failed. Loading Desktop.");
+            VRCam.gameObject.SetActive(false);
+            DesktopCam.gameObject.SetActive(true);
         }
         else
         {
@@ -110,4 +109,5 @@ public class CameraManager : MonoBehaviour
         DesktopCam.gameObject.SetActive(true);
     }
     */
+    }
 }

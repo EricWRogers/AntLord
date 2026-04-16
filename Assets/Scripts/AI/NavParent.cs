@@ -15,6 +15,18 @@ public abstract class NavParent : MonoBehaviour
     public bool amCarryingFood = false;
     public int antTier = 1;
 
+    
+    public float separationFalloff = 2.0f;
+
+    
+    public float separationSteerScale = 1.0f;
+
+   
+    public float separationSteerSmoothing = 12f;
+
+    
+    Vector3 smoothSteer = Vector3.zero;
+
     public virtual void Start()
     {
         // Old:
@@ -28,6 +40,14 @@ public abstract class NavParent : MonoBehaviour
     
     public void HandleAgentCollisions()
     {
+        // OLD BEHAVIOR:
+        // This used to physically shove the CharacterController sideways using Move().
+        
+
+        // NEW BEHAVIOR:
+        // Compute a small steering bias and feed that into AntMover
+        if (mover == null) return;
+
         Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, separationRadius);
         Vector3 separationVector = Vector3.zero;
 
@@ -38,16 +58,30 @@ public abstract class NavParent : MonoBehaviour
 
             Vector3 awayFromAgent = (transform.position - collider.transform.position);
             awayFromAgent.y = 0f;
-            if (awayFromAgent.sqrMagnitude > 0.0001f)
-                separationVector += awayFromAgent.normalized;
+
+            float d2 = awayFromAgent.sqrMagnitude;
+            if (d2 < 0.0001f) continue;
+
+            float d = Mathf.Sqrt(d2);
+
+            // Weight: closer ants push more, farther ants push less
+            float t = Mathf.Clamp01(1f - (d / separationRadius));
+            float w = Mathf.Pow(t, separationFalloff);
+
+            separationVector += (awayFromAgent / d) * w;
         }
+
+        Vector3 targetSteer = Vector3.zero;
 
         if (separationVector.sqrMagnitude > 0f)
         {
-            // Old version offset the NavMeshAgent destination.
-            // New version nudges position slightly; movement still follows path/crumb goals.
-            //transform.position += separationVector.normalized * (separationForce * Time.deltaTime * 0.1f);
-            transform.GetComponent<CharacterController>().Move(separationVector.normalized * (separationForce * Time.deltaTime * 0.1f));
+            // New version nudges movement direction slightly
+            targetSteer = separationVector.normalized * Mathf.Clamp01(separationForce * 0.2f) * separationSteerScale;
         }
+
+        // smooth the steering so it doesn't flip directions every frame
+        smoothSteer = Vector3.Lerp(smoothSteer, targetSteer, Time.deltaTime * separationSteerSmoothing);
+
+        mover.SetSteering(smoothSteer);
     }
 }

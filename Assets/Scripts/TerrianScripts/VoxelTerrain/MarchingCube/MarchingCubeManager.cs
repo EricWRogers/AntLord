@@ -145,6 +145,7 @@ public class MarchingCubeManager : MonoBehaviour
 
     public void ModifyVoxel(Vector3 worldPosition, float radius, float newValue)
     {
+        Debug.Log($"Modifying voxel at {worldPosition} with radius {radius} and new value {newValue}");
         Vector3 localPos = transform.InverseTransformPoint(worldPosition) / resolution;
         
         //determine which chunks are affected by the radius
