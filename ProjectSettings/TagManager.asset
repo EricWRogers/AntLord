@@ -17,6 +17,7 @@ TagManager:
   - Stick
   - StickBit
   - Material
+  - EnemyBase
   layers:
   - Default
   - TransparentFX
