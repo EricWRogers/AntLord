@@ -136,7 +136,7 @@ public class LeadNav : NavParent
                 crumbs.Add(transform.position);
             }
 
-            HandleAgentCollisions();
+            // HandleAgentCollisions();
 
             // 4. SCAVENGING STATE CHECK (unchanged logic)
             if (task == AntTask.Food || task == AntTask.Materials)
