@@ -70,14 +70,14 @@ public class VRTerrainModSystem : RayOMayhem
 
         if (!inModMode) return;
 
-        if (RTrigger.ReadValue<float>() > 0.1f && shovel.activeInHierarchy)
-        {
+        //if (RTrigger.ReadValue<float>() > 0.1f && shovel.activeInHierarchy)
+        //{
             TriggerClick();
-        }
-        if (LTrigger.ReadValue<float>() > 0.1f && resourceManager != null && resourceManager.sand > 0)
-        {
-            TriggerClick();
-        }
+        //}
+        //if (LTrigger.ReadValue<float>() > 0.1f && resourceManager != null && resourceManager.sand > 0)
+        //{
+        //    TriggerClick();
+        //}
     }
     private void OnLeftSecondary(InputAction.CallbackContext context)
     {
@@ -86,6 +86,7 @@ public class VRTerrainModSystem : RayOMayhem
         if (inModMode)
         {
             shovel.SetActive(true);
+            TriggerClick();
         }
         else
         {

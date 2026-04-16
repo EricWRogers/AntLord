@@ -1,10 +1,6 @@
-using NUnit.Framework;
-using System.Collections;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using TMPro;
+
 
 public class RayOMayhem : MonoBehaviour
 {
@@ -38,8 +34,6 @@ public class RayOMayhem : MonoBehaviour
     protected virtual void Update()
     {
         // Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        // Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
-
         if (voxelManager == null) return;
 
         // if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
@@ -51,6 +45,8 @@ public class RayOMayhem : MonoBehaviour
             if (!shovel.activeInHierarchy) return;
 
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
+
             if (Physics.Raycast(ray, out RaycastHit hit, 500f, layerMask))
             {
                 currentAction = VoxelAction.Breaking;
@@ -65,6 +61,8 @@ public class RayOMayhem : MonoBehaviour
             if (resourceManager != null && resourceManager.sand <= 0) return;
 
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
+
             if (Physics.Raycast(ray, out RaycastHit hit, 500f, layerMask))
             {
                 currentAction = VoxelAction.Placing;
