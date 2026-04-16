@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.AI.Navigation;
+//using Unity.AI.Navigation;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -42,7 +42,7 @@ public class MarchingCubeManager : MonoBehaviour
     public MarchingCubeChunk chunkPrefab;
     public Material sandMaterial;
     public RayOMayhem rayOMayhem;
-    public NavMeshSurface navMeshSurface;
+    //public NavMeshSurface navMeshSurface;
 
     void Start() 
     {
@@ -53,7 +53,7 @@ public class MarchingCubeManager : MonoBehaviour
     {
         if (rayOMayhem != null && rayOMayhem.trailEnd)
         {
-            navMeshSurface?.BuildNavMesh();
+            //navMeshSurface?.BuildNavMesh();
             rayOMayhem.trailEnd = false;
         }
     }

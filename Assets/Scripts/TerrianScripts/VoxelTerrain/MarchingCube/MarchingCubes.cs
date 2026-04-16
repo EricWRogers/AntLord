@@ -380,7 +380,7 @@ public class MarchingCubes : MonoBehaviour
                                 return false;
                             }
 
-                            if (!ContainsNear(availableVoxels, pos, 10))
+                            if (!ContainsNear(availableVoxels, pos, 7))
                             {
                                 Debug.Log($"<color=yellow>Blocked: not available {pos}");
                                 return false;
@@ -420,6 +420,7 @@ public class MarchingCubes : MonoBehaviour
                 availableVoxels.Add(pos);
             }
         }
+
         UpdateVisuals();
         return true;
     }
@@ -533,7 +534,7 @@ public class MarchingCubes : MonoBehaviour
                             return false;
                         }
 
-                        if (!ContainsNear(availableVoxels, pos, 10))
+                        if (!ContainsNear(availableVoxels, pos, 7))
                         {
                             return false;
                         }

@@ -12,6 +12,9 @@ public class AntBrain : MonoBehaviour
     public AntDataType antType;
     public AntState currentState = AntState.Following;
 
+    [Header("Resource Gathering")]
+    public bool carryingFood = false;
+
     [Header("Detection Settings")]
     public float detectionRange = 5f;
     public float attackRange = 1.5f;
@@ -77,6 +80,27 @@ public class AntBrain : MonoBehaviour
             case AntState.Attacking:
                 HandleAttacking();
                 break;
+            case AntState.Returning:
+            HandleReturning();
+            break;
+        }
+    }
+
+    private void HandleReturning()
+    {
+        if (leadNav != null && leadNav.home != null)
+        {
+            if (mover != null) mover.SetGoal(leadNav.home.position);
+
+            float dist = Vector3.Distance(transform.position, leadNav.home.position);
+            if (dist < 2.0f) 
+            {
+                currentState = AntState.Following;
+            }
+        }
+        else
+        {
+            currentState = AntState.Following;
         }
     }
 
