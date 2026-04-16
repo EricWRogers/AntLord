@@ -7,7 +7,8 @@ public class GrowDrop : MonoBehaviour
 {
 
     //size & growth during/after spawn 
-    public float growDuration = 1.5f;
+    // public SBBerrySpawn sBBS;
+    public float gdGrowDuration;
     public float startingSize = 0.1f;
     Coroutine growingApple;
     private bool isGrowing = false;
@@ -16,7 +17,7 @@ public class GrowDrop : MonoBehaviour
     private Rigidbody rb;
     float timer;
     
-    void Awake()
+    void Start()
     {
         StartCoroutine(StartGrowing());
     }
@@ -57,7 +58,7 @@ public class GrowDrop : MonoBehaviour
             }
         };
         
-        yield return new WaitForSeconds(growDuration);
+        yield return new WaitForSeconds(gdGrowDuration);
 
         if (rb != null)
         {
@@ -80,11 +81,11 @@ public class GrowDrop : MonoBehaviour
         Vector3 startScale = new Vector3 (startingSize, startingSize, startingSize);
         Vector3 endScale = Vector3.one;
 
-        while (elapsed < growDuration)
+        while (elapsed < gdGrowDuration)
         {
-            Debug.Log("elapsed < growDuration");
+            Debug.Log("elapsed < gdGrowDuration");
             elapsed += Time.deltaTime;
-            objTransform.localScale = Vector3.Lerp(startScale, endScale, elapsed / growDuration);
+            objTransform.localScale = Vector3.Lerp(startScale, endScale, elapsed / gdGrowDuration);
             yield return null;
         }
         objTransform.localScale = endScale;

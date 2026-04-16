@@ -58,7 +58,11 @@ public class BuildingPlacementSystem : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                buildingUI.SetActive(!buildingUI.activeSelf);
+                inBuildMode = !inBuildMode;
+                if (inBuildMode)
+                {
+                    OpenBuildMenu();
+                }
                 OnExit?.Invoke();
             }
         }
@@ -73,9 +77,11 @@ public class BuildingPlacementSystem : MonoBehaviour
 
         cellIndicator.transform.position = (angle >= 45.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
         if (voxelTerrain.CheckVoxel(grid.WorldToCell(mousePosition), cellIndicatorObj.transform.localScale.x * 3.0f))
-            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_BaseColor", Color.green);
+        {
+            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.green);
+        }
         else
-            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_BaseColor", Color.red);
+            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.red);
 
     }
     public void StartPlacement()
