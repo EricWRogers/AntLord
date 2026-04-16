@@ -58,7 +58,11 @@ public class BuildingPlacementSystem : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                buildingUI.SetActive(!buildingUI.activeSelf);
+                inBuildMode = !inBuildMode;
+                if (inBuildMode)
+                {
+                    OpenBuildMenu();
+                }
                 OnExit?.Invoke();
             }
         }
