@@ -106,7 +106,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     protected virtual void PlaceStruct()
     {
-        if (IsPointerOverUI() || ResourceManager.instance.GetFood() < allBuildings[selectedObjectIndex].buildCost)
+        if (IsPointerOverUI() || ResourceManager.instance.rocks < allBuildings[selectedObjectIndex].RockCost || ResourceManager.instance.sticks < allBuildings[selectedObjectIndex].StickCost)
         {
             return;
         }
@@ -150,7 +150,9 @@ public class BuildingPlacementSystem : MonoBehaviour
         if (canBuild)
         {
             Instantiate(buildingParent);
-            ResourceManager.instance.AddFood(-allBuildings[selectedObjectIndex].buildCost);
+            //esourceManager.instance.AddFood(-allBuildings[selectedObjectIndex].buildCost);
+            ResourceManager.instance.AddRock(-allBuildings[selectedObjectIndex].RockCost);
+            ResourceManager.instance.AddStick(-allBuildings[selectedObjectIndex].StickCost);
         }
 
     }
@@ -202,7 +204,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     {
         nameText.text = building.buildName;
         descText.text = building.buildDesc;
-        costText.text = $"Cost: {building.buildCost}";
+        costText.text = $"Stick Cost: {building.StickCost} Rock Cost: {building.RockCost}";
         healthText.text = $"Health: {building.buildHealth}";
     }
 

@@ -93,25 +93,32 @@ public class VRCommandAnt : CommandParent
     {
         //Debug.Log("VR INPUT: Left trigger Activated " + gameObject.name);
 
-        if(LTrigger.WasPerformedThisFrame() && LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        if(LTrigger.WasPerformedThisFrame())
         {
-            //Debug.LogWarning("RAYCAST HIT!");
+            LeftRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit);
             DirectAnt(hit);
         }
     }
 
     private void OnLeftPrimaryDown(InputAction.CallbackContext context)
     {
-        if (taskValue == 1){
+        if (taskValue == 2)
+        {
             SwitchToManual();
             taskValue = 0;
             Debug.Log("task = manual");
         }
-        else
+        else if(taskValue == 0)
         {
             SwitchToFood();
-            taskValue = 1;
+            taskValue++;
             Debug.Log("task = food");
+        }
+        else if(taskValue == 1)
+        {
+            SwitchToMaterial();
+            taskValue++;
+            Debug.Log("task = material");
         }
     }
     private void OnLeftSecondaryDown(InputAction.CallbackContext context)
