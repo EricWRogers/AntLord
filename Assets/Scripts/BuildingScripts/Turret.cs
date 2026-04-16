@@ -1,3 +1,4 @@
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class Turret : MonoBehaviour
@@ -7,12 +8,14 @@ public class Turret : MonoBehaviour
 
     [Header("Attributes")]
     public float range = 10f;
-    public float turnSpeed = 5f;
     public float fireRate = 1f;
+    public float bulletSpeed = 150f;
     private float fireCountdown = 0f;
-    
+    [Header("Unity setup feilds")]
     public Transform partToRotate;
-    
+    public float turnSpeed = 5f;
+    public GameObject bullet;
+    public Transform firePoint;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -62,10 +65,16 @@ public class Turret : MonoBehaviour
         
     }
 
-    void Shoot(){
-        Debug.Log("SHOOT!!!");
-    }
+    void Shoot()
+    {
+        GameObject bulletGo = Instantiate(bullet, firePoint.position, firePoint.rotation);
+        Rigidbody rb = bulletGo.GetComponent<Rigidbody>();
+        Vector3 dir = target.position - transform.position;
+        Vector3 dire = new Vector3(dir.x, (dir.y), dir.z);
+        
 
+        rb.AddForce(dire.normalized * bulletSpeed);
+    }
     void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position,range);
