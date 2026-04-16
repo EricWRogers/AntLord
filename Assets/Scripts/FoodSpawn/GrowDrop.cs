@@ -32,6 +32,7 @@ public class GrowDrop : MonoBehaviour
             {
                 rb.useGravity = false;
                 // Debug.Log ("Turned off to grow");
+                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
             }
 
         this.transform.localScale = new Vector3 (startingSize, startingSize, startingSize);
@@ -62,8 +63,9 @@ public class GrowDrop : MonoBehaviour
 
         if (rb != null)
         {
-        rb.useGravity = true;
+            rb.useGravity = true;
             Debug.Log ("rb");
+            rb.constraints = RigidbodyConstraints.None;
         }
         else
         {
