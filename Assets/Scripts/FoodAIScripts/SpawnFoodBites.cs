@@ -14,6 +14,9 @@ public class SpawnFoodBites : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if(tag == "Material")
+            radius *= 2;
+            
         biteSpawn = new Vector3(0f, 0.3f, 0f);
     }
 

@@ -503,11 +503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4706746206054967287, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: growDuration
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5609356732983948276, guid: e038be8eabf984145a549e576f72ba93, type: 3}
-      propertyPath: m_Name
-      value: BerrySpawnLocations
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5845564330439608696, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.x
