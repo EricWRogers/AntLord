@@ -65,7 +65,7 @@ public abstract class CommandParent : MonoBehaviour
     public void DirectAnt(RaycastHit hit)
     {
         if(selectedLeader == null || selectedLeader.target != selectedLeader.home){
-            //Debug.LogWarning("1st pass");
+            Debug.LogWarning("Attempting to Direct!");
             if(taskToAssign == AntTask.Manual)
             {
                 //Debug.LogWarning("2nd pass");
@@ -88,9 +88,16 @@ public abstract class CommandParent : MonoBehaviour
                         selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
                 }
             }
-            else if(taskToAssign == AntTask.Food && selectedAnts.Count != 0)
+            else if((taskToAssign == AntTask.Food || taskToAssign == AntTask.Materials) && selectedAnts.Count != 0)
             {
-                //Debug.LogWarning("2nd Pass");
+                string tag;
+
+                if(taskToAssign == AntTask.Food)
+                    tag = "Food";
+                else
+                    tag = "Material";
+
+                Debug.LogWarning($"Attempting to find {tag}!");
                 float sphereRadius = 25f;
                 Collider[] hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
                 bool targetYet = false;
@@ -102,12 +109,17 @@ public abstract class CommandParent : MonoBehaviour
 
                     foreach(Collider col in hits)
                     {
-                        if (col.CompareTag("Food"))
+                        if (col.CompareTag(tag))
                         {
-                            Debug.Log("Found food to target!");
+                            Debug.Log($"Found {tag} to target!");
                             ElectLeader();
                             selectedLeader.target = col.transform;
-                            selectedLeader.task = AntTask.Food;
+
+                            if(taskToAssign == AntTask.Food)
+                                selectedLeader.task = AntTask.Food;
+                            else
+                                selectedLeader.task = AntTask.Materials;
+
                             targetYet = true;
 
                             break;
@@ -124,11 +136,12 @@ public abstract class CommandParent : MonoBehaviour
                             hits = Physics.OverlapSphere(selectedAnts[0].transform.position, sphereRadius);
                         }
                         else
-                            Debug.Log("Gave up on finding food");
+                            Debug.Log($"Gave up on finding {tag}");
                     }
 
                 }
             }
+
         }
     }
 
@@ -151,11 +164,11 @@ public abstract class CommandParent : MonoBehaviour
         taskToAssign = AntTask.Food;
     }
 
-    // public void LassoSelect()
-    // {
-    //     // Convenience wrapper: use configured action references.
-    //     LassoSelect(shiftAction?.action, primaryClick?.action);
-    // }
+    public void SwitchToMaterial()
+    {
+        Debug.Log("Switching to Material");
+        taskToAssign = AntTask.Materials;
+    }
 
     public void CheckLassoSelect(InputAction LassoInput, bool VRMode = true)
     {
@@ -323,7 +336,7 @@ public abstract class CommandParent : MonoBehaviour
     public void SetGlow(GameObject ant, Color c, float intensity)
     {
         var glow = ant.GetComponent<AntSelectGlow>();
-        if (glow != null) glow.EnableGlow(c, intensity);
+        // if (glow != null) glow.EnableGlow(c, intensity);
 
         // TEMP
         if(glow != null) glow.marker.SetActive(true);

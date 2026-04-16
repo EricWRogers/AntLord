@@ -29,8 +29,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     // ===== VR / UI SETTINGS =====
     [Header("VR & UI")]
     public GameObject buildingUI;
-    public Transform head;
-    public float spawnDistance = 50.0f;
+    public float spawnDistance = 10.0f;
     public TMP_Text nameText;
     public TMP_Text descText;
     public TMP_Text costText;
@@ -40,8 +39,9 @@ public class BuildingPlacementSystem : MonoBehaviour
     void Start()
     {
         DesktopCam = FindFirstObjectByType<FlyCam>();
+        if (!sceneCamera) sceneCamera = Camera.main;
         StopPlacement();
-        voxelTerrain.SetVoxel(
+        voxelTerrain.SetVoxelWithTerritory(
             firstBuilding.transform.position,
             firstBuilding.transform.localScale.x * 3.0f,
             true);
@@ -63,7 +63,7 @@ public class BuildingPlacementSystem : MonoBehaviour
             }
         }
         //tracks BuildingUI to always face the player.
-        buildingUI.transform.LookAt(new Vector3(head.position.x, buildingUI.transform.position.y, head.position.z));
+        buildingUI.transform.LookAt(new Vector3(sceneCamera.gameObject.transform.position.x, buildingUI.transform.position.y, sceneCamera.gameObject.transform.position.z));
         buildingUI.transform.forward *= -1;
 
         //tracks the mouse by grid
@@ -72,6 +72,11 @@ public class BuildingPlacementSystem : MonoBehaviour
         mouseIndicator.transform.position = mousePosition;
 
         cellIndicator.transform.position = (angle >= 45.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
+        if (voxelTerrain.CheckVoxel(grid.WorldToCell(mousePosition), cellIndicatorObj.transform.localScale.x * 3.0f))
+            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.green);
+        else
+            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.red);
+        
     }
     public void StartPlacement()
     {
@@ -108,10 +113,11 @@ public class BuildingPlacementSystem : MonoBehaviour
         bool canBuild = true;
         Vector3 mousePosition = GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+        BuildingSO buildingSO = allBuildings[selectedObjectIndex];
 
         //places the building at the selectedIndex at these grid coords
-        GameObject buildingParent = allBuildings[selectedObjectIndex].preFab;
-        buildingParent.transform.localScale = allBuildings[selectedObjectIndex].size;
+        GameObject buildingParent = buildingSO.preFab;
+        buildingParent.transform.localScale = buildingSO.size;
 
         GameObject building = buildingParent.transform.GetChild(0).gameObject;
         building.transform.Rotate(0.0f, rotation, 0.0f);
@@ -124,18 +130,27 @@ public class BuildingPlacementSystem : MonoBehaviour
         //these are to set whatever the terrain we choose
         if (voxelTerrain != null && voxelTerrain.enabled)
         {
-            canBuild = voxelTerrain.SetVoxel(
-                building.transform.position, // le center of the brush
-                building.transform.localScale.x * 3.0f);//le radius of the brush a bit bigger than normal to get surronding tiles
+            switch (buildingSO.type)
+            {
+                //checks if a resource building that can be placed anywhere
+                case BuildingSO.BuildingType.ResourceExtraction:
+                    canBuild = voxelTerrain.SetVoxelWithoutTerritory(
+                        building.transform.position,  // le center of the brush
+                        building.transform.localScale.x * 3.0f);//le radius of the brush a bit bigger than normal to get surronding tiles
+                    break;
+            
+                //checks if a defense building that must be built in own territory
+                case BuildingSO.BuildingType.MilitaryIndustiralComplex:
+                    canBuild = voxelTerrain.SetVoxelWithTerritory(
+                        building.transform.position, // le center of the brush
+                        building.transform.localScale.x * 3.0f);//le radius of the brush a bit bigger than normal to get surronding tiles
+                    break;
+            }
         }
         if (canBuild)
         {
             Instantiate(buildingParent);
             ResourceManager.instance.AddFood(-allBuildings[selectedObjectIndex].buildCost);
-        }
-        else
-        {
-            //Debug.Log("NOPE");
         }
 
     }
@@ -159,7 +174,8 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     public void OpenBuildMenu()
     {
-        buildingUI.transform.position = head.position + new Vector3(head.forward.x, 0, head.forward.z).normalized * spawnDistance;
+        buildingUI.transform.position = sceneCamera.gameObject.transform.position +
+            new Vector3(sceneCamera.gameObject.transform.forward.x, 0, sceneCamera.gameObject.transform.forward.z).normalized * spawnDistance;
         buildingUI.SetActive(true);
         selectedObjectIndex = 0;
         SetBuildingInfo(allBuildings[selectedObjectIndex]);
@@ -167,14 +183,14 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     public void NextBuilding()
     {
-        selectedObjectIndex++;
+        selectedObjectIndex = (selectedObjectIndex >= allBuildings.Count - 1) ? selectedObjectIndex + 1: 0;
         Debug.Log($"increment {selectedObjectIndex}");
         SetBuildingInfo(allBuildings[selectedObjectIndex]);
     }
 
     public void PreviousBuilding()
     {
-        selectedObjectIndex--;
+        selectedObjectIndex = (selectedObjectIndex <= 0) ? selectedObjectIndex + 1: allBuildings.Count - 1;
         Debug.Log($"decrement {selectedObjectIndex}");
         SetBuildingInfo(allBuildings[selectedObjectIndex]);
     }

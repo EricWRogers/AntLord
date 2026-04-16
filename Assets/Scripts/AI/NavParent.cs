@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum AntTask {Manual, Food, Fight}
+public enum AntTask {Manual, Food, Materials, Fight}
 
 // NOTE: Old version required NavMeshAgent. New system uses AntMover + CharacterController instead.
 // [RequireComponent(typeof(NavMeshAgent))]
