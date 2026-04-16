@@ -56,7 +56,10 @@ public class MarchingCubes : MonoBehaviour
     public float WorldSizeX => width * resolution;
     public float WorldSizeZ => width * resolution;
 
-    public void Start()
+//this was Start() moved to Awake
+//The BuildingPlacementSystem needed it to be initialized earlier
+//Im sure this wont haunt me, right?
+    public void Awake() 
     {
         //if (GetComponent<MeshCollider>() == null || GameObject.Find("NavMesh Surface") == null)
         Initialize();
@@ -332,6 +335,12 @@ public class MarchingCubes : MonoBehaviour
     //also grows the territory when conditions are all met
     public bool SetVoxelWithTerritory(Vector3 worldPosition, float radius = 1.5f, bool isInit = false)
     {
+
+        if (heights == null)
+        {
+            Debug.LogError("<color=purple>heights array is NULL");
+            return false;
+        }
         Vector3 localPos = transform.InverseTransformPoint(worldPosition);
         int cutoffY = Mathf.RoundToInt(localPos.y / resolution);
 
@@ -371,16 +380,15 @@ public class MarchingCubes : MonoBehaviour
                                 return false;
                             }
 
-                            if (!ContainsNear(availableVoxels, pos, 7))
+                            if (!ContainsNear(availableVoxels, pos, 10))
                             {
                                 Debug.Log($"<color=yellow>Blocked: not available {pos}");
                                 return false;
                             }
                         }
-
                         affected.Add(pos);
                     }
-                    else if (sqrDist <= sqrDist * 100f)
+                    else if (sqrDist <= sqrRadius * 100f)
                     {
                         Vector3Int pos = new Vector3Int(x, y, z);
                         freshVoxels.Add(pos);
@@ -412,7 +420,6 @@ public class MarchingCubes : MonoBehaviour
                 availableVoxels.Add(pos);
             }
         }
-        Debug.Log(availableVoxels.Count);
         UpdateVisuals();
         return true;
     }
@@ -526,7 +533,7 @@ public class MarchingCubes : MonoBehaviour
                             return false;
                         }
 
-                        if (!ContainsNear(availableVoxels, pos, 7))
+                        if (!ContainsNear(availableVoxels, pos, 10))
                         {
                             return false;
                         }
