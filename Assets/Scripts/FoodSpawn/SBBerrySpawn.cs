@@ -52,14 +52,14 @@ public class SBBerrySpawn : MonoBehaviour
     IEnumerator SpawnApple()
     {
         howManyToSpawn = Random.Range(1, spawnPoints.Count);
-        Debug.Log("how many: " + howManyToSpawn);
+        // Debug.Log("how many: " + howManyToSpawn);
 
         // spawnTiming = Random.Range(spawnInterval, spawnInterval * 2);
         // Debug.Log("timing: "+spawnTiming);
 
         for (int i = 0; i < howManyToSpawn; i++)
         {
-            Debug.Log("i: "+i);
+            // Debug.Log("i: "+i);
 
             int randomIndex = Random.Range(0, spawnPoints.Count);
 
@@ -70,12 +70,22 @@ public class SBBerrySpawn : MonoBehaviour
 
             if (Physics.CheckSphere(spawnPosition, sphereRadius))
             {
-                Debug.Log("something is there");
+                // Debug.Log("something is there");
             }
 
             else
             {
                 GameObject aBerry = Instantiate(berry, spawnPosition, Quaternion.identity);
+                GrowDrop myGrowDrop = aBerry.GetComponent<GrowDrop>();
+                
+                if (myGrowDrop != null)
+                {
+                    myGrowDrop.gdGrowDuration = growDuration;
+                    Debug.Log("yes" + myGrowDrop.gdGrowDuration);
+                }
+                    
+                else
+                    Debug.Log("no"); 
             }
 
 
