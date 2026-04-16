@@ -460,6 +460,8 @@ GameObject:
   - component: {fileID: 3911375618098443750}
   - component: {fileID: 2176469296450382025}
   - component: {fileID: 8207017632372296694}
+  - component: {fileID: 5261782876085898926}
+  - component: {fileID: 8129241160974483987}
   m_Layer: 0
   m_Name: Blackberry 1
   m_TagString: Untagged
@@ -489,6 +491,7 @@ Transform:
   - {fileID: 7626440335197648000}
   - {fileID: 5842095286231412614}
   - {fileID: 124348772230265426}
+  - {fileID: 9141792802307535795}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3911375618098443750
@@ -542,8 +545,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3c38d37d58e146e797a1b5b2c055d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrowDrop
-  growDuration: 1.5
+  gdGrowDuration: 0
   startingSize: 0.1
+--- !u!114 &5261782876085898926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6748949262262717790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bb714da4164ba4081fcde59e285b22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnFoodBites
+  foodBitePrefab: {fileID: 4809084369255736288, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+  foodHealth: 4
+  radius: 1
+  foodbit: {fileID: 0}
+  mostRecentLead: {fileID: 0}
+  tier: 1
+--- !u!114 &8129241160974483987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6748949262262717790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifier
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &6811538134754545889
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,3 +1145,65 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &9190216611962015451
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4165513747271860446}
+    m_Modifications:
+    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.83167005
+      objectReference: {fileID: 0}
+    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5941601
+      objectReference: {fileID: 0}
+    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.149
+      objectReference: {fileID: 0}
+    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4809084369255736288, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+      propertyPath: m_Name
+      value: FoodBite
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+--- !u!4 &9141792802307535795 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 95729320703606120, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
+  m_PrefabInstance: {fileID: 9190216611962015451}
+  m_PrefabAsset: {fileID: 0}
