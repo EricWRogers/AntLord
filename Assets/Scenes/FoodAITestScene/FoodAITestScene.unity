@@ -146,6 +146,7 @@ MonoBehaviour:
   maxAnts: 10
   antPrefab: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
   maxHealth: 10
+  timerText: {fileID: 0}
   winScreen: {fileID: 0}
 --- !u!1 &12306709 stripped
 GameObject:
@@ -806,7 +807,7 @@ Transform:
   m_GameObject: {fileID: 1145831538}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.44181, y: 1.44, z: -23.336}
+  m_LocalPosition: {x: -0.44181, y: 1.44, z: -26.72}
   m_LocalScale: {x: 1.0354, y: 1.9311247, z: 1.0354}
   m_ConstrainProportionsScale: 0
   m_Children:

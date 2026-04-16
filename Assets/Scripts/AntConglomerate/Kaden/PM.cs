@@ -10,17 +10,28 @@ public class PM : MonoBehaviour
 
     public bool isPaused = true;
 
+    public float spawnDistance = 10.0f;
+
+    private Camera sceneCamera;
+
     void Start()
     {
+        if (!sceneCamera) sceneCamera = Camera.main;
+
         DisplayPM();
     }
 
     void Update()
     {
+        // Listen for the Escape key
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             DisplayPM();
         }
+
+        //tracks pm UI to always face the player.
+        pm.transform.LookAt(new Vector3(sceneCamera.gameObject.transform.position.x, pm.transform.position.y, sceneCamera.gameObject.transform.position.z));
+        pm.transform.forward *= -1;
     }
 
     public void PauseButtonPressed(InputAction.CallbackContext context)
@@ -45,6 +56,8 @@ public class PM : MonoBehaviour
             pm.SetActive(true);
             isPaused = true;
             Time.timeScale = 0;
+            pm.transform.position = sceneCamera.gameObject.transform.position +
+            new Vector3(sceneCamera.gameObject.transform.forward.x, 0, sceneCamera.gameObject.transform.forward.z).normalized * spawnDistance;
             Debug.Log("Game Paused.");
         }
     }

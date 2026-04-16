@@ -4,8 +4,15 @@ public class Turret : MonoBehaviour
 {
 
     public Transform target;
+
+    [Header("Attributes")]
     public float range = 10f;
+    public float turnSpeed = 5f;
+    public float fireRate = 1f;
+    private float fireCountdown = 0f;
+    
     public Transform partToRotate;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,6 +37,8 @@ public class Turret : MonoBehaviour
 
         if(nearestEnemy != null && shortestDistance <= range){
             target = nearestEnemy.transform;
+        }else{
+            target = null;
         }
     }
 
@@ -42,9 +51,19 @@ public class Turret : MonoBehaviour
 
         Vector3 dir = target.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
-        Vector3 rotation = lookRotation.eulerAngles;
+        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(rotation.x,rotation.y,0f);
+
+        if(fireCountdown <=0f){
+            Shoot();
+            fireCountdown = 1f/fireRate;
+        }
+        fireCountdown -= Time.deltaTime;
         
+    }
+
+    void Shoot(){
+        Debug.Log("SHOOT!!!");
     }
 
     void OnDrawGizmosSelected()

@@ -16,6 +16,8 @@ TagManager:
   - Shovel
   - Stick
   - StickBit
+  - Material
+  - EnemyBase
   layers:
   - Default
   - TransparentFX

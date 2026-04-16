@@ -11,7 +11,6 @@ public class SpawnerBuilding : Buildings
     float timer = 0.0f;
     public float spawnCooldown = 5.0f;
     public int maxAnts = 10;
-    public int foodAmount = 100; //placeholder for Im guessing will probably be stored in a GameManager
     public int minFoodPerAnt = 10;
     public int tempWinCon;
     public float radius = 5.0f;
