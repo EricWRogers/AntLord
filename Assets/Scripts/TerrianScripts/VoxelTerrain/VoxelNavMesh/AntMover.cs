@@ -16,6 +16,9 @@ public class AntMover : MonoBehaviour
     float speedMul = 1f;
     float currentSpeed;
 
+    
+    Vector3 steering;
+
     public bool HasGoal => hasGoal;
 
     void Awake()
@@ -48,6 +51,13 @@ public class AntMover : MonoBehaviour
         currentSpeed = Mathf.Max(minSpeed, baseSpeed);
     }
 
+    // NEW: NavParent/FollowNav can call this to steer
+    public void SetSteering(Vector3 steerXZ)
+    {
+        steerXZ.y = 0f;
+        steering = Vector3.ClampMagnitude(steerXZ, 1f);
+    }
+
     void Update()
     {
         if (!hasGoal) return;
@@ -63,6 +73,10 @@ public class AntMover : MonoBehaviour
         }
 
         Vector3 dir = to / dist;
+
+        // NEW: apply steering before obstacle checks so ants naturally slide around each other
+        if (steering.sqrMagnitude > 0.0001f)
+            dir = (dir + steering).normalized;
 
         Vector3 origin = transform.position + Vector3.up * 0.1f;
         if (Physics.Raycast(origin, dir, out RaycastHit fHit, 0.25f))

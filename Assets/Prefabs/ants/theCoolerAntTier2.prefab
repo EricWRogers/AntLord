@@ -378,6 +378,9 @@ MonoBehaviour:
   separationForce: 5
   amCarryingFood: 0
   antTier: 2
+  separationFalloff: 2
+  separationSteerScale: 1
+  separationSteerSmoothing: 12
   followers: []
   crumbPrefab: {fileID: 0}
   crumbs: []
@@ -406,11 +409,18 @@ MonoBehaviour:
   separationForce: 5
   amCarryingFood: 0
   antTier: 5
+  separationFalloff: 2
+  separationSteerScale: 1
+  separationSteerSmoothing: 12
   leader: {fileID: 0}
   closeEnough: 1
   closeEnoughModifier: 0.5
   leaderTail: 0.3
   crumbTrack: 0
+  formationStartDist: 2
+  formationRadius: 0.9
+  settleDist: 0.5
+  settleSteerScale: 0.15
 --- !u!135 &2542754399908748829
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -549,11 +559,14 @@ MonoBehaviour:
   rayStartHeight: 1
   rayLength: 3
   hoverOffset: 0.02
-  maxSnapDown: 1
-  maxSnapUp: 1
   snapSpeed: 20
+  maxSnapPerFrame: 0.05
+  snapDeadzone: 0.01
+  groundYSmoothing: 20
   tiltToGround: 1
+  modelToTilt: {fileID: 0}
   tiltLerp: 25
+  maxTiltDeg: 35
 --- !u!114 &-4027879201828938870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,6 +585,7 @@ MonoBehaviour:
   probeOffset: 0.25
   rayStartHeight: 1
   rayLength: 3
+  noSlowBelowDeg: 8
   maxSlowSlopeDeg: 45
   minSpeedMultiplier: 0.35
   smoothing: 10

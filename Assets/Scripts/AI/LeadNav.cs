@@ -20,10 +20,10 @@ public class LeadNav : NavParent
     public int foodBits = 0;
     public AntTask task = AntTask.Manual;
 
-    // New: references to custom navmesh + A*
+    
     public VoxelAStar astar;
 
-    // Internal path state
+    
     private List<Vector3> path = new List<Vector3>();
     private int pathIndex = 0;
     private float repathCooldown = 0.5f;
@@ -32,6 +32,8 @@ public class LeadNav : NavParent
 
     override public void Start()
     {
+        base.Start();
+
         EnemyCommanderAI commander = FindFirstObjectByType<EnemyCommanderAI>();
         AntBrain brain = GetComponent<AntBrain>();
 
@@ -44,11 +46,13 @@ public class LeadNav : NavParent
         {
             commander.RegisterNewSquad(this);
         }
+
+        // NEW: leaders should be less affected by separation so they don't get surrounded
+        separationSteerScale = 0.5f;
     }
 
     void Update()
     {
-        
         // 1. Identify if this is an AI-controlled Enemy Ant
         AntBrain brain = GetComponent<AntBrain>();
         bool isAI = brain != null && brain.antType.teamID != 0;
@@ -84,7 +88,7 @@ public class LeadNav : NavParent
 
             Vector3 goal = target.position;
 
-            // Flattened comparisons (same idea as your old "flatten coordinates" block)
+            // Flattened comparisons 
             Vector3 flatGoal = new Vector3(goal.x, 0, goal.z);
 
             bool needRepath = path.Count == 0 || pathIndex >= path.Count;
@@ -102,7 +106,7 @@ public class LeadNav : NavParent
                 }
                 else
                 {
-                    // If no path found, still try direct (mirrors "reach at all costs" feel)
+                    // If no path found, still try direct 
                     path.Clear();
                     pathIndex = 0;
                 }
@@ -136,7 +140,8 @@ public class LeadNav : NavParent
                 crumbs.Add(transform.position);
             }
 
-            // HandleAgentCollisions();
+            // NEW: safe again (steering-based in NavParent)
+            HandleAgentCollisions();
 
             // 4. SCAVENGING STATE CHECK (unchanged logic)
             if (task == AntTask.Food || task == AntTask.Materials)
@@ -170,6 +175,9 @@ public class LeadNav : NavParent
             {
                 recentObjective = null;
             }
+
+            // Still apply separation steering
+            HandleAgentCollisions();
         }
     }
 
