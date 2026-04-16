@@ -3,7 +3,7 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager instance;
-    public int food = 1000;
+    public int food = 0;
     public int sand = 0;
     public int rocks = 0;
     public int sticks = 0;

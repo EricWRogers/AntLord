@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -21,48 +20,52 @@ public class LeadNav : NavParent
     public int foodBits = 0;
     public AntTask task = AntTask.Manual;
 
-    // New: references to custom navmesh + A*
+    
     public VoxelAStar astar;
 
-    // Internal path state
+    
     private List<Vector3> path = new List<Vector3>();
     private int pathIndex = 0;
     private float repathCooldown = 0.5f;
     private float nextRepathTime = 0f;
     private Vector3 lastFlatGoal;
 
-    void Start()
+    override public void Start()
     {
-        EnemyCommanderAI commander = Object.FindFirstObjectByType<EnemyCommanderAI>();
+        base.Start();
+
+        EnemyCommanderAI commander = FindFirstObjectByType<EnemyCommanderAI>();
         AntBrain brain = GetComponent<AntBrain>();
 
         // Old: myAgent.updateRotation = false;
         // New: AntMover rotates manually already.
 
-        if (!astar) astar = Object.FindFirstObjectByType<VoxelAStar>();
+        if (!astar) astar = FindFirstObjectByType<VoxelAStar>();
 
         if (commander != null && brain != null && brain.antType.teamID == 1)
         {
             commander.RegisterNewSquad(this);
         }
+
+        // NEW: leaders should be less affected by separation so they don't get surrounded
+        separationSteerScale = 0.5f;
     }
 
     void Update()
     {
-        
         // 1. Identify if this is an AI-controlled Enemy Ant
         AntBrain brain = GetComponent<AntBrain>();
         bool isAI = brain != null && brain.antType.teamID != 0;
 
         // 2. AI TARGET ACQUISITION
-        if (isAI && task == AntTask.Food && target == null)
+        if (isAI && (task == AntTask.Food || task == AntTask.Materials) && target == null)
         {
-            Transform foundFood = FindFood();
+            Transform foundObjective = FindObjective();
 
-            if (foundFood != null)
+            if (foundObjective != null)
             {
-                target = foundFood;
-                recentObjective = foundFood;
+                target = foundObjective;
+                recentObjective = foundObjective;
 
                 // Old:
                 // myAgent.isStopped = false;
@@ -85,7 +88,7 @@ public class LeadNav : NavParent
 
             Vector3 goal = target.position;
 
-            // Flattened comparisons (same idea as your old "flatten coordinates" block)
+            // Flattened comparisons 
             Vector3 flatGoal = new Vector3(goal.x, 0, goal.z);
 
             bool needRepath = path.Count == 0 || pathIndex >= path.Count;
@@ -103,7 +106,7 @@ public class LeadNav : NavParent
                 }
                 else
                 {
-                    // If no path found, still try direct (mirrors "reach at all costs" feel)
+                    // If no path found, still try direct 
                     path.Clear();
                     pathIndex = 0;
                 }
@@ -137,10 +140,11 @@ public class LeadNav : NavParent
                 crumbs.Add(transform.position);
             }
 
+            // NEW: safe again (steering-based in NavParent)
             HandleAgentCollisions();
 
             // 4. SCAVENGING STATE CHECK (unchanged logic)
-            if (task == AntTask.Food)
+            if (task == AntTask.Food || task == AntTask.Materials)
             {
                 int capacity = (followers.Count + 1) * antTier;
 
@@ -171,11 +175,21 @@ public class LeadNav : NavParent
             {
                 recentObjective = null;
             }
+
+            // Still apply separation steering
+            HandleAgentCollisions();
         }
     }
 
-    Transform FindFood()
+    Transform FindObjective()
     {
+        string tag;
+
+        if(task == AntTask.Food)
+            tag = "Food";
+        else
+            tag = "Material";
+
         float sphereRadius = 25f;
         float maxSearchRange = 500f;
 
@@ -187,7 +201,7 @@ public class LeadNav : NavParent
 
             foreach (Collider col in hits)
             {
-                if (col.CompareTag("Food"))
+                if (col.CompareTag(tag))
                 {
                     float dist = Vector3.Distance(transform.position, col.transform.position);
                     if (dist < closestDistance)
@@ -215,7 +229,7 @@ public class LeadNav : NavParent
     {
         // Old condition: if(task == Food && target == home && myAgent.remainingDistance <= 2)
         // New condition: if close to home in flat distance
-        if (task == AntTask.Food && target == home && home != null)
+        if ((task == AntTask.Food || task == AntTask.Materials) && target == home && home != null)
         {
             Vector3 a = transform.position; a.y = 0;
             Vector3 b = home.position; b.y = 0;
@@ -233,12 +247,12 @@ public class LeadNav : NavParent
 
                 if (foodCount >= (followers.Count * antTier))
                 {
-                    Transform foodTransform = FindFood();
+                    Transform foodTransform = FindObjective();
 
                     if (foodTransform != null)
                         target = foodTransform;
                     else
-                        Debug.Log("Failed to find food, freak out!");
+                        Debug.Log("Failed to find objective, freak out!");
                 }
             }
         }

@@ -25,49 +25,49 @@ using UnityEngine.InputSystem.Utilities;
 /// <code>
 /// using namespace UnityEngine;
 /// using UnityEngine.InputSystem;
-/// 
+///
 /// // Example of using an InputActionMap named "Player" from a UnityEngine.MonoBehaviour implementing callback interface.
 /// public class Example : MonoBehaviour, MyActions.IPlayerActions
 /// {
 ///     private MyActions_Actions m_Actions;                  // Source code representation of asset.
 ///     private MyActions_Actions.PlayerActions m_Player;     // Source code representation of action map.
-/// 
+///
 ///     void Awake()
 ///     {
 ///         m_Actions = new MyActions_Actions();              // Create asset object.
 ///         m_Player = m_Actions.Player;                      // Extract action map object.
 ///         m_Player.AddCallbacks(this);                      // Register callback interface IPlayerActions.
 ///     }
-/// 
+///
 ///     void OnDestroy()
 ///     {
 ///         m_Actions.Dispose();                              // Destroy asset object.
 ///     }
-/// 
+///
 ///     void OnEnable()
 ///     {
 ///         m_Player.Enable();                                // Enable all actions within map.
 ///     }
-/// 
+///
 ///     void OnDisable()
 ///     {
 ///         m_Player.Disable();                               // Disable all actions within map.
 ///     }
-/// 
+///
 ///     #region Interface implementation of MyActions.IPlayerActions
-/// 
+///
 ///     // Invoked when "Move" action is either started, performed or canceled.
 ///     public void OnMove(InputAction.CallbackContext context)
 ///     {
 ///         Debug.Log($"OnMove: {context.ReadValue&lt;Vector2&gt;()}");
 ///     }
-/// 
+///
 ///     // Invoked when "Attack" action is either started, performed or canceled.
 ///     public void OnAttack(InputAction.CallbackContext context)
 ///     {
 ///         Debug.Log($"OnAttack: {context.ReadValue&lt;float&gt;()}");
 ///     }
-/// 
+///
 ///     #endregion
 /// }
 /// </code>
@@ -3666,6 +3666,15 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Num3"",
+                    ""type"": ""Button"",
+                    ""id"": ""c84aa3ad-b4b9-42e2-b372-1b893ca1defa"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Deselect"",
                     ""type"": ""Button"",
                     ""id"": ""7e54b93e-ff0b-4519-82f5-4c50ec93e16f"",
@@ -3757,6 +3766,17 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Num2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fa6b6b12-11f3-4a76-ac7f-7ce4471217a4"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Num3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -3965,6 +3985,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         m_Controls_Shift = m_Controls.FindAction("Shift", throwIfNotFound: true);
         m_Controls_Num1 = m_Controls.FindAction("Num1", throwIfNotFound: true);
         m_Controls_Num2 = m_Controls.FindAction("Num2", throwIfNotFound: true);
+        m_Controls_Num3 = m_Controls.FindAction("Num3", throwIfNotFound: true);
         m_Controls_Deselect = m_Controls.FindAction("Deselect", throwIfNotFound: true);
         m_Controls_Lasso = m_Controls.FindAction("Lasso", throwIfNotFound: true);
         m_Controls_R = m_Controls.FindAction("R", throwIfNotFound: true);
@@ -5905,6 +5926,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
     private readonly InputAction m_Controls_Shift;
     private readonly InputAction m_Controls_Num1;
     private readonly InputAction m_Controls_Num2;
+    private readonly InputAction m_Controls_Num3;
     private readonly InputAction m_Controls_Deselect;
     private readonly InputAction m_Controls_Lasso;
     private readonly InputAction m_Controls_R;
@@ -5939,6 +5961,10 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// Provides access to the underlying input action "Controls/Num2".
         /// </summary>
         public InputAction @Num2 => m_Wrapper.m_Controls_Num2;
+        /// <summary>
+        /// Provides access to the underlying input action "Controls/Num3".
+        /// </summary>
+        public InputAction @Num3 => m_Wrapper.m_Controls_Num3;
         /// <summary>
         /// Provides access to the underlying input action "Controls/Deselect".
         /// </summary>
@@ -5992,6 +6018,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @Num2.started += instance.OnNum2;
             @Num2.performed += instance.OnNum2;
             @Num2.canceled += instance.OnNum2;
+            @Num3.started += instance.OnNum3;
+            @Num3.performed += instance.OnNum3;
+            @Num3.canceled += instance.OnNum3;
             @Deselect.started += instance.OnDeselect;
             @Deselect.performed += instance.OnDeselect;
             @Deselect.canceled += instance.OnDeselect;
@@ -6027,6 +6056,9 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
             @Num2.started -= instance.OnNum2;
             @Num2.performed -= instance.OnNum2;
             @Num2.canceled -= instance.OnNum2;
+            @Num3.started -= instance.OnNum3;
+            @Num3.performed -= instance.OnNum3;
+            @Num3.canceled -= instance.OnNum3;
             @Deselect.started -= instance.OnDeselect;
             @Deselect.performed -= instance.OnDeselect;
             @Deselect.canceled -= instance.OnDeselect;
@@ -6869,6 +6901,13 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnNum2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Num3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNum3(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Deselect" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
