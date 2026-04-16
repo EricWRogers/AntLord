@@ -18,14 +18,14 @@ public class CameraManager : MonoBehaviour
         {
             Debug.Log("Loading VR.");
             // XR device detected/loaded
-            VRCam.gameObject.SetActive(false);
-            DesktopCam.gameObject.SetActive(true);
+            VRCam.gameObject.SetActive(true);
+            DesktopCam.gameObject.SetActive(false);
         }
         else
         {
             Debug.Log("VR failed. Loading Desktop.");
-            VRCam.gameObject.SetActive(true);
-            DesktopCam.gameObject.SetActive(false);
+            VRCam.gameObject.SetActive(false);
+            DesktopCam.gameObject.SetActive(true);
         }
     }
 
