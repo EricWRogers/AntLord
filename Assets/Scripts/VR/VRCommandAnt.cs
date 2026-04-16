@@ -83,7 +83,7 @@ public class VRCommandAnt : CommandParent
     {
         //Debug.Log("VR INPUT: Right trigger Activated " + gameObject.name);
 
-        if(RTrigger.WasCompletedThisFrame() && RightRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
+        if(RTrigger.WasPerformedThisFrame() && RightRayInteractor.TryGetCurrent3DRaycastHit(out RaycastHit hit))
         {
             SimpleAntSelect(hit);
         }
