@@ -418,8 +418,12 @@ PrefabInstance:
       value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 1031950084916782681, guid: e038be8eabf984145a549e576f72ba93, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 1031950084916782681, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 32.26
       objectReference: {fileID: 0}
     - target: {fileID: 1445367802469128920, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.x
@@ -439,19 +443,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3867599405982465217, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_Name
-      value: BerrySpawnLocations
+      value: BerrySpawnLocation
       objectReference: {fileID: 0}
     - target: {fileID: 4218636061432757980, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 7.59
       objectReference: {fileID: 0}
     - target: {fileID: 4218636061432757980, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -5.22
       objectReference: {fileID: 0}
     - target: {fileID: 4218636061432757980, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5
+      value: -10.07
       objectReference: {fileID: 0}
     - target: {fileID: 4405828252947663115, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_Name
@@ -505,13 +509,21 @@ PrefabInstance:
       propertyPath: growDuration
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 5609356732983948276, guid: e038be8eabf984145a549e576f72ba93, type: 3}
+      propertyPath: m_Name
+      value: BerrySpawnLocations
+      objectReference: {fileID: 0}
     - target: {fileID: 5845564330439608696, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10
+      value: 36.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 5845564330439608696, guid: e038be8eabf984145a549e576f72ba93, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.819
       objectReference: {fileID: 0}
     - target: {fileID: 5845564330439608696, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5
+      value: 1.126
       objectReference: {fileID: 0}
     - target: {fileID: 6344662644700419719, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_Name
@@ -539,22 +551,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8356571889402914067, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10
+      value: 11.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 8356571889402914067, guid: e038be8eabf984145a549e576f72ba93, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.72
       objectReference: {fileID: 0}
     - target: {fileID: 8356571889402914067, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1.94
       objectReference: {fileID: 0}
     - target: {fileID: 8369729194685048669, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -13.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8369729194685048669, guid: e038be8eabf984145a549e576f72ba93, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.18
       objectReference: {fileID: 0}
     - target: {fileID: 8369729194685048669, guid: e038be8eabf984145a549e576f72ba93, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: 14.23
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2219461361865987482, guid: e038be8eabf984145a549e576f72ba93, type: 3}
+    - {fileID: 6344662644700419719, guid: e038be8eabf984145a549e576f72ba93, type: 3}
+    - {fileID: 7107322837063745931, guid: e038be8eabf984145a549e576f72ba93, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e038be8eabf984145a549e576f72ba93, type: 3}
