@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2425743722227981514}
   m_Layer: 0
   m_Name: StickSpawner
-  m_TagString: Stick
+  m_TagString: Material
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

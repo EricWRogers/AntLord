@@ -5945,14 +5945,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: StickSpawner
       objectReference: {fileID: 0}
-    - target: {fileID: 8554474241013192180, guid: 4d5813c54a240874ca798368cf62af2e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8554474241013192180, guid: 4d5813c54a240874ca798368cf62af2e, type: 3}
-      propertyPath: m_TagString
-      value: Material
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6862,10 +6854,6 @@ PrefabInstance:
     - target: {fileID: 3518542692734686894, guid: e36e330055b09c84aa09d1ed4ec8d0eb, type: 3}
       propertyPath: m_Name
       value: rock_spawner
-      objectReference: {fileID: 0}
-    - target: {fileID: 3518542692734686894, guid: e36e330055b09c84aa09d1ed4ec8d0eb, type: 3}
-      propertyPath: m_TagString
-      value: Material
       objectReference: {fileID: 0}
     - target: {fileID: 4296310088631520276, guid: e36e330055b09c84aa09d1ed4ec8d0eb, type: 3}
       propertyPath: m_LocalPosition.x
