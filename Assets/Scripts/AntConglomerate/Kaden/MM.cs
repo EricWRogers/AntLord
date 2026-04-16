@@ -10,11 +10,14 @@ public class MM : MonoBehaviour
     [SerializeField] private string actionMapName = "Menu"; // Matches your custom map name
 
     // private InputAction pauseAction;
+    public GameObject levelSelectMenu; //drag the levelselect menu
 
      public void Play(string level)
     {
-        SceneTransitionManager.singleton.GoToSceneAsyncByName(level);
-        Debug.Log("Game Started: " + level);
+        //Main menu start button will now open level select menu
+        levelSelectMenu.SetActive(true);
+        //SceneTransitionManager.singleton.GoToSceneAsyncByName(level);
+        //Debug.Log("Game Started: " + level);
     }
 
     public void Options(GameObject menu)
