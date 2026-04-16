@@ -853,7 +853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76afdbe44e33f784da21eaa36ab7ece4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ResourceManager
-  food: 1000
+  food: 0
   sand: 0
   rocks: 0
   sticks: 0
@@ -1370,7 +1370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4736265008600254134, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4897008957712409492, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_Layer
@@ -2661,15 +2661,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5105101445747831887, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5105101445747831887, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5544231747001048276, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
       propertyPath: m_Name
       value: EnemySpawnBuilding
+      objectReference: {fileID: 0}
+    - target: {fileID: 5544231747001048276, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8752463228130190757, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
       propertyPath: winScreen
@@ -5903,11 +5907,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6522580353863741940, guid: 4d5813c54a240874ca798368cf62af2e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.8
+      value: 3.98
       objectReference: {fileID: 0}
     - target: {fileID: 6522580353863741940, guid: 4d5813c54a240874ca798368cf62af2e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.316734
+      value: 54.05
       objectReference: {fileID: 0}
     - target: {fileID: 6522580353863741940, guid: 4d5813c54a240874ca798368cf62af2e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5940,6 +5944,10 @@ PrefabInstance:
     - target: {fileID: 8554474241013192180, guid: 4d5813c54a240874ca798368cf62af2e, type: 3}
       propertyPath: m_Name
       value: StickSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 8554474241013192180, guid: 4d5813c54a240874ca798368cf62af2e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8554474241013192180, guid: 4d5813c54a240874ca798368cf62af2e, type: 3}
       propertyPath: m_TagString
@@ -10848,7 +10856,6 @@ GameObject:
   - component: {fileID: 2032573654}
   - component: {fileID: 2032573653}
   - component: {fileID: 2032573652}
-  - component: {fileID: 2032573651}
   m_Layer: 5
   m_Name: BuildingUI
   m_TagString: Untagged
@@ -10876,18 +10883,6 @@ RectTransform:
   m_AnchoredPosition: {x: 27.55722, y: 19.5654}
   m_SizeDelta: {x: 422.9789, y: 383.4367}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2032573651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2032573649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 026ff71e5fd57404c961837119d719e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!114 &2032573652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11022,6 +11017,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4779626593842261476, guid: 429d00d8b71fea54fbd277729ddfb203, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11054,6 +11053,10 @@ PrefabInstance:
     - target: {fileID: 594574134641103040, guid: cea9b00fc01c2b943b9d0bef239a5898, type: 3}
       propertyPath: m_Name
       value: EnemyCommandManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 594574134641103040, guid: cea9b00fc01c2b943b9d0bef239a5898, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2407385536782023179, guid: cea9b00fc01c2b943b9d0bef239a5898, type: 3}
       propertyPath: enemyBase
@@ -11294,7 +11297,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2092713351
 Transform:
   m_ObjectHideFlags: 0
@@ -11617,7 +11620,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 339745033775634639, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1985885192162867425, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_LocalPosition.x
