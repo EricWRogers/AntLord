@@ -44,6 +44,8 @@ public class Turret : Buildings
                 {
                     shortestDistance = distanceToEnemy;
                     nearestEnemy = enemy;
+                    enemyAnt.currentTarget = null;
+                    enemyAnt.currentBuildingTarget = GetComponent<Turret>();
                 }
             }
         }

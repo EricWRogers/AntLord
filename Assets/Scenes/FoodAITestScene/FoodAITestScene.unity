@@ -653,8 +653,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySpawnBuilding
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4338048682961857893, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
