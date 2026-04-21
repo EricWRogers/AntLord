@@ -13,6 +13,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     public MarchingCubes voxelTerrain;
     public Grid grid;
     public GameObject firstBuilding;
+    private BuildingSO currentBuilding;
 
     [Header("Building State")]
     public int selectedObjectIndex = -1;
@@ -23,22 +24,27 @@ public class BuildingPlacementSystem : MonoBehaviour
     public LayerMask placementLayermask;
     public GameObject mouseIndicator;
     public GameObject cellIndicator;
-    public GameObject cellIndicatorObj;
+    private GameObject cellIndicatorObj;
     public event Action OnClicked, OnExit;
 
     // ===== VR / UI SETTINGS =====
     [Header("VR & UI")]
     public GameObject buildingUI;
-    public float spawnDistance = 10.0f;
-    public TMP_Text nameText;
-    public TMP_Text descText;
-    public TMP_Text costText;
-    public TMP_Text healthText;
+    private float spawnDistance = 10.0f;
+    private TMP_Text nameText;
+    private TMP_Text descText;
+    private TMP_Text costText;
+    private TMP_Text healthText;
     public FlyCam DesktopCam;
 
     void Start()
     {
         DesktopCam = FindFirstObjectByType<FlyCam>();
+        cellIndicatorObj = cellIndicator.transform.GetChild(0).gameObject;
+        nameText = buildingUI.transform.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<TMP_Text>();//high risk = high reward
+        descText = buildingUI.transform.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<TMP_Text>();
+        costText = buildingUI.transform.GetChild(0).GetChild(1).GetChild(2).gameObject.GetComponent<TMP_Text>();
+        healthText = buildingUI.transform.GetChild(0).GetChild(1).GetChild(3).gameObject.GetComponent<TMP_Text>();
         if (!sceneCamera) sceneCamera = Camera.main;
         StopPlacement();
         voxelTerrain.SetVoxelWithTerritory(
@@ -76,12 +82,25 @@ public class BuildingPlacementSystem : MonoBehaviour
         mouseIndicator.transform.position = mousePosition;
 
         cellIndicator.transform.position = (angle >= 45.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
-        if (voxelTerrain.CheckVoxel(grid.WorldToCell(mousePosition), cellIndicatorObj.transform.localScale.x * 3.0f))
+
+        switch (currentBuilding.type)
         {
-            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.green);
+            case BuildingSO.BuildingType.ResourceExtraction:
+                if (voxelTerrain.CheckVoxel(grid.WorldToCell(mousePosition), cellIndicatorObj.transform.localScale.x * 3.0f, false))
+                    cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.green);
+
+                else
+                    cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.red);
+                break;
+
+            case BuildingSO.BuildingType.MilitaryIndustiralComplex:
+                if (voxelTerrain.CheckVoxel(grid.WorldToCell(mousePosition), cellIndicatorObj.transform.localScale.x * 3.0f))
+                    cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.green);
+
+                else
+                    cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.red);
+                break;
         }
-        else
-            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.red);
 
     }
     public void StartPlacement()
@@ -119,11 +138,10 @@ public class BuildingPlacementSystem : MonoBehaviour
         bool canBuild = true;
         Vector3 mousePosition = GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
-        BuildingSO buildingSO = allBuildings[selectedObjectIndex];
 
         //places the building at the selectedIndex at these grid coords
-        GameObject buildingParent = buildingSO.preFab;
-        buildingParent.transform.localScale = buildingSO.size;
+        GameObject buildingParent = currentBuilding.preFab;
+        buildingParent.transform.localScale = currentBuilding.size;
 
         GameObject building = buildingParent.transform.GetChild(0).gameObject;
         building.transform.Rotate(0.0f, rotation, 0.0f);
@@ -135,9 +153,9 @@ public class BuildingPlacementSystem : MonoBehaviour
         //these are to set whatever the terrain we choose
         if (voxelTerrain != null && voxelTerrain.enabled)
         {
-            switch (buildingSO.type)
+            switch (currentBuilding.type)
             {
-                //checks if a resource building that can be placed anywhere
+                //checks if a resource building that can be placed anywhere except ontop of buildings
                 case BuildingSO.BuildingType.ResourceExtraction:
                     canBuild = voxelTerrain.SetVoxelWithoutTerritory(
                         building.transform.position,  // le center of the brush
@@ -191,14 +209,12 @@ public class BuildingPlacementSystem : MonoBehaviour
     public void NextBuilding()
     {
         selectedObjectIndex = (selectedObjectIndex >= allBuildings.Count - 1) ? 0 : selectedObjectIndex + 1;
-        Debug.Log($"increment {selectedObjectIndex}");
         SetBuildingInfo(allBuildings[selectedObjectIndex]);
     }
 
     public void PreviousBuilding()
     {
         selectedObjectIndex = (selectedObjectIndex <= 0) ? allBuildings.Count - 1 : selectedObjectIndex - 1;
-        Debug.Log($"decrement {selectedObjectIndex}");
         SetBuildingInfo(allBuildings[selectedObjectIndex]);
     }
     public void Build()
@@ -207,6 +223,8 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     public void SetBuildingInfo(BuildingSO building)
     {
+        currentBuilding = building;
+
         nameText.text = building.buildName;
         descText.text = building.buildDesc;
         costText.text = $"Stick Cost: {building.StickCost} Rock Cost: {building.RockCost}";

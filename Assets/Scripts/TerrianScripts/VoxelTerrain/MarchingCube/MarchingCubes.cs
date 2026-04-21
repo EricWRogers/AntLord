@@ -336,11 +336,6 @@ public class MarchingCubes : MonoBehaviour
     public bool SetVoxelWithTerritory(Vector3 worldPosition, float radius = 1.5f, bool isInit = false)
     {
 
-        if (heights == null)
-        {
-            Debug.LogError("<color=purple>heights array is NULL");
-            return false;
-        }
         Vector3 localPos = transform.InverseTransformPoint(worldPosition);
         int cutoffY = Mathf.RoundToInt(localPos.y / resolution);
 
@@ -500,7 +495,7 @@ public class MarchingCubes : MonoBehaviour
                 }
         return false;
     }
-    public bool CheckVoxel(Vector3Int worldPosition, float radius = 1.0f)
+    public bool CheckVoxel(Vector3Int worldPosition, float radius = 1.0f, bool withTerrain = true)
     {
 
         Vector3 localPos = transform.InverseTransformPoint(worldPosition);
@@ -534,7 +529,7 @@ public class MarchingCubes : MonoBehaviour
                             return false;
                         }
 
-                        if (!ContainsNear(availableVoxels, pos, 7))
+                        if (!ContainsNear(availableVoxels, pos, 7) && withTerrain)
                         {
                             return false;
                         }
