@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -51,6 +52,7 @@ public class RayOMayhem : MonoBehaviour
             {
                 currentAction = VoxelAction.Breaking;
                 HandleVoxelInput(hit.point, isBreaking: true);
+                Debug.Log("Ray Hit collider" + hit.collider.name);
             }
             // currentAction = VoxelAction.Breaking;
             // HandleVoxelInput(targetValue: 1.0f, isBreaking: true);
@@ -67,6 +69,7 @@ public class RayOMayhem : MonoBehaviour
             {
                 currentAction = VoxelAction.Placing;
                 HandleVoxelInput(hit.point, isBreaking: false);
+                Debug.Log("Ray Hit collider" + hit.collider.name);
             } 
             // currentAction = VoxelAction.Placing;
             // HandleVoxelInput(targetValue: 0.0f, isBreaking: false);
