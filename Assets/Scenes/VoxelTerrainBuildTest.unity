@@ -10753,6 +10753,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BuildingPlacementSystem
   allBuildings:
   - {fileID: 11400000, guid: a170635a27b8d694dac8aaac276d4395, type: 2}
+  - {fileID: 11400000, guid: e770c47ca4e4ae047b7abaf257ee2e90, type: 2}
   voxelTerrain: {fileID: 237293909}
   grid: {fileID: 1164504035}
   firstBuilding: {fileID: 1675047469}

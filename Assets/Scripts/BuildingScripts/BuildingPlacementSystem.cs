@@ -16,7 +16,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     private BuildingSO currentBuilding;
 
     [Header("Building State")]
-    public int selectedObjectIndex = -1;
+    public int selectedObjectIndex = 0;
     protected Vector3 lastPosition;
     protected float angle;
     public bool inBuildMode = false;
