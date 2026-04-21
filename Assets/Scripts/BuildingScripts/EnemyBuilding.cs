@@ -22,7 +22,8 @@ public class EnemyBuilding : Buildings
 
     void Start()
     {
-        this.currentHealth = maxHealth;
+        teamID = 1;
+        currentHealth = maxHealth;
         slider.maxValue = currentHealth;
         slider.value = currentHealth;
 

@@ -84,7 +84,6 @@ public class SpawnerBuilding : Buildings
     }
     public void GiveStick(int _stick) //or floats idk what yall are cooking
     {
-        Debug.Log("adding stick");
         ResourceManager.instance.AddStick(_stick);
     }
 }
