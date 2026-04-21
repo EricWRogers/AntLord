@@ -3,8 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelectCode : MonoBehaviour
 {
-    //Create Singleton
-    public static LevelSelectCode instance = null;
 
     //Set Playmode
     public bool VRIsActivated;
@@ -14,26 +12,6 @@ public class LevelSelectCode : MonoBehaviour
 
     //LevelSelect
     public GameObject levelSelectMenu;
-
-    void Awake()
-    {
-        if (instance == null)
-        {
-            Debug.Log("Singleton init");
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
-    void Start()
-    {
-        SetPlayMode();
-        levelSelectMenu.SetActive(false);
-    }
 
     public void SetPlayMode()
     {

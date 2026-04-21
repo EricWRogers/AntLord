@@ -12,7 +12,12 @@ public class MM : MonoBehaviour
     // private InputAction pauseAction;
     public GameObject levelSelectMenu; //drag the levelselect menu
 
-     public void Play()
+    void Start()
+    {
+        levelSelectMenu.SetActive(false);
+    }
+
+    public void Play()
     {
         //Main menu start button will now open level select menu
         levelSelectMenu.SetActive(true);
