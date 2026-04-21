@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(SpawnerBuilding))]
 public class RemoveFood : MonoBehaviour
 {
     Collider[] hitColliders;
