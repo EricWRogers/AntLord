@@ -11,7 +11,6 @@ public class Turret : Buildings
     public float bulletSpeed = 150f;
     public int maxHealth = 10;
     private float fireCountdown = 0f;
-    public int teamID = 0;
     [Header("Unity setup feilds")]
     public Transform partToRotate;
     public float turnSpeed = 5f;
