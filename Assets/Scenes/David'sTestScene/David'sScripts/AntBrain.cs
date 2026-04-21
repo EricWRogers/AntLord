@@ -209,6 +209,13 @@ public class AntBrain : MonoBehaviour
                     if (followNav != null) followNav.enabled = false;
                     return;
                 }
+                else if (col.GetComponent<Turret>())
+                {
+                    currentBuildingTarget = col.GetComponent<EnemyBuilding>();
+                    currentState = AntState.Chasing;
+                    if (followNav != null) followNav.enabled = false;
+                    return;
+                }
             }
             else
             {
