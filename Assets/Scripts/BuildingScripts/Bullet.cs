@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
     private Transform target;
     public int damgeAmount = 25;
     public timer destroyTimer;
-    public float duration = 5f;
+    public float duration = 8f;
     LayerMask layermask;
 
     void Awake()
@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 0.06f, layermask))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 0.04f, layermask))
         {
             Destroy(gameObject);
         }

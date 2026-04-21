@@ -128,12 +128,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turret
   currentHealth: 0
+  teamID: 0
   slider: {fileID: 4523627361004342521}
   target: {fileID: 0}
   range: 10
   fireRate: 1
   bulletSpeed: 1000
-  maxHealth: 10
+  maxHealth: 100
   partToRotate: {fileID: 5211190401062310164}
   turnSpeed: 5
   bullet: {fileID: 7770813781648674374, guid: dd20967b9625a7b44a6e20351a04ec2e, type: 3}

@@ -27,7 +27,7 @@ public class AntBrain : MonoBehaviour
 
     private float currentHealth;
     private float attackTimer;
-    private AntBrain currentTarget;
+    public AntBrain currentTarget;
     private FollowNav followNav;
     private LeadNav leadNav;
     private AntMover mover;
@@ -37,7 +37,7 @@ public class AntBrain : MonoBehaviour
     private Color originalEmissionColor;
     private bool hadEmission;
 
-    private Buildings currentBuildingTarget;
+    public Buildings currentBuildingTarget;
 
     void Start()
     {
