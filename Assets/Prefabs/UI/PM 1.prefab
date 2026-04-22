@@ -2532,7 +2532,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &2236420891246887293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2584,6 +2584,7 @@ MonoBehaviour:
   pm: {fileID: 0}
   customActions: {fileID: 0}
   actionMapName: Menu
+  levelSelectMenu: {fileID: 0}
 --- !u!1 &8769010098077358590
 GameObject:
   m_ObjectHideFlags: 0
