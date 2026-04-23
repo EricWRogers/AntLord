@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 6910238771657737329}
   - component: {fileID: -301483217493495681}
   - component: {fileID: -768597789033698990}
+  - component: {fileID: -6034356628594346457}
   m_Layer: 6
   m_Name: TheCoolerAnt
   m_TagString: Ant
@@ -103,7 +104,11 @@ MonoBehaviour:
   formationStartDist: 2
   formationRadius: 0.9
   settleDist: 0.5
-  settleSteerScale: 0.15
+  unsettleDist: 0.6
+  crowdCheckRadius: 0.25
+  scootDuration: 0.2
+  scootCooldown: 0.25
+  scootSteerStrength: 1
 --- !u!135 &5266563285919827775
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -154,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AntBrain
   antType: {fileID: 11400000, guid: 98a0f28ed23847440ba0d54066a80f7a, type: 2}
   currentState: 1
+  carryingFood: 0
   detectionRange: 5
   attackRange: 1.5
   enemyLayer:
@@ -162,6 +168,8 @@ MonoBehaviour:
   damageTextObject: {fileID: 7244253123390988400}
   textDisplayTime: 0.8
   flashDuration: 0.2
+  currentTarget: {fileID: 0}
+  currentBuildingTarget: {fileID: 0}
 --- !u!143 &351053253140415952
 CharacterController:
   m_ObjectHideFlags: 0
@@ -203,6 +211,8 @@ MonoBehaviour:
   minSpeed: 1
   turnSpeedDeg: 540
   arriveDist: 0.25
+  idleScootSpeed: 0.8
+  idleSteerDeadzone: 0.05
 --- !u!114 &-301483217493495681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,6 +261,20 @@ MonoBehaviour:
   maxSlowSlopeDeg: 45
   minSpeedMultiplier: 0.35
   smoothing: 10
+--- !u!114 &-6034356628594346457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1965442970529633344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b198e16706e7094dbdce6fae6b068ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LeaderMarchAudio
+  marchSoundName: AntMarch
+  stopDistance: 2
 --- !u!1 &5913962457646326635
 GameObject:
   m_ObjectHideFlags: 0
