@@ -64,7 +64,7 @@ public class GrowDrop : MonoBehaviour
         if (rb != null)
         {
             rb.useGravity = true;
-            Debug.Log ("rb");
+            // Debug.Log ("rb");
             rb.constraints = RigidbodyConstraints.None;
         }
         else

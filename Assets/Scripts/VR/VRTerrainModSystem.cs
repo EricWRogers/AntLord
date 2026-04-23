@@ -40,6 +40,8 @@ public class VRTerrainModSystem : RayOMayhem
         LSecondaryButton = VRInputActions.XRILeftInteraction.SecondaryButtonSelect;
 
         LSecondaryButton.performed += OnLeftSecondary;
+        RTrigger.performed += OnRightTrigger;
+        LTrigger.performed += OnLeftTrigger;
         OnClicked += ProcessVoxelMod;
     }
 
@@ -75,6 +77,10 @@ public class VRTerrainModSystem : RayOMayhem
         Debug.Log($"Mod mode {inModMode}");
         if (!inModMode) TriggerExit();
     }
+
+    private void OnRightTrigger(InputAction.CallbackContext context){}
+    private void OnLeftTrigger(InputAction.CallbackContext context){}
+
 
     private void ProcessVoxelMod()//this is called by the TriggerClick event, which is called by the input actions
     {
