@@ -21,7 +21,7 @@ public class RemoveFood : MonoBehaviour
                 if (lead != null) tier = lead.antTier;
 
                 // FOLLOWER deposit 
-                if (follow != null && follow.enabled && follow.amCarryingFood)
+                if (follow.isActiveAndEnabled && follow.amCarryingFood)
                 {
                     foreach (Transform child in hitColliders.transform)
                     {
@@ -68,7 +68,7 @@ public class RemoveFood : MonoBehaviour
                     follow.amCarryingFood = false;
                 }
                 // LEADER deposit 
-                else if (lead != null && lead.enabled && lead.amCarryingFood)
+                else if (lead.isActiveAndEnabled && lead.amCarryingFood)
                 {
                     foreach (Transform child in hitColliders.transform)
                     {
