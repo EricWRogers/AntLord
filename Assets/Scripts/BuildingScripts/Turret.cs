@@ -16,12 +16,13 @@ public class Turret : Buildings
     public float turnSpeed = 5f;
     public GameObject bullet;
     public Transform firePoint;
+    public Collider[] enemies;
     [SerializeField] BuildingSO turretSO;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        
         this.currentHealth = maxHealth;
         slider.maxValue = currentHealth;
         slider.value = currentHealth;
@@ -29,23 +30,26 @@ public class Turret : Buildings
 
     void UpdateTarget()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Ant");
+        enemies = Physics.OverlapSphere(transform.position, range);
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
 
-        foreach(GameObject enemy in enemies)
+        foreach(var enemy in enemies)
         {
-            AntBrain enemyAnt = enemy.GetComponent<AntBrain>();
-            if (enemyAnt.antType.teamID != teamID)
+            if (enemy.CompareTag("Ant"))
             {
-                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-
-                if (distanceToEnemy < shortestDistance)
+                AntBrain enemyAnt = enemy.GetComponent<AntBrain>();
+                if (enemyAnt.antType.teamID != teamID)
                 {
-                    shortestDistance = distanceToEnemy;
-                    nearestEnemy = enemy;
-                    enemyAnt.currentTarget = null;
-                    enemyAnt.currentBuildingTarget = GetComponent<Turret>();
+                    float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+
+                    if (distanceToEnemy < shortestDistance)
+                    {
+                        shortestDistance = distanceToEnemy;
+                        nearestEnemy = enemy.gameObject;
+                        enemyAnt.currentTarget = null;
+                        enemyAnt.currentBuildingTarget = GetComponent<Turret>();
+                    }
                 }
             }
         }
@@ -60,12 +64,14 @@ public class Turret : Buildings
     // Update is called once per frame
     void Update()
     {
+        
         if (this.currentHealth > 0)
         {
             if (this.currentHealth <= 0)
             {
                 Destroy(gameObject);
             }
+            UpdateTarget();
             if (target == null)
             {
                 return;
@@ -82,7 +88,7 @@ public class Turret : Buildings
                 fireCountdown = 1f / fireRate;
             }
             fireCountdown -= Time.deltaTime;
-            
+
         }
         
     }
