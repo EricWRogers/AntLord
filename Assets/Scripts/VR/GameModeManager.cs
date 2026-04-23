@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Management;
 using System.Collections;
+using System;
 
 public class GameModeManager : MonoBehaviour
 {
@@ -13,18 +14,11 @@ public class GameModeManager : MonoBehaviour
 
     public static bool VRIsActivated;
 
+    [Tooltip("click this if you need to run the VR controls instead of the desktop controls in bugtesting.")]
+    public bool isVROverride;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    void Awake()
-    {
-        
-    }
-
-    void Start()
-    {
-        //SetPlayMode();
-    }
 
     void OnLevelWasLoaded(int level)
     {
@@ -39,15 +33,13 @@ public class GameModeManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        int i = 0;
-        while (i < 1)
-        {
-            SetPlayMode();
-            Debug.Log("level loaded. Vr is active? : " + VRIsActivated);
-            i += 1;
-        }
     }
+
+    void Awake()
+    {
+        SetPlayMode();
+        Debug.Log("level loaded. Vr is active? : " + VRIsActivated);
+    }    
 
     public void SetPlayMode()
     {
@@ -58,7 +50,7 @@ public class GameModeManager : MonoBehaviour
             VRCam = GameObject.Find("VR Player");
 
 
-        if (VRIsActivated){
+        if (VRIsActivated || isVROverride){
             DesktopCam.SetActive(false);
             VRCam.SetActive(true);
         }
