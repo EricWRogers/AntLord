@@ -1483,7 +1483,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4736265008600254134, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4897008957712409492, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_Layer
@@ -10554,6 +10554,10 @@ PrefabInstance:
       propertyPath: DesktopCam
       value: 
       objectReference: {fileID: 2147230904}
+    - target: {fileID: 2275825239904447866, guid: 0fad63df278e4c94a87df9cfdbd67d88, type: 3}
+      propertyPath: isVROverride
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2384735471155513950, guid: 0fad63df278e4c94a87df9cfdbd67d88, type: 3}
       propertyPath: m_LocalPosition.x
       value: 25.40091
@@ -11550,7 +11554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 339745033775634639, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1772743932805192904, guid: 4ad6cd45e12473c41b7f1f4992267a81, type: 3}
       propertyPath: m_Enabled
