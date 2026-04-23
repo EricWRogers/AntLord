@@ -54,7 +54,7 @@ public class SBBerrySpawn : MonoBehaviour
         howManyToSpawn = Random.Range(1, spawnPoints.Count);
         // Debug.Log("how many: " + howManyToSpawn);
 
-        // spawnTiming = Random.Range(spawnInterval, spawnInterval * 2);
+        //spawnTiming = Random.Range(spawnInterval, spawnInterval * 2);
         // Debug.Log("timing: "+spawnTiming);
 
         for (int i = 0; i < howManyToSpawn; i++)

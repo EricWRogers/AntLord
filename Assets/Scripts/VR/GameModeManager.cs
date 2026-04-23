@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Management;
 using System.Collections;
+using System;
 
 public class GameModeManager : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class GameModeManager : MonoBehaviour
     public GameObject DesktopCam;
     public GameObject VRCam;
 
-    [SerializeReference]
     public static bool VRIsActivated;
 
 
