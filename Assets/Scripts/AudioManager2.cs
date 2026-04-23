@@ -33,7 +33,15 @@ public class AudioManager2 : MonoBehaviour
 
     void Awake()
     {
+        // NEW: single instance across scenes
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         instance = this;
+        DontDestroyOnLoad(gameObject);
 
         foreach (Sound s in sounds)
         {
@@ -41,13 +49,13 @@ public class AudioManager2 : MonoBehaviour
                 s.source = gameObject.AddComponent<AudioSource>();
 
             s.source.clip = s.clip;
-            s.source.playOnAwake = s.playOnAwake;
-            if (s.playOnAwake)
-                s.source.Play();
-
+            s.source.playOnAwake = false; 
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+
+            
+            if (s.playOnAwake) s.source.Play();
         }
     }
 
@@ -60,13 +68,22 @@ public class AudioManager2 : MonoBehaviour
             return;
         }
 
-        s.source.Play();
+        if (!s.source.isPlaying)
+            s.source.Play();
     }
 
     public void Stop(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null || s.source == null) return;
 
-        s.source.Stop();
+        if (s.source.isPlaying)
+            s.source.Stop();
+    }
+
+    public bool IsPlaying(string name)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        return s != null && s.source != null && s.source.isPlaying;
     }
 }
