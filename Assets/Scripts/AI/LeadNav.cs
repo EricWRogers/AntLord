@@ -187,8 +187,10 @@ public class LeadNav : NavParent
 
         if(task == AntTask.Food)
             tag = "Food";
-        else
+        else if(task == AntTask.Materials)
             tag = "Material";
+        else
+            return null;
 
         float sphereRadius = 25f;
         float maxSearchRange = 500f;
@@ -197,6 +199,7 @@ public class LeadNav : NavParent
         {
             Collider[] hits = Physics.OverlapSphere(transform.position, sphereRadius);
             Transform closestFood = null;
+            Transform closestMaterial = null;
             float closestDistance = Mathf.Infinity;
 
             foreach (Collider col in hits)
@@ -217,6 +220,13 @@ public class LeadNav : NavParent
                 recentObjective = closestFood;
                 Debug.Log($"<color=green>New Objective: {closestFood.name} at {closestFood.position}</color>");
                 return closestFood;
+            }
+
+            if (closestMaterial != null)
+            {
+                recentObjective = closestMaterial;
+                Debug.Log($"<color=green>New Objective: {closestMaterial.name} at {closestMaterial.position}</color>");
+                return closestMaterial;
             }
 
             sphereRadius *= 2;

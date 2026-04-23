@@ -8021,6 +8021,17 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &348026171 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2935611260903661680, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+  m_PrefabInstance: {fileID: 1900294794}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6803edce0201f574f923fd9d10e5b30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor
 --- !u!43 &352910172
 Mesh:
   m_ObjectHideFlags: 0
@@ -10910,6 +10921,8 @@ GameObject:
   - component: {fileID: 447601912}
   - component: {fileID: 447601911}
   - component: {fileID: 447601910}
+  - component: {fileID: 447601914}
+  - component: {fileID: 447601913}
   m_Layer: 0
   m_Name: PlayerPlane
   m_TagString: Untagged
@@ -11011,6 +11024,162 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 447601908}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &447601913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447601908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 0
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_AutoFindParentInteractableInHierarchy: 0
+  m_ParentInteractableObject: {fileID: 0}
+  m_AttachTransform: {fileID: 0}
+  m_SecondaryAttachTransform: {fileID: 0}
+  m_UseDynamicAttach: 0
+  m_MatchAttachPosition: 1
+  m_MatchAttachRotation: 1
+  m_SnapToColliderVolume: 1
+  m_ReinitializeDynamicAttachEverySingleGrab: 1
+  m_AttachEaseInTime: 0.15
+  m_MovementType: 2
+  m_PredictedVisualsTransform: {fileID: 0}
+  m_VelocityDamping: 1
+  m_VelocityScale: 1
+  m_AngularVelocityDamping: 1
+  m_AngularVelocityScale: 1
+  m_TrackPosition: 1
+  m_SmoothPosition: 0
+  m_SmoothPositionAmount: 8
+  m_TightenPosition: 0.1
+  m_TrackRotation: 1
+  m_SmoothRotation: 0
+  m_SmoothRotationAmount: 8
+  m_TightenRotation: 0.1
+  m_TrackScale: 1
+  m_SmoothScale: 0
+  m_SmoothScaleAmount: 8
+  m_TightenScale: 0.1
+  m_ThrowOnDetach: 1
+  m_ThrowSmoothingDuration: 0.25
+  m_ThrowSmoothingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  m_ThrowVelocityScale: 1.5
+  m_ThrowAngularVelocityScale: 1
+  m_ForceGravityOnDetach: 0
+  m_RetainTransformParent: 1
+  m_StartingSingleGrabTransformers: []
+  m_StartingMultipleGrabTransformers: []
+  m_AddDefaultGrabTransformers: 1
+  m_FarAttachMode: 0
+  m_LimitLinearVelocity: 0
+  m_LimitAngularVelocity: 0
+  m_MaxLinearVelocityDelta: 10
+  m_MaxAngularVelocityDelta: 20
+--- !u!54 &447601914
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447601908}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!43 &450516947
 Mesh:
   m_ObjectHideFlags: 0
@@ -19042,6 +19211,10 @@ PrefabInstance:
     - target: {fileID: 7075886389968614136, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7075886389968614136, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7106198830458976937, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Layer
@@ -27620,6 +27793,11 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1090288914 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8110361808904761273, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+  m_PrefabInstance: {fileID: 2078121916}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1091127928
 Mesh:
   m_ObjectHideFlags: 0
@@ -36572,6 +36750,66 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2303937482787535869, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
   m_PrefabInstance: {fileID: 1470690595}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1478156712 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 852692798631343855, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+  m_PrefabInstance: {fileID: 1900294794}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1478156718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478156712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a60e726bc232948899afa7831772cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRTerrainModSystem
+  leftRayInteractor: {fileID: 348026171}
+  rightRayInteractor: {fileID: 2137519117}
+  cam: {fileID: 2102848431}
+  shovel: {fileID: 5541474348210411824}
+  voxelManager: {fileID: 4610825784424797931}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  resourceManager: {fileID: 744802565}
+  didModifyVoxel: 0
+  trailEnd: 0
+  inModMode: 0
+  adjustmentRate: 0.1
+  useHeightLimits: 1
+  breakMinY: 1.4
+  placeMaxY: 8.4
+  RTrigger:
+    m_Name: R Trigger
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 9f107893-4c18-4c39-83c4-f5c091224214
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LTrigger:
+    m_Name: L Trigger
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 11ed87a9-b0f6-49d6-a800-95781536a889
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LSecondaryButton:
+    m_Name: L Secondary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 4b1c6e64-b62a-46cc-94e4-c36816dd7a77
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &1488601901
 GameObject:
   m_ObjectHideFlags: 0
@@ -45925,7 +46163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 852692798631343855, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 952459120106581119, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_Layer
@@ -46029,7 +46267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2827216691084159003, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2985570686458033699, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_Layer
@@ -46097,7 +46335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4736265008600254134, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4897008957712409492, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_Layer
@@ -46210,7 +46448,11 @@ PrefabInstance:
     - target: {fileID: 6342732502496770442, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: VRPLayer
       value: 
-      objectReference: {fileID: 717184700}
+      objectReference: {fileID: 1478156712}
+    - target: {fileID: 6342732502496770442, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6342732502496770442, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: DesktopCam
       value: 
@@ -46329,6 +46571,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5541474348210411825}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 852692798631343855, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1478156718}
     - targetCorrespondingSourceObject: {fileID: 2827216691084159003, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1900294799}
@@ -46371,8 +46616,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1068980701a6f45bf5e6e456e4ad67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RayOMayhem
-  leftRayInteractor: {fileID: 0}
-  rightRayInteractor: {fileID: 0}
+  leftRayInteractor: {fileID: 348026171}
+  rightRayInteractor: {fileID: 2137519117}
   cam: {fileID: 1900294798}
   shovel: {fileID: 5541474348210411824}
   voxelManager: {fileID: 4610825784424797931}
@@ -50397,6 +50642,63 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1001 &2078121916
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8110361808904761273, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_Name
+      value: SandShovel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 43.98438
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 25.21674
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
 --- !u!43 &2081729695
 Mesh:
   m_ObjectHideFlags: 0
@@ -51287,10 +51589,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1068980701a6f45bf5e6e456e4ad67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RayOMayhem
-  leftRayInteractor: {fileID: 0}
-  rightRayInteractor: {fileID: 0}
+  leftRayInteractor: {fileID: 717184703}
+  rightRayInteractor: {fileID: 717184702}
   cam: {fileID: 2102848431}
-  shovel: {fileID: 5541474348210411824}
+  shovel: {fileID: 1090288914}
   voxelManager: {fileID: 4610825784424797931}
   layerMask:
     serializedVersion: 2
@@ -51607,6 +51909,17 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!114 &2137519117 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2421400997576540759, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+  m_PrefabInstance: {fileID: 1900294794}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6803edce0201f574f923fd9d10e5b30a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor
 --- !u!1001 &2141804929
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53084,7 +53397,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8110361808904761273, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8918846574664742147, guid: 95570de2b2d77b04d9defb4a6a11f27b, type: 3}
       propertyPath: m_LocalScale.x
@@ -53179,3 +53492,4 @@ SceneRoots:
   - {fileID: 2006776207}
   - {fileID: 1121782489}
   - {fileID: 1912215286}
+  - {fileID: 2078121916}

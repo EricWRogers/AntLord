@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum CommanderState { LookingForFood, Defending, AllOutAttack }
+public enum CommanderState { LookingForFood, LookingForMaterials, Defending, AllOutAttack }
 public enum EnemyPersonality { Aggressive, Balanced, Turtling }
 
 public class EnemyCommanderAI : MonoBehaviour
@@ -38,6 +38,9 @@ public class EnemyCommanderAI : MonoBehaviour
         {
             case CommanderState.LookingForFood:
                 HandleLookingForFood();
+                break;
+            case CommanderState.LookingForMaterials:
+                HandleLookingForMaterials();
                 break;
             case CommanderState.Defending:
                 HandleDefending();
@@ -93,6 +96,10 @@ public class EnemyCommanderAI : MonoBehaviour
                     squad.task = AntTask.Food;
                     squad.home = enemyBase;
                     break;
+                case CommanderState.LookingForMaterials:
+                    squad.task = AntTask.Materials;
+                    squad.home = enemyBase;
+                    break;
                 case CommanderState.Defending:
                     squad.target = enemyBase;
                     break;
@@ -112,6 +119,20 @@ public class EnemyCommanderAI : MonoBehaviour
             if (squad.task != AntTask.Food)
             {
                 squad.task = AntTask.Food; 
+                squad.home = enemyBase;    
+            }
+        }
+    }
+
+    private void HandleLookingForMaterials()
+    {
+        foreach (LeadNav squad in activeEnemySquads)
+        {
+            if (squad == null) continue;
+
+            if (squad.task != AntTask.Materials)
+            {
+                squad.task = AntTask.Materials; 
                 squad.home = enemyBase;    
             }
         }
