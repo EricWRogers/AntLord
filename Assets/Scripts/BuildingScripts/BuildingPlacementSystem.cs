@@ -39,6 +39,7 @@ public class BuildingPlacementSystem : MonoBehaviour
 
     void Start()
     {
+        currentBuilding = allBuildings[0];
         DesktopCam = FindFirstObjectByType<FlyCam>();
         cellIndicatorObj = cellIndicator.transform.GetChild(0).gameObject;
         nameText = buildingUI.transform.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<TMP_Text>();//high risk = high reward
