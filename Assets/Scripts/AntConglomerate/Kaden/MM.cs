@@ -12,7 +12,12 @@ public class MM : MonoBehaviour
     // private InputAction pauseAction;
     public GameObject levelSelectMenu; //drag the levelselect menu
 
-     public void Play(string level)
+    void Start()
+    {
+        levelSelectMenu.SetActive(false);
+    }
+
+    public void Play()
     {
         //Main menu start button will now open level select menu
         levelSelectMenu.SetActive(true);
@@ -20,10 +25,14 @@ public class MM : MonoBehaviour
         //Debug.Log("Game Started: " + level);
     }
 
-    public void Options(GameObject menu)
+    public void OpenSubMenu(GameObject subMenu)
     {
-        menu.SetActive(true);
-        Debug.Log("Options Menu Opened.");
+        subMenu.SetActive(true);
+    }
+
+    public void BackButton(GameObject subMenu) //hide submenu
+    { 
+        subMenu.SetActive(false); 
     }
 
     public void Restart(string levelName)
@@ -78,6 +87,12 @@ public class MM : MonoBehaviour
             pm.SetActive(false);
             Debug.Log("Game Resumed.");
         }
+    }
+
+    public void StartLevel(string level)
+    {
+        SceneManager.LoadScene(level);
+        Debug.Log("Game Started: " + level);
     }
 
     // --- Scene Management (Keeping your original logic) ---

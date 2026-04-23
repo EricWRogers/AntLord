@@ -5,6 +5,7 @@ using System.Collections;
 public class Buildings : MonoBehaviour
 {
     public int currentHealth;
+    public int teamID;
     float fallLevel = 10.0f;
     float wiggleAmount = 0.5f;
     public Slider slider;

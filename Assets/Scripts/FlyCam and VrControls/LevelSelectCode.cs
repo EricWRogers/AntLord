@@ -3,11 +3,33 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelectCode : MonoBehaviour
 {
+
+    //Set Playmode
+    public bool VRIsActivated;
+
+    public GameObject DesktopCam;
+    public GameObject VRCam;
+
+    //LevelSelect
     public GameObject levelSelectMenu;
 
-    void Start()
+    public void SetPlayMode()
     {
-        levelSelectMenu.SetActive(false);
+        if (VRIsActivated){
+            DesktopCam.SetActive(false);
+            VRCam.SetActive(true);
+        }
+        else
+        {
+            DesktopCam.SetActive(true);
+            VRCam.SetActive(false);
+        }
+    }
+
+    public void StartLevel(string level)
+    {
+        SceneManager.LoadScene(level);
+        Debug.Log("Game Started: " + level);
     }
 
      public void StartLevel1(string level){

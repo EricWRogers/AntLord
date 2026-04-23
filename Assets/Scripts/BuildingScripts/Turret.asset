@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dac8cff101acc044826436d3daf8b2d, type: 3}
+  m_Name: Turret
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingSO
+  <buildName>k__BackingField: Turret
+  <buildDesc>k__BackingField: used to defend base
+  <ID>k__BackingField: 2
+  <RockCost>k__BackingField: 0
+  <StickCost>k__BackingField: 0
+  <buildHealth>k__BackingField: 0
+  <size>k__BackingField: {x: 1, y: 1, z: 1}
+  <preFab>k__BackingField: {fileID: 3855913851484395035, guid: 6d1cb50dfb1861b4881f8d8d4347ec02, type: 3}
+  <type>k__BackingField: 1

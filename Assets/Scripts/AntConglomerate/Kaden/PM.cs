@@ -10,7 +10,7 @@ public class PM : MonoBehaviour
 
     public bool isPaused = true;
 
-    public float spawnDistance = 10.0f;
+    public float spawnDistance = 20.0f;
 
     private Camera sceneCamera;
 
@@ -57,7 +57,7 @@ public class PM : MonoBehaviour
             isPaused = true;
             Time.timeScale = 0;
             pm.transform.position = sceneCamera.gameObject.transform.position +
-            new Vector3(sceneCamera.gameObject.transform.forward.x, 0, sceneCamera.gameObject.transform.forward.z).normalized * spawnDistance;
+            new Vector3(sceneCamera.gameObject.transform.forward.x, -0.1f, sceneCamera.gameObject.transform.forward.z).normalized * spawnDistance;
             Debug.Log("Game Paused.");
         }
     }
