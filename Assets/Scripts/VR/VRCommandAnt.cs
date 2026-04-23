@@ -16,7 +16,7 @@ public class VRCommandAnt : CommandParent
     public InputAction RSecondaryButton; 
     public InputAction LTrigger;
     public InputAction LPrimaryButton;
-    public InputAction LSecondaryButton;
+    //public InputAction LSecondaryButton;
 
     private int taskValue = 0;
 
@@ -45,7 +45,7 @@ public class VRCommandAnt : CommandParent
 
         LTrigger = VRLEFTInteraction.FindAction("Activate");
         LPrimaryButton = VRLEFTInteraction.FindAction("PrimaryButtonSelect");
-        LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
+        //LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
         RSecondaryButton = VRRIHGHTInteraction.FindAction("SecondaryButtonSelect");
 
         if (VRInputActions != null)
@@ -59,7 +59,7 @@ public class VRCommandAnt : CommandParent
 
             LTrigger.Enable();
             LPrimaryButton.Enable();
-            LSecondaryButton.Enable();
+            //LSecondaryButton.Enable();
             RSecondaryButton.Enable();
         }
 
@@ -70,7 +70,7 @@ public class VRCommandAnt : CommandParent
         LTrigger.performed += OnLeftTrigger;
         LPrimaryButton.performed += OnLeftPrimaryDown;
         RSecondaryButton.performed += OnRightSecondaryDown;
-        LSecondaryButton.performed += OnLeftSecondaryDown;
+        //LSecondaryButton.performed += OnLeftSecondaryDown;
     }
 
     void Update()

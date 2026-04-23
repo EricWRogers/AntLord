@@ -14,6 +14,43 @@ public class PM : MonoBehaviour
 
     private Camera sceneCamera;
 
+    public XRIDefaultInputActions VRInputActions; //input c# script
+    public InputAction LSecondaryButton;
+    public InputActionMap VRRIHGHTInteraction;//action map
+    public InputActionMap VRLEFTInteraction;
+
+    private void OnEnable()
+    {
+        VRInputActions.XRIRightInteraction.Enable();
+        VRInputActions.XRILeftInteraction.Enable();
+    }
+    private void OnDisable()
+    {
+        VRInputActions.XRIRightInteraction.Disable();
+        VRInputActions.XRILeftInteraction.Disable();
+    }
+
+    void Awake()
+    {
+        VRInputActions = new XRIDefaultInputActions();
+
+        VRRIHGHTInteraction = VRInputActions.XRIRightInteraction;
+        VRLEFTInteraction = VRInputActions.XRILeftInteraction;
+
+        LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
+
+        if (VRInputActions != null)
+        {
+            VRRIHGHTInteraction.Enable();
+            VRLEFTInteraction.Enable();
+
+
+            LSecondaryButton.Enable();
+        }
+    }
+
+    
+
     void Start()
     {
         if (!sceneCamera) sceneCamera = Camera.main;
@@ -24,7 +61,7 @@ public class PM : MonoBehaviour
     void Update()
     {
         // Listen for the Escape key
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || LSecondaryButton.WasPerformedThisFrame())
         {
             DisplayPM();
         }
