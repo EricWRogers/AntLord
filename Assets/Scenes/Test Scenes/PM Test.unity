@@ -19452,10 +19452,58 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hand Menu (VR)
       objectReference: {fileID: 0}
+    - target: {fileID: 1608489973628385028, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5beac47ebc5a1c1499776d6698b047ba, type: 3}
+    - target: {fileID: 1626059793908886517, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1626059793908886517, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 3340080609956070481, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418561470125288206, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8.977
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418561470125288206, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.338
+      objectReference: {fileID: 0}
     - target: {fileID: 6138151851423540369, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 325252833272325739}
+    - target: {fileID: 6405030148325775351, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212682649334981922, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8.889
+      objectReference: {fileID: 0}
+    - target: {fileID: 7212682649334981922, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.306
+      objectReference: {fileID: 0}
+    - target: {fileID: 7491862919002485439, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f2ffe5661cb3b714d9d3a1a59ac6402b, type: 3}
+    - target: {fileID: 7491862919002485439, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_SpriteState.m_SelectedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f2ffe5661cb3b714d9d3a1a59ac6402b, type: 3}
+    - target: {fileID: 7491862919002485439, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
+      propertyPath: m_SpriteState.m_HighlightedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f2ffe5661cb3b714d9d3a1a59ac6402b, type: 3}
     - target: {fileID: 7615142580034866898, guid: d9d8a1bd1f43e6548a417609c2caab9f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
