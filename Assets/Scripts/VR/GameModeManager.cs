@@ -11,12 +11,22 @@ public class GameModeManager : MonoBehaviour
     public GameObject DesktopCam;
     public GameObject VRCam;
 
-    public bool VRIsActivated;
+    public static bool VRIsActivated;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
+    {
+        
+    }
+
+    void Start()
+    {
+        //SetPlayMode();
+    }
+
+    void OnLevelWasLoaded(int level)
     {
         if (instance == null)
         {
@@ -29,17 +39,14 @@ public class GameModeManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-    }
 
-    void Start()
-    {
-        SetPlayMode();
-    }
-
-    void OnLevelWasLoaded(int level)
-    {
-        SetPlayMode();
-        Debug.Log("level loaded: Level " + level);
+        int i = 0;
+        while (i < 1)
+        {
+            SetPlayMode();
+            Debug.Log("level loaded. Vr is active? : " + VRIsActivated);
+            i += 1;
+        }
     }
 
     public void SetPlayMode()
@@ -49,6 +56,7 @@ public class GameModeManager : MonoBehaviour
         
         if (!VRCam)
             VRCam = GameObject.Find("VR Player");
+
 
         if (VRIsActivated){
             DesktopCam.SetActive(false);
