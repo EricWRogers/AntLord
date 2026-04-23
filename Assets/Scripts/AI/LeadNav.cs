@@ -199,6 +199,7 @@ public class LeadNav : NavParent
         {
             Collider[] hits = Physics.OverlapSphere(transform.position, sphereRadius);
             Transform closestFood = null;
+            Transform closestMaterial = null;
             float closestDistance = Mathf.Infinity;
 
             foreach (Collider col in hits)
