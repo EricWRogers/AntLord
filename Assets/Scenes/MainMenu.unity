@@ -1160,6 +1160,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   m_ActionId: 83a7af0b-87e3-42c3-a909-95fbf8091e4f
+--- !u!114 &582763291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: XRI Right Interaction/UI Press
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  m_ActionId: 65174b45-c2ee-4f90-93bb-fb4084eaaab3
 --- !u!1 &648205121
 GameObject:
   m_ObjectHideFlags: 0
@@ -1741,6 +1755,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2286020574183859058, guid: dd130a1143b62044bb7ceff8cc0fb9ae, type: 3}
   m_PrefabInstance: {fileID: 1124371484}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1204967430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: XRI Left Interaction/UI Press
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  m_ActionId: 7e1eced7-c774-4fe5-be8f-d8711f646d9e
 --- !u!20 &1227677919 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 325252833587234064, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
@@ -5658,6 +5686,14 @@ PrefabInstance:
       propertyPath: m_MaxRaycastDistance
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 1368228815640358892, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_BlockUIOnInteractableSelection
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368228815640358892, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_UIPressInput.m_InputActionReferencePerformed
+      value: 
+      objectReference: {fileID: 582763291}
     - target: {fileID: 1392985749354470473, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_LocalScale.x
       value: 5
@@ -5734,6 +5770,10 @@ PrefabInstance:
       propertyPath: m_TriggerInput.m_InputActionReference
       value: 
       objectReference: {fileID: 1735391122}
+    - target: {fileID: 2409912290989912343, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_EnableUIInteraction
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2515070823093727421, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -5850,6 +5890,10 @@ PrefabInstance:
       propertyPath: m_MaxRaycastDistance
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 4628873022072157571, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_UIPressInput.m_InputActionReferencePerformed
+      value: 
+      objectReference: {fileID: 1204967430}
     - target: {fileID: 4708548855986757638, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -5859,12 +5903,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5101480525071444230, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_SmoothTurnEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101480525071444230, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_RayInteractorChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5311982506569873656, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5339499978383648045, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_SmoothTurnEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6187054545514698512, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Enabled
