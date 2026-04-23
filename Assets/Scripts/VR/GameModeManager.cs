@@ -11,6 +11,7 @@ public class GameModeManager : MonoBehaviour
     public GameObject DesktopCam;
     public GameObject VRCam;
 
+    [SerializeReference]
     public static bool VRIsActivated;
 
 

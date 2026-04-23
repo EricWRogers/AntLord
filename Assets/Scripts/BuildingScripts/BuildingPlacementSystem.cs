@@ -52,6 +52,8 @@ public class BuildingPlacementSystem : MonoBehaviour
             firstBuilding.transform.localScale.x * 3.0f,
             true);
 
+        buildingUI.SetActive(false);
+
     }
     protected virtual void Update()
     {

@@ -8778,6 +8778,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 2027484740934489852, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2089097664313557041, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -8972,7 +8976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4310885243197138294, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.35
+      value: 4.82
       objectReference: {fileID: 0}
     - target: {fileID: 4310885243197138294, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9321,7 +9325,7 @@ PrefabInstance:
     - target: {fileID: 7677280984369032711, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: buildingUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1930004974}
     - target: {fileID: 7677280984369032711, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: healthText
       value: 
@@ -9455,6 +9459,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+--- !u!1 &1930004974 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2027484740934489852, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+  m_PrefabInstance: {fileID: 1930004973}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1930004976 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7075886389968614136, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
