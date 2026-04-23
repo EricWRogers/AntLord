@@ -8,7 +8,7 @@ public class SBBerrySpawn : MonoBehaviour
     //how often to spawn
     private float spawnTimer;
     public float spawnInterval;
-    public float spawnTiming;
+    // public float spawnTiming;
     public int howManyToSpawn;
 
     //what and where to spawn
@@ -51,7 +51,16 @@ public class SBBerrySpawn : MonoBehaviour
     }
     IEnumerator SpawnApple()
     {
-        howManyToSpawn = Random.Range(1, spawnPoints.Count);
+        if (spawnPoints.Count > 1)
+        {
+            howManyToSpawn = Random.Range(1, spawnPoints.Count - 1);    
+            // Debug.Log ("many location to spawn");
+        }
+        else
+        {
+            howManyToSpawn = 1;
+            // Debug.Log ("only one location to spawn");
+        }
         // Debug.Log("how many: " + howManyToSpawn);
 
         // spawnTiming = Random.Range(spawnInterval, spawnInterval * 2);
