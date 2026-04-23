@@ -4314,11 +4314,11 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 47b1e968a4ed84944b5f0e66fecb70bb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: dd34d05aacbb35e418cb3d9822bc833c, type: 2}
+      objectReference: {fileID: 2100000, guid: 4c81f6819a875b443b2930059d11e2f2, type: 2}
     - target: {fileID: -7511558181221131132, guid: 47b1e968a4ed84944b5f0e66fecb70bb, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 8e4e86f1c90140d419ee87042bd23232, type: 2}
+      objectReference: {fileID: 2100000, guid: dea5716db2509da4a983fa9592befb74, type: 2}
     - target: {fileID: 919132149155446097, guid: 47b1e968a4ed84944b5f0e66fecb70bb, type: 3}
       propertyPath: m_Name
       value: AntLord_Bench (2)
@@ -7747,11 +7747,11 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 47b1e968a4ed84944b5f0e66fecb70bb, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: dd34d05aacbb35e418cb3d9822bc833c, type: 2}
+      objectReference: {fileID: 2100000, guid: 4c81f6819a875b443b2930059d11e2f2, type: 2}
     - target: {fileID: -7511558181221131132, guid: 47b1e968a4ed84944b5f0e66fecb70bb, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 8e4e86f1c90140d419ee87042bd23232, type: 2}
+      objectReference: {fileID: 2100000, guid: dea5716db2509da4a983fa9592befb74, type: 2}
     - target: {fileID: 919132149155446097, guid: 47b1e968a4ed84944b5f0e66fecb70bb, type: 3}
       propertyPath: m_Name
       value: AntLord_Bench (1)
