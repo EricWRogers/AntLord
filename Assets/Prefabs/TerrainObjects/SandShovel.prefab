@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: cabc90507947d2c4e8e81f802110a3dd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.74407
+      value: 43.98438
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cabc90507947d2c4e8e81f802110a3dd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.8
+      value: 10.74
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cabc90507947d2c4e8e81f802110a3dd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 18.83891
+      value: 25.21674
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cabc90507947d2c4e8e81f802110a3dd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3706409454199197225, guid: cabc90507947d2c4e8e81f802110a3dd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fd3be70833ac77a4e96544788fdec8de, type: 2}
     - target: {fileID: 919132149155446097, guid: cabc90507947d2c4e8e81f802110a3dd, type: 3}
       propertyPath: m_Name
       value: SandShovel
@@ -56,6 +60,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Shovel
       objectReference: {fileID: 0}
+    - target: {fileID: 8032750206264916975, guid: cabc90507947d2c4e8e81f802110a3dd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fd3be70833ac77a4e96544788fdec8de, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

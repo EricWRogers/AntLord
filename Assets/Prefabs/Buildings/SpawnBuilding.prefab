@@ -129,19 +129,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnerBuilding
   currentHealth: 0
+  teamID: 0
   slider: {fileID: 6340937985954091052}
   spawnerSO: {fileID: 11400000, guid: a170635a27b8d694dac8aaac276d4395, type: 2}
   spawnPoint: {fileID: 8388733878004940841}
   spawnPadding: 5
   spawnCooldown: 5
   maxAnts: 10
-  foodAmount: 0
   minFoodPerAnt: 2
   tempWinCon: 0
   radius: 3
   antPrefab: {fileID: 1965442970529633344, guid: d6c3e672b216f324da12e99132c11eb7, type: 3}
   maxHealth: 1000
-  LoseScreen: {fileID: 0}
 --- !u!114 &8622619615116508004
 MonoBehaviour:
   m_ObjectHideFlags: 0
