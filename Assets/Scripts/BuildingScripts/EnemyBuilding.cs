@@ -59,10 +59,6 @@ public class EnemyBuilding : Buildings
                 FindFirstObjectByType<MM>()?.Pause();
                 winScreen.SetActive(true);
 
-                
-                AudioManager2.instance?.Stop("AntMarch");
-                AudioManager2.instance?.Stop("MenuMusic");
-
                 // Play win music once
                 AudioManager2.instance?.Play("WinMusic");
             }
