@@ -27,7 +27,7 @@ public class AntBrain : MonoBehaviour
 
     private float currentHealth;
     private float attackTimer;
-    private AntBrain currentTarget;
+    public AntBrain currentTarget;
     private FollowNav followNav;
     private LeadNav leadNav;
     private AntMover mover;
@@ -37,7 +37,7 @@ public class AntBrain : MonoBehaviour
     private Color originalEmissionColor;
     private bool hadEmission;
 
-    private EnemyBuilding currentBuildingTarget;
+    public Buildings currentBuildingTarget;
 
     void Start()
     {
@@ -200,25 +200,14 @@ public class AntBrain : MonoBehaviour
         Collider[] potentialTargets = Physics.OverlapSphere(transform.position, detectionRange);
         foreach (var col in potentialTargets)
         {
-            if (antType.teamID == 0)
+            Buildings building = col.GetComponent<Buildings>();
+            
+            if (building != null && building.teamID != antType.teamID)
             {
-                if (col.GetComponent<EnemyBuilding>())
-                {
-                    currentBuildingTarget = col.GetComponent<EnemyBuilding>();
-                    currentState = AntState.Chasing;
-                    if (followNav != null) followNav.enabled = false;
-                    return;
-                }
-            }
-            else
-            {
-                if (col.CompareTag("Building") && col.GetComponent<EnemyBuilding>() == null)
-                {
-                    currentBuildingTarget = col.GetComponent<EnemyBuilding>();
-                    currentState = AntState.Chasing;
-                    if (followNav != null) followNav.enabled = false;
-                    return;
-                }
+                currentBuildingTarget = building;
+                currentState = AntState.Chasing;
+                if (followNav != null) followNav.enabled = false;
+                return;
             }
         }
     }
@@ -285,7 +274,7 @@ public class AntBrain : MonoBehaviour
     }
 
     public void Attack(AntBrain target) { target.TakeDamage(antType.damage); }
-    public void Attack(EnemyBuilding target) { target.TakeDamage((int)antType.damage); }
+    public void Attack(Buildings target) { target.TakeDamage((int)antType.damage); }
 
     void Die()
     {

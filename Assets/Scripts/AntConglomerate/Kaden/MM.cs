@@ -10,17 +10,29 @@ public class MM : MonoBehaviour
     [SerializeField] private string actionMapName = "Menu"; // Matches your custom map name
 
     // private InputAction pauseAction;
+    public GameObject levelSelectMenu; //drag the levelselect menu
 
-     public void Play(string level)
+    void Start()
     {
-        SceneTransitionManager.singleton.GoToSceneAsyncByName(level);
-        Debug.Log("Game Started: " + level);
+        levelSelectMenu.SetActive(false);
     }
 
-    public void Options(GameObject menu)
+    public void Play()
     {
-        menu.SetActive(true);
-        Debug.Log("Options Menu Opened.");
+        //Main menu start button will now open level select menu
+        levelSelectMenu.SetActive(true);
+        //SceneTransitionManager.singleton.GoToSceneAsyncByName(level);
+        //Debug.Log("Game Started: " + level);
+    }
+
+    public void OpenSubMenu(GameObject subMenu)
+    {
+        subMenu.SetActive(true);
+    }
+
+    public void BackButton(GameObject subMenu) //hide submenu
+    { 
+        subMenu.SetActive(false); 
     }
 
     public void Restart(string levelName)
@@ -75,6 +87,12 @@ public class MM : MonoBehaviour
             pm.SetActive(false);
             Debug.Log("Game Resumed.");
         }
+    }
+
+    public void StartLevel(string level)
+    {
+        SceneManager.LoadScene(level);
+        Debug.Log("Game Started: " + level);
     }
 
     // --- Scene Management (Keeping your original logic) ---

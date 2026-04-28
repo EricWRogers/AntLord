@@ -8,11 +8,15 @@ public class AntMover : MonoBehaviour
     public float turnSpeedDeg = 540f;
     public float arriveDist = 0.25f;
 
+    
+    [Header("Idle Scoot")]
+    public float idleScootSpeed = 0.8f;     
+    public float idleSteerDeadzone = 0.05f; 
+
     CharacterController cc;
     Vector3 goal;
     bool hasGoal;
 
-    
     float speedMul = 1f;
     float currentSpeed;
 
@@ -30,15 +34,12 @@ public class AntMover : MonoBehaviour
     public void SetGoal(Vector3 g) { goal = g; hasGoal = true; }
     public void ClearGoal() => hasGoal = false;
 
-    
     public void SetAbsoluteSpeed(float s)
     {
         baseSpeed = Mathf.Max(minSpeed, s);
-        
         currentSpeed = Mathf.Max(minSpeed, baseSpeed * speedMul);
     }
 
-    
     public void SetSpeedMultiplier(float mul)
     {
         speedMul = Mathf.Clamp01(mul);
@@ -51,7 +52,6 @@ public class AntMover : MonoBehaviour
         currentSpeed = Mathf.Max(minSpeed, baseSpeed);
     }
 
-    // NEW: NavParent/FollowNav can call this to steer
     public void SetSteering(Vector3 steerXZ)
     {
         steerXZ.y = 0f;
@@ -60,8 +60,39 @@ public class AntMover : MonoBehaviour
 
     void Update()
     {
-        if (!hasGoal) return;
+        // if no goal, still allow scoot movement
+        if (!hasGoal)
+    {
+        Vector3 steer = steering;
+        steer.y = 0f;
 
+        if (steer.magnitude > idleSteerDeadzone)
+        {
+            Vector3 dir = steer.normalized;
+
+            
+            Vector3 origin = transform.position + Vector3.up * 0.1f;
+            if (Physics.Raycast(origin, dir, out RaycastHit fHit, 0.25f))
+            {
+                bool isWall = Vector3.Dot(fHit.normal, Vector3.up) < 0.35f;
+                if (isWall)
+                {
+                    Vector3 left = Quaternion.Euler(0, -45f, 0) * dir;
+                    Vector3 right = Quaternion.Euler(0, 45f, 0) * dir;
+
+                    if (!Physics.Raycast(origin, left, 0.25f)) dir = left;
+                    else if (!Physics.Raycast(origin, right, 0.25f)) dir = right;
+                }
+            }
+
+            
+            cc.SimpleMove(dir * idleScootSpeed);
+        }
+
+        return;
+    }
+
+        
         Vector3 to = goal - transform.position;
         to.y = 0f;
 
@@ -72,33 +103,33 @@ public class AntMover : MonoBehaviour
             return;
         }
 
-        Vector3 dir = to / dist;
+        Vector3 dirGoal = to / dist;
 
-        // NEW: apply steering before obstacle checks so ants naturally slide around each other
+        // apply steering before obstacle checks so ants naturally slide around each other
         if (steering.sqrMagnitude > 0.0001f)
-            dir = (dir + steering).normalized;
+            dirGoal = (dirGoal + steering).normalized;
 
-        Vector3 origin = transform.position + Vector3.up * 0.1f;
-        if (Physics.Raycast(origin, dir, out RaycastHit fHit, 0.25f))
+        Vector3 originGoal = transform.position + Vector3.up * 0.1f;
+        if (Physics.Raycast(originGoal, dirGoal, out RaycastHit fHitGoal, 0.25f))
         {
             // If the surface normal is mostly vertical, then nudge.
             //If mostly upward, don't nudge
-            bool isWall = Vector3.Dot(fHit.normal, Vector3.up) < 0.35f; // tweak 0.2-0.5
+            bool isWall = Vector3.Dot(fHitGoal.normal, Vector3.up) < 0.35f; // tweak 0.2-0.5
             if (isWall)
             {
-                Vector3 left = Quaternion.Euler(0, -45f, 0) * dir;
-                Vector3 right = Quaternion.Euler(0, 45f, 0) * dir;
+                Vector3 left = Quaternion.Euler(0, -45f, 0) * dirGoal;
+                Vector3 right = Quaternion.Euler(0, 45f, 0) * dirGoal;
 
-                if (!Physics.Raycast(origin, left, 0.25f)) dir = left;
-                else if (!Physics.Raycast(origin, right, 0.25f)) dir = right;
+                if (!Physics.Raycast(originGoal, left, 0.25f)) dirGoal = left;
+                else if (!Physics.Raycast(originGoal, right, 0.25f)) dirGoal = right;
             }
         }
 
         // manual rotation
-        Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeedDeg * Time.deltaTime);
+        Quaternion targetRotGoal = Quaternion.LookRotation(dirGoal, Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotGoal, turnSpeedDeg * Time.deltaTime);
 
         // keeps movement stable on uneven surfaces
-        cc.SimpleMove(dir * currentSpeed);
+        cc.SimpleMove(dirGoal * currentSpeed);
     }
 }

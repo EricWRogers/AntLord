@@ -10,9 +10,46 @@ public class PM : MonoBehaviour
 
     public bool isPaused = true;
 
-    public float spawnDistance = 10.0f;
+    public float spawnDistance = 20.0f;
 
     private Camera sceneCamera;
+
+    public XRIDefaultInputActions VRInputActions; //input c# script
+    public InputAction LSecondaryButton;
+    public InputActionMap VRRIHGHTInteraction;//action map
+    public InputActionMap VRLEFTInteraction;
+
+    private void OnEnable()
+    {
+        VRInputActions.XRIRightInteraction.Enable();
+        VRInputActions.XRILeftInteraction.Enable();
+    }
+    private void OnDisable()
+    {
+        VRInputActions.XRIRightInteraction.Disable();
+        VRInputActions.XRILeftInteraction.Disable();
+    }
+
+    void Awake()
+    {
+        VRInputActions = new XRIDefaultInputActions();
+
+        VRRIHGHTInteraction = VRInputActions.XRIRightInteraction;
+        VRLEFTInteraction = VRInputActions.XRILeftInteraction;
+
+        LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
+
+        if (VRInputActions != null)
+        {
+            VRRIHGHTInteraction.Enable();
+            VRLEFTInteraction.Enable();
+
+
+            LSecondaryButton.Enable();
+        }
+    }
+
+    
 
     void Start()
     {
@@ -24,7 +61,7 @@ public class PM : MonoBehaviour
     void Update()
     {
         // Listen for the Escape key
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || LSecondaryButton.WasPerformedThisFrame())
         {
             DisplayPM();
         }
@@ -57,7 +94,7 @@ public class PM : MonoBehaviour
             isPaused = true;
             Time.timeScale = 0;
             pm.transform.position = sceneCamera.gameObject.transform.position +
-            new Vector3(sceneCamera.gameObject.transform.forward.x, 0, sceneCamera.gameObject.transform.forward.z).normalized * spawnDistance;
+            new Vector3(sceneCamera.gameObject.transform.forward.x, -0.1f, sceneCamera.gameObject.transform.forward.z).normalized * spawnDistance;
             Debug.Log("Game Paused.");
         }
     }

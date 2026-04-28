@@ -10,12 +10,13 @@ public class BuildingPlacementSystem : MonoBehaviour
 
     [Header("Building Placement Data")]
     public List<BuildingSO> allBuildings;
-    public MarchingCubes voxelTerrain;
+    public MarchingCubeManager voxelTerrain;
     public Grid grid;
     public GameObject firstBuilding;
+    private BuildingSO currentBuilding;
 
     [Header("Building State")]
-    public int selectedObjectIndex = -1;
+    public int selectedObjectIndex = 0;
     protected Vector3 lastPosition;
     protected float angle;
     public bool inBuildMode = false;
@@ -23,28 +24,38 @@ public class BuildingPlacementSystem : MonoBehaviour
     public LayerMask placementLayermask;
     public GameObject mouseIndicator;
     public GameObject cellIndicator;
-    public GameObject cellIndicatorObj;
+    private GameObject cellIndicatorObj;
     public event Action OnClicked, OnExit;
+    bool canBuild = false;
 
     // ===== VR / UI SETTINGS =====
     [Header("VR & UI")]
     public GameObject buildingUI;
-    public float spawnDistance = 10.0f;
-    public TMP_Text nameText;
-    public TMP_Text descText;
-    public TMP_Text costText;
-    public TMP_Text healthText;
+    private float spawnDistance = 10.0f;
+    private TMP_Text nameText;
+    private TMP_Text descText;
+    private TMP_Text costText;
+    private TMP_Text healthText;
     public FlyCam DesktopCam;
 
     void Start()
     {
+        currentBuilding = allBuildings[0];
         DesktopCam = FindFirstObjectByType<FlyCam>();
+        cellIndicatorObj = cellIndicator.transform.GetChild(0).gameObject;
+        nameText = buildingUI.transform.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<TMP_Text>();//high risk = high reward
+        descText = buildingUI.transform.GetChild(0).GetChild(1).GetChild(1).gameObject.GetComponent<TMP_Text>();
+        costText = buildingUI.transform.GetChild(0).GetChild(1).GetChild(2).gameObject.GetComponent<TMP_Text>();
+        healthText = buildingUI.transform.GetChild(0).GetChild(1).GetChild(3).gameObject.GetComponent<TMP_Text>();
         if (!sceneCamera) sceneCamera = Camera.main;
         StopPlacement();
-        voxelTerrain.SetVoxelWithTerritory(
-            firstBuilding.transform.position,
-            firstBuilding.transform.localScale.x * 3.0f,
-            true);
+        voxelTerrain.SetVoxelsInSphere(
+        firstBuilding.transform.position,
+        firstBuilding.transform.localScale.x * 3.0f,
+        0f
+        );
+
+        buildingUI.SetActive(false);
 
     }
     protected virtual void Update()
@@ -76,12 +87,12 @@ public class BuildingPlacementSystem : MonoBehaviour
         mouseIndicator.transform.position = mousePosition;
 
         cellIndicator.transform.position = (angle >= 45.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
-        if (voxelTerrain.CheckVoxel(grid.WorldToCell(mousePosition), cellIndicatorObj.transform.localScale.x * 3.0f))
-        {
-            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.green);
-        }
-        else
-            cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.red);
+
+        canBuild = voxelTerrain.PlacementChecks(mousePosition, currentBuilding.size.x * 3.0f);
+        cellIndicatorObj.GetComponent<Renderer>().material.SetColor(
+            "_Diffuse",
+            canBuild ? Color.green : Color.red
+        );
 
     }
     public void StartPlacement()
@@ -112,54 +123,49 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     protected virtual void PlaceStruct()
     {
-        if (IsPointerOverUI() || ResourceManager.instance.rocks < allBuildings[selectedObjectIndex].RockCost || ResourceManager.instance.sticks < allBuildings[selectedObjectIndex].StickCost)
+        if (ResourceManager.instance.rocks < currentBuilding.RockCost ||
+            ResourceManager.instance.sticks < currentBuilding.StickCost)
         {
+            Debug.Log(
+                $"Rocks: {ResourceManager.instance.rocks} / Needed: {currentBuilding.RockCost} | " +
+                $"Sticks: {ResourceManager.instance.sticks} / Needed: {currentBuilding.StickCost}"
+            );
+
             return;
         }
-        bool canBuild = true;
+
         Vector3 mousePosition = GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
-        BuildingSO buildingSO = allBuildings[selectedObjectIndex];
 
-        //places the building at the selectedIndex at these grid coords
-        GameObject buildingParent = buildingSO.preFab;
-        buildingParent.transform.localScale = buildingSO.size;
+        GameObject buildingParent = currentBuilding.preFab;
+        buildingParent.transform.localScale = currentBuilding.size;
 
         GameObject building = buildingParent.transform.GetChild(0).gameObject;
-        building.transform.Rotate(0.0f, rotation, 0.0f);
+        building.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
 
-        //45 because all the voxels should be perfect right triangles (weirdly some are like 54)
-        //if its a 45 incline or more just bump the building up one so we dont have to bother with a bunch of conditionals
-        buildingParent.transform.position = (angle >= 45.0f) ? grid.CellToWorld(gridPosition) + Vector3.up : grid.CellToWorld(gridPosition);
+        buildingParent.transform.position =
+            (angle >= 45.0f)
+            ? grid.CellToWorld(gridPosition) + Vector3.up
+            : grid.CellToWorld(gridPosition);
 
-        //these are to set whatever the terrain we choose
         if (voxelTerrain != null && voxelTerrain.enabled)
         {
-            switch (buildingSO.type)
-            {
-                //checks if a resource building that can be placed anywhere
-                case BuildingSO.BuildingType.ResourceExtraction:
-                    canBuild = voxelTerrain.SetVoxelWithoutTerritory(
-                        building.transform.position,  // le center of the brush
-                        building.transform.localScale.x * 3.0f);//le radius of the brush a bit bigger than normal to get surronding tiles
-                    break;
+            Vector3 buildPos = building.transform.position;
+            float radius = building.transform.localScale.x * 3.0f;
 
-                //checks if a defense building that must be built in own territory
-                case BuildingSO.BuildingType.MilitaryIndustiralComplex:
-                    canBuild = voxelTerrain.SetVoxelWithTerritory(
-                        building.transform.position, // le center of the brush
-                        building.transform.localScale.x * 3.0f);//le radius of the brush a bit bigger than normal to get surronding tiles
-                    break;
-            }
+            float voxelValue =
+                (currentBuilding.type == BuildingSO.BuildingType.MilitaryIndustiralComplex)
+                ? 0f
+                : 1f;
+
+            canBuild = voxelTerrain.SetVoxelsInSphere(buildPos, radius, voxelValue);
         }
+
         if (canBuild)
-        {
             Instantiate(buildingParent);
-            //esourceManager.instance.AddFood(-allBuildings[selectedObjectIndex].buildCost);
-            ResourceManager.instance.AddRock(-allBuildings[selectedObjectIndex].RockCost);
-            ResourceManager.instance.AddStick(-allBuildings[selectedObjectIndex].StickCost);
-        }
 
+        ResourceManager.instance.AddRock(-currentBuilding.RockCost);
+        ResourceManager.instance.AddStick(-currentBuilding.StickCost);
     }
     //look sometimes Lambda functions just do this
     public bool IsPointerOverUI()
@@ -191,14 +197,12 @@ public class BuildingPlacementSystem : MonoBehaviour
     public void NextBuilding()
     {
         selectedObjectIndex = (selectedObjectIndex >= allBuildings.Count - 1) ? 0 : selectedObjectIndex + 1;
-        Debug.Log($"increment {selectedObjectIndex}");
         SetBuildingInfo(allBuildings[selectedObjectIndex]);
     }
 
     public void PreviousBuilding()
     {
         selectedObjectIndex = (selectedObjectIndex <= 0) ? allBuildings.Count - 1 : selectedObjectIndex - 1;
-        Debug.Log($"decrement {selectedObjectIndex}");
         SetBuildingInfo(allBuildings[selectedObjectIndex]);
     }
     public void Build()
@@ -207,6 +211,8 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     public void SetBuildingInfo(BuildingSO building)
     {
+        currentBuilding = building;
+
         nameText.text = building.buildName;
         descText.text = building.buildDesc;
         costText.text = $"Stick Cost: {building.StickCost} Rock Cost: {building.RockCost}";
