@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 
 public class CommandAnt : CommandParent
@@ -14,6 +15,8 @@ public class CommandAnt : CommandParent
     // private InputAction Deselect;
     private InputAction R;
     private InputAction Lasso;
+
+    public TextMeshProUGUI taskText;
 
 
     void Awake()
@@ -40,6 +43,11 @@ public class CommandAnt : CommandParent
     void OnDisable()
     {
         inputActions.FindActionMap("Controls").Disable();
+    }
+
+    void Start()
+    {
+        taskText.text = "task = none";
     }
 
     void Update()
@@ -73,17 +81,23 @@ public class CommandAnt : CommandParent
         else if (Num1.WasPressedThisFrame())
         {
             SwitchToManual();
+
+            taskText.text = "task = manual";
         }
 
         // Switch to food with 2   
         else if (Num2.WasPressedThisFrame())
         {
             SwitchToFood();
+
+            taskText.text = "task = food";
         }
 
         else if (Num3.WasPressedThisFrame())
         {
             SwitchToMaterial();
+
+            taskText.text = "task = material";
         }
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
+using TMPro;
 
 public class VRCommandAnt : CommandParent
 {
@@ -17,6 +18,8 @@ public class VRCommandAnt : CommandParent
     public InputAction LTrigger;
     public InputAction LPrimaryButton;
     //public InputAction LSecondaryButton;
+
+    public TextMeshProUGUI taskText;
 
     private int taskValue = 0;
 
@@ -73,6 +76,11 @@ public class VRCommandAnt : CommandParent
         //LSecondaryButton.performed += OnLeftSecondaryDown;
     }
 
+    void Start()
+    {
+        taskText.text = "task = none";
+    }
+    
     void Update()
     {
         CheckLassoSelect(RSecondaryButton);
@@ -107,18 +115,28 @@ public class VRCommandAnt : CommandParent
             SwitchToManual();
             taskValue = 0;
             Debug.Log("task = manual");
+
+            taskText.text = "task = manual";
         }
         else if(taskValue == 0)
         {
             SwitchToFood();
             taskValue++;
             Debug.Log("task = food");
+
+            taskText.text = "task = food";
         }
         else if(taskValue == 1)
         {
             SwitchToMaterial();
             taskValue++;
             Debug.Log("task = material");
+
+            taskText.text = "task = material";
+        }
+        else
+        {
+            taskText.text = "task = none";
         }
     }
     private void OnLeftSecondaryDown(InputAction.CallbackContext context)
