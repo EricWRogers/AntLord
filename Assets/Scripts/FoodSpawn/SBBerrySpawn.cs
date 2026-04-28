@@ -86,7 +86,7 @@ public class SBBerrySpawn : MonoBehaviour
 
             if (Physics.CheckSphere(spawnPosition, sphereRadius))
             {
-                Debug.Log("something is there");
+                Debug.Log("cannot spawn berry at "+ spawnPosition + ", there is something in the way");
             }
 
             else
@@ -97,11 +97,10 @@ public class SBBerrySpawn : MonoBehaviour
                 if (myGrowDrop != null)
                 {
                     myGrowDrop.gdGrowDuration = growDuration;
-                    Debug.Log("yes" + myGrowDrop.gdGrowDuration);
-                }
-                    
+                    Debug.Log("spawning berry. Spawn time: " + myGrowDrop.gdGrowDuration);
+                }  
                 else
-                    Debug.Log("no"); 
+                    Debug.LogError("cannot spawn berry"); 
             }
 
 
