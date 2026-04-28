@@ -8,7 +8,7 @@ public class EnemyBuilding : Buildings
     public Transform spawnPoint;
     public float spawnPadding = 5.0f;
     float timer = 0.0f;
-    public float spawnCooldown = 20f;
+    public float spawnCooldown = 10.0f;
     public float radius = 5.0f;
     public int maxAnts = 10;
     List<GameObject> ants = new List<GameObject>();
@@ -20,6 +20,9 @@ public class EnemyBuilding : Buildings
     [Tooltip("TEMPORARY! Win screen")]
     public GameObject winScreen;
 
+    
+    private bool hasWon = false;
+
     void Start()
     {
         teamID = 1;
@@ -29,26 +32,35 @@ public class EnemyBuilding : Buildings
 
         winScreen.SetActive(false);
     }
+
     void FixedUpdate()
     {
-        if (ants.Count < maxAnts && this.currentHealth > 0)
+        if (!hasWon)
         {
-            timer += Time.deltaTime;
-            if (timer >= spawnCooldown)
+            if (ants.Count < maxAnts && this.currentHealth > 0)
             {
-                SpawnAnt();
-                timer = 0;
+                timer += Time.deltaTime;
+                if (timer >= spawnCooldown)
+                {
+                    SpawnAnt();
+                    timer = 0;
+                }
             }
-        }
-        else if (timerText != null)
-        {
-            timerText.text = "All Ants Spawned";
-        }
+            else if (timerText != null)
+            {
+                timerText.text = "All Ants Spawned";
+            }
 
-        if (this.currentHealth <= 0)
-        {
-            FindFirstObjectByType<MM>().Pause();
-            winScreen.SetActive(true);
+            // WIN CONDITION for Muisc
+            if (this.currentHealth <= 0)
+            {
+                hasWon = true;
+
+                FindFirstObjectByType<MM>()?.Pause();
+                winScreen.SetActive(true);
+                
+                AudioManager2.instance?.Play("WinMusic");
+            }
         }
 
         UpdateTimerUI();
@@ -56,7 +68,7 @@ public class EnemyBuilding : Buildings
 
     void UpdateTimerUI()
     {
-        if (timerText != null)
+        if (timerText != null && !hasWon)
         {
             float timeRemaining = Mathf.Max(0, spawnCooldown - timer);
             timerText.text = $"Next Spawn: {timeRemaining:F1}s";
