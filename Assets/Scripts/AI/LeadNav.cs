@@ -148,7 +148,7 @@ public class LeadNav : NavParent
             {
                 int capacity = (followers.Count + 1) * antTier;
 
-                if (foodBits >= capacity)
+                if (amCarryingFood || foodBits >= capacity)
                 {
                     if (home != null)
                     {
@@ -263,11 +263,6 @@ public class LeadNav : NavParent
                         target = foodTransform;
                     else
                         Debug.Log("Failed to find objective, freak out!");
-                }
-                if (amCarryingFood && target != home) 
-                {
-                    target = home;
-                    recentObjective = home;
                 }
             }
         }
