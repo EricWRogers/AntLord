@@ -1,8 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.XR.Management;
-using System.Collections;
-using System;
 
 public class GameModeManager : MonoBehaviour
 {
@@ -11,6 +7,7 @@ public class GameModeManager : MonoBehaviour
 
     public GameObject DesktopCam;
     public GameObject VRCam;
+    public GameObject PlayerPlane;
 
     public static bool VRIsActivated;
 
@@ -53,11 +50,13 @@ public class GameModeManager : MonoBehaviour
         if (VRIsActivated || isVROverride){
             DesktopCam.SetActive(false);
             VRCam.SetActive(true);
+            PlayerPlane.SetActive(true);
         }
         else
         {
             DesktopCam.SetActive(true);
             VRCam.SetActive(false);
+            PlayerPlane.SetActive(false);
         }
     }
 
