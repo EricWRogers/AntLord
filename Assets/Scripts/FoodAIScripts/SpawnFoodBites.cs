@@ -26,54 +26,59 @@ public class SpawnFoodBites : MonoBehaviour
     }
     // Update is called once per frame
     public void SpawnFoodBit()
+{
+    hitColliders = Physics.OverlapSphere(transform.position, radius);
+    foreach (var hitCollider in hitColliders) 
     {
-        hitColliders = Physics.OverlapSphere(transform.position, radius);
-        foreach (var hitColliders in hitColliders)
+        if (hitCollider.CompareTag("Ant"))
         {
-            if(hitColliders.CompareTag("Ant"))
-            {   
-                tier = hitColliders.GetComponent<LeadNav>().antTier;
-                GameObject ant = hitColliders.gameObject;
-                if (hitColliders.GetComponent<FollowNav>().enabled && !hitColliders.GetComponent<FollowNav>().amCarryingFood)
+            LeadNav ln = hitCollider.GetComponent<LeadNav>();
+            FollowNav fn = hitCollider.GetComponent<FollowNav>();
+            
+            tier = (ln != null) ? ln.antTier : 1; 
+
+            GameObject ant = hitCollider.gameObject;
+
+            if (fn != null && fn.enabled && !fn.amCarryingFood)
+            {
+                if (fn.leader == null) continue;
+
+                fn.amCarryingFood = true;
+                for (int i = 1; i <= tier; i++)
                 {
-                    if (!hitColliders.GetComponent<LeadNav>().enabled)
-                    {
-                        hitColliders.GetComponent<FollowNav>().amCarryingFood = true;
-                        for (int i = 1; i <= tier; i++)
-                        {
-                            
-                            Instantiate(foodBitePrefab, hitColliders.transform.position + (biteSpawn * i), transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
-                            mostRecentLead = hitColliders.GetComponent<FollowNav>().leader;
-                            
-                        }
-                        foodHealth -= tier;
-                        hitColliders.GetComponent<FollowNav>().leader.foodBits += tier;
-                    }
-                    
-
-
+                    Instantiate(foodBitePrefab, hitCollider.transform.position + (biteSpawn * i), transform.rotation)
+                        .GetComponent<FoodBites>().SetAnt(ant);
                 }
-                else if (hitColliders.GetComponent<LeadNav>().enabled && !hitColliders.GetComponent<LeadNav>().amCarryingFood)
+                
+                mostRecentLead = fn.leader;
+                foodHealth -= tier;
+                fn.leader.foodBits += tier;
+            }
+            else if (ln != null && ln.enabled && !ln.amCarryingFood)
+            {
+                ln.amCarryingFood = true;
+                for (int i = 1; i <= tier; i++)
                 {
-                    for (int i = 1; i <= tier; i++)
-                    {
-                        Instantiate(foodBitePrefab, hitColliders.transform.position + (biteSpawn * i), transform.rotation).GetComponent<FoodBites>().SetAnt(ant);
-                        mostRecentLead = hitColliders.GetComponent<LeadNav>();
-                        hitColliders.GetComponent<LeadNav>().amCarryingFood = true;
-                    }
-                    
-                    foodHealth -= tier;
-                    hitColliders.GetComponent<LeadNav>().foodBits += tier;
+                    Instantiate(foodBitePrefab, hitCollider.transform.position + (biteSpawn * i), transform.rotation)
+                        .GetComponent<FoodBites>().SetAnt(ant);
                 }
-
+                
+                mostRecentLead = ln;
+                foodHealth -= tier;
+                ln.foodBits += tier;
             }
         }
-        if (foodHealth <= 0 )
+    }
+
+    if (foodHealth <= 0)
+    {
+        if (mostRecentLead != null)
         {
             mostRecentLead.target = mostRecentLead.home;
-            Destroy(gameObject);
         }
+        Destroy(gameObject);
     }
+}
 
     
     

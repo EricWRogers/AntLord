@@ -264,6 +264,11 @@ public class LeadNav : NavParent
                     else
                         Debug.Log("Failed to find objective, freak out!");
                 }
+                if (amCarryingFood && target != home) 
+                {
+                    target = home;
+                    recentObjective = home;
+                }
             }
         }
     }
