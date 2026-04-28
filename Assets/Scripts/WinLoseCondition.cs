@@ -1,13 +1,14 @@
 using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 
 public class WinLoseCondition : MonoBehaviour
 {
     Buildings[] _buildings;
-    private List<Buildings> _playerBuildings = new List<Buildings>();
-    private List<Buildings> _enemyBuildings = new List<Buildings>();
+    public  List<Buildings> _playerBuildings = new List<Buildings>();
+    public List<Buildings> _enemyBuildings = new List<Buildings>();
     AntSelectGlow[] _playerAnts;
 
     public GameObject nextLevelBttn;
@@ -72,5 +73,20 @@ public class WinLoseCondition : MonoBehaviour
             retryBttn.SetActive(true);
             mmBttn.SetActive(true);
         }
+    }
+
+    public void NextLevel(string lvlName)
+    {
+        SceneManager.LoadScene(lvlName);
+    }
+
+    public void Reset()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ReturntoMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

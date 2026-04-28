@@ -10,12 +10,15 @@ public class StatsText : MonoBehaviour
     public TextMeshProUGUI antCountText;
 
     private SpawnFoodBites _spawnFoodBites;
-    private ResourceManager _rM;
+    public ResourceManager _rM;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        if (!_rM)
+        {
+            _rM = FindAnyObjectByType<ResourceManager>();
+        } 
     }
 
     // Update is called once per frame
