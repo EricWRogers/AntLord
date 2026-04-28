@@ -14666,7 +14666,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 543553926}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 903113464}
+        m_TargetAssemblyTypeName: WinLoseCondition, Assembly-CSharp
+        m_MethodName: ReturntoMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &543553926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23763,6 +23775,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d619354718cec344aaa65315c99fba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WinLoseCondition
+  _playerBuildings: []
+  _enemyBuildings: []
   nextLevelBttn: {fileID: 1520634343}
   retryBttn: {fileID: 1125130820}
   mmBttn: {fileID: 543553924}
@@ -30643,7 +30657,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1125130822}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 903113464}
+        m_TargetAssemblyTypeName: WinLoseCondition, Assembly-CSharp
+        m_MethodName: Reset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1125130822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39119,7 +39145,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1520634345}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 903113464}
+        m_TargetAssemblyTypeName: WinLoseCondition, Assembly-CSharp
+        m_MethodName: NextLevel
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainMenu
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1520634345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53834,13 +53872,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4193420844387019435, guid: 0f41e7709a822e1478ab436a8dc2a886, type: 3}
+      propertyPath: food
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7934127808929598579, guid: 0f41e7709a822e1478ab436a8dc2a886, type: 3}
       propertyPath: m_Name
       value: ResourceManager
       objectReference: {fileID: 0}
     - target: {fileID: 7934127808929598579, guid: 0f41e7709a822e1478ab436a8dc2a886, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
