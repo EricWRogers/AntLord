@@ -581,12 +581,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBuilding
   currentHealth: 0
-  teamID: 0
+  teamID: 1
   slider: {fileID: 5955399473620446363}
   spawnerSO: {fileID: 11400000, guid: a170635a27b8d694dac8aaac276d4395, type: 2}
   spawnPoint: {fileID: 7486629724322937012}
   spawnPadding: 5
-  spawnCooldown: 10
+  spawnCooldown: 20
   radius: 5
   maxAnts: 10
   antPrefab: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
