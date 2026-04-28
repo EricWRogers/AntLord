@@ -10,7 +10,7 @@ public class BuildingPlacementSystem : MonoBehaviour
 
     [Header("Building Placement Data")]
     public List<BuildingSO> allBuildings;
-    public MarchingCubes voxelTerrain;
+    public MarchingCubeManager voxelTerrain;
     public Grid grid;
     public GameObject firstBuilding;
     private BuildingSO currentBuilding;
@@ -48,10 +48,11 @@ public class BuildingPlacementSystem : MonoBehaviour
         healthText = buildingUI.transform.GetChild(0).GetChild(1).GetChild(3).gameObject.GetComponent<TMP_Text>();
         if (!sceneCamera) sceneCamera = Camera.main;
         StopPlacement();
-        voxelTerrain.SetVoxelWithTerritory(
-            firstBuilding.transform.position,
-            firstBuilding.transform.localScale.x * 3.0f,
-            true);
+        voxelTerrain.SetVoxelsInSphere(
+        firstBuilding.transform.position,
+        firstBuilding.transform.localScale.x * 3.0f,
+        0f
+        );
 
         buildingUI.SetActive(false);
 
@@ -86,24 +87,12 @@ public class BuildingPlacementSystem : MonoBehaviour
 
         cellIndicator.transform.position = (angle >= 45.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
 
-        switch (currentBuilding.type)
-        {
-            case BuildingSO.BuildingType.ResourceExtraction:
-                if (voxelTerrain.CheckVoxel(grid.WorldToCell(mousePosition), cellIndicatorObj.transform.localScale.x * 3.0f, false))
-                    cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.green);
+        bool canBuild = true;
 
-                else
-                    cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.red);
-                break;
-
-            case BuildingSO.BuildingType.MilitaryIndustiralComplex:
-                if (voxelTerrain.CheckVoxel(grid.WorldToCell(mousePosition), cellIndicatorObj.transform.localScale.x * 3.0f))
-                    cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.green);
-
-                else
-                    cellIndicatorObj.GetComponent<Renderer>().material.SetColor("_Diffuse", Color.red);
-                break;
-        }
+        cellIndicatorObj.GetComponent<Renderer>().material.SetColor(
+            "_Diffuse",
+            canBuild ? Color.green : Color.red
+        );
 
     }
     public void StartPlacement()
@@ -134,53 +123,47 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     protected virtual void PlaceStruct()
     {
-        if (IsPointerOverUI() || ResourceManager.instance.rocks < allBuildings[selectedObjectIndex].RockCost || ResourceManager.instance.sticks < allBuildings[selectedObjectIndex].StickCost)
+        if (IsPointerOverUI() ||
+            ResourceManager.instance.rocks < currentBuilding.RockCost ||
+            ResourceManager.instance.sticks < currentBuilding.StickCost)
         {
             return;
         }
-        bool canBuild = true;
+
         Vector3 mousePosition = GetSelectedMapPosition();
         Vector3Int gridPosition = grid.WorldToCell(mousePosition);
 
-        //places the building at the selectedIndex at these grid coords
         GameObject buildingParent = currentBuilding.preFab;
         buildingParent.transform.localScale = currentBuilding.size;
 
         GameObject building = buildingParent.transform.GetChild(0).gameObject;
-        building.transform.Rotate(0.0f, rotation, 0.0f);
+        building.transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
 
-        //45 because all the voxels should be perfect right triangles (weirdly some are like 54)
-        //if its a 45 incline or more just bump the building up one so we dont have to bother with a bunch of conditionals
-        buildingParent.transform.position = (angle >= 45.0f) ? grid.CellToWorld(gridPosition) + Vector3.up : grid.CellToWorld(gridPosition);
+        buildingParent.transform.position =
+            (angle >= 45.0f)
+            ? grid.CellToWorld(gridPosition) + Vector3.up
+            : grid.CellToWorld(gridPosition);
 
-        //these are to set whatever the terrain we choose
+        // =========================
+        // VOXEL MODIFICATION ONLY
+        // =========================
         if (voxelTerrain != null && voxelTerrain.enabled)
         {
-            switch (currentBuilding.type)
-            {
-                //checks if a resource building that can be placed anywhere except ontop of buildings
-                case BuildingSO.BuildingType.ResourceExtraction:
-                    canBuild = voxelTerrain.SetVoxelWithoutTerritory(
-                        building.transform.position,  // le center of the brush
-                        building.transform.localScale.x * 3.0f);//le radius of the brush a bit bigger than normal to get surronding tiles
-                    break;
+            Vector3 buildPos = building.transform.position;
+            float radius = building.transform.localScale.x * 3.0f;
 
-                //checks if a defense building that must be built in own territory
-                case BuildingSO.BuildingType.MilitaryIndustiralComplex:
-                    canBuild = voxelTerrain.SetVoxelWithTerritory(
-                        building.transform.position, // le center of the brush
-                        building.transform.localScale.x * 3.0f);//le radius of the brush a bit bigger than normal to get surronding tiles
-                    break;
-            }
-        }
-        if (canBuild)
-        {
-            Instantiate(buildingParent);
-            //esourceManager.instance.AddFood(-allBuildings[selectedObjectIndex].buildCost);
-            ResourceManager.instance.AddRock(-allBuildings[selectedObjectIndex].RockCost);
-            ResourceManager.instance.AddStick(-allBuildings[selectedObjectIndex].StickCost);
+            float voxelValue =
+                (currentBuilding.type == BuildingSO.BuildingType.MilitaryIndustiralComplex)
+                ? 0f   // carve / flatten / modify terrain
+                : 1f;  // resource-style modification
+
+            voxelTerrain.SetVoxelsInSphere(buildPos, radius, voxelValue);
         }
 
+        Instantiate(buildingParent);
+
+        ResourceManager.instance.AddRock(-currentBuilding.RockCost);
+        ResourceManager.instance.AddStick(-currentBuilding.StickCost);
     }
     //look sometimes Lambda functions just do this
     public bool IsPointerOverUI()

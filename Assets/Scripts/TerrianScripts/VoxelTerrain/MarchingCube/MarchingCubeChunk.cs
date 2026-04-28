@@ -11,7 +11,7 @@ public class MarchingCubeChunk : MonoBehaviour
     private MeshRenderer meshRenderer;
     
     public float[,,] heights;
-    private Vector3Int chunkOffset;
+    public Vector3Int chunkOffset; //need
     private int size;
     private float resolution;
     private float threshold;

@@ -37,14 +37,14 @@ public class MarchingCubeManager : MonoBehaviour
     [SerializeField] private bool chunkGenerated;
 
     private Dictionary<Vector3Int, MarchingCubeChunk> chunks = new Dictionary<Vector3Int, MarchingCubeChunk>(); //dictionary holding all chunks!
-    
+
     [Header("Inspector Fields:")]
     public MarchingCubeChunk chunkPrefab;
     public Material sandMaterial;
     public RayOMayhem rayOMayhem;
     //public NavMeshSurface navMeshSurface;
 
-    void Start() 
+    void Start()
     {
         ClearWorld();
         InitializeWorld();
@@ -61,7 +61,7 @@ public class MarchingCubeManager : MonoBehaviour
     public void InitializeWorld()
     {
         if (chunks == null) chunks = new Dictionary<Vector3Int, MarchingCubeChunk>();
-        
+
         for (int x = 0; x < worldSizeInChunks; x++)
         {
             for (int z = 0; z < worldSizeInChunks; z++)
@@ -86,7 +86,7 @@ public class MarchingCubeManager : MonoBehaviour
             Debug.LogWarning("Layer 'Terrain' not found.");
         }
         chunk.Setup(offset, chunkSize, resolution, threshold, sandMaterial);
-        
+
         //noise Generation
         GenerateChunkHeights(chunk, offset);
         chunk.UpdateMesh();
@@ -107,7 +107,7 @@ public class MarchingCubeManager : MonoBehaviour
         //clears whenever the script recompiles in the editor.
         var children = new List<GameObject>();
         foreach (Transform child in transform) children.Add(child.gameObject);
-    
+
         foreach (var child in children)
         {
             //must use DestroyImmediate in Editor scripts
@@ -147,7 +147,7 @@ public class MarchingCubeManager : MonoBehaviour
     {
         Debug.Log($"Modifying voxel at {worldPosition} with radius {radius} and new value {newValue}");
         Vector3 localPos = transform.InverseTransformPoint(worldPosition) / resolution;
-        
+
         //determine which chunks are affected by the radius
         int minX = Mathf.FloorToInt((localPos.x - radius) / chunkSize);
         int maxX = Mathf.FloorToInt((localPos.x + radius) / chunkSize);
@@ -198,5 +198,83 @@ public class MarchingCubeManager : MonoBehaviour
         float zx = Mathf.PerlinNoise(z, x);
         float zy = Mathf.PerlinNoise(z, y);
         return (xy + xz + yz + yx + zx + zy) / 6f;
+    }
+
+    public void SetVoxelsInSphere(Vector3 worldPosition, float radius, float value)
+    {
+        float sqrRadius = radius * radius;
+
+        // Find all chunks in a sphere around the position
+        Collider[] hits = Physics.OverlapSphere(worldPosition, radius);
+
+        HashSet<MarchingCubeChunk> affectedChunks = new HashSet<MarchingCubeChunk>();
+
+        foreach (var hit in hits)
+        {
+            MarchingCubeChunk chunk = hit.GetComponent<MarchingCubeChunk>();
+            if (chunk != null)
+            {
+                affectedChunks.Add(chunk);
+            }
+        }
+
+        foreach (var chunk in affectedChunks)
+        {
+            ApplySphereToChunk(chunk, worldPosition, radius, value, sqrRadius);
+            chunk.UpdateMesh();
+        }
+    }
+    private void ApplySphereToChunk(
+    MarchingCubeChunk chunk,
+    Vector3 worldPosition,
+    float radius,
+    float value,
+    float sqrRadius)
+    {
+        Vector3 chunkWorldPos = chunk.transform.position;
+
+        float targetHeight = worldPosition.y;
+
+        float radiusXZ = radius;
+
+        for (int x = 0; x <= chunkSize; x++)
+            for (int z = 0; z <= chunkSize; z++)
+            {
+                Vector3 voxelWorldPosXZ = chunkWorldPos + new Vector3(
+                    x * resolution,
+                    0,
+                    z * resolution
+                );
+
+                float dx = voxelWorldPosXZ.x - worldPosition.x;
+                float dz = voxelWorldPosXZ.z - worldPosition.z;
+
+                float distXZ = dx * dx + dz * dz;
+
+                if (distXZ > sqrRadius)
+                    continue;
+
+                for (int y = 0; y <= chunkSize; y++)
+                {
+                    Vector3 voxelWorldPos = chunkWorldPos + new Vector3(
+                        x * resolution,
+                        y * resolution,
+                        z * resolution
+                    );
+
+                    // CORE IDEA:
+                    // flatten terrain toward target height
+
+                    if (voxelWorldPos.y >= targetHeight)
+                    {
+                        chunk.heights[x, y, z] = 1;
+                    }
+                    else
+                    {
+                        chunk.heights[x, y, z] = 0;
+                        
+                    }
+                }
+            }
     }
 }
