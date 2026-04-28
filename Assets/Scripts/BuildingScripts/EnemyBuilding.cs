@@ -8,7 +8,7 @@ public class EnemyBuilding : Buildings
     public Transform spawnPoint;
     public float spawnPadding = 5.0f;
     float timer = 0.0f;
-    public float spawnCooldown = 10.0f;
+    public float spawnCooldown = 20f;
     public float radius = 5.0f;
     public int maxAnts = 10;
     List<GameObject> ants = new List<GameObject>();
