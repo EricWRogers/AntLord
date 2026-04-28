@@ -78,7 +78,7 @@ public class VRCommandAnt : CommandParent
 
     void Start()
     {
-        taskText.text = "task = none";
+        taskText.text = "task = manual";
     }
     
     void Update()
