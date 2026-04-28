@@ -26,6 +26,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     public GameObject cellIndicator;
     private GameObject cellIndicatorObj;
     public event Action OnClicked, OnExit;
+    bool canBuild = false;
 
     // ===== VR / UI SETTINGS =====
     [Header("VR & UI")]
@@ -87,7 +88,6 @@ public class BuildingPlacementSystem : MonoBehaviour
 
         cellIndicator.transform.position = (angle >= 45.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
 
-        bool canBuild = true;
 
         cellIndicatorObj.GetComponent<Renderer>().material.SetColor(
             "_Diffuse",
@@ -144,9 +144,6 @@ public class BuildingPlacementSystem : MonoBehaviour
             ? grid.CellToWorld(gridPosition) + Vector3.up
             : grid.CellToWorld(gridPosition);
 
-        // =========================
-        // VOXEL MODIFICATION ONLY
-        // =========================
         if (voxelTerrain != null && voxelTerrain.enabled)
         {
             Vector3 buildPos = building.transform.position;
@@ -154,13 +151,14 @@ public class BuildingPlacementSystem : MonoBehaviour
 
             float voxelValue =
                 (currentBuilding.type == BuildingSO.BuildingType.MilitaryIndustiralComplex)
-                ? 0f   // carve / flatten / modify terrain
-                : 1f;  // resource-style modification
+                ? 0f   
+                : 1f; 
 
-            voxelTerrain.SetVoxelsInSphere(buildPos, radius, voxelValue);
+            canBuild = voxelTerrain.SetVoxelsInSphere(buildPos, radius, voxelValue);
         }
 
-        Instantiate(buildingParent);
+        if(canBuild)
+            Instantiate(buildingParent);
 
         ResourceManager.instance.AddRock(-currentBuilding.RockCost);
         ResourceManager.instance.AddStick(-currentBuilding.StickCost);

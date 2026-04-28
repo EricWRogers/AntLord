@@ -36,6 +36,9 @@ public class MarchingCubeManager : MonoBehaviour
     [SerializeField] private bool use3DNoise;
     [SerializeField] private bool chunkGenerated;
 
+    [SerializeField] private LayerMask buildingLayerMask;
+    [SerializeField] private float buildingClearanceRadius = 3.0f;
+
     private Dictionary<Vector3Int, MarchingCubeChunk> chunks = new Dictionary<Vector3Int, MarchingCubeChunk>(); //dictionary holding all chunks!
 
     [Header("Inspector Fields:")]
@@ -200,8 +203,9 @@ public class MarchingCubeManager : MonoBehaviour
         return (xy + xz + yz + yx + zx + zy) / 6f;
     }
 
-    public void SetVoxelsInSphere(Vector3 worldPosition, float radius, float value)
+    public bool SetVoxelsInSphere(Vector3 worldPosition, float radius, float value)
     {
+
         float sqrRadius = radius * radius;
 
         // Find all chunks in a sphere around the position
@@ -211,6 +215,10 @@ public class MarchingCubeManager : MonoBehaviour
 
         foreach (var hit in hits)
         {
+            if(hit.CompareTag("Building")){
+                Debug.Log("<color=red> I hit a building");
+                return false;}
+    
             MarchingCubeChunk chunk = hit.GetComponent<MarchingCubeChunk>();
             if (chunk != null)
             {
@@ -223,6 +231,7 @@ public class MarchingCubeManager : MonoBehaviour
             ApplySphereToChunk(chunk, worldPosition, radius, value, sqrRadius);
             chunk.UpdateMesh();
         }
+        return true;
     }
     private void ApplySphereToChunk(
     MarchingCubeChunk chunk,
@@ -272,9 +281,10 @@ public class MarchingCubeManager : MonoBehaviour
                     else
                     {
                         chunk.heights[x, y, z] = 0;
-                        
+
                     }
                 }
             }
     }
+
 }
