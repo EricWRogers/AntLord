@@ -2538,6 +2538,27 @@ MonoBehaviour:
   pm: {fileID: 4153544123208187162}
   isPaused: 1
   spawnDistance: 20
+  LSecondaryButton:
+    m_Name: L Secondary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 0c34271f-3b87-42c0-8e27-03673479b81b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  VRRIHGHTInteraction:
+    m_Name: VRRIHGHT Interaction
+    m_Id: 5d959fb4-352e-4532-a910-e24948deaccc
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
+  VRLEFTInteraction:
+    m_Name: VRLEFT Interaction
+    m_Id: 75491159-de26-4393-958c-a8a39fbf8384
+    m_Asset: {fileID: 0}
+    m_Actions: []
+    m_Bindings: []
 --- !u!1 &4153544123208187162
 GameObject:
   m_ObjectHideFlags: 0
@@ -5009,6 +5030,7 @@ GameObject:
   - component: {fileID: 2906168481534594223}
   - component: {fileID: 8097545627490658543}
   - component: {fileID: 8756489311656037385}
+  - component: {fileID: 7055638975376663805}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5243,6 +5265,34 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &7055638975376663805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6618177132289166053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc1068980701a6f45bf5e6e456e4ad67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RayOMayhem
+  leftRayInteractor: {fileID: 0}
+  rightRayInteractor: {fileID: 0}
+  cam: {fileID: 0}
+  shovel: {fileID: 0}
+  voxelManager: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  resourceManager: {fileID: 0}
+  didModifyVoxel: 0
+  trailEnd: 0
+  inModMode: 0
+  adjustmentRate: 0.1
+  useHeightLimits: 0
+  breakMinY: 1.4
+  placeMaxY: 8.4
 --- !u!1 &6650555797899821645
 GameObject:
   m_ObjectHideFlags: 0
@@ -5647,6 +5697,7 @@ GameObject:
   - component: {fileID: 7431690840864011382}
   - component: {fileID: 4491181385830792015}
   - component: {fileID: 7677280984369032711}
+  - component: {fileID: 3666644292858969157}
   m_Layer: 0
   m_Name: VR Player
   m_TagString: Player
@@ -5792,15 +5843,7 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  LSecondaryButton:
-    m_Name: L Secondary Button
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 8ea06290-1606-46d2-a2fb-1135bd02a9fd
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+  taskText: {fileID: 0}
 --- !u!114 &7677280984369032711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5883,6 +5926,61 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 3e23648e-d6ba-4daf-b643-6b29d3cb624a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+--- !u!114 &3666644292858969157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7075886389968614136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06a60e726bc232948899afa7831772cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRTerrainModSystem
+  leftRayInteractor: {fileID: 0}
+  rightRayInteractor: {fileID: 0}
+  cam: {fileID: 0}
+  shovel: {fileID: 0}
+  voxelManager: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  resourceManager: {fileID: 0}
+  didModifyVoxel: 0
+  trailEnd: 0
+  inModMode: 0
+  adjustmentRate: 0.1
+  useHeightLimits: 0
+  breakMinY: 1.4
+  placeMaxY: 8.4
+  RTrigger:
+    m_Name: R Trigger
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: cb18c5cc-fffd-4b57-b60f-cfa447771932
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LTrigger:
+    m_Name: L Trigger
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 98518e7f-edc1-4f83-9d06-b16a4741b64c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  LSecondaryButton:
+    m_Name: L Secondary Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: c4898762-d9f7-462f-8720-a34152c4a135
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
