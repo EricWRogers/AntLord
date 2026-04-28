@@ -32,6 +32,7 @@ public class FollowNav : NavParent
     
     bool isSettled = false;
     Vector3 settledSlot;
+    public bool IsSettled => isSettled;
 
    
     int lastCrumbCount = 0;

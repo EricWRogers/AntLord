@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 198818127288360225}
   - component: {fileID: 1713000878218429674}
   - component: {fileID: 2177032193661472396}
+  - component: {fileID: 6266806282941451479}
+  - component: {fileID: 7155511593840764804}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -81,3 +83,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioSceneMusicController
   mainMenuSceneName: MainMenu
   menuMusicName: MenuMusic
+--- !u!81 &6266806282941451479
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3586464349983781720}
+  m_Enabled: 1
+--- !u!114 &7155511593840764804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3586464349983781720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41d7c9c554cfb0f4791588257a83ff47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MarchMusicController
+  marchSoundName: AntMarch
+  movingMinSpeed: 0.05
+  goalMinDistance: 0.75
