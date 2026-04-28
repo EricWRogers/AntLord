@@ -12,7 +12,7 @@ public class EnemyBuilding : Buildings
     public float radius = 5.0f;
     public int maxAnts = 10;
     List<GameObject> ants = new List<GameObject>();
-    public GameObject antPrefab;
+    public GameObject followerPrefab, leaderPrefab;
     public int maxHealth = 10;
 
     public TextMeshProUGUI timerText;
@@ -78,25 +78,29 @@ public class EnemyBuilding : Buildings
 
         Vector3 spawn = new Vector3(randomX, transform.position.y, randomZ);
 
-        GameObject newAnt = Instantiate(antPrefab, spawn, Quaternion.identity);
+        GameObject newAnt;
 
-        AntBrain brain = newAnt.GetComponent<AntBrain>();
-        LeadNav ln = newAnt.GetComponent<LeadNav>();
-        FollowNav fn = newAnt.GetComponent<FollowNav>();
-
-        LeadNav existingLeader = FindActiveEnemyLeader(brain.antType.teamID);
+        LeadNav existingLeader = FindActiveEnemyLeader(1);
 
         if (existingLeader == null)
         {
-            ln.enabled = true;
-            if (fn != null) fn.enabled = false;
+            newAnt = Instantiate(leaderPrefab, spawn, Quaternion.identity);
+            LeadNav ln = newAnt.GetComponent<LeadNav>();
 
-            ln.home = this.transform;
+            ln.enabled = true;
+            if (ln != null)
+            {
+                ln.enabled = true;
+                ln.home = this.transform;
+            }
 
             Debug.Log($"<color=orange>Enemy Spawner: First ant is now a Leader.</color>");
         }
         else
         {
+            newAnt = Instantiate(followerPrefab, spawn, Quaternion.identity);
+            LeadNav ln = newAnt.GetComponent<LeadNav>();
+            FollowNav fn = newAnt.GetComponent<FollowNav>();
             ln.enabled = false;
             if (fn != null)
             {
