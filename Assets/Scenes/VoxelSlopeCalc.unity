@@ -4278,6 +4278,10 @@ MonoBehaviour:
   noiseAmplitude: 5
   use3DNoise: 0
   chunkGenerated: 0
+  buildingLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  buildingClearanceRadius: 3
   chunkPrefab: {fileID: 0}
   sandMaterial: {fileID: 0}
   rayOMayhem: {fileID: 2102848435}
@@ -4926,6 +4930,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1068980701a6f45bf5e6e456e4ad67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RayOMayhem
+  leftRayInteractor: {fileID: 0}
+  rightRayInteractor: {fileID: 0}
   cam: {fileID: 2102848431}
   shovel: {fileID: 0}
   voxelManager: {fileID: 1939775705}
@@ -4970,6 +4976,7 @@ MonoBehaviour:
     m_Bits: 8
   LassoPointerVR: {fileID: 0}
   inputActions: {fileID: 0}
+  taskText: {fileID: 0}
 --- !u!1001 &38286811276587367
 PrefabInstance:
   m_ObjectHideFlags: 0

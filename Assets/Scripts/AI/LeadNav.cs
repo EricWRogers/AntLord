@@ -148,7 +148,7 @@ public class LeadNav : NavParent
             {
                 int capacity = (followers.Count + 1) * antTier;
 
-                if (foodBits >= capacity)
+                if (amCarryingFood || foodBits >= capacity)
                 {
                     if (home != null)
                     {
