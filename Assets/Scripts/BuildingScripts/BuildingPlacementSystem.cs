@@ -88,7 +88,7 @@ public class BuildingPlacementSystem : MonoBehaviour
 
         cellIndicator.transform.position = (angle >= 45.0f) ? grid.CellToWorld(grid.WorldToCell(mousePosition)) + Vector3.up : grid.CellToWorld(grid.WorldToCell(mousePosition));
 
-
+        canBuild = voxelTerrain.PlacementChecks(mousePosition, currentBuilding.size.x * 3.0f);
         cellIndicatorObj.GetComponent<Renderer>().material.SetColor(
             "_Diffuse",
             canBuild ? Color.green : Color.red
@@ -123,10 +123,14 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     protected virtual void PlaceStruct()
     {
-        if (IsPointerOverUI() ||
-            ResourceManager.instance.rocks < currentBuilding.RockCost ||
+        if (ResourceManager.instance.rocks < currentBuilding.RockCost ||
             ResourceManager.instance.sticks < currentBuilding.StickCost)
         {
+            Debug.Log(
+                $"Rocks: {ResourceManager.instance.rocks} / Needed: {currentBuilding.RockCost} | " +
+                $"Sticks: {ResourceManager.instance.sticks} / Needed: {currentBuilding.StickCost}"
+            );
+
             return;
         }
 
@@ -151,13 +155,13 @@ public class BuildingPlacementSystem : MonoBehaviour
 
             float voxelValue =
                 (currentBuilding.type == BuildingSO.BuildingType.MilitaryIndustiralComplex)
-                ? 0f   
-                : 1f; 
+                ? 0f
+                : 1f;
 
             canBuild = voxelTerrain.SetVoxelsInSphere(buildPos, radius, voxelValue);
         }
 
-        if(canBuild)
+        if (canBuild)
             Instantiate(buildingParent);
 
         ResourceManager.instance.AddRock(-currentBuilding.RockCost);

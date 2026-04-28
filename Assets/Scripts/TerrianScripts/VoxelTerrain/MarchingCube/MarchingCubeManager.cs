@@ -208,6 +208,12 @@ public class MarchingCubeManager : MonoBehaviour
 
         float sqrRadius = radius * radius;
 
+        if (!IsCloseEnoughToOtherBuilding(worldPosition, sqrRadius))
+        {
+            Debug.Log("<color=yellow> Not close enough to a building");
+            return false;
+        }
+
         // Find all chunks in a sphere around the position
         Collider[] hits = Physics.OverlapSphere(worldPosition, radius);
 
@@ -215,10 +221,12 @@ public class MarchingCubeManager : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            if(hit.CompareTag("Building")){
+            if (hit.CompareTag("Building"))
+            {
                 Debug.Log("<color=red> I hit a building");
-                return false;}
-    
+                return false;
+            }
+
             MarchingCubeChunk chunk = hit.GetComponent<MarchingCubeChunk>();
             if (chunk != null)
             {
@@ -285,6 +293,44 @@ public class MarchingCubeManager : MonoBehaviour
                     }
                 }
             }
+    }
+    public bool IsCloseEnoughToOtherBuilding(Vector3 position, float radius)
+    {
+        Collider[] hits = Physics.OverlapSphere(position, radius);
+
+        foreach (var hit in hits)
+        {
+
+            if (hit.CompareTag("Building"))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool PlacementChecks(Vector3 position, float radius)
+    {
+        float sqrRadius = radius * radius;
+
+        if (!IsCloseEnoughToOtherBuilding(position, sqrRadius))
+        {
+            return false;
+        }
+        // Find all chunks in a sphere around the position
+        Collider[] hits = Physics.OverlapSphere(position, radius);
+
+        HashSet<MarchingCubeChunk> affectedChunks = new HashSet<MarchingCubeChunk>();
+
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Building"))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
