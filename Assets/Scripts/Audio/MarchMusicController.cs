@@ -2,20 +2,24 @@ using UnityEngine;
 
 public class MarchMusicController : MonoBehaviour
 {
-    [Header("AudioManager2 Sound Names")]
+    [Header("AudioManager2 Sound Name")]
     public string marchSoundName = "AntMarch";
 
-    [Header("Stop rule")]
-    public float leaderArriveDistance = 1.0f;
+    [Header("Detect movement")]
+    public float velocityEpsilon = 0.05f;      
+    public float stillGraceSeconds = 0.50f;     
+    public bool onlyPlayerTeam = true;           
 
-    [Header("Team Filter")]
-    public bool onlyPlayerTeam = true; 
+    float lastMoveTime = -999f;
 
     void Update()
     {
         if (AudioManager2.instance == null) return;
 
-        bool shouldPlay = AnySquadStillMarching();
+        if (AnyFriendlyAntMoving())
+            lastMoveTime = Time.time;
+
+        bool shouldPlay = (Time.time - lastMoveTime) <= stillGraceSeconds;
 
         if (shouldPlay)
             AudioManager2.instance.Play(marchSoundName);
@@ -23,42 +27,30 @@ public class MarchMusicController : MonoBehaviour
             AudioManager2.instance.Stop(marchSoundName);
     }
 
-    bool AnySquadStillMarching()
+    bool AnyFriendlyAntMoving()
     {
-        LeadNav[] leaders = FindObjectsByType<LeadNav>(FindObjectsSortMode.None);
-
-        for (int i = 0; i < leaders.Length; i++)
+        GameObject[] ants = GameObject.FindGameObjectsWithTag("Ant");
+        for (int i = 0; i < ants.Length; i++)
         {
-            LeadNav leader = leaders[i];
-            if (leader == null || !leader.enabled) continue;
-            if (leader.target == null) continue;
+            GameObject ant = ants[i];
+            if (ant == null) continue;
 
-            
             if (onlyPlayerTeam)
             {
-                AntBrain brain = leader.GetComponent<AntBrain>();
+                AntBrain brain = ant.GetComponent<AntBrain>();
                 if (brain != null && brain.antType != null && brain.antType.teamID != 0)
                     continue;
             }
 
+            CharacterController cc = ant.GetComponent<CharacterController>();
+            if (cc == null) continue;
+
             
-            float dist = Vector3.Distance(leader.transform.position, leader.target.position);
-            if (dist > leaderArriveDistance)
+            Vector3 v = cc.velocity;
+            v.y = 0f;
+
+            if (v.magnitude > velocityEpsilon)
                 return true;
-
-            
-            if (leader.followers != null)
-            {
-                for (int f = 0; f < leader.followers.Count; f++)
-                {
-                    FollowNav follower = leader.followers[f];
-                    if (follower == null) continue;
-
-                   
-                    if (!follower.IsSettled)
-                        return true;
-                }
-            }
         }
 
         return false;
