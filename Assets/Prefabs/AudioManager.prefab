@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 198818127288360225}
   - component: {fileID: 1713000878218429674}
   - component: {fileID: 2177032193661472396}
+  - component: {fileID: 6266806282941451479}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -81,3 +82,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioSceneMusicController
   mainMenuSceneName: MainMenu
   menuMusicName: MenuMusic
+--- !u!81 &6266806282941451479
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3586464349983781720}
+  m_Enabled: 1
