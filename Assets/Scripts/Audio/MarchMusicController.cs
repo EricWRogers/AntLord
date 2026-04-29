@@ -1,16 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MarchMusicController : MonoBehaviour
 {
-    [Header("AudioManager2 Sound Name")]
     public string marchSoundName = "AntMarch";
 
-    [Header("Detect movement")]
-    public float velocityEpsilon = 0.05f;      
-    public float stillGraceSeconds = 0.50f;     
-    public bool onlyPlayerTeam = true;           
+    [Header("Friendly filter")]
+    public bool onlyPlayerTeam = true; 
 
+    [Header("Movement Detection")]
+    public float velocityEpsilon = 0.03f;   
+    public float posEpsilon = 0.004f;       
+    public float stillGraceSeconds = 0.75f; 
+
+    readonly Dictionary<int, Vector3> lastPos = new Dictionary<int, Vector3>();
     float lastMoveTime = -999f;
+
+    void Start()
+    {
+        
+        AudioManager2.instance?.Play(marchSoundName);
+
+        
+        AudioManager2.instance?.SetVolume(marchSoundName, 0f);
+    }
 
     void Update()
     {
@@ -19,17 +32,20 @@ public class MarchMusicController : MonoBehaviour
         if (AnyFriendlyAntMoving())
             lastMoveTime = Time.time;
 
-        bool shouldPlay = (Time.time - lastMoveTime) <= stillGraceSeconds;
+        bool shouldBeAudible = (Time.time - lastMoveTime) <= stillGraceSeconds;
 
-        if (shouldPlay)
-            AudioManager2.instance.Play(marchSoundName);
+        if (shouldBeAudible)
+            AudioManager2.instance.RestoreVolume(marchSoundName);
         else
-            AudioManager2.instance.Stop(marchSoundName);
+            AudioManager2.instance.SetVolume(marchSoundName, 0f);
     }
 
     bool AnyFriendlyAntMoving()
     {
+        
         GameObject[] ants = GameObject.FindGameObjectsWithTag("Ant");
+        bool movedByPos = false;
+
         for (int i = 0; i < ants.Length; i++)
         {
             GameObject ant = ants[i];
@@ -42,17 +58,34 @@ public class MarchMusicController : MonoBehaviour
                     continue;
             }
 
+            
             CharacterController cc = ant.GetComponent<CharacterController>();
-            if (cc == null) continue;
+            if (cc != null)
+            {
+                Vector3 v = cc.velocity; v.y = 0f;
+                if (v.sqrMagnitude > velocityEpsilon * velocityEpsilon)
+                    return true;
+            }
 
             
-            Vector3 v = cc.velocity;
-            v.y = 0f;
+            int id = ant.GetInstanceID();
+            Vector3 p = ant.transform.position;
 
-            if (v.magnitude > velocityEpsilon)
-                return true;
+            if (lastPos.TryGetValue(id, out Vector3 prev))
+            {
+                float dx = p.x - prev.x;
+                float dz = p.z - prev.z;
+                if ((dx * dx + dz * dz) > posEpsilon * posEpsilon)
+                    movedByPos = true;
+
+                lastPos[id] = p;
+            }
+            else
+            {
+                lastPos[id] = p;
+            }
         }
 
-        return false;
+        return movedByPos;
     }
 }

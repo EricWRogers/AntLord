@@ -87,7 +87,7 @@ public abstract class CommandParent : MonoBehaviour
                     else
                         selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
                     
-                    AudioManager2.instance?.Play("AntMarch");
+                    
                 }
             }
             else if((taskToAssign == AntTask.Food || taskToAssign == AntTask.Materials) && selectedAnts.Count != 0)
@@ -123,8 +123,6 @@ public abstract class CommandParent : MonoBehaviour
                                 selectedLeader.task = AntTask.Materials;
 
                             targetYet = true;
-
-                            AudioManager2.instance?.Play("AntMarch");
 
                             break;
                         }
