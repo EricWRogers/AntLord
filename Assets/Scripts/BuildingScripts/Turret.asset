@@ -15,7 +15,7 @@ MonoBehaviour:
   <buildName>k__BackingField: Turret
   <buildDesc>k__BackingField: used to defend base
   <ID>k__BackingField: 2
-  <RockCost>k__BackingField: 1
+  <RockCost>k__BackingField: 2
   <StickCost>k__BackingField: 1
   <buildHealth>k__BackingField: 15
   <size>k__BackingField: {x: 1, y: 1, z: 1}
