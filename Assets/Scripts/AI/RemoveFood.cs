@@ -36,7 +36,7 @@ public class RemoveFood : MonoBehaviour
                                 if (follow.mover != null) follow.mover.ClearGoal();
 
                                 GetComponent<SpawnerBuilding>().GiveFood(1);
-                                GetComponent<EnemyBuilding>().GiveFood(1);
+                                // GetComponent<EnemyBuilding>().GiveFood(1);
 
                                 if (follow.leader != null) follow.leader.foodBits--;
                             }
@@ -49,7 +49,7 @@ public class RemoveFood : MonoBehaviour
                             if (follow.mover != null) follow.mover.ClearGoal();
 
                             GetComponent<SpawnerBuilding>().GiveRock(1);
-                            GetComponent<EnemyBuilding>().GiveRock(1);
+                            // GetComponent<EnemyBuilding>().GiveRock(1);
 
                             if (follow.leader != null) follow.leader.foodBits--;
                         }
@@ -62,7 +62,7 @@ public class RemoveFood : MonoBehaviour
                             if (follow.mover != null) follow.mover.ClearGoal();
 
                             GetComponent<SpawnerBuilding>().GiveStick(1);
-                            GetComponent<EnemyBuilding>().GiveStick(1);
+                            // GetComponent<EnemyBuilding>().GiveStick(1);
 
                             if (follow.leader != null) follow.leader.foodBits--;
                         }
@@ -79,14 +79,14 @@ public class RemoveFood : MonoBehaviour
                         {
                             Destroy(child.gameObject);
                             GetComponent<SpawnerBuilding>().GiveFood(1);
-                            GetComponent<EnemyBuilding>().GiveFood(1);
+                            // GetComponent<EnemyBuilding>().GiveFood(1);
                             lead.foodBits -= 1;
                         }
                         else if (child.CompareTag("RockBit"))
                         {
                             Destroy(child.gameObject);
                             GetComponent<SpawnerBuilding>().GiveRock(1);
-                            GetComponent<EnemyBuilding>().GiveRock(1);
+                            // GetComponent<EnemyBuilding>().GiveRock(1);
                             lead.foodBits -= 1;
                         }
                         else if (child.CompareTag("StickBit"))
@@ -94,7 +94,7 @@ public class RemoveFood : MonoBehaviour
                             Debug.Log("desroyed stick");
                             Destroy(child.gameObject);
                             GetComponent<SpawnerBuilding>().GiveStick(1);
-                            GetComponent<EnemyBuilding>().GiveStick(1);
+                            // GetComponent<EnemyBuilding>().GiveStick(1);
                             lead.foodBits -= 1;
                         }
                     }

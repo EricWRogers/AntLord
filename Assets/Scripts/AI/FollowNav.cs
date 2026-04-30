@@ -60,7 +60,7 @@ public class FollowNav : NavParent
 
     void Update()
     {
-        if (mover == null) return;
+        if (GetComponent<AntBrain>().antType.teamID == 1 && mover == null) return;
         if (leader == null) return;
         //Debug.LogWarning("Running as normal");
 

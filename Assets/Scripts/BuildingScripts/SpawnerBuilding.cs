@@ -69,15 +69,15 @@ public class SpawnerBuilding : Buildings
         }
     }
 
-    public void GiveFood(int _food) //or floats idk what yall are cooking
+    public virtual void GiveFood(int _food) //or floats idk what yall are cooking
     {
         ResourceManager.instance.AddFood(_food);
     }
-    public void GiveRock(int _rock) //or floats idk what yall are cooking
+    public virtual void GiveRock(int _rock) //or floats idk what yall are cooking
     {
         ResourceManager.instance.AddRock(_rock);
     }
-    public void GiveStick(int _stick) //or floats idk what yall are cooking
+    public virtual void GiveStick(int _stick) //or floats idk what yall are cooking
     {
         ResourceManager.instance.AddStick(_stick);
     }

@@ -2,20 +2,19 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 
-public class EnemyBuilding : Buildings
+public class EnemyBuilding : SpawnerBuilding
 {
-    [SerializeField] BuildingSO spawnerSO;
-    public Transform spawnPoint;
-    public float spawnPadding = 5.0f;
+    // public Transform spawnPoint;
+    // public float spawnPadding = 5.0f;
     float timer = 0.0f;
-    public float spawnCooldown = 10.0f;
-    public float radius = 5.0f;
-    public int maxAnts = 10;
+    // public float spawnCooldown = 10.0f;
+    // public float radius = 5.0f;
+    // public int maxAnts = 10;
     List<GameObject> ants = new List<GameObject>();
     
-    public GameObject antPrefab; 
+    // public GameObject antPrefab; 
     
-    public int maxHealth = 10;
+    // public int maxHealth = 10;
 
     public TextMeshProUGUI timerText;
 
@@ -155,7 +154,7 @@ public class EnemyBuilding : Buildings
         return null;
     }
 
-    public void GiveFood(int _food)
+    public override void GiveFood(int _food)
     {
         ResourceManager.instance.AddFood(_food);
 
@@ -168,12 +167,12 @@ public class EnemyBuilding : Buildings
         }
     }
 
-    public void GiveRock(int _rock)
+    public override void GiveRock(int _rock)
     {
         ResourceManager.instance.AddRock(_rock);
     }
 
-    public void GiveStick(int _stick)
+    public override void GiveStick(int _stick)
     {
         ResourceManager.instance.AddStick(_stick);
     }
