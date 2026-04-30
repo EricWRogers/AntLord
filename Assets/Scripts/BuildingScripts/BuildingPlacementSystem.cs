@@ -187,11 +187,14 @@ public class BuildingPlacementSystem : MonoBehaviour
     }
     public void OpenBuildMenu()
     {
+        if (!sceneCamera) sceneCamera = Camera.main;
+        if(!sceneCamera)
+            Debug.Log("No camera");
+        SetBuildingInfo(allBuildings[selectedObjectIndex]);
         buildingUI.transform.position = sceneCamera.gameObject.transform.position +
             new Vector3(sceneCamera.gameObject.transform.forward.x, 0, sceneCamera.gameObject.transform.forward.z).normalized * spawnDistance;
         buildingUI.SetActive(true);
         selectedObjectIndex = 0;
-        SetBuildingInfo(allBuildings[selectedObjectIndex]);
 
     }
     public void NextBuilding()
