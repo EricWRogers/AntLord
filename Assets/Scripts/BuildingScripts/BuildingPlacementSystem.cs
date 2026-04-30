@@ -74,6 +74,10 @@ public class BuildingPlacementSystem : MonoBehaviour
                 {
                     OpenBuildMenu();
                 }
+                else
+                {
+                    buildingUI.SetActive(false);
+                }
                 OnExit?.Invoke();
             }
         }
