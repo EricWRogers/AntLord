@@ -12,7 +12,9 @@ public class EnemyBuilding : Buildings
     public float radius = 5.0f;
     public int maxAnts = 10;
     List<GameObject> ants = new List<GameObject>();
-    public GameObject followerPrefab, leaderPrefab;
+    
+    public GameObject antPrefab; 
+    
     public int maxHealth = 10;
 
     public TextMeshProUGUI timerText;
@@ -20,7 +22,6 @@ public class EnemyBuilding : Buildings
     [Tooltip("TEMPORARY! Win screen")]
     public GameObject winScreen;
 
-    
     private bool hasWon = false;
 
     void Start()
@@ -51,7 +52,6 @@ public class EnemyBuilding : Buildings
                 timerText.text = "All Ants Spawned";
             }
 
-            // WIN CONDITION for Muisc
             if (this.currentHealth <= 0)
             {
                 hasWon = true;
@@ -90,19 +90,24 @@ public class EnemyBuilding : Buildings
 
         Vector3 spawn = new Vector3(randomX, transform.position.y, randomZ);
 
-        GameObject newAnt;
-
         LeadNav existingLeader = FindActiveEnemyLeader(1);
+
+        GameObject newAnt = Instantiate(antPrefab, spawn, Quaternion.identity);
+        
+        LeadNav ln = newAnt.GetComponent<LeadNav>();
+        FollowNav fn = newAnt.GetComponent<FollowNav>();
 
         if (existingLeader == null)
         {
-            newAnt = Instantiate(leaderPrefab, spawn, Quaternion.identity);
-            LeadNav ln = newAnt.GetComponent<LeadNav>();
+            if (fn != null)
+            {
+                fn.enabled = false;  
+                fn.leader = null; 
+            }
 
-            ln.enabled = true;
             if (ln != null)
             {
-                ln.enabled = true;
+                ln.enabled = true; 
                 ln.home = this.transform;
             }
 
@@ -110,13 +115,14 @@ public class EnemyBuilding : Buildings
         }
         else
         {
-            newAnt = Instantiate(followerPrefab, spawn, Quaternion.identity);
-            LeadNav ln = newAnt.GetComponent<LeadNav>();
-            FollowNav fn = newAnt.GetComponent<FollowNav>();
-            ln.enabled = false;
+            if (ln != null)
+            {
+                ln.enabled = false;  
+            }
+
             if (fn != null)
             {
-                fn.enabled = true;
+                fn.enabled = true;   
                 fn.leader = existingLeader;
 
                 if (existingLeader.followers == null) existingLeader.followers = new List<FollowNav>();
