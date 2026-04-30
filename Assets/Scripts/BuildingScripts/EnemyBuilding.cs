@@ -147,4 +147,17 @@ public class EnemyBuilding : Buildings
         }
         return null;
     }
+
+    public void GiveFood(int _food)
+    {
+        ResourceManager.instance.AddFood(_food);
+    }
+    public void GiveRock(int _rock)
+    {
+        ResourceManager.instance.AddRock(_rock);
+    }
+    public void GiveStick(int _stick)
+    {
+        ResourceManager.instance.AddStick(_stick);
+    }
 }

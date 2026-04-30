@@ -9296,6 +9296,11 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &789739032 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
+  m_PrefabInstance: {fileID: 1173461455}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &789980326
 GameObject:
   m_ObjectHideFlags: 0
@@ -16503,10 +16508,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6199931823685851392, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+      propertyPath: radius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752463228130190757, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+      propertyPath: antPrefab
+      value: 
+      objectReference: {fileID: 789739032}
     - target: {fileID: 8752463228130190757, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
       propertyPath: winScreen
       value: 
       objectReference: {fileID: 1355444676}
+    - target: {fileID: 8752463228130190757, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+      propertyPath: leaderPrefab
+      value: 
+      objectReference: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
     m_RemovedComponents:
     - {fileID: 4815465384528328678, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
     - {fileID: 2663632918962937179, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
