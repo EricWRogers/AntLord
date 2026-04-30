@@ -30,7 +30,7 @@ public class EnemyBuilding : SpawnerBuilding
     public float maxSpawnRadius = 15f;
     private int localFoodCount = 0;
 
-    void Start()
+    public override void Start()
     {
         teamID = 1;
         currentHealth = maxHealth;
@@ -40,11 +40,11 @@ public class EnemyBuilding : SpawnerBuilding
         winScreen.SetActive(false);
     }
 
-    void FixedUpdate()
+    public override void FixedUpdate()
     {
         if (!hasWon)
         {
-            if (ants.Count < maxAnts && this.currentHealth > 0)
+            if (ants.Count < maxAnts && currentHealth > 0)
             {
                 timer += Time.deltaTime;
                 if (timer >= spawnCooldown)
@@ -58,7 +58,7 @@ public class EnemyBuilding : SpawnerBuilding
                 timerText.text = "All Ants Spawned";
             }
 
-            if (this.currentHealth <= 0)
+            if (currentHealth <= 0)
             {
                 hasWon = true;
 
@@ -81,7 +81,7 @@ public class EnemyBuilding : SpawnerBuilding
         }
     }
 
-    void SpawnAnt()
+    public override void SpawnAnt()
     {
         float randomX = 0.0f;
         float randomZ = 0.0f;
@@ -114,7 +114,7 @@ public class EnemyBuilding : SpawnerBuilding
             if (ln != null)
             {
                 ln.enabled = true; 
-                ln.home = this.transform;
+                ln.home = transform;
             }
 
             Debug.Log($"<color=orange>Enemy Spawner: First ant is now a Leader.</color>");
@@ -142,7 +142,7 @@ public class EnemyBuilding : SpawnerBuilding
 
     private LeadNav FindActiveEnemyLeader(int teamID)
     {
-        LeadNav[] allLeaders = Object.FindObjectsByType<LeadNav>(FindObjectsSortMode.None);
+        LeadNav[] allLeaders = FindObjectsByType<LeadNav>(FindObjectsSortMode.None);
         foreach (LeadNav leader in allLeaders)
         {
             AntBrain b = leader.GetComponent<AntBrain>();
@@ -156,7 +156,7 @@ public class EnemyBuilding : SpawnerBuilding
 
     public override void GiveFood(int _food)
     {
-        ResourceManager.instance.AddFood(_food);
+        EnemyResourceManager.instance.AddFood(_food);
 
         localFoodCount += _food;
 
@@ -169,12 +169,12 @@ public class EnemyBuilding : SpawnerBuilding
 
     public override void GiveRock(int _rock)
     {
-        ResourceManager.instance.AddRock(_rock);
+        EnemyResourceManager.instance.AddRock(_rock);
     }
 
     public override void GiveStick(int _stick)
     {
-        ResourceManager.instance.AddStick(_stick);
+        EnemyResourceManager.instance.AddStick(_stick);
     }
 
     private void SpawnNewBuilding()
