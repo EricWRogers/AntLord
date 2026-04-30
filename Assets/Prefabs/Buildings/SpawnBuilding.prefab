@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e7e5c3b22bbf3ef9ce12c6425c9793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RemoveFood
-  radius: 1
+  radius: 1.5
   tier: 1
 --- !u!1 &1783261435255673181
 GameObject:

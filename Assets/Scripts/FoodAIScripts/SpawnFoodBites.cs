@@ -3,7 +3,7 @@ using UnityEngine;
 public class SpawnFoodBites : MonoBehaviour
 {
     public GameObject foodBitePrefab;
-    private Vector3 biteSpawn;
+    private Vector3 biteSpawn = new(0f, 0.3f, 0f);
     //private FoodBites foodBite;
     public int foodHealth = 4;
     Collider[] hitColliders;
@@ -11,13 +11,17 @@ public class SpawnFoodBites : MonoBehaviour
     public Transform foodbit;
     public LeadNav mostRecentLead;
     public int tier = 1;
+    private string resourceType = "Food";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(tag == "Material")
+        if(CompareTag("Material"))
+        {
+            resourceType = "Material";
             radius *= 2;
+        }
             
-        biteSpawn = new Vector3(0f, 0.3f, 0f);
+        //biteSpawn = new Vector3(0f, 0.3f, 0f);
     }
 
     void Update()
@@ -30,7 +34,8 @@ public class SpawnFoodBites : MonoBehaviour
     hitColliders = Physics.OverlapSphere(transform.position, radius);
     foreach (var hitCollider in hitColliders) 
     {
-        if (hitCollider.CompareTag("Ant"))
+        if (hitCollider.CompareTag("Ant") 
+        && (hitCollider.GetComponent<NavParent>().GetAntTaskStr() == resourceType || hitCollider.GetComponent<NavParent>().GetAntTaskStr() == "Manual"))
         {
             LeadNav ln = hitCollider.GetComponent<LeadNav>();
             FollowNav fn = hitCollider.GetComponent<FollowNav>();

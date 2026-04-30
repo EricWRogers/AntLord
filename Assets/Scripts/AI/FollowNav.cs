@@ -8,6 +8,10 @@ public class FollowNav : NavParent
     private float finalCloseDist;
     public float leaderTail = 0.3f;
     public int crumbTrack = 0;
+    public float crumbTimer = 0f;
+    public float maxCrumbTimer = 3f;
+    public int strikes = 0;
+    public int maxStrikes = 3;
 
    
     [Header("Arrival Formation")]
@@ -58,6 +62,7 @@ public class FollowNav : NavParent
     {
         if (mover == null) return;
         if (leader == null) return;
+        //Debug.LogWarning("Running as normal");
 
        
         if (leader.crumbs != null)
@@ -179,7 +184,12 @@ public class FollowNav : NavParent
 
             if (crumbTrack < leader.crumbs.Count - 1 &&
                 Vector3.Distance(a, b) < finalCloseDist)
-                crumbTrack++;
+                {
+                    crumbTrack++;
+                    crumbTimer = 0f;
+                    strikes = 0;
+                }
+            
 
             HandleAgentCollisions();
         }
@@ -188,6 +198,25 @@ public class FollowNav : NavParent
             // If we're close to leader, still apply separation steering so we don't overlap.
             HandleAgentCollisions();
         }
+
+        if(crumbTrack < leader.crumbs.Count - 1 && crumbTimer >= maxCrumbTimer) //stuck/lost failsafe
+        {
+            Debug.LogWarning($"{gameObject.name} Got stuck, moving on");
+            crumbTrack++;
+            crumbTimer = 0f;
+            strikes++;
+        }
+        if(strikes >= maxStrikes)
+        {
+            Debug.LogWarning($"{gameObject.name} Got REALLY stuck, teleporting");
+            strikes = 0;
+            crumbTimer = 0f;
+            crumbTrack = leader.crumbs.Count - 1;
+            transform.position = leader.crumbs[crumbTrack];
+        }
+
+
+        crumbTimer += Time.deltaTime;
     }
 
     Vector3 ComputeStableSlot()
