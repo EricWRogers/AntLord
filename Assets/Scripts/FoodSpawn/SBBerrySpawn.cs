@@ -8,8 +8,9 @@ public class SBBerrySpawn : MonoBehaviour
     //how often to spawn
     private float spawnTimer;
     public float spawnInterval;
-    public float spawnTiming;
+    // public float spawnTiming;
     public int howManyToSpawn;
+    public float spawnRange = 5.0f;
 
     //what and where to spawn
     public GameObject berry;
@@ -51,10 +52,19 @@ public class SBBerrySpawn : MonoBehaviour
     }
     IEnumerator SpawnApple()
     {
-        howManyToSpawn = Random.Range(1, spawnPoints.Count);
+        if (spawnPoints.Count > 1)
+        {
+            howManyToSpawn = Random.Range(1, spawnPoints.Count - 1);    
+            // Debug.Log ("many location to spawn");
+        }
+        else
+        {
+            howManyToSpawn = 1;
+            // Debug.Log ("only one location to spawn");
+        }
         // Debug.Log("how many: " + howManyToSpawn);
 
-        // spawnTiming = Random.Range(spawnInterval, spawnInterval * 2);
+        //spawnTiming = Random.Range(spawnInterval, spawnInterval * 2);
         // Debug.Log("timing: "+spawnTiming);
 
         for (int i = 0; i < howManyToSpawn; i++)
@@ -68,24 +78,29 @@ public class SBBerrySpawn : MonoBehaviour
 
             Vector3 spawnPosition = spawnPoints[randomIndex].position;
 
+            Vector3 spawnPoint = new Vector3 (
+                Random.Range(spawnPosition.x - spawnRange, spawnPosition.x + spawnRange),
+                spawnPosition.y,
+                Random.Range(spawnPosition.z - spawnRange, spawnPosition.z + spawnRange)
+            );
+
             if (Physics.CheckSphere(spawnPosition, sphereRadius))
             {
-                Debug.Log("something is there");
+                Debug.Log("cannot spawn berry at "+ spawnPosition + ", there is something in the way");
             }
 
             else
             {
-                GameObject aBerry = Instantiate(berry, spawnPosition, Quaternion.identity);
+                GameObject aBerry = Instantiate(berry, spawnPoint, Quaternion.identity);
                 GrowDrop myGrowDrop = aBerry.GetComponent<GrowDrop>();
                 
                 if (myGrowDrop != null)
                 {
                     myGrowDrop.gdGrowDuration = growDuration;
-                    Debug.Log("yes" + myGrowDrop.gdGrowDuration);
-                }
-                    
+                    Debug.Log("spawning berry. Spawn time: " + myGrowDrop.gdGrowDuration);
+                }  
                 else
-                    Debug.Log("no"); 
+                    Debug.LogError("cannot spawn berry"); 
             }
 
 

@@ -1,5 +1,6 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 //requires a camera to use
 [RequireComponent(typeof(Camera))]
@@ -42,14 +43,14 @@ public class FlyCam : MonoBehaviour
 
     private void SetCursorState(){  //lock and make curser dissapear
         if(Input.GetKeyDown(KeyCode.Escape)){
-            Cursor.lockState = wantedMode =  CursorLockMode.None; //unlock cursor when esc key pressed
+            UnityEngine.Cursor.lockState = wantedMode =  CursorLockMode.None; //unlock cursor when esc key pressed
         }
         if(Input.GetMouseButtonDown(0)){
             wantedMode = CursorLockMode.Locked; //lock cursor when game clicked
         }
 
-        Cursor.lockState = wantedMode;
-        Cursor.visible = (CursorLockMode.Locked != wantedMode); //hide cursor when locked
+        UnityEngine.Cursor.lockState = wantedMode;
+        UnityEngine.Cursor.visible = (CursorLockMode.Locked != wantedMode); //hide cursor when locked
     }
 
     private void CalculateAcceleration(bool moving){
@@ -127,10 +128,15 @@ public class FlyCam : MonoBehaviour
             //Vector3 CurrentRotation;
 
             if(Input.GetKey(KeyCode.Q)) //turn right
-            transform.Rotate(new Vector3(0,-mouseSenseitivity,0));
+            //transform.Rotate(new Vector3(0,-mouseSenseitivity,0));
+            transform.position = new Vector3(0, transform.rotation.y * -mouseSenseitivity, 0);
 
             if(Input.GetKey(KeyCode.E)) //turn right
-            transform.Rotate(new Vector3(0,mouseSenseitivity,0));
+            //transform.Rotate(new Vector3(0,mouseSenseitivity,0));
+            transform.position = new Vector3(0, transform.rotation.y * mouseSenseitivity, 0);
+
+
+            
                 //CurrentRotation += new Vector3() * Time.deltaTime * mouseSenseitivity;
             //     deltaPosition += transform.up;
             //transform.rotation *= Quaternion.AngleAxis(-Input.GetAxis("Mouse Y") * mouseSenseitivity, Vector3.right);

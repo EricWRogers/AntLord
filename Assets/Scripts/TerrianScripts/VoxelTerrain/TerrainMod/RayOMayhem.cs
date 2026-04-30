@@ -1,10 +1,18 @@
 using System;
+using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class RayOMayhem : MonoBehaviour
 {
+    [Header("VR Fallback References")]
+    public XRRayInteractor leftRayInteractor;
+    public XRRayInteractor rightRayInteractor;
+
+    [Header("Desktop References")]
     public Camera cam;
+
+    [Header("Voxel Settings")]
     public GameObject shovel;
     public MarchingCubeManager voxelManager;
     public LayerMask layerMask = ~0; 
@@ -16,7 +24,6 @@ public class RayOMayhem : MonoBehaviour
     public bool didModifyVoxel = false;
     public bool trailEnd = false;
     public bool inModMode = false;
-
     public float adjustmentRate = 0.1f;
     private float nextAdjustmentTime;
 
@@ -33,75 +40,81 @@ public class RayOMayhem : MonoBehaviour
 
     protected virtual void Update()
     {
-        // Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (voxelManager == null) return;
 
-        // if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-        //     return;
+        //HANDLE BREAKING (Left Click OR Right Controller Trigger)
+        bool isBreakingInput = Input.GetMouseButton(0);
 
-        // LEFT mouse: break
-        if (Input.GetMouseButton(0))
+        if (isBreakingInput && shovel.activeInHierarchy)
         {
-            if (!shovel.activeInHierarchy) return;
-
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, 500f, layerMask))
+            if (TryGetHitPoint(out Vector3 hitPoint, isLeftHand: false))
             {
                 currentAction = VoxelAction.Breaking;
-                HandleVoxelInput(hit.point, isBreaking: true);
+                HandleVoxelInput(hitPoint, isBreaking: true);
             }
-            // currentAction = VoxelAction.Breaking;
-            // HandleVoxelInput(targetValue: 1.0f, isBreaking: true);
         }
-        // RIGHT mouse: place
-        else if (Input.GetMouseButton(1))
+
+        //HANDLE PLACING (Right Click OR Left Controller Trigger)
+        bool isPlacingInput = Input.GetMouseButton(1);
+
+        if (isPlacingInput)
         {
             if (resourceManager != null && resourceManager.sand <= 0) return;
 
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, 500f, layerMask))
+            if (TryGetHitPoint(out Vector3 hitPoint, isLeftHand: true))
             {
                 currentAction = VoxelAction.Placing;
-                HandleVoxelInput(hit.point, isBreaking: false);
-            } 
-            // currentAction = VoxelAction.Placing;
-            // HandleVoxelInput(targetValue: 0.0f, isBreaking: false);
+                HandleVoxelInput(hitPoint, isBreaking: false);
+            }
         }
-        
-        // Reset state when mouse buttons are released
-        if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) && currentAction != VoxelAction.None)
+
+        //Reset upon no input
+        bool anyInput = isBreakingInput || isPlacingInput;
+        if (!anyInput && currentAction != VoxelAction.None)
         {
-            trailEnd = true;
             didModifyVoxel = false;
             currentAction = VoxelAction.None;
-            Debug.Log("End Of Trail");
         }
     }
 
-    public void HandleVoxelInput(Vector3 hitPoint, bool isBreaking)//, float targetValue, bool isBreaking)
+    private bool TryGetHitPoint(out Vector3 hitPoint, bool isLeftHand)
+    {
+        hitPoint = Vector3.zero;
+
+        XRRayInteractor activeInteractor = isLeftHand ? leftRayInteractor : rightRayInteractor;
+        
+        if (activeInteractor != null && activeInteractor.gameObject.activeInHierarchy)
+        {
+            if (activeInteractor.TryGetCurrent3DRaycastHit(out RaycastHit vrHit))
+            {
+                hitPoint = vrHit.point;
+                return true;
+            }
+        }
+
+        if (cam != null)
+        {
+            Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(mouseRay, out RaycastHit mouseHit, 500f, layerMask))
+            {
+                hitPoint = mouseHit.point;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void HandleVoxelInput(Vector3 hitPoint, bool isBreaking)
     {
         if (Time.time < nextAdjustmentTime) return;
-
-        float targetValue = isBreaking ? 1.0f : 0.0f;
-
-        // Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        // if (!Physics.Raycast(ray, out RaycastHit hit, 500f, layerMask, QueryTriggerInteraction.Ignore))
-        // {
-        //     Debug.Log("Raycast did NOT hit voxel terrain. Check layerMask + collider.");
-        //     return;
-        // }
-        
-        //Debug.Log($"Hit: {hit.collider.name} layer={LayerMask.LayerToName(hit.collider.gameObject.layer)} point={hit.point}");
 
         if (useHeightLimits)
         {
             if (isBreaking && hitPoint.y < breakMinY) return;
             if (!isBreaking && hitPoint.y > placeMaxY) return;
         }
+
+        float targetValue = isBreaking ? 1.0f : 0.0f;
         //modify the terrain at the hit point
         voxelManager.ModifyVoxel(hitPoint, 1.0f, targetValue);
 

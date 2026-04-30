@@ -1,7 +1,6 @@
-using UnityEditor.Callbacks;
 using UnityEngine;
 
-public class Turret : MonoBehaviour
+public class Turret : Buildings
 {
 
     public Transform target;
@@ -10,31 +9,48 @@ public class Turret : MonoBehaviour
     public float range = 10f;
     public float fireRate = 1f;
     public float bulletSpeed = 150f;
+    public int maxHealth = 10;
     private float fireCountdown = 0f;
     [Header("Unity setup feilds")]
     public Transform partToRotate;
     public float turnSpeed = 5f;
     public GameObject bullet;
     public Transform firePoint;
+    public Collider[] enemies;
+    [SerializeField] BuildingSO turretSO;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        
+        this.currentHealth = maxHealth;
+        slider.maxValue = currentHealth;
+        slider.value = currentHealth;
     }
 
     void UpdateTarget()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Ant");
+        enemies = Physics.OverlapSphere(transform.position, range);
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
 
-        foreach(GameObject enemy in enemies)
+        foreach(var enemy in enemies)
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+            if (enemy.CompareTag("Ant"))
+            {
+                AntBrain enemyAnt = enemy.GetComponent<AntBrain>();
+                if (enemyAnt.antType.teamID != teamID)
+                {
+                    float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
 
-            if(distanceToEnemy < shortestDistance){
-                shortestDistance = distanceToEnemy;
-                nearestEnemy = enemy;
+                    if (distanceToEnemy < shortestDistance)
+                    {
+                        shortestDistance = distanceToEnemy;
+                        nearestEnemy = enemy.gameObject;
+                        enemyAnt.currentTarget = null;
+                        enemyAnt.currentBuildingTarget = GetComponent<Turret>();
+                    }
+                }
             }
         }
 
@@ -48,20 +64,32 @@ public class Turret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(target == null){
-            return;
-        }
+        
+        if (this.currentHealth > 0)
+        {
+            if (this.currentHealth <= 0)
+            {
+                Destroy(gameObject);
+            }
+            UpdateTarget();
+            if (target == null)
+            {
+                return;
+            }
 
-        Vector3 dir = target.position - transform.position;
-        Quaternion lookRotation = Quaternion.LookRotation(dir);
-        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation,lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
-        partToRotate.rotation = Quaternion.Euler(rotation.x,rotation.y,0f);
+            Vector3 dir = target.position - transform.position;
+            Quaternion lookRotation = Quaternion.LookRotation(dir);
+            Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
+            partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
 
-        if(fireCountdown <=0f){
-            Shoot();
-            fireCountdown = 1f/fireRate;
+            if (fireCountdown <= 0f)
+            {
+                Shoot();
+                fireCountdown = 1f / fireRate;
+            }
+            fireCountdown -= Time.deltaTime;
+
         }
-        fireCountdown -= Time.deltaTime;
         
     }
 

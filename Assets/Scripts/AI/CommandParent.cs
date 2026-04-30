@@ -64,8 +64,12 @@ public abstract class CommandParent : MonoBehaviour
 
     public void DirectAnt(RaycastHit hit)
     {
-        if(selectedLeader == null || selectedLeader.target != selectedLeader.home){
+        if(selectedLeader == null || selectedLeader.target != selectedLeader.home || !selectedLeader.AnyFoodBits()){
             Debug.LogWarning("Attempting to Direct!");
+
+            foreach(GameObject ant in selectedAnts)
+                ant.GetComponent<NavParent>().task = taskToAssign;
+
             if(taskToAssign == AntTask.Manual)
             {
                 //Debug.LogWarning("2nd pass");
@@ -75,17 +79,14 @@ public abstract class CommandParent : MonoBehaviour
                 {
                     //Debug.LogWarning("3rd pass");
                     ElectLeader();
-                    selectedLeader.task = AntTask.Manual;
+                    //selectedLeader.task = AntTask.Manual;
 
                     if (hit.transform.CompareTag("Food"))
                         selectedLeader.target = hit.transform;
-                    // else if(hit.transform.CompareTag("Building"))
-                    // {
-                    //     Debug.LogWarning("Seeking building!");
-                    //     selectedLeader.target = hit.transform;
-                    // }
                     else
                         selectedLeader.target = Instantiate(wayPointPrefab, hit.point, Quaternion.identity).transform;
+                    
+                    
                 }
             }
             else if((taskToAssign == AntTask.Food || taskToAssign == AntTask.Materials) && selectedAnts.Count != 0)
@@ -115,10 +116,10 @@ public abstract class CommandParent : MonoBehaviour
                             ElectLeader();
                             selectedLeader.target = col.transform;
 
-                            if(taskToAssign == AntTask.Food)
-                                selectedLeader.task = AntTask.Food;
-                            else
-                                selectedLeader.task = AntTask.Materials;
+                            // if(taskToAssign == AntTask.Food)
+                            //     selectedLeader.task = AntTask.Food;
+                            // else
+                            //     selectedLeader.task = AntTask.Materials;
 
                             targetYet = true;
 
@@ -259,8 +260,11 @@ public abstract class CommandParent : MonoBehaviour
                     if (brain.antType.teamID == 0) //&& !selectedAnts.Contains(col.gameObject))
                     {
                         //Debug.LogWarning("Adding ANT");
-                        selectedAnts.Add(col.gameObject);
-                        SetGlow(col.gameObject, selectedColor, selectedIntensity);
+                        if(!selectedAnts.Contains(col.gameObject))
+                        {
+                            selectedAnts.Add(col.gameObject);
+                            SetGlow(col.gameObject, selectedColor, selectedIntensity);
+                        }
                     }
                 }
 

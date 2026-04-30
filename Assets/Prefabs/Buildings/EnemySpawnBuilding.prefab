@@ -448,7 +448,6 @@ GameObject:
   - component: {fileID: 8377149870316284236}
   - component: {fileID: 8354583491308020033}
   - component: {fileID: 5013528279394648991}
-  - component: {fileID: 4338048682961857893}
   - component: {fileID: 6199931823685851392}
   - component: {fileID: 8752463228130190757}
   - component: {fileID: 4815465384528328678}
@@ -555,32 +554,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4338048682961857893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5544231747001048276}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ffdb76f05f52544192c5de93bc86e4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpawnerBuilding
-  currentHealth: 0
-  slider: {fileID: 5955399473620446363}
-  spawnerSO: {fileID: 11400000, guid: a170635a27b8d694dac8aaac276d4395, type: 2}
-  spawnPoint: {fileID: 7486629724322937012}
-  spawnPadding: 5
-  spawnCooldown: 5
-  maxAnts: 10
-  foodAmount: 4
-  minFoodPerAnt: 2
-  tempWinCon: 0
-  radius: 3
-  antPrefab: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
-  maxHealth: 10
-  LoseScreen: {fileID: 0}
 --- !u!114 &6199931823685851392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -608,14 +581,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBuilding
   currentHealth: 0
+  teamID: 1
   slider: {fileID: 5955399473620446363}
   spawnerSO: {fileID: 11400000, guid: a170635a27b8d694dac8aaac276d4395, type: 2}
   spawnPoint: {fileID: 7486629724322937012}
   spawnPadding: 5
-  spawnCooldown: 10
+  spawnCooldown: 20
   radius: 5
   maxAnts: 10
-  antPrefab: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
+  antPrefab: {fileID: 0}
   maxHealth: 1000
   timerText: {fileID: 5654690002916950053}
   winScreen: {fileID: 0}

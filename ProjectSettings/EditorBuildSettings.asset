@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Playermovement.unity
     guid: b87d90a1a1986df4685bcb6127a17a48
   - enabled: 1
+    path: Assets/Scenes/VoxelTerrain.unity
+    guid: d95cbdfed45ce2440a3af81f119009c2
+  - enabled: 0
     path: Assets/Scenes/VoxelTerrainBuildTest.unity
     guid: 60c11232f00d6d9438ed8f058ed2caa8
   m_configObjects:

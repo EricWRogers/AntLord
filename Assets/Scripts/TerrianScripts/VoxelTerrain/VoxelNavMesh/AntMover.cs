@@ -12,12 +12,16 @@ public class AntMover : MonoBehaviour
     Vector3 goal;
     bool hasGoal;
 
-    
     float speedMul = 1f;
     float currentSpeed;
 
-    
     Vector3 steering;
+
+    // movement reporting
+    public bool IsMoving { get; private set; }
+    public AntBrain brain; 
+    Vector3 lastPos;
+    public float moveEpsilon = 0.003f; 
 
     public bool HasGoal => hasGoal;
 
@@ -25,20 +29,20 @@ public class AntMover : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         currentSpeed = baseSpeed;
+
+        if (!brain) brain = GetComponent<AntBrain>();
+        lastPos = transform.position;
     }
 
     public void SetGoal(Vector3 g) { goal = g; hasGoal = true; }
     public void ClearGoal() => hasGoal = false;
 
-    
     public void SetAbsoluteSpeed(float s)
     {
         baseSpeed = Mathf.Max(minSpeed, s);
-        
         currentSpeed = Mathf.Max(minSpeed, baseSpeed * speedMul);
     }
 
-    
     public void SetSpeedMultiplier(float mul)
     {
         speedMul = Mathf.Clamp01(mul);
@@ -51,7 +55,6 @@ public class AntMover : MonoBehaviour
         currentSpeed = Mathf.Max(minSpeed, baseSpeed);
     }
 
-    // NEW: NavParent/FollowNav can call this to steer
     public void SetSteering(Vector3 steerXZ)
     {
         steerXZ.y = 0f;
@@ -60,45 +63,57 @@ public class AntMover : MonoBehaviour
 
     void Update()
     {
-        if (!hasGoal) return;
-
-        Vector3 to = goal - transform.position;
-        to.y = 0f;
-
-        float dist = to.magnitude;
-        if (dist <= arriveDist)
+        
+        if (hasGoal)
         {
-            hasGoal = false;
-            return;
-        }
+            Vector3 to = goal - transform.position;
+            to.y = 0f;
 
-        Vector3 dir = to / dist;
-
-        // NEW: apply steering before obstacle checks so ants naturally slide around each other
-        if (steering.sqrMagnitude > 0.0001f)
-            dir = (dir + steering).normalized;
-
-        Vector3 origin = transform.position + Vector3.up * 0.1f;
-        if (Physics.Raycast(origin, dir, out RaycastHit fHit, 0.25f))
-        {
-            // If the surface normal is mostly vertical, then nudge.
-            //If mostly upward, don't nudge
-            bool isWall = Vector3.Dot(fHit.normal, Vector3.up) < 0.35f; // tweak 0.2-0.5
-            if (isWall)
+            float dist = to.magnitude;
+            if (dist <= arriveDist)
             {
-                Vector3 left = Quaternion.Euler(0, -45f, 0) * dir;
-                Vector3 right = Quaternion.Euler(0, 45f, 0) * dir;
+                hasGoal = false;
+            }
+            else
+            {
+                Vector3 dir = to / dist;
 
-                if (!Physics.Raycast(origin, left, 0.25f)) dir = left;
-                else if (!Physics.Raycast(origin, right, 0.25f)) dir = right;
+                if (steering.sqrMagnitude > 0.0001f)
+                    dir = (dir + steering).normalized;
+
+                Vector3 origin = transform.position + Vector3.up * 0.1f;
+                if (Physics.Raycast(origin, dir, out RaycastHit fHit, 0.25f))
+                {
+                    bool isWall = Vector3.Dot(fHit.normal, Vector3.up) < 0.35f;
+                    if (isWall)
+                    {
+                        Vector3 left = Quaternion.Euler(0, -45f, 0) * dir;
+                        Vector3 right = Quaternion.Euler(0, 45f, 0) * dir;
+
+                        if (!Physics.Raycast(origin, left, 0.25f)) dir = left;
+                        else if (!Physics.Raycast(origin, right, 0.25f)) dir = right;
+                    }
+                }
+
+                Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeedDeg * Time.deltaTime);
+
+                cc.SimpleMove(dir * currentSpeed);
             }
         }
 
-        // manual rotation
-        Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeedDeg * Time.deltaTime);
+        // movement reporting
+        UpdateMovingState();
+        //MarchMusicController.Report(this);
+    }
 
-        // keeps movement stable on uneven surfaces
-        cc.SimpleMove(dir * currentSpeed);
+    void UpdateMovingState()
+    {
+        Vector3 p = transform.position;
+        float dx = p.x - lastPos.x;
+        float dz = p.z - lastPos.z;
+
+        IsMoving = (dx * dx + dz * dz) > (moveEpsilon * moveEpsilon);
+        lastPos = p;
     }
 }

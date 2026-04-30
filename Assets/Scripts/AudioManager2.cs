@@ -16,12 +16,8 @@ public class Sound
     public bool playOnAwake = false;
     public AudioSource source;
 
-    public Sound()
-    {
-        volume = 1;
-        pitch = 1;
-        loop = false;
-    }
+    
+    [HideInInspector] public float baseVolume = 1;
 }
 
 public class AudioManager2 : MonoBehaviour
@@ -29,7 +25,6 @@ public class AudioManager2 : MonoBehaviour
     public Sound[] sounds;
 
     public static AudioManager2 instance;
-    //AudioManager
 
     void Awake()
     {
@@ -42,31 +37,54 @@ public class AudioManager2 : MonoBehaviour
 
             s.source.clip = s.clip;
             s.source.playOnAwake = s.playOnAwake;
-            if (s.playOnAwake)
-                s.source.Play();
 
             s.source.volume = s.volume;
+            s.baseVolume = s.volume; // NEW
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+
+            if (s.playOnAwake)
+                s.source.Play();
         }
     }
 
     public void Play(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
-        if (s == null)
+        if (s == null || s.source == null)
         {
             Debug.LogWarning("Sound: " + name + " not found");
             return;
         }
 
-        s.source.Play();
+        
+        if (!s.source.isPlaying)
+            s.source.Play();
     }
 
     public void Stop(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null || s.source == null) return;
 
         s.source.Stop();
+    }
+
+    
+    public void SetVolume(string name, float vol)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null || s.source == null) return;
+
+        s.source.volume = Mathf.Clamp01(vol);
+    }
+
+    
+    public void RestoreVolume(string name)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        if (s == null || s.source == null) return;
+
+        s.source.volume = s.baseVolume;
     }
 }

@@ -12,7 +12,9 @@ public class EnemyBuilding : Buildings
     public float radius = 5.0f;
     public int maxAnts = 10;
     List<GameObject> ants = new List<GameObject>();
-    public GameObject antPrefab;
+    
+    public GameObject antPrefab; 
+    
     public int maxHealth = 10;
 
     public TextMeshProUGUI timerText;
@@ -20,34 +22,45 @@ public class EnemyBuilding : Buildings
     [Tooltip("TEMPORARY! Win screen")]
     public GameObject winScreen;
 
+    private bool hasWon = false;
+
     void Start()
     {
-        this.currentHealth = maxHealth;
+        teamID = 1;
+        currentHealth = maxHealth;
         slider.maxValue = currentHealth;
         slider.value = currentHealth;
 
         winScreen.SetActive(false);
     }
+
     void FixedUpdate()
     {
-        if (ants.Count < maxAnts && this.currentHealth > 0)
+        if (!hasWon)
         {
-            timer += Time.deltaTime;
-            if (timer >= spawnCooldown)
+            if (ants.Count < maxAnts && this.currentHealth > 0)
             {
-                SpawnAnt();
-                timer = 0;
+                timer += Time.deltaTime;
+                if (timer >= spawnCooldown)
+                {
+                    SpawnAnt();
+                    timer = 0;
+                }
             }
-        }
-        else if (timerText != null)
-        {
-            timerText.text = "All Ants Spawned";
-        }
+            else if (timerText != null)
+            {
+                timerText.text = "All Ants Spawned";
+            }
 
-        if (this.currentHealth <= 0)
-        {
-            FindFirstObjectByType<MM>().Pause();
-            winScreen.SetActive(true);
+            if (this.currentHealth <= 0)
+            {
+                hasWon = true;
+
+                FindFirstObjectByType<MM>()?.Pause();
+                winScreen.SetActive(true);
+                
+                AudioManager2.instance?.Play("WinMusic");
+            }
         }
 
         UpdateTimerUI();
@@ -55,7 +68,7 @@ public class EnemyBuilding : Buildings
 
     void UpdateTimerUI()
     {
-        if (timerText != null)
+        if (timerText != null && !hasWon)
         {
             float timeRemaining = Mathf.Max(0, spawnCooldown - timer);
             timerText.text = $"Next Spawn: {timeRemaining:F1}s";
@@ -77,29 +90,39 @@ public class EnemyBuilding : Buildings
 
         Vector3 spawn = new Vector3(randomX, transform.position.y, randomZ);
 
-        GameObject newAnt = Instantiate(antPrefab, spawn, Quaternion.identity);
+        LeadNav existingLeader = FindActiveEnemyLeader(1);
 
-        AntBrain brain = newAnt.GetComponent<AntBrain>();
+        GameObject newAnt = Instantiate(antPrefab, spawn, Quaternion.identity);
+        
         LeadNav ln = newAnt.GetComponent<LeadNav>();
         FollowNav fn = newAnt.GetComponent<FollowNav>();
 
-        LeadNav existingLeader = FindActiveEnemyLeader(brain.antType.teamID);
-
         if (existingLeader == null)
         {
-            ln.enabled = true;
-            if (fn != null) fn.enabled = false;
+            if (fn != null)
+            {
+                fn.enabled = false;  
+                fn.leader = null; 
+            }
 
-            ln.home = this.transform;
+            if (ln != null)
+            {
+                ln.enabled = true; 
+                ln.home = this.transform;
+            }
 
             Debug.Log($"<color=orange>Enemy Spawner: First ant is now a Leader.</color>");
         }
         else
         {
-            ln.enabled = false;
+            if (ln != null)
+            {
+                ln.enabled = false;  
+            }
+
             if (fn != null)
             {
-                fn.enabled = true;
+                fn.enabled = true;   
                 fn.leader = existingLeader;
 
                 if (existingLeader.followers == null) existingLeader.followers = new List<FollowNav>();

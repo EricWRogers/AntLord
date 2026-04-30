@@ -1,6 +1,7 @@
+using UnityEditor;
 using UnityEngine;
 
-public enum AntTask {Manual, Food, Materials, Fight}
+public enum AntTask {Manual, Food, Materials}
 
 // NOTE: Old version required NavMeshAgent. New system uses AntMover + CharacterController instead.
 // [RequireComponent(typeof(NavMeshAgent))]
@@ -14,7 +15,7 @@ public abstract class NavParent : MonoBehaviour
     public float separationForce = 5f;
     public bool amCarryingFood = false;
     public int antTier = 1;
-
+    public AntTask task = AntTask.Manual;
     
     public float separationFalloff = 2.0f;
 
@@ -83,5 +84,20 @@ public abstract class NavParent : MonoBehaviour
         smoothSteer = Vector3.Lerp(smoothSteer, targetSteer, Time.deltaTime * separationSteerSmoothing);
 
         mover.SetSteering(smoothSteer);
+    }
+
+    public string GetAntTaskStr()
+    {
+        switch (task)
+        {
+            case AntTask.Food:
+                return "Food";
+
+            case AntTask.Materials:
+                return "Material";
+
+            default:
+                return "Manual";
+        }
     }
 }
