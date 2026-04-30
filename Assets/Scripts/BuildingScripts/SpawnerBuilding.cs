@@ -20,14 +20,14 @@ public class SpawnerBuilding : Buildings
     Bounds bounds;
 
 
-    void Start()
+    public virtual void Start()
     {
-        this.currentHealth = maxHealth;
+        currentHealth = maxHealth;
         slider.maxValue = currentHealth;
         slider.value = currentHealth;
         bounds = GetComponent<MeshRenderer>().bounds;
     }
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         if (ants.Count < maxAnts && ResourceManager.instance.GetFood() > minFoodPerAnt && this.currentHealth > 0)
         {
@@ -44,7 +44,7 @@ public class SpawnerBuilding : Buildings
         }
     }
 
-    void SpawnAnt()
+    public virtual void SpawnAnt()
     {
         //Vector3 padding = new Vector3(Random.Range(0.0f, spawnPadding), gameObject.transform.position.y + 1.0f, Random.Range(0.0f, spawnPadding));
         ResourceManager.instance.AddFood(-2);
@@ -69,15 +69,15 @@ public class SpawnerBuilding : Buildings
         }
     }
 
-    public void GiveFood(int _food) //or floats idk what yall are cooking
+    public virtual void GiveFood(int _food) //or floats idk what yall are cooking
     {
         ResourceManager.instance.AddFood(_food);
     }
-    public void GiveRock(int _rock) //or floats idk what yall are cooking
+    public virtual void GiveRock(int _rock) //or floats idk what yall are cooking
     {
         ResourceManager.instance.AddRock(_rock);
     }
-    public void GiveStick(int _stick) //or floats idk what yall are cooking
+    public virtual void GiveStick(int _stick) //or floats idk what yall are cooking
     {
         ResourceManager.instance.AddStick(_stick);
     }

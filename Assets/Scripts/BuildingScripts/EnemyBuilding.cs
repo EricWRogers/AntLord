@@ -2,20 +2,19 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 
-public class EnemyBuilding : Buildings
+public class EnemyBuilding : SpawnerBuilding
 {
-    [SerializeField] BuildingSO spawnerSO;
-    public Transform spawnPoint;
-    public float spawnPadding = 5.0f;
+    // public Transform spawnPoint;
+    // public float spawnPadding = 5.0f;
     float timer = 0.0f;
-    public float spawnCooldown = 10.0f;
-    public float radius = 5.0f;
-    public int maxAnts = 10;
+    // public float spawnCooldown = 10.0f;
+    // public float radius = 5.0f;
+    // public int maxAnts = 10;
     List<GameObject> ants = new List<GameObject>();
     
-    public GameObject antPrefab; 
+    // public GameObject antPrefab; 
     
-    public int maxHealth = 10;
+    // public int maxHealth = 10;
 
     public TextMeshProUGUI timerText;
 
@@ -31,7 +30,7 @@ public class EnemyBuilding : Buildings
     public float maxSpawnRadius = 15f;
     private int localFoodCount = 0;
 
-    void Start()
+    public override void Start()
     {
         teamID = 1;
         currentHealth = maxHealth;
@@ -41,11 +40,11 @@ public class EnemyBuilding : Buildings
         winScreen.SetActive(false);
     }
 
-    void FixedUpdate()
+    public override void FixedUpdate()
     {
         if (!hasWon)
         {
-            if (ants.Count < maxAnts && this.currentHealth > 0)
+            if (ants.Count < maxAnts && currentHealth > 0)
             {
                 timer += Time.deltaTime;
                 if (timer >= spawnCooldown)
@@ -59,7 +58,7 @@ public class EnemyBuilding : Buildings
                 timerText.text = "All Ants Spawned";
             }
 
-            if (this.currentHealth <= 0)
+            if (currentHealth <= 0)
             {
                 hasWon = true;
 
@@ -82,7 +81,7 @@ public class EnemyBuilding : Buildings
         }
     }
 
-    void SpawnAnt()
+    public override void SpawnAnt()
     {
         float randomX = 0.0f;
         float randomZ = 0.0f;
@@ -115,7 +114,7 @@ public class EnemyBuilding : Buildings
             if (ln != null)
             {
                 ln.enabled = true; 
-                ln.home = this.transform;
+                ln.home = transform;
             }
 
             Debug.Log($"<color=orange>Enemy Spawner: First ant is now a Leader.</color>");
@@ -143,7 +142,7 @@ public class EnemyBuilding : Buildings
 
     private LeadNav FindActiveEnemyLeader(int teamID)
     {
-        LeadNav[] allLeaders = Object.FindObjectsByType<LeadNav>(FindObjectsSortMode.None);
+        LeadNav[] allLeaders = FindObjectsByType<LeadNav>(FindObjectsSortMode.None);
         foreach (LeadNav leader in allLeaders)
         {
             AntBrain b = leader.GetComponent<AntBrain>();
@@ -155,9 +154,9 @@ public class EnemyBuilding : Buildings
         return null;
     }
 
-    public void GiveFood(int _food)
+    public override void GiveFood(int _food)
     {
-        ResourceManager.instance.AddFood(_food);
+        EnemyResourceManager.instance.AddFood(_food);
 
         localFoodCount += _food;
 
@@ -168,14 +167,14 @@ public class EnemyBuilding : Buildings
         }
     }
 
-    public void GiveRock(int _rock)
+    public override void GiveRock(int _rock)
     {
-        ResourceManager.instance.AddRock(_rock);
+        EnemyResourceManager.instance.AddRock(_rock);
     }
 
-    public void GiveStick(int _stick)
+    public override void GiveStick(int _stick)
     {
-        ResourceManager.instance.AddStick(_stick);
+        EnemyResourceManager.instance.AddStick(_stick);
     }
 
     private void SpawnNewBuilding()
