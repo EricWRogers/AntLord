@@ -156,7 +156,7 @@ public class EnemyBuilding : SpawnerBuilding
 
     public override void GiveFood(int _food)
     {
-        ResourceManager.instance.AddFood(_food);
+        EnemyResourceManager.instance.AddFood(_food);
 
         localFoodCount += _food;
 
@@ -169,12 +169,12 @@ public class EnemyBuilding : SpawnerBuilding
 
     public override void GiveRock(int _rock)
     {
-        ResourceManager.instance.AddRock(_rock);
+        EnemyResourceManager.instance.AddRock(_rock);
     }
 
     public override void GiveStick(int _stick)
     {
-        ResourceManager.instance.AddStick(_stick);
+        EnemyResourceManager.instance.AddStick(_stick);
     }
 
     private void SpawnNewBuilding()
