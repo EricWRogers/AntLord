@@ -589,8 +589,7 @@ MonoBehaviour:
   spawnCooldown: 20
   radius: 5
   maxAnts: 10
-  followerPrefab: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
-  leaderPrefab: {fileID: 1720006671448736180, guid: 2d44d5e7b8cfeb04283a01bd8c43bd94, type: 3}
+  antPrefab: {fileID: 0}
   maxHealth: 1000
   timerText: {fileID: 5654690002916950053}
   winScreen: {fileID: 0}
