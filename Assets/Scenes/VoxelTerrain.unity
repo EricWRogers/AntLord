@@ -20461,6 +20461,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2102848434}
     - target: {fileID: 7677280984369032711, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: voxelTerrain
+      value: 
+      objectReference: {fileID: 4610825784424797931}
+    - target: {fileID: 7677280984369032711, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: cellIndicator
       value: 
       objectReference: {fileID: 1984855500}
@@ -47990,7 +47994,7 @@ PrefabInstance:
     - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: voxelTerrain
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 4610825784424797931}
     - target: {fileID: 5814013232103977733, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: cellIndicator
       value: 
@@ -53159,7 +53163,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102848429}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc1068980701a6f45bf5e6e456e4ad67, type: 3}
   m_Name: 
