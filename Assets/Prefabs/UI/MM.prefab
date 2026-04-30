@@ -42,7 +42,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.64, y: 1.82}
+  m_AnchoredPosition: {x: -0.64001465, y: 1.8200073}
   m_SizeDelta: {x: 1266.7478, y: 1050.6671}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4564300964051757894
@@ -3078,6 +3078,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc81f27d504229c43bd1b31eb672258e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MM
+  pm: {fileID: 0}
+  customActions: {fileID: 0}
+  actionMapName: Menu
+  levelSelectMenu: {fileID: 0}
 --- !u!1 &7769946628521988075
 GameObject:
   m_ObjectHideFlags: 0
