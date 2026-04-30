@@ -2576,6 +2576,11 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &207276031 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5544231747001048276, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+  m_PrefabInstance: {fileID: 1525196226}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &223791461
 GameObject:
   m_ObjectHideFlags: 0
@@ -2881,6 +2886,10 @@ PrefabInstance:
     - target: {fileID: 8554474241013192180, guid: 4d5813c54a240874ca798368cf62af2e, type: 3}
       propertyPath: m_Name
       value: StickSpawner (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8554474241013192180, guid: 4d5813c54a240874ca798368cf62af2e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16524,6 +16533,14 @@ PrefabInstance:
       propertyPath: leaderPrefab
       value: 
       objectReference: {fileID: 1720006671448736180, guid: be78cef2de4af690cb57ca0599bee112, type: 3}
+    - target: {fileID: 8752463228130190757, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+      propertyPath: newBasePrefab
+      value: 
+      objectReference: {fileID: 207276031}
+    - target: {fileID: 8752463228130190757, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
+      propertyPath: spawnCooldown
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4815465384528328678, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}
     - {fileID: 2663632918962937179, guid: ada4b27e99ba08e4197f18d43268fd50, type: 3}

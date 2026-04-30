@@ -24,6 +24,13 @@ public class EnemyBuilding : Buildings
 
     private bool hasWon = false;
 
+    [Header("Base Expansion Settings")]
+    public GameObject newBasePrefab;
+    public int foodRequiredForBase = 5;
+    public float minSpawnRadius = 8f;
+    public float maxSpawnRadius = 15f;
+    private int localFoodCount = 0;
+
     void Start()
     {
         teamID = 1;
@@ -151,13 +158,45 @@ public class EnemyBuilding : Buildings
     public void GiveFood(int _food)
     {
         ResourceManager.instance.AddFood(_food);
+
+        localFoodCount += _food;
+
+        if (localFoodCount >= foodRequiredForBase)
+        {
+            localFoodCount -= foodRequiredForBase; 
+            SpawnNewBuilding();
+        }
     }
+
     public void GiveRock(int _rock)
     {
         ResourceManager.instance.AddRock(_rock);
     }
+
     public void GiveStick(int _stick)
     {
         ResourceManager.instance.AddStick(_stick);
+    }
+
+    private void SpawnNewBuilding()
+    {
+        if (newBasePrefab == null)
+        {
+            Debug.LogWarning("Cannot spawn base: newBasePrefab is not assigned in the EnemyBuilding Inspector!");
+            return;
+        }
+
+        Vector2 randomCircle = Random.insideUnitCircle.normalized;
+        
+        float randomDistance = Random.Range(minSpawnRadius, maxSpawnRadius);
+
+        Vector3 spawnOffset = new Vector3(randomCircle.x, 0f, randomCircle.y) * randomDistance;
+        Vector3 spawnPosition = transform.position + spawnOffset;
+
+        spawnPosition.y = transform.position.y; 
+
+        Instantiate(newBasePrefab, spawnPosition, Quaternion.identity);
+
+        Debug.Log($"<color=green>Enemy Expansion Built! New base spawned at {spawnPosition}</color>");
     }
 }
