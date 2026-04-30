@@ -8,11 +8,6 @@ public class AntMover : MonoBehaviour
     public float turnSpeedDeg = 540f;
     public float arriveDist = 0.25f;
 
-    
-    [Header("Idle Scoot")]
-    public float idleScootSpeed = 0.8f;     
-    public float idleSteerDeadzone = 0.05f; 
-
     CharacterController cc;
     Vector3 goal;
     bool hasGoal;
@@ -20,8 +15,13 @@ public class AntMover : MonoBehaviour
     float speedMul = 1f;
     float currentSpeed;
 
-    
     Vector3 steering;
+
+    // movement reporting
+    public bool IsMoving { get; private set; }
+    public AntBrain brain; 
+    Vector3 lastPos;
+    public float moveEpsilon = 0.003f; 
 
     public bool HasGoal => hasGoal;
 
@@ -29,6 +29,9 @@ public class AntMover : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         currentSpeed = baseSpeed;
+
+        if (!brain) brain = GetComponent<AntBrain>();
+        lastPos = transform.position;
     }
 
     public void SetGoal(Vector3 g) { goal = g; hasGoal = true; }
@@ -60,76 +63,57 @@ public class AntMover : MonoBehaviour
 
     void Update()
     {
-        // if no goal, still allow scoot movement
-        if (!hasGoal)
-    {
-        Vector3 steer = steering;
-        steer.y = 0f;
-
-        if (steer.magnitude > idleSteerDeadzone)
+        
+        if (hasGoal)
         {
-            Vector3 dir = steer.normalized;
+            Vector3 to = goal - transform.position;
+            to.y = 0f;
 
-            
-            Vector3 origin = transform.position + Vector3.up * 0.1f;
-            if (Physics.Raycast(origin, dir, out RaycastHit fHit, 0.25f))
+            float dist = to.magnitude;
+            if (dist <= arriveDist)
             {
-                bool isWall = Vector3.Dot(fHit.normal, Vector3.up) < 0.35f;
-                if (isWall)
-                {
-                    Vector3 left = Quaternion.Euler(0, -45f, 0) * dir;
-                    Vector3 right = Quaternion.Euler(0, 45f, 0) * dir;
-
-                    if (!Physics.Raycast(origin, left, 0.25f)) dir = left;
-                    else if (!Physics.Raycast(origin, right, 0.25f)) dir = right;
-                }
+                hasGoal = false;
             }
+            else
+            {
+                Vector3 dir = to / dist;
 
-            
-            cc.SimpleMove(dir * idleScootSpeed);
+                if (steering.sqrMagnitude > 0.0001f)
+                    dir = (dir + steering).normalized;
+
+                Vector3 origin = transform.position + Vector3.up * 0.1f;
+                if (Physics.Raycast(origin, dir, out RaycastHit fHit, 0.25f))
+                {
+                    bool isWall = Vector3.Dot(fHit.normal, Vector3.up) < 0.35f;
+                    if (isWall)
+                    {
+                        Vector3 left = Quaternion.Euler(0, -45f, 0) * dir;
+                        Vector3 right = Quaternion.Euler(0, 45f, 0) * dir;
+
+                        if (!Physics.Raycast(origin, left, 0.25f)) dir = left;
+                        else if (!Physics.Raycast(origin, right, 0.25f)) dir = right;
+                    }
+                }
+
+                Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeedDeg * Time.deltaTime);
+
+                cc.SimpleMove(dir * currentSpeed);
+            }
         }
 
-        return;
+        // movement reporting
+        UpdateMovingState();
+        //MarchMusicController.Report(this);
     }
 
-        
-        Vector3 to = goal - transform.position;
-        to.y = 0f;
+    void UpdateMovingState()
+    {
+        Vector3 p = transform.position;
+        float dx = p.x - lastPos.x;
+        float dz = p.z - lastPos.z;
 
-        float dist = to.magnitude;
-        if (dist <= arriveDist)
-        {
-            hasGoal = false;
-            return;
-        }
-
-        Vector3 dirGoal = to / dist;
-
-        // apply steering before obstacle checks so ants naturally slide around each other
-        if (steering.sqrMagnitude > 0.0001f)
-            dirGoal = (dirGoal + steering).normalized;
-
-        Vector3 originGoal = transform.position + Vector3.up * 0.1f;
-        if (Physics.Raycast(originGoal, dirGoal, out RaycastHit fHitGoal, 0.25f))
-        {
-            // If the surface normal is mostly vertical, then nudge.
-            //If mostly upward, don't nudge
-            bool isWall = Vector3.Dot(fHitGoal.normal, Vector3.up) < 0.35f; // tweak 0.2-0.5
-            if (isWall)
-            {
-                Vector3 left = Quaternion.Euler(0, -45f, 0) * dirGoal;
-                Vector3 right = Quaternion.Euler(0, 45f, 0) * dirGoal;
-
-                if (!Physics.Raycast(originGoal, left, 0.25f)) dirGoal = left;
-                else if (!Physics.Raycast(originGoal, right, 0.25f)) dirGoal = right;
-            }
-        }
-
-        // manual rotation
-        Quaternion targetRotGoal = Quaternion.LookRotation(dirGoal, Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotGoal, turnSpeedDeg * Time.deltaTime);
-
-        // keeps movement stable on uneven surfaces
-        cc.SimpleMove(dirGoal * currentSpeed);
+        IsMoving = (dx * dx + dz * dz) > (moveEpsilon * moveEpsilon);
+        lastPos = p;
     }
 }

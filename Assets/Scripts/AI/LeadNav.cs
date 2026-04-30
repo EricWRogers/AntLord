@@ -18,7 +18,7 @@ public class LeadNav : NavParent
     public Transform home;
 
     public int foodBits = 0;
-    public AntTask task = AntTask.Manual;
+    
 
     
     public VoxelAStar astar;
@@ -148,7 +148,7 @@ public class LeadNav : NavParent
             {
                 int capacity = (followers.Count + 1) * antTier;
 
-                if (foodBits >= capacity)
+                if (amCarryingFood || foodBits >= capacity)
                 {
                     if (home != null)
                     {
@@ -266,5 +266,20 @@ public class LeadNav : NavParent
                 }
             }
         }
+    }
+
+    public bool AnyFoodBits()
+    {
+        if(amCarryingFood)
+            return true;
+
+        foreach(FollowNav follower in followers)
+        {
+            if(follower.amCarryingFood)
+                return true;
+        }
+
+        return false;
+
     }
 }

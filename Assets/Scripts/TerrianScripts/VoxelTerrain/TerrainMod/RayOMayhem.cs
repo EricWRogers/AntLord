@@ -104,7 +104,7 @@ public class RayOMayhem : MonoBehaviour
         return false;
     }
 
-    public void HandleVoxelInput(Vector3 hitPoint, bool isBreaking)//, float targetValue, bool isBreaking)
+    public void HandleVoxelInput(Vector3 hitPoint, bool isBreaking)
     {
         if (Time.time < nextAdjustmentTime) return;
 

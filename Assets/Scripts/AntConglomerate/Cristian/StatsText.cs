@@ -28,10 +28,10 @@ public class StatsText : MonoBehaviour
         foodText.text = "Food: " + _rM.food.ToString();
 
         //count all collected sticks
-        stonesText.text = "Sticks: " + _rM.rocks.ToString();
+        stonesText.text = "Stones: " + _rM.rocks.ToString();
 
         //count all collected stones
-        sticksText.text = "Stones: " + _rM.sticks.ToString();
+        sticksText.text = "Sticks: " + _rM.sticks.ToString();
 
 
         //count all of the players ants

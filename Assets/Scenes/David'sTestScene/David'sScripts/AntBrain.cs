@@ -168,7 +168,7 @@ public class AntBrain : MonoBehaviour
         // If LeadNav exists and has a target, the leader moves toward it.
         // Otherwise follower stays in FollowNav mode.
 
-        if (leadNav != null && leadNav.enabled && leadNav.target != null)
+        if (leadNav != null && leadNav.enabled)
         {
             if (mover != null)
                 mover.SetGoal(leadNav.target.position);
@@ -312,6 +312,7 @@ public class AntBrain : MonoBehaviour
 
         if (newLeader != null)
         {
+            candidate.enabled = false; // Disable FollowNav
             newLeader.enabled = true;
             newLeader.target = oldLeader.target;
             newLeader.home = oldLeader.home;
