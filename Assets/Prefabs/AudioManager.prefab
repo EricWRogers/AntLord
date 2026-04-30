@@ -54,21 +54,30 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     playOnAwake: 0
+    isMusic: 1
     source: {fileID: 0}
+    baseVolume: 1
+    currentVolume: 1
   - name: AntMarch
     clip: {fileID: 8300000, guid: e06e4f8b3a46f7047980f8083c7f456e, type: 3}
     volume: 1
     pitch: 1
     loop: 1
     playOnAwake: 0
+    isMusic: 1
     source: {fileID: 0}
+    baseVolume: 1
+    currentVolume: 1
   - name: WinMusic
     clip: {fileID: 8300000, guid: a14b952088ecec647a74ffd021948a0a, type: 3}
     volume: 1
     pitch: 1
     loop: 0
     playOnAwake: 0
+    isMusic: 1
     source: {fileID: 0}
+    baseVolume: 1
+    currentVolume: 1
 --- !u!114 &2177032193661472396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,5 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MarchMusicController
   marchSoundName: AntMarch
-  movingMinSpeed: 0.05
-  goalMinDistance: 0.75
+  onlyPlayerTeam: 1
+  velocityEpsilon: 0.03
+  posEpsilon: 0.004
+  stillGraceSeconds: 0.75

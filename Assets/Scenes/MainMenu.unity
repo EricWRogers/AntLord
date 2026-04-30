@@ -1357,6 +1357,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2781708103537013434, guid: 44445324347f4c64d84c585122d2ca82, type: 3}
   m_PrefabInstance: {fileID: 656596423}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &693170316 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3807692373280198229, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
+  m_PrefabInstance: {fileID: 2662472046466318356}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &693170321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693170316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55909dccc98b19149abd01e701d573d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MainMenuMusicToggle
 --- !u!1 &728280884
 GameObject:
   m_ObjectHideFlags: 0
@@ -4975,6 +4992,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5858294934762099332, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
+      propertyPath: m_text
+      value: Mute Music (ON/OFF)
+      objectReference: {fileID: 0}
     - target: {fileID: 5909382549163070314, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
       propertyPath: m_Type
       value: 1
@@ -5438,6 +5459,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 494479700355425993, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2662472046466318360}
+    - targetCorrespondingSourceObject: {fileID: 3807692373280198229, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 693170321}
   m_SourcePrefab: {fileID: 100100000, guid: b983bbf4ac67be740a8f4e33473ac2d9, type: 3}
 --- !u!1 &2662472046466318357 stripped
 GameObject:
