@@ -84,9 +84,10 @@ public abstract class CommandParent : MonoBehaviour
                     if (hit.transform.CompareTag("Food"))
                         selectedLeader.target = hit.transform;
                     else
+                    {
                             GameObject waypoint = Instantiate(wayPointPrefab, hit.point, Quaternion.identity);
                             selectedLeader.target = waypoint.transform;
-                    
+                    }
                     
                 }
             }
