@@ -2,9 +2,6 @@ using UnityEngine.Audio;
 using System;
 using UnityEngine;
 
-// Credit to Brackeys youtube tutorial on Audio managers,
-// as the majority of this code and learning how to use it was made by him.
-
 [System.Serializable]
 public class Sound
 {
@@ -26,8 +23,6 @@ public class Sound
     [HideInInspector] public AudioSource source;
 
     [HideInInspector] public float baseVolume = 1;
-
-    
     [HideInInspector] public float currentVolume = 1;
 }
 
@@ -39,12 +34,15 @@ public class AudioManager2 : MonoBehaviour
 
     private bool musicMuted = false;
 
+    [Range(0, 1)]
+    private float musicVolume = 1f;
+
     void Awake()
     {
         instance = this;
 
-        // Load saved mute setting
         musicMuted = PlayerPrefs.GetInt("MusicMuted", 0) == 1;
+        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
 
         foreach (Sound s in sounds)
         {
@@ -133,14 +131,39 @@ public class AudioManager2 : MonoBehaviour
         return musicMuted;
     }
 
+    public void SetMusicVolume(float volume)
+    {
+        musicVolume = Mathf.Clamp01(volume);
+
+        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
+        PlayerPrefs.Save();
+
+        foreach (Sound s in sounds)
+        {
+            ApplyVolume(s);
+        }
+    }
+
+    public float GetMusicVolume()
+    {
+        return musicVolume;
+    }
+
     private void ApplyVolume(Sound s)
     {
         if (s == null || s.source == null)
             return;
 
-        if (musicMuted && s.isMusic)
+        if (s.isMusic)
         {
-            s.source.volume = 0f;
+            if (musicMuted)
+            {
+                s.source.volume = 0f;
+            }
+            else
+            {
+                s.source.volume = s.currentVolume * musicVolume;
+            }
         }
         else
         {
