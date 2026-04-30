@@ -162,10 +162,12 @@ public class BuildingPlacementSystem : MonoBehaviour
         }
 
         if (canBuild)
+        {
             Instantiate(buildingParent);
 
-        ResourceManager.instance.AddRock(-currentBuilding.RockCost);
-        ResourceManager.instance.AddStick(-currentBuilding.StickCost);
+            ResourceManager.instance.AddRock(-currentBuilding.RockCost);
+            ResourceManager.instance.AddStick(-currentBuilding.StickCost);
+        }
     }
     //look sometimes Lambda functions just do this
     public bool IsPointerOverUI()
@@ -188,7 +190,7 @@ public class BuildingPlacementSystem : MonoBehaviour
     public void OpenBuildMenu()
     {
         if (!sceneCamera) sceneCamera = Camera.main;
-        if(!sceneCamera)
+        if (!sceneCamera)
             Debug.Log("No camera");
         SetBuildingInfo(allBuildings[selectedObjectIndex]);
         buildingUI.transform.position = sceneCamera.gameObject.transform.position +
