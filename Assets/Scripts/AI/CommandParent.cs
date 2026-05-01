@@ -9,6 +9,7 @@ public abstract class CommandParent : MonoBehaviour
     public List<GameObject> selectedAnts;
     public LeadNav selectedLeader = null;
     public GameObject wayPointPrefab;
+    private GameObject currentWaypoint;
 
     [Header("Drag Select")]
     public float sphereCastRadius = 2;
@@ -85,8 +86,19 @@ public abstract class CommandParent : MonoBehaviour
                         selectedLeader.target = hit.transform;
                     else
                     {
-                            GameObject waypoint = Instantiate(wayPointPrefab, hit.point, Quaternion.identity);
-                            selectedLeader.target = waypoint.transform;
+                        if (currentWaypoint != null)
+                        {
+                            Destroy(currentWaypoint);
+                            currentWaypoint = null;
+                        }
+
+                        currentWaypoint = Instantiate(
+                            wayPointPrefab,
+                            hit.point,
+                            Quaternion.identity
+                        );
+
+                        selectedLeader.target = currentWaypoint.transform;
                     }
                     
                 }
