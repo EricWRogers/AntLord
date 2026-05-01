@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 public enum AntTask {Manual, Food, Materials}
