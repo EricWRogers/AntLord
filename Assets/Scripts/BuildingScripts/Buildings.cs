@@ -31,6 +31,14 @@ public class Buildings : MonoBehaviour
             Random.Range(z - wiggleAmount, z + wiggleAmount));
             yield return new WaitForSeconds(0.5f);
         }
+
+        //tell win con when an enemy or player building is destroyed
+        if (teamID == 0)
+            WinLoseCondition.instance.OnPlayerBuildingDestroyed(gameObject);
+        else
+            WinLoseCondition.instance.OnEnemyBuildingDestroyed(gameObject);
+
+
         Destroy(gameObject);
 
     }

@@ -50,13 +50,21 @@ public class GameModeManager : MonoBehaviour
         if (VRIsActivated || isVROverride){
             DesktopCam.SetActive(false);
             VRCam.SetActive(true);
-            PlayerPlane.SetActive(true);
+
+            if (PlayerPlane)
+            {
+                PlayerPlane.SetActive(true);
+            }
         }
         else
         {
             DesktopCam.SetActive(true);
             VRCam.SetActive(false);
-            PlayerPlane.SetActive(false);
+
+            if (PlayerPlane)
+            {
+                PlayerPlane.SetActive(false);
+            }
         }
     }
 
