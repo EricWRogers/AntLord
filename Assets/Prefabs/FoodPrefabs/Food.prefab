@@ -73,7 +73,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpawnFoodBites
   foodBitePrefab: {fileID: 4809084369255736288, guid: aae0ce7c8227e3843a63d29ba4e8f8cb, type: 3}
   foodHealth: 4
-  radius: 3
+  radius: 2
   foodbit: {fileID: 0}
   mostRecentLead: {fileID: 0}
   tier: 1
