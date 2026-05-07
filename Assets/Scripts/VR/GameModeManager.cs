@@ -8,6 +8,7 @@ public class GameModeManager : MonoBehaviour
     public GameObject DesktopCam;
     public GameObject VRCam;
     public GameObject PlayerPlane;
+    public GameObject VrParent;
 
     public static bool VRIsActivated;
 
@@ -38,6 +39,11 @@ public class GameModeManager : MonoBehaviour
     {
         SetPlayMode();
         Debug.Log("level loaded. Vr is active? : " + VRIsActivated);
+
+        if (!VRIsActivated)
+        {
+            Destroy(VrParent);
+        }
     }    
 
     public void SetPlayMode()
@@ -49,8 +55,9 @@ public class GameModeManager : MonoBehaviour
             VRCam = GameObject.Find("VR Player");
 
         if (VRIsActivated || isVROverride){
+            Destroy(VrParent);
             DesktopCam.SetActive(false);
-            VRCam.SetActive(true);
+            // VRCam.SetActive(true);
 
             if (PlayerPlane)
             {
