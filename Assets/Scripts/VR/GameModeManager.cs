@@ -15,6 +15,8 @@ public class GameModeManager : MonoBehaviour
     [Tooltip("click this if you need to run the VR controls instead of the desktop controls in bugtesting.")]
     public bool isVROverride;
 
+    public static bool DesktopBuild;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -51,7 +53,6 @@ public class GameModeManager : MonoBehaviour
         
         if (!VRCam)
             VRCam = GameObject.Find("VR Player");
-
 
         if (VRIsActivated || isVROverride){
             Destroy(VrParent);

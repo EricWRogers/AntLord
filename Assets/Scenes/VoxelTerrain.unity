@@ -6887,7 +6887,7 @@ PrefabInstance:
       objectReference: {fileID: 447601908}
     - target: {fileID: 2275825239904447866, guid: 0fad63df278e4c94a87df9cfdbd67d88, type: 3}
       propertyPath: isVROverride
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2384735471155513950, guid: 0fad63df278e4c94a87df9cfdbd67d88, type: 3}
       propertyPath: m_LocalPosition.x
@@ -20268,6 +20268,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3073062806649450659, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3233547033073358063, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -20352,6 +20356,18 @@ PrefabInstance:
       propertyPath: LSecondaryButton.m_Id
       value: d89bfe1b-bf9d-4170-ae02-af8c52f6f344
       objectReference: {fileID: 0}
+    - target: {fileID: 3693389912933806140, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 3693389912933806140, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.806
+      objectReference: {fileID: 0}
+    - target: {fileID: 3693389912933806140, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.518
+      objectReference: {fileID: 0}
     - target: {fileID: 3716236156610481403, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -20383,6 +20399,10 @@ PrefabInstance:
     - target: {fileID: 4153544123208187162, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4153544123208187162, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4209738769378062710, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Layer
@@ -20571,6 +20591,18 @@ PrefabInstance:
     - target: {fileID: 5395053663659840185, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5431733708685070944, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -8.858
+      objectReference: {fileID: 0}
+    - target: {fileID: 5431733708685070944, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.744
+      objectReference: {fileID: 0}
+    - target: {fileID: 5431733708685070944, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.786
       objectReference: {fileID: 0}
     - target: {fileID: 5468552701809408342, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Layer
@@ -20888,6 +20920,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 8656210885831646848, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8764373905030556165, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       propertyPath: m_Layer
       value: 10
@@ -20929,7 +20965,8 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8656210885831646848, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 325252835286639991, guid: 28201ba77ee748b488fa6840ce789507, type: 3}
       insertIndex: -1
@@ -24427,6 +24464,11 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &881832981 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
+  m_PrefabInstance: {fileID: 1988933964}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &882960014
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49747,7 +49789,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WinLoseCondition
   _playerBuildings: []
   _enemyBuildings: []
-  nextLevelBttn: {fileID: 1520634343}
   retryBttn: {fileID: 1125130820}
   mmBttn: {fileID: 543553924}
   triggerWin: 0
@@ -50239,6 +50280,10 @@ PrefabInstance:
     - target: {fileID: 9159022392315164044, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9159022392315164044, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9197710389267212013, guid: e474ba667eb1ddfb294f9281341be946, type: 3}
       propertyPath: m_Layer
@@ -52655,6 +52700,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
       propertyPath: m_Name
       value: SandBucket (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
+      propertyPath: m_TagString
+      value: Shovel
       objectReference: {fileID: 0}
     - target: {fileID: 8032750206264916975, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -55264,7 +55313,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102848429}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc1068980701a6f45bf5e6e456e4ad67, type: 3}
   m_Name: 
@@ -55272,7 +55321,7 @@ MonoBehaviour:
   leftRayInteractor: {fileID: 717184703}
   rightRayInteractor: {fileID: 717184702}
   cam: {fileID: 2102848431}
-  shovel: {fileID: 0}
+  shovel: {fileID: 881832981}
   voxelManager: {fileID: 4610825784424797931}
   layerMask:
     serializedVersion: 2
