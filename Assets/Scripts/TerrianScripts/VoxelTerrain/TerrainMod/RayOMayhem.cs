@@ -75,6 +75,11 @@ public class RayOMayhem : MonoBehaviour
             didModifyVoxel = false;
             currentAction = VoxelAction.None;
         }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            EnableTerrainMod();
+        }
     }
 
     private bool TryGetHitPoint(out Vector3 hitPoint, bool isLeftHand)
@@ -127,6 +132,12 @@ public class RayOMayhem : MonoBehaviour
         nextAdjustmentTime = Time.time + adjustmentRate;
         didModifyVoxel = true;
     }
+
+    public void EnableTerrainMod()
+    {
+        inModMode = true;
+        if (shovel != null) shovel.SetActive(inModMode);
+    } 
 
     //these are for VR invoking events
     //you cant directly invoke another classes events even if theyre inherited
