@@ -3717,7 +3717,7 @@ public partial class @XRIDefaultInputActions: IInputActionCollection2, IDisposab
                 {
                     ""name"": """",
                     ""id"": ""dc008f6f-b311-45d0-b403-a66bf6bd70b5"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<VirtualMouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
