@@ -13,7 +13,7 @@ public class WinLoseCondition : MonoBehaviour
     public List<Buildings> _enemyBuildings = new List<Buildings>();
     AntSelectGlow[] _playerAnts;
 
-    public GameObject nextLevelBttn;
+    //public GameObject nextLevelBttn;
     public GameObject retryBttn;
     public GameObject mmBttn;
 
@@ -34,7 +34,7 @@ public class WinLoseCondition : MonoBehaviour
         }
 
         //disable UI
-        nextLevelBttn.SetActive(false);
+        //nextLevelBttn.SetActive(false);
         retryBttn.SetActive(false);
         mmBttn.SetActive(false);
 
@@ -69,7 +69,7 @@ public class WinLoseCondition : MonoBehaviour
 
             //play cutscene...
 
-            nextLevelBttn.SetActive(false);
+            //nextLevelBttn.SetActive(false);
             retryBttn.SetActive(true);
             mmBttn.SetActive(true);
         }
@@ -81,7 +81,7 @@ public class WinLoseCondition : MonoBehaviour
             
             //play cutscene...
             
-            nextLevelBttn.SetActive(true);
+            //nextLevelBttn.SetActive(true);
             retryBttn.SetActive(true);
             mmBttn.SetActive(true);
         }
