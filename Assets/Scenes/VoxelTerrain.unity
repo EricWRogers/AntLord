@@ -6887,7 +6887,7 @@ PrefabInstance:
       objectReference: {fileID: 447601908}
     - target: {fileID: 2275825239904447866, guid: 0fad63df278e4c94a87df9cfdbd67d88, type: 3}
       propertyPath: isVROverride
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2384735471155513950, guid: 0fad63df278e4c94a87df9cfdbd67d88, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13243,6 +13243,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
       propertyPath: m_Name
       value: SandBucket
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
+      propertyPath: m_TagString
+      value: Shovel
       objectReference: {fileID: 0}
     - target: {fileID: 8032750206264916975, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -24464,11 +24472,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &881832981 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
-  m_PrefabInstance: {fileID: 1988933964}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &882960014
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39665,6 +39668,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1434809098}
   m_CullTransparentMesh: 1
+--- !u!1 &1438147390 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
+  m_PrefabInstance: {fileID: 500860833}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1439710964
 Mesh:
   m_ObjectHideFlags: 0
@@ -52702,8 +52710,12 @@ PrefabInstance:
       value: SandBucket (1)
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
       propertyPath: m_TagString
-      value: Shovel
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 8032750206264916975, guid: e0b700337e14b8b46907e1f95c2ca531, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -55321,7 +55333,7 @@ MonoBehaviour:
   leftRayInteractor: {fileID: 717184703}
   rightRayInteractor: {fileID: 717184702}
   cam: {fileID: 2102848431}
-  shovel: {fileID: 881832981}
+  shovel: {fileID: 1438147390}
   voxelManager: {fileID: 4610825784424797931}
   layerMask:
     serializedVersion: 2

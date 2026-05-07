@@ -57,7 +57,7 @@ public class RayOMayhem : MonoBehaviour
         //HANDLE PLACING (Right Click OR Left Controller Trigger)
         bool isPlacingInput = Input.GetMouseButton(1);
 
-        if (isPlacingInput)
+        if (isPlacingInput && inModMode)
         {
             if (resourceManager != null && resourceManager.sand <= 0) return;
 
