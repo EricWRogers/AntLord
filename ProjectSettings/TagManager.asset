@@ -18,6 +18,7 @@ TagManager:
   - StickBit
   - Material
   - EnemyBase
+  - Waypoint
   layers:
   - Default
   - TransparentFX

@@ -15,7 +15,7 @@ public class PM : MonoBehaviour
     private Camera sceneCamera;
 
     public XRIDefaultInputActions VRInputActions; //input c# script
-    public InputAction LSecondaryButton;
+    public InputAction LPrimaryButton;
     public InputActionMap VRRIHGHTInteraction;//action map
     public InputActionMap VRLEFTInteraction;
 
@@ -37,7 +37,7 @@ public class PM : MonoBehaviour
         VRRIHGHTInteraction = VRInputActions.XRIRightInteraction;
         VRLEFTInteraction = VRInputActions.XRILeftInteraction;
 
-        LSecondaryButton = VRLEFTInteraction.FindAction("SecondaryButtonSelect");
+        LPrimaryButton = VRLEFTInteraction.FindAction("PrimaryButtonSelect");
 
         if (VRInputActions != null)
         {
@@ -45,7 +45,7 @@ public class PM : MonoBehaviour
             VRLEFTInteraction.Enable();
 
 
-            LSecondaryButton.Enable();
+            LPrimaryButton.Enable();
         }
     }
 
@@ -61,7 +61,7 @@ public class PM : MonoBehaviour
     void Update()
     {
         // Listen for the Escape key
-        if (Input.GetKeyDown(KeyCode.Escape) || LSecondaryButton.WasPerformedThisFrame())
+        if (Input.GetKeyDown(KeyCode.Escape) || LPrimaryButton.WasPerformedThisFrame())
         {
             DisplayPM();
         }

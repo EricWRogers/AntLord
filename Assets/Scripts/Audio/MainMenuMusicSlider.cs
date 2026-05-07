@@ -5,6 +5,15 @@ public class MainMenuMusicSlider : MonoBehaviour
 {
     private Slider slider;
 
+    public float CurrentValue
+    {
+        get
+        {
+            if (slider == null) return 1f;
+            return slider.value;
+        }
+    }
+
     void Awake()
     {
         slider = GetComponent<Slider>();
@@ -44,5 +53,27 @@ public class MainMenuMusicSlider : MonoBehaviour
             return;
 
         AudioManager2.instance.SetMusicVolume(value);
+
+        
+        if (value > 0f && AudioManager2.instance.IsMusicMuted())
+        {
+            AudioManager2.instance.SetMusicMuted(false);
+        }
+    }
+
+    public void SetSliderValue(float value)
+    {
+        if (slider == null)
+            return;
+
+        slider.value = Mathf.Clamp01(value);
+    }
+
+    public void SetSliderValueWithoutCallingEvent(float value)
+    {
+        if (slider == null)
+            return;
+
+        slider.SetValueWithoutNotify(Mathf.Clamp01(value));
     }
 }

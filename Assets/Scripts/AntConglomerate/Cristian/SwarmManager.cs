@@ -95,7 +95,7 @@ public class SwarmManager : MonoBehaviour
         }
     }
 
-    // A method to remove an ant (when swarm ends / self exaplianatory)
+    // A method to remove an ant (when swarm ends / self exaplianatory they just kinda spawn)
     public void RemoveAnt(SwarmAnt ant)
     {
         ants.Remove(ant);
