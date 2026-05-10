@@ -151,10 +151,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   soundList:
   - name: CRAWLING
-    sounds:
-    - {fileID: 8300000, guid: 557e96b16076cb84285c90941906b44c, type: 3}
-  - name: GATHERING
     sounds: []
+  - name: GATHERING
+    sounds:
+    - {fileID: 8300000, guid: ba09f1bbde678f54bb508e79c32c9dab, type: 3}
   - name: EATING
     sounds: []
   - name: FIGHTING
