@@ -33,6 +33,16 @@ public class CommandAnt : CommandParent
         // Deselect = InputSystem.actions.FindAction("Deselect");
         R = InputSystem.actions.FindAction("R");
         Lasso = InputSystem.actions.FindAction("Lasso");
+
+        rightClick.performed += OnRightClick;
+    }
+
+    void OnRightClick(InputAction.CallbackContext context)
+    {
+        // Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+        // if(Physics.Raycast(ray, out RaycastHit hit, 500f))
+        // DirectAnt(hit);
     }
 
     void OnEnable()
@@ -63,7 +73,7 @@ public class CommandAnt : CommandParent
         }
 
         // -- Set a waypoint or set a task
-        if (rightClick.WasPressedThisFrame())
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 

@@ -8,11 +8,14 @@ public class GameModeManager : MonoBehaviour
     public GameObject DesktopCam;
     public GameObject VRCam;
     public GameObject PlayerPlane;
+    public GameObject VrParent;
 
     public static bool VRIsActivated;
 
     [Tooltip("click this if you need to run the VR controls instead of the desktop controls in bugtesting.")]
     public bool isVROverride;
+
+    public static bool DesktopBuild;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -36,6 +39,11 @@ public class GameModeManager : MonoBehaviour
     {
         SetPlayMode();
         Debug.Log("level loaded. Vr is active? : " + VRIsActivated);
+
+        if (!VRIsActivated)
+        {
+            Destroy(VrParent);
+        }
     }    
 
     public void SetPlayMode()
@@ -46,17 +54,25 @@ public class GameModeManager : MonoBehaviour
         if (!VRCam)
             VRCam = GameObject.Find("VR Player");
 
-
         if (VRIsActivated || isVROverride){
+            Destroy(VrParent);
             DesktopCam.SetActive(false);
-            VRCam.SetActive(true);
-            PlayerPlane.SetActive(true);
+            // VRCam.SetActive(true);
+
+            if (PlayerPlane)
+            {
+                PlayerPlane.SetActive(true);
+            }
         }
         else
         {
             DesktopCam.SetActive(true);
             VRCam.SetActive(false);
-            PlayerPlane.SetActive(false);
+
+            if (PlayerPlane)
+            {
+                PlayerPlane.SetActive(false);
+            }
         }
     }
 

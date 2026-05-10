@@ -171,6 +171,9 @@ public class BuildingPlacementSystem : MonoBehaviour
 
             ResourceManager.instance.AddRock(-currentBuilding.RockCost);
             ResourceManager.instance.AddStick(-currentBuilding.StickCost);
+
+            //win con tracks amount of buildings in scene
+            WinLoseCondition.instance.OnPlayerBuildingCreated(buildingParent);
         }
     }
     //look sometimes Lambda functions just do this

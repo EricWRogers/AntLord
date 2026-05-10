@@ -18,9 +18,6 @@ public class EnemyBuilding : SpawnerBuilding
 
     public TextMeshProUGUI timerText;
 
-    [Tooltip("TEMPORARY! Win screen")]
-    public GameObject winScreen;
-
     private bool hasWon = false;
 
     [Header("Base Expansion Settings")]
@@ -36,8 +33,6 @@ public class EnemyBuilding : SpawnerBuilding
         currentHealth = maxHealth;
         slider.maxValue = currentHealth;
         slider.value = currentHealth;
-
-        winScreen.SetActive(false);
     }
 
     public override void FixedUpdate()
@@ -63,7 +58,6 @@ public class EnemyBuilding : SpawnerBuilding
                 hasWon = true;
 
                 FindFirstObjectByType<MM>()?.Pause();
-                winScreen.SetActive(true);
                 
                 AudioManager2.instance?.Play("WinMusic");
             }

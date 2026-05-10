@@ -5,24 +5,36 @@ using UnityEngine.SceneManagement;
 
 
 public class WinLoseCondition : MonoBehaviour
-{
+{   
+    public static WinLoseCondition instance;
+
     Buildings[] _buildings;
     public  List<Buildings> _playerBuildings = new List<Buildings>();
     public List<Buildings> _enemyBuildings = new List<Buildings>();
     AntSelectGlow[] _playerAnts;
 
-    public GameObject nextLevelBttn;
+    //public GameObject nextLevelBttn;
     public GameObject retryBttn;
     public GameObject mmBttn;
 
     [Tooltip("Temporary booleans for testing only")]
     public bool triggerWin;
     public bool triggerLoss;
-    
+
+    void Awake()
+    {
+        gameObject.SetActive(true);
+    }
+
     void Start()
     {
+        if (instance == null || instance != this)
+        {
+            instance = this;
+        }
+
         //disable UI
-        nextLevelBttn.SetActive(false);
+        //nextLevelBttn.SetActive(false);
         retryBttn.SetActive(false);
         mmBttn.SetActive(false);
 
@@ -57,7 +69,7 @@ public class WinLoseCondition : MonoBehaviour
 
             //play cutscene...
 
-            nextLevelBttn.SetActive(false);
+            //nextLevelBttn.SetActive(false);
             retryBttn.SetActive(true);
             mmBttn.SetActive(true);
         }
@@ -69,10 +81,28 @@ public class WinLoseCondition : MonoBehaviour
             
             //play cutscene...
             
-            nextLevelBttn.SetActive(true);
+            //nextLevelBttn.SetActive(true);
             retryBttn.SetActive(true);
             mmBttn.SetActive(true);
         }
+    }
+
+    public void OnPlayerBuildingCreated(GameObject buildingPrefab)
+    {
+        Buildings building = buildingPrefab.GetComponent<Buildings>();
+        _playerBuildings.Add(building);
+    }
+
+    public void OnPlayerBuildingDestroyed(GameObject buildingPrefab)
+    {
+        Buildings building = buildingPrefab.GetComponent<Buildings>();
+        _playerBuildings.Remove(building);
+    }
+
+    public void OnEnemyBuildingDestroyed(GameObject buildingPrefab)
+    {
+        Buildings building = buildingPrefab.GetComponent<Buildings>();
+        _enemyBuildings.Remove(building);
     }
 
     public void NextLevel(string lvlName)

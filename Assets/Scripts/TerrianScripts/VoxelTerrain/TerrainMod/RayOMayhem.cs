@@ -57,7 +57,7 @@ public class RayOMayhem : MonoBehaviour
         //HANDLE PLACING (Right Click OR Left Controller Trigger)
         bool isPlacingInput = Input.GetMouseButton(1);
 
-        if (isPlacingInput)
+        if (isPlacingInput && inModMode)
         {
             if (resourceManager != null && resourceManager.sand <= 0) return;
 
@@ -74,6 +74,16 @@ public class RayOMayhem : MonoBehaviour
         {
             didModifyVoxel = false;
             currentAction = VoxelAction.None;
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            EnableTerrainMod();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            DisableTerrainMod();
         }
     }
 
@@ -126,6 +136,18 @@ public class RayOMayhem : MonoBehaviour
 
         nextAdjustmentTime = Time.time + adjustmentRate;
         didModifyVoxel = true;
+    }
+
+    public void EnableTerrainMod()
+    {
+        inModMode = true;
+        if (shovel != null) shovel.SetActive(inModMode);
+    } 
+
+    public void DisableTerrainMod()
+    {
+        inModMode = false;
+        if (shovel != null) shovel.SetActive(inModMode);
     }
 
     //these are for VR invoking events
